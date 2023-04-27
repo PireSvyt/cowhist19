@@ -1,0 +1,86 @@
+{
+  "8": {
+    "name": "8plis",
+    "folds": 8,
+    "attack": 2,
+    "defense": 2
+  },
+  "9": {
+    "name": "9plis",
+    "folds": 9,
+    "attack": 2,
+    "defense": 2
+  },
+  "solo6": {
+    "name": "solo6",
+    "folds": 6,
+    "attack": 1,
+    "defense": 3
+  },
+  "10": {
+    "name": "10plis",
+    "folds": 10,
+    "attack": 2,
+    "defense": 2
+  },
+  "solo7": {
+    "name": "solo7",
+    "folds": 7,
+    "attack": 1,
+    "defense": 3
+  },
+  "11": {
+    "name": "11plis",
+    "folds": 11,
+    "attack": 2,
+    "defense": 2
+  },
+  "petitemisere": {
+    "name": "petitemisere",
+    "folds": 0,
+    "attack": 1,
+    "defense": 3
+  },
+  "solo8": {
+    "name": "solo8",
+    "folds": 8,
+    "attack": 1,
+    "defense": 3
+  },
+  "12": {
+    "name": "12plis",
+    "folds": 12,
+    "attack": 2,
+    "defense": 2
+  },
+  "13": {
+    "name": "13plis",
+    "folds": 13,
+    "attack": 2,
+    "defense": 2
+  },
+  "trou8": {
+    "name": "trou8",
+    "folds": 8,
+    "attack": 2,
+    "defense": 2
+  },
+  "trou9": {
+    "name": "trou9",
+    "folds": 9,
+    "attack": 2,
+    "defense": 2
+  },
+  "grandchelem": {
+    "name": "grandchelem",
+    "folds": 13,
+    "attack": 1,
+    "defense": 3
+  },
+  "grandemisere": {
+    "name": "grandemisere",
+    "folds": 0,
+    "attack": 1,
+    "defense": 3
+  }
+}

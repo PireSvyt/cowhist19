@@ -1,0 +1,10 @@
+{
+  "generic-snack-WIP": "warning",
+  "generic-snack-saving": "info",
+  "generic-snack-errornetwork": "error",
+  "generic-snack-errorunknown": "error",
+  "generic-snack-error": "error",
+  "game-snack-saved": "success",
+  "game-snack-edited": "success",
+  "game-snack-discarded": "info"
+}

@@ -9,7 +9,7 @@ import {
   DialogContent,
   DialogTitle,
   Autocomplete,
-  Slider
+  Slider,
 } from "@mui/material";
 
 import contracts from "../resources/contracts";
@@ -24,7 +24,7 @@ let emptyGame = {
   date: undefined,
   attack: undefined,
   defense: undefined,
-  outcome: undefined
+  outcome: undefined,
 };
 
 export default class GameModal extends React.Component {
@@ -42,7 +42,7 @@ export default class GameModal extends React.Component {
       users: [],
       componentHeight: undefined,
       openSnack: false,
-      snack: undefined
+      snack: undefined,
     };
     // Updates
     this.updateComponentHeight = this.updateComponentHeight.bind(this);
@@ -65,9 +65,9 @@ export default class GameModal extends React.Component {
       PaperProps: {
         style: {
           maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-          width: 250
-        }
-      }
+          width: 250,
+        },
+      },
     };
 
     return (
@@ -81,14 +81,14 @@ export default class GameModal extends React.Component {
           <DialogTitle>{t("game-title")}</DialogTitle>
           <DialogContent
             sx={{
-              height: this.state.componentHeight
+              height: this.state.componentHeight,
             }}
           >
             <Box
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "space-evenly"
+                justifyContent: "space-evenly",
               }}
             >
               <Autocomplete
@@ -109,7 +109,7 @@ export default class GameModal extends React.Component {
                 onChange={(event, newValue) => {
                   event.target = {
                     name: "contract",
-                    value: newValue.name
+                    value: newValue.name,
                   };
                   this.handleChange(event, newValue.name);
                 }}
@@ -143,12 +143,12 @@ export default class GameModal extends React.Component {
                   value={this.state.gameDate}
                   onChange={(newValue) => {
                     this.setState((prevState, props) => ({
-                      gameDate: newValue
+                      gameDate: newValue,
                     }));
                   }}
                   onAccept={(newValue) => {
                     this.handleChange({
-                      target: { name: "date", value: newValue }
+                      target: { name: "date", value: newValue },
                     });
                   }}
                   renderInput={(params) => <TextField {...params} />}
@@ -270,14 +270,14 @@ export default class GameModal extends React.Component {
               console.log("loaded game");
               console.log(res.game);
               this.setState({
-                game: res.game
+                game: res.game,
               });
               break;
             case 400:
               this.setState((prevState, props) => ({
                 game: emptyGame,
                 openSnack: true,
-                snack: t("generic-snack-errornetwork")
+                snack: t("generic-snack-errornetwork"),
               }));
               this.props.callback("closeItem");
               break;
@@ -285,14 +285,14 @@ export default class GameModal extends React.Component {
               this.setState((prevState, props) => ({
                 game: emptyGame,
                 openSnack: true,
-                snack: t("generic-snack-errorunknown")
+                snack: t("generic-snack-errorunknown"),
               }));
               this.props.callback("closeItem");
           }
         });
       } else {
         this.setState((prevState, props) => ({
-          game: { ...emptyGame }
+          game: { ...emptyGame },
         }));
       }
     }
@@ -304,7 +304,7 @@ export default class GameModal extends React.Component {
       console.log("GameModal.updateComponentHeight");
     }
     this.setState({
-      componentHeight: window.innerHeight - 115
+      componentHeight: window.innerHeight - 115,
     });
   }
 
@@ -316,7 +316,7 @@ export default class GameModal extends React.Component {
     this.setState((prevState, props) => ({
       game: { ...emptyGame },
       openSnack: true,
-      snack: t("generic-snack-discarded")
+      snack: t("game-snack-discarded"),
     }));
     this.props.callback("closeItem");
   }
@@ -344,7 +344,7 @@ export default class GameModal extends React.Component {
         }
         previousGame.date = target.value;
         this.setState((prevState, props) => ({
-          gameDate: previousGame.date
+          gameDate: previousGame.date,
         }));
         break;
       case "attack":
@@ -376,7 +376,7 @@ export default class GameModal extends React.Component {
       console.log(this.state.game);
     }
     this.setState((prevState, props) => ({
-      game: previousGame
+      game: previousGame,
     }));
   }
   handleSave() {
@@ -414,7 +414,7 @@ export default class GameModal extends React.Component {
               game: emptyGame,
               shelf: "",
               openSnack: true,
-              snack: t("game-snack-saved")
+              snack: t("game-snack-saved"),
             });
             this.props.callback("closeItem");
             break;
@@ -424,7 +424,7 @@ export default class GameModal extends React.Component {
               game: emptyGame,
               shelf: "",
               openSnack: true,
-              snack: t("game-snack-edited")
+              snack: t("game-snack-edited"),
             }));
             this.props.callback("closeItem");
             break;
@@ -433,14 +433,14 @@ export default class GameModal extends React.Component {
             //console.log(res);
             this.setState({
               openSnack: true,
-              snack: t("generic-snack-errornetwork")
+              snack: t("generic-snack-errornetwork"),
             });
             break;
           default:
             //console.log("default");
             this.setState((prevState, props) => ({
               openSnack: true,
-              snack: t("generic-snack-errorunknown")
+              snack: t("generic-snack-errorunknown"),
             }));
         }
       });
@@ -450,7 +450,7 @@ export default class GameModal extends React.Component {
       snack.message = t("generic-snack-error") + errors;
       this.setState((prevState, props) => ({
         openSnack: true,
-        snack: snack
+        snack: snack,
       }));
     }
   }
@@ -461,7 +461,7 @@ export default class GameModal extends React.Component {
     switch (action) {
       case "close":
         this.setState((prevState, props) => ({
-          openSnack: false
+          openSnack: false,
         }));
         break;
       default:

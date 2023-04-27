@@ -1,6 +1,9 @@
 import * as React from "react";
+import { withTranslation } from "react-i18next";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+
+import snacks from "../resources/snacks.json";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -14,27 +17,24 @@ info
 success
 */
 
-function getDymmySnack() {
+function getDummySnack() {
   return {
-    duration: 1000,
-    message: "DUMMY SNACK MESSAGE",
-    severity: "warning",
-    FR: "DUMMY SNACK FR",
-    EN: "DUMMY SNACK EN"
+    id: undefined,
+    duration: undefined,
+    message: undefined,
+    severity: undefined,
+    details: undefined,
   };
 }
 
-export default class Snack extends React.Component {
+class Snack extends React.Component {
   constructor(props) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("Snack.constructor");
     }
     super(props);
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Snack language = " + this.props.language);
-    }
     this.state = {
-      snack: getDymmySnack()
+      snack: getDummySnack(),
     };
     // Handles
     this.handleClose = this.handleClose.bind(this);
@@ -43,6 +43,9 @@ export default class Snack extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("Snack.render");
     }
+    // i18n
+    const { t } = this.props;
+
     return (
       <Snackbar
         open={this.props.open}
@@ -65,22 +68,31 @@ export default class Snack extends React.Component {
       console.log("Snack.state");
       console.log(this.state);
     }
-    if (prevState.snack !== this.props.snack) {
-      // Add optional inputs
-      var newSnack = this.props.snack;
-      if (newSnack !== undefined) {
-        if (newSnack.duration === undefined) {
-          newSnack.duration = 3000;
+    // i18n
+    const { t } = this.props;
+
+    if (this.props.snack !== undefined) {
+      if (prevState.snack.id !== this.props.snack.id) {
+        // Add optional inputs
+        var newSnack = snacks[this.props.snack.id];
+        newSnack.id = this.props.snack.id;
+        if (newSnack !== undefined) {
+          if (newSnack.duration === undefined) {
+            newSnack.duration = 3000;
+          }
+          if (newSnack.severity === undefined) {
+            newSnack.severity = "info";
+          }
+          if (newSnack.message === undefined) {
+            newSnack.message = t(this.props.snack.id);
+          }
+          if (this.props.snack.details !== undefined) {
+            newSnack.message = newSnack.message + this.props.snack.details;
+          }
+          this.setState((prevState, props) => ({
+            snack: newSnack,
+          }));
         }
-        if (newSnack.severity === undefined) {
-          newSnack.severity = "info";
-        }
-        if (newSnack.message === undefined) {
-          newSnack.message = newSnack[this.props.language];
-        }
-        this.setState((prevState, props) => ({
-          snack: newSnack
-        }));
       }
     }
   }
@@ -95,3 +107,5 @@ export default class Snack extends React.Component {
     }
   }
 }
+
+export default withTranslation()(Snack);

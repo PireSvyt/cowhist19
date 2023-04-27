@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useTranslation } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import {
   Button,
   TextField,
@@ -15,8 +15,6 @@ import {
 import { apiAuthSignup } from "../api/auth";
 import Snack from "./Snack";
 
-const { t } = useTranslation();
-
 let emptySignup = {
   name: undefined,
   login: undefined,
@@ -24,7 +22,7 @@ let emptySignup = {
   password2: undefined,
 };
 
-export default class SignUpModal extends React.Component {
+class SignUpModal extends React.Component {
   constructor(props) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("SignUpModal.constructor");
@@ -37,7 +35,7 @@ export default class SignUpModal extends React.Component {
       signup: { ...emptySignup },
       componentHeight: undefined,
       openSnack: false,
-      snack: undefined,
+      snack: { id: undefined },
     };
     // Updates
     this.updateComponentHeight = this.updateComponentHeight.bind(this);
@@ -52,6 +50,8 @@ export default class SignUpModal extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("SignUpModal.render");
     }
+    // i18n
+    const { t } = this.props;
 
     return (
       <div>
@@ -73,15 +73,48 @@ export default class SignUpModal extends React.Component {
                 flexDirection: "column",
                 justifyContent: "space-evenly",
               }}
-            ></Box>
+            >
+              <TextField
+                name="name"
+                label={t("signup-input-pseudo")}
+                variant="standard"
+                value={this.state.signup.name || ""}
+                onChange={this.handleChange}
+                autoComplete="off"
+              />
+              <TextField
+                name="login"
+                label={t("signup-input-email")}
+                variant="standard"
+                value={this.state.signup.login || ""}
+                onChange={this.handleChange}
+                autoComplete="off"
+              />
+              <TextField
+                name="password1"
+                label={t("signup-input-password")}
+                variant="standard"
+                value={this.state.signup.password1 || ""}
+                onChange={this.handleChange}
+                autoComplete="off"
+              />
+              <TextField
+                name="password2"
+                label={t("signup-input-password")}
+                variant="standard"
+                value={this.state.signup.password2 || ""}
+                onChange={this.handleChange}
+                autoComplete="off"
+              />
+            </Box>
           </DialogContent>
 
           <DialogActions>
             <Button onClick={this.handleClose}>
               {t("generic-button-close")}
             </Button>
-            <Button variant="contained" onClick={this.handleSave}>
-              {t("signup-button-signup")}
+            <Button variant="contained" onClick={this.handleProceed}>
+              {t("generic-button-proceed")}
             </Button>
           </DialogActions>
         </Dialog>
@@ -124,10 +157,11 @@ export default class SignUpModal extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("SignUpModal.handleClose");
     }
+    // i18n
+    const { t } = this.props;
+
     this.setState((prevState, props) => ({
-      game: { ...emptySignup },
-      openSnack: true,
-      snack: t("signup-snack-discarded"),
+      signup: { ...emptySignup },
     }));
     this.props.callback("closeItem");
   }
@@ -135,6 +169,7 @@ export default class SignUpModal extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("SignUpModal.handleChange");
     }
+
     const target = event.target;
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("target.name : " + target.name);
@@ -187,6 +222,7 @@ export default class SignUpModal extends React.Component {
       console.log("this.state.signup");
       console.log(this.state.signup);
     }
+
     // Check inputs
     let proceed = true;
     let errors = [];
@@ -219,14 +255,20 @@ export default class SignUpModal extends React.Component {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
         console.log(this.state.signup);
       }
-      apiAuthSignup(this.state.signup).then((res) => {
+      // Prep
+      let user = this.state.signup;
+      user.password = user.password1;
+      delete user.password1;
+      delete user.password2;
+      // API call
+      apiAuthSignup(user).then((res) => {
         switch (res.status) {
           case 201:
             //console.log("default");
             this.setState({
               signup: emptySignup,
               openSnack: true,
-              snack: t("signup-snack-success"),
+              snack: { id: "signup-snack-success" },
             });
             this.props.callback("closeItem");
             break;
@@ -234,7 +276,7 @@ export default class SignUpModal extends React.Component {
             //console.log("modified");
             this.setState((prevState, props) => ({
               openSnack: true,
-              snack: t("signup-snack-existing"),
+              snack: { id: "signup-snack-existing" },
             }));
             break;
           case 400:
@@ -242,24 +284,22 @@ export default class SignUpModal extends React.Component {
             //console.log(res);
             this.setState({
               openSnack: true,
-              snack: t("generic-snack-errornetwork"),
+              snack: { id: "generic-snack-errornetwork" },
             });
             break;
           default:
             //console.log("default");
             this.setState((prevState, props) => ({
               openSnack: true,
-              snack: t("generic-snack-errorunknown"),
+              snack: { id: "generic-snack-errorunknown" },
             }));
         }
       });
     } else {
       // Snack
-      var snack = t("generic-snack-error");
-      snack.message = t("generic-snack-error") + errors;
       this.setState((prevState, props) => ({
         openSnack: true,
-        snack: snack,
+        snack: { id: "generic-snack-error", details: errors },
       }));
     }
   }
@@ -277,3 +317,5 @@ export default class SignUpModal extends React.Component {
     }
   }
 }
+
+export default withTranslation()(SignUpModal);

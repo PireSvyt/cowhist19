@@ -1,10 +1,10 @@
 {
-  "generic-snack-WIP": "warning",
-  "generic-snack-saving": "info",
-  "generic-snack-errornetwork": "error",
-  "generic-snack-errorunknown": "error",
-  "generic-snack-error": "error",
-  "game-snack-saved": "success",
-  "game-snack-edited": "success",
-  "game-snack-discarded": "info"
+  "generic-snack-WIP": { "severity": "warning" },
+  "generic-snack-saving": { "severity": "info" },
+  "generic-snack-errornetwork": { "severity": "error" },
+  "generic-snack-errorunknown": { "severity": "error" },
+  "generic-snack-error": { "severity": "error" },
+  "game-snack-saved": { "severity": "success" },
+  "game-snack-edited": { "severity": "success" },
+  "game-snack-discarded": { "severity": "info" }
 }

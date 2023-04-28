@@ -1,4 +1,4 @@
-const axios = require("axios");
+import axios, * as others from "axios";
 
 let apiURL = process.env.REACT_APP_SERVER_URL;
 
@@ -8,25 +8,25 @@ export async function apiAuthSignup(user) {
     return res.data;
   } catch (err) {
     let res = {
-      status: 400,
+      status: err.response.status,
       message: "error on apiAuthSignup",
       error: err,
-      user: user
+      user: user,
     };
     return res;
   }
 }
 
-export async function apiAuthLogin(user) {
+export async function apiAuthSignin(user) {
   try {
     const res = await axios.post(apiURL + "/auth/login", user);
     return res.data;
   } catch (err) {
     let res = {
-      status: 400,
-      message: "error on apiAuthLogin",
+      status: err.response.status,
+      message: "error on apiAuthSignin",
       error: err,
-      user: user
+      user: user,
     };
     return res;
   }

@@ -2,20 +2,71 @@ import "./styles.css";
 import * as React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import Landing from "./pages/Langing";
+// https://www.geeksforgeeks.org/how-to-create-a-multi-page-website-using-react-js/
 import Home from "./pages/Home";
 import Table from "./pages/Table";
 
-function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route exact path="/" element={<Landing />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/:id" element={<Table />} />
-      </Routes>
-    </Router>
-  );
-}
+export default class App extends React.Component {
+  constructor(props) {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("App.constructor");
+    }
+    super(props);
+    this.state = {
+      signedin: false,
+    };
 
-export default App;
+    // Handles
+    this.handleHomeCallback = this.handleHomeCallback.bind(this);
+  }
+  render() {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("App.render");
+    }
+    return (
+      <Router>
+        <Routes>
+          <Route
+            exact
+            path="/"
+            element={
+              <Home
+                callback={this.handleHomeCallback}
+                signedin={this.state.signedin}
+              />
+            }
+          />
+          <Route path="/:id" element={<Table />} />
+        </Routes>
+      </Router>
+    );
+  }
+  componentDidMount() {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("App.componentDidMount");
+    }
+    // Update
+
+    // Load
+  }
+
+  // Handles
+  handleHomeCallback(action) {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("App.handleHomeCallback");
+    }
+    switch (action) {
+      case "signedin":
+        this.setState((prevState, props) => ({
+          signedin: true,
+        }));
+        break;
+      case "signedout":
+        this.setState((prevState, props) => ({
+          signedin: false,
+        }));
+        break;
+      default:
+    }
+  }
+}

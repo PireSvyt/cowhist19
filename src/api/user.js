@@ -1,4 +1,4 @@
-const axios = require("axios");
+import axios, * as others from "axios";
 
 let apiURL = process.env.REACT_APP_SERVER_URL;
 
@@ -8,10 +8,10 @@ export async function apiUserInvite(user) {
     return res.data;
   } catch (err) {
     let res = {
-      status: 400,
+      status: err.response.status,
       message: "error on apiUserInvite",
       error: err,
-      user: user
+      user: user,
     };
     return res;
   }
@@ -23,10 +23,10 @@ export async function apiUserDetails(id) {
     return res.data;
   } catch (err) {
     let res = {
-      status: 400,
+      status: err.response.status,
       message: "error on apiUserDetails",
       error: err,
-      user: {}
+      user: {},
     };
     return res;
   }
@@ -38,10 +38,10 @@ export async function apiUserTables(id) {
     return res.data;
   } catch (err) {
     let res = {
-      status: 400,
+      status: err.response.status,
       message: "error on apiUserTables",
       error: err,
-      tables: []
+      tables: [],
     };
     return res;
   }

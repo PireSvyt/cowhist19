@@ -1,10 +1,15 @@
 {
-  "generic-snack-WIP": "warning",
-  "generic-snack-saving": "info",
-  "generic-snack-errornetwork": "error",
-  "generic-snack-errorunknown": "error",
-  "generic-snack-error": "error",
-  "game-snack-saved": "success",
-  "game-snack-edited": "success",
-  "game-snack-discarded": "info"
+  "generic-snack-WIP": { "severity": "warning" },
+  "generic-snack-saving": { "severity": "info" },
+  "generic-snack-errornetwork": { "severity": "error" },
+  "generic-snack-errorunknown": { "severity": "error" },
+  "generic-snack-error": { "severity": "error" },
+  "signup-snack-success": { "severity": "success" },
+  "signup-snack-existinguser": { "severity": "warning" },
+  "signin-snack-unauthorized": { "severity": "error" },
+  "signin-snack-notfound": { "severity": "error" },
+  "signin-snack-success": { "severity": "success" },
+  "game-snack-saved": { "severity": "success" },
+  "game-snack-edited": { "severity": "success" },
+  "game-snack-discarded": { "severity": "info" }
 }

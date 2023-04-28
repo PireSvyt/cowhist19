@@ -17,14 +17,14 @@ export async function apiAuthSignup(user) {
   }
 }
 
-export async function apiAuthLogin(user) {
+export async function apiAuthSignin(user) {
   try {
     const res = await axios.post(apiURL + "/auth/login", user);
     return res.data;
   } catch (err) {
     let res = {
       status: err.response.status,
-      message: "error on apiAuthLogin",
+      message: "error on apiAuthSignin",
       error: err,
       user: user,
     };

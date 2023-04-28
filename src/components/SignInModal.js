@@ -10,24 +10,22 @@ import {
   DialogTitle,
 } from "@mui/material";
 
-import { apiAuthSignup } from "../api/auth";
+import { apiAuthSignin } from "../api/auth";
 import Snack from "./Snack";
 
-let emptySignup = {
-  name: undefined,
+let emptySignin = {
   login: undefined,
-  password1: undefined,
-  password2: undefined,
+  password: undefined,
 };
 
-class SignUpModal extends React.Component {
+class SignInModal extends React.Component {
   constructor(props) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignUpModal.constructor");
+      console.log("SignInModal.constructor");
     }
     super(props);
     this.state = {
-      signup: { ...emptySignup },
+      signin: { ...emptySignin },
       componentHeight: undefined,
       openSnack: false,
       snack: { id: undefined },
@@ -43,7 +41,7 @@ class SignUpModal extends React.Component {
   }
   render() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignUpModal.render");
+      console.log("SignInModal.render");
     }
     // i18n
     const { t } = this.props;
@@ -51,12 +49,12 @@ class SignUpModal extends React.Component {
     return (
       <div>
         <Dialog
-          id="dialog_signup"
+          id="dialog_signin"
           open={this.props.open}
           onClose={this.handleClose}
           fullWidth={true}
         >
-          <DialogTitle>{t("signup-title")}</DialogTitle>
+          <DialogTitle>{t("signin-title")}</DialogTitle>
           <DialogContent
             sx={{
               height: this.state.componentHeight,
@@ -71,35 +69,18 @@ class SignUpModal extends React.Component {
               }}
             >
               <TextField
-                name="name"
-                label={t("generic-input-pseudo")}
-                variant="standard"
-                value={this.state.signup.name || ""}
-                onChange={this.handleChange}
-                autoComplete="off"
-              />
-              <TextField
                 name="login"
                 label={t("generic-input-email")}
                 variant="standard"
-                value={this.state.signup.login || ""}
+                value={this.state.signin.login || ""}
                 onChange={this.handleChange}
                 autoComplete="off"
               />
               <TextField
-                name="password1"
+                name="password"
                 label={t("generic-input-password")}
                 variant="standard"
-                value={this.state.signup.password1 || ""}
-                onChange={this.handleChange}
-                autoComplete="off"
-                type="password"
-              />
-              <TextField
-                name="password2"
-                label={t("generic-input-repeatpassword")}
-                variant="standard"
-                value={this.state.signup.password2 || ""}
+                value={this.state.signin.password || ""}
                 onChange={this.handleChange}
                 autoComplete="off"
                 type="password"
@@ -128,14 +109,14 @@ class SignUpModal extends React.Component {
   }
   componentDidMount() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      //console.log("SignUpModal.componentDidMount");
+      //console.log("SignInModal.componentDidMount");
     }
     this.updateComponentHeight();
   }
   componentDidUpdate(prevState) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      //console.log("SignUpModal.componentDidUpdate");
-      //console.log("SignUpModal.state");
+      //console.log("SignInModal.componentDidUpdate");
+      //console.log("SignInModal.state");
       //console.log(this.state);
     }
   }
@@ -143,7 +124,7 @@ class SignUpModal extends React.Component {
   // Updates
   updateComponentHeight() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignUpModal.updateComponentHeight");
+      console.log("SignInModal.updateComponentHeight");
     }
     this.setState({
       componentHeight: window.innerHeight - 115,
@@ -153,19 +134,19 @@ class SignUpModal extends React.Component {
   // Handles
   handleClose() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignUpModal.handleClose");
+      console.log("SignInModal.handleClose");
     }
     // i18n
     const { t } = this.props;
 
     this.setState((prevState, props) => ({
-      signup: { ...emptySignup },
+      signin: { ...emptySignin },
     }));
     this.props.callback("closeItem");
   }
   handleChange(event, newValue) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignUpModal.handleChange");
+      console.log("SignInModal.handleChange");
     }
 
     const target = event.target;
@@ -174,31 +155,19 @@ class SignUpModal extends React.Component {
       console.log("target.value : " + target.value);
       console.log("newValue : " + newValue);
     }
-    var previousSignup = this.state.signup;
+    var previousSignup = this.state.signin;
     switch (target.name) {
-      case "name":
-        if (process.env.REACT_APP_DEBUG === "TRUE") {
-          console.log("change name : " + target.value);
-        }
-        previousSignup.name = target.value;
-        break;
       case "login":
         if (process.env.REACT_APP_DEBUG === "TRUE") {
           console.log("change login : " + target.value);
         }
         previousSignup.login = target.value;
         break;
-      case "password1":
+      case "password":
         if (process.env.REACT_APP_DEBUG === "TRUE") {
-          console.log("change password1 : " + target.value);
+          console.log("change password : " + target.value);
         }
-        previousSignup.password1 = target.value;
-        break;
-      case "password2":
-        if (process.env.REACT_APP_DEBUG === "TRUE") {
-          console.log("change password2 : " + target.value);
-        }
-        previousSignup.password2 = target.value;
+        previousSignup.password = target.value;
         break;
       default:
         if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -207,80 +176,66 @@ class SignUpModal extends React.Component {
     }
     // Update
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignUpModal.game");
-      console.log(this.state.signup);
+      console.log("SignInModal.game");
+      console.log(this.state.signin);
     }
     this.setState((prevState, props) => ({
-      signup: previousSignup,
+      signin: previousSignup,
     }));
   }
   handleProceed() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignUpModal.handleProceed");
-      console.log("this.state.signup");
-      console.log(this.state.signup);
+      console.log("SignInModal.handleProceed");
+      console.log("this.state.signin");
+      console.log(this.state.signin);
     }
 
     // Check inputs
     let proceed = true;
     let errors = [];
-    if (this.state.signup.name === undefined) {
-      proceed = false;
-      errors.push(" Name undefined");
-    }
-    if (this.state.signup.login === undefined) {
+    if (this.state.signin.login === undefined) {
       proceed = false;
       errors.push(" Login undefined");
     }
-    if (this.state.signup.password1 === undefined) {
+    if (this.state.signin.password === undefined) {
       proceed = false;
-      errors.push(" Password 1 undefined");
-    }
-    if (this.state.signup.password2 === undefined) {
-      proceed = false;
-      errors.push(" Password 2 undefined");
-    }
-    if (this.state.signup.password1 !== this.state.signup.password2) {
-      proceed = false;
-      errors.push(" Password mismatch");
+      errors.push(" Password undefined");
     }
     // Proceed or not?
     if (errors !== [] && process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("this.state.signup errors");
+      console.log("this.state.signin errors");
       console.log(errors);
     }
     // Post or publish
     if (proceed === true) {
-      // Prep
-      let user = this.state.signup;
-      user.password = user.password1;
-      delete user.password1;
-      delete user.password2;
-      if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("user ");
-        console.log(user);
-      }
       // API call
-      apiAuthSignup(user).then((res) => {
+      apiAuthSignin(this.state.signin).then((res) => {
         if (process.env.REACT_APP_DEBUG === "TRUE") {
           console.log("res ");
           console.log(res);
         }
         switch (res.status) {
-          case 201:
+          case 200:
             //console.log("default");
             this.setState({
-              signup: emptySignup,
+              signin: emptySignin,
               openSnack: true,
-              snack: { id: "signup-snack-success" },
+              snack: { id: "signin-snack-success" },
             });
             this.props.callback("closeItem");
             break;
-          case 409:
+          case 401:
             //console.log("modified");
             this.setState((prevState, props) => ({
               openSnack: true,
-              snack: { id: "signup-snack-existinguser" },
+              snack: { id: "signin-snack-unauthorized" },
+            }));
+            break;
+          case 404:
+            //console.log("modified");
+            this.setState((prevState, props) => ({
+              openSnack: true,
+              snack: { id: "signin-snack-notfound" },
             }));
             break;
           case 400:
@@ -309,7 +264,7 @@ class SignUpModal extends React.Component {
   }
   handleSnack(action) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignUpModal.handleSnack " + action);
+      console.log("SignInModal.handleSnack " + action);
     }
     switch (action) {
       case "close":
@@ -322,4 +277,4 @@ class SignUpModal extends React.Component {
   }
 }
 
-export default withTranslation()(SignUpModal);
+export default withTranslation()(SignInModal);

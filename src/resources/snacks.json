@@ -5,6 +5,9 @@
   "generic-snack-errorunknown": { "severity": "error" },
   "generic-snack-error": { "severity": "error" },
   "signup-snack-success": { "severity": "success" },
+  "signup-snack-existinguser": { "severity": "warning" },
+  "signin-snack-unauthorized": { "severity": "error" },
+  "signin-snack-notfound": { "severity": "error" },
   "game-snack-saved": { "severity": "success" },
   "game-snack-edited": { "severity": "success" },
   "game-snack-discarded": { "severity": "info" }

@@ -3,6 +3,7 @@ import { withTranslation } from "react-i18next";
 import { Button } from "@mui/material";
 
 import SignUpModal from "../components/SignUpModal";
+import SignInModal from "../components/SignInModal";
 
 //
 
@@ -14,11 +15,14 @@ class Landing extends React.Component {
     super(props);
     this.state = {
       showSignup: false,
+      showSignin: false,
     };
 
     // Handles
     this.handleSignupOpen = this.handleSignupOpen.bind(this);
     this.handleSignupClose = this.handleSignupClose.bind(this);
+    this.handleSigninOpen = this.handleSigninOpen.bind(this);
+    this.handleSigninClose = this.handleSigninClose.bind(this);
   }
   render() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -34,10 +38,17 @@ class Landing extends React.Component {
         <Button onClick={this.handleSignupOpen}>
           {t("signup-button-signup")}
         </Button>
+        <Button onClick={this.handleSigninOpen}>
+          {t("signin-button-signin")}
+        </Button>
 
         <SignUpModal
           open={this.state.showSignup}
           callback={this.handleSignupClose}
+        />
+        <SignInModal
+          open={this.state.showSignin}
+          callback={this.handleSigninClose}
         />
       </div>
     );
@@ -65,6 +76,22 @@ class Landing extends React.Component {
     }
     this.setState((prevState, props) => ({
       showSignup: false,
+    }));
+  }
+  handleSigninOpen() {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("Landing.handleSigninOpen");
+    }
+    this.setState((prevState, props) => ({
+      showSignin: true,
+    }));
+  }
+  handleSigninClose() {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("Landing.handleSigninClose");
+    }
+    this.setState((prevState, props) => ({
+      showSignin: false,
     }));
   }
 }

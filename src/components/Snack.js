@@ -75,23 +75,31 @@ class Snack extends React.Component {
       if (prevState.snack.id !== this.props.snack.id) {
         // Add optional inputs
         var newSnack = snacks[this.props.snack.id];
-        newSnack.id = this.props.snack.id;
-        if (newSnack !== undefined) {
-          if (newSnack.duration === undefined) {
-            newSnack.duration = 3000;
+        if (newSnack === undefined) {
+          newSnack = {
+            severity: "error",
+            message: "Inexisting snack : " + this.props.snack.id,
+            duration: 10000,
+          };
+        } else {
+          newSnack.id = this.props.snack.id;
+          if (newSnack !== undefined) {
+            if (newSnack.duration === undefined) {
+              newSnack.duration = 3000;
+            }
+            if (newSnack.severity === undefined) {
+              newSnack.severity = "info";
+            }
+            if (newSnack.message === undefined) {
+              newSnack.message = t(this.props.snack.id);
+            }
+            if (this.props.snack.details !== undefined) {
+              newSnack.message = newSnack.message + this.props.snack.details;
+            }
+            this.setState((prevState, props) => ({
+              snack: newSnack,
+            }));
           }
-          if (newSnack.severity === undefined) {
-            newSnack.severity = "info";
-          }
-          if (newSnack.message === undefined) {
-            newSnack.message = t(this.props.snack.id);
-          }
-          if (this.props.snack.details !== undefined) {
-            newSnack.message = newSnack.message + this.props.snack.details;
-          }
-          this.setState((prevState, props) => ({
-            snack: newSnack,
-          }));
         }
       }
     }

@@ -49,8 +49,17 @@ export default class App extends React.Component {
       console.log("App.componentDidMount");
     }
     // Check token from cookies
+    // token stored at sign in from SignInModal.handleProceed
+    // token destroyed at sign out from Appbar.handleSignout
     let token = Cookies.get("token");
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("App.componentDidMount token");
+      console.log(token);
+    }
     if (token !== undefined) {
+      if (process.env.REACT_APP_DEBUG === "TRUE") {
+        console.log("App.componentDidMount assessing token from cookies");
+      }
       apiAuthAssess(token).then((assessment) => {
         if (assessment.status === 200) {
           if (process.env.REACT_APP_DEBUG === "TRUE") {

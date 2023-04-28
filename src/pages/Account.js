@@ -1,11 +1,11 @@
 import React from "react";
 
-const Table = () => {
+const Account = () => {
   return (
     <div>
-      <h1>TABLE</h1>
+      <h1>ACCOUNT</h1>
     </div>
   );
 };
 
-export default Table;
+export default Account;

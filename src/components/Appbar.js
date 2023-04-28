@@ -30,6 +30,7 @@ class Appbar extends React.Component {
     this.handleOpenMenu = this.handleOpenMenu.bind(this);
     this.handleCloseMenu = this.handleCloseMenu.bind(this);
     this.handleSignout = this.handleSignout.bind(this);
+    this.handleToAccount = this.handleToAccount.bind(this);
   }
   render() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -67,10 +68,12 @@ class Appbar extends React.Component {
               "aria-labelledby": "basic-button",
             }}
           >
-            <MenuItem onClick={this.handleCloseMenu} disabled>
-              My account
+            <MenuItem onClick={this.handleToAccount}>
+              {t("generic-menu-account")}
             </MenuItem>
-            <MenuItem onClick={this.handleSignout}>Logout</MenuItem>
+            <MenuItem onClick={this.handleSignout}>
+              {t("generic-menu-signout")}
+            </MenuItem>
           </Menu>
         </Toolbar>
       </AppBar>
@@ -149,6 +152,13 @@ class Appbar extends React.Component {
     Cookies.remove("cowhist19-token");
     this.handleCloseMenu();
     this.props.callback("signedout");
+  }
+  handleToAccount() {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("Appbar.handleToAccount");
+    }
+    this.handleCloseMenu();
+    window.location = "/account";
   }
 }
 

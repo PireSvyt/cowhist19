@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 // https://www.geeksforgeeks.org/how-to-create-a-multi-page-website-using-react-js/
 import Home from "./pages/Home";
 import Table from "./pages/Table";
+import Account from "./pages/Account";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -39,6 +40,7 @@ export default class App extends React.Component {
             }
           />
           <Route path="/:id" element={<Table />} />
+          <Route path="/account" element={<Account />} />
         </Routes>
       </Router>
     );

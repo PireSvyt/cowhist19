@@ -45,13 +45,16 @@ class Home extends React.Component {
   }
 
   // Handles
-  handleAppbarCallback(action) {
+  handleAppbarCallback(action, details) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("Home.handleLandingCallback");
     }
     switch (action) {
       case "signedout":
         this.props.callback("signedout");
+        break;
+      case "signedin":
+        this.props.callback("signedin", details);
         break;
       default:
     }

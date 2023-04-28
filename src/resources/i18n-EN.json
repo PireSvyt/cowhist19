@@ -18,6 +18,8 @@
   "generic-snack-errornetwork": "Error : Network issue",
   "generic-snack-errorunknown": "Unknown error :/",
   "generic-snack-error": "Error :",
+  "generic-menu-account": "My account",
+  "generic-menu-signout": "Sign out",
   "signup-title": "Sign up",
   "signup-input-repeatpassword": "Repeat password",
   "signup-button-signup": "Sign up",

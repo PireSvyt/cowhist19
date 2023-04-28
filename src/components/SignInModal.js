@@ -268,7 +268,7 @@ class SignInModal extends React.Component {
             Cookies.set("token", res.token);
             // Close modal
             this.props.callback("close");
-            this.props.callback("signedin");
+            this.props.callback("signedin", res.token);
             this.setState((prevState, props) => ({
               disabled: false,
               loading: false,

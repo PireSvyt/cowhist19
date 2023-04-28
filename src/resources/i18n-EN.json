@@ -27,6 +27,7 @@
   "signin-button-signin": "Sign in",
   "signin-snack-unauthorized": "Wrong password",
   "signin-snack-notfound": "Account not found",
+  "signin-snack-success": "Signed in!",
   "game-title": "Game",
   "game-input-contract": "Contract",
   "game-input-date": "Date",

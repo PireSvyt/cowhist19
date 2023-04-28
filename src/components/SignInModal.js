@@ -12,6 +12,7 @@ import {
 
 import { apiAuthSignin } from "../api/auth";
 import Snack from "./Snack";
+import { random_id } from "../resources/toolkit";
 
 let emptySignin = {
   login: undefined,
@@ -26,6 +27,7 @@ class SignInModal extends React.Component {
     super(props);
     this.state = {
       signin: { ...emptySignin },
+      disabled: true,
       componentHeight: undefined,
       openSnack: false,
       snack: { id: undefined },
@@ -92,7 +94,11 @@ class SignInModal extends React.Component {
             <Button onClick={this.handleClose}>
               {t("generic-button-close")}
             </Button>
-            <Button variant="contained" onClick={this.handleProceed}>
+            <Button
+              variant="contained"
+              onClick={this.handleProceed}
+              disabled={this.state.disabled}
+            >
               {t("generic-button-proceed")}
             </Button>
           </DialogActions>
@@ -131,6 +137,32 @@ class SignInModal extends React.Component {
     });
   }
 
+  // Helpers
+  canProceed() {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("SignInModal.canProceed");
+    }
+    let proceed = true;
+    let errors = [];
+    // Checks
+    if (this.state.signin.login === undefined) {
+      proceed = false;
+      errors.push(" Login undefined");
+    }
+    if (this.state.signin.password === undefined) {
+      proceed = false;
+      errors.push(" Password undefined");
+    }
+    // Outcome
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("proceed " + proceed);
+    }
+    return {
+      proceed: proceed,
+      errors: errors,
+    };
+  }
+
   // Handles
   handleClose() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -155,19 +187,19 @@ class SignInModal extends React.Component {
       console.log("target.value : " + target.value);
       console.log("newValue : " + newValue);
     }
-    var previousSignup = this.state.signin;
+    var previousSignin = this.state.signin;
     switch (target.name) {
       case "login":
         if (process.env.REACT_APP_DEBUG === "TRUE") {
           console.log("change login : " + target.value);
         }
-        previousSignup.login = target.value;
+        previousSignin.login = target.value;
         break;
       case "password":
         if (process.env.REACT_APP_DEBUG === "TRUE") {
           console.log("change password : " + target.value);
         }
-        previousSignup.password = target.value;
+        previousSignin.password = target.value;
         break;
       default:
         if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -179,9 +211,19 @@ class SignInModal extends React.Component {
       console.log("SignInModal.game");
       console.log(this.state.signin);
     }
-    this.setState((prevState, props) => ({
-      signin: previousSignup,
-    }));
+    // Check inputs
+    let { proceed, errors } = this.canProceed();
+    if (proceed === true) {
+      this.setState((prevState, props) => ({
+        signin: previousSignin,
+        disabled: false,
+      }));
+    } else {
+      this.setState((prevState, props) => ({
+        signin: previousSignin,
+        disabled: true,
+      }));
+    }
   }
   handleProceed() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -191,16 +233,8 @@ class SignInModal extends React.Component {
     }
 
     // Check inputs
-    let proceed = true;
-    let errors = [];
-    if (this.state.signin.login === undefined) {
-      proceed = false;
-      errors.push(" Login undefined");
-    }
-    if (this.state.signin.password === undefined) {
-      proceed = false;
-      errors.push(" Password undefined");
-    }
+    let { proceed, errors } = this.canProceed();
+
     // Proceed or not?
     if (errors !== [] && process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("this.state.signin errors");
@@ -220,7 +254,7 @@ class SignInModal extends React.Component {
             this.setState({
               signin: emptySignin,
               openSnack: true,
-              snack: { id: "signin-snack-success" },
+              snack: { uid: random_id(), id: "signin-snack-success" },
             });
             this.props.callback("closeItem");
             break;
@@ -228,14 +262,14 @@ class SignInModal extends React.Component {
             //console.log("modified");
             this.setState((prevState, props) => ({
               openSnack: true,
-              snack: { id: "signin-snack-unauthorized" },
+              snack: { uid: random_id(), id: "signin-snack-unauthorized" },
             }));
             break;
           case 404:
             //console.log("modified");
             this.setState((prevState, props) => ({
               openSnack: true,
-              snack: { id: "signin-snack-notfound" },
+              snack: { uid: random_id(), id: "signin-snack-notfound" },
             }));
             break;
           case 400:
@@ -243,14 +277,14 @@ class SignInModal extends React.Component {
             //console.log(res);
             this.setState({
               openSnack: true,
-              snack: { id: "generic-snack-errornetwork" },
+              snack: { uid: random_id(), id: "generic-snack-errornetwork" },
             });
             break;
           default:
             //console.log("default");
             this.setState((prevState, props) => ({
               openSnack: true,
-              snack: { id: "generic-snack-errorunknown" },
+              snack: { uid: random_id(), id: "generic-snack-errorunknown" },
             }));
         }
       });
@@ -258,7 +292,7 @@ class SignInModal extends React.Component {
       // Snack
       this.setState((prevState, props) => ({
         openSnack: true,
-        snack: { id: "generic-snack-error", details: errors },
+        snack: { uid: random_id(), id: "generic-snack-error", details: errors },
       }));
     }
   }

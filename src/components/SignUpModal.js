@@ -12,6 +12,7 @@ import {
 
 import { apiAuthSignup } from "../api/auth";
 import Snack from "./Snack";
+import { random_id } from "../resources/toolkit";
 
 let emptySignup = {
   name: undefined,
@@ -28,6 +29,7 @@ class SignUpModal extends React.Component {
     super(props);
     this.state = {
       signup: { ...emptySignup },
+      disabled: true,
       componentHeight: undefined,
       openSnack: false,
       snack: { id: undefined },
@@ -36,6 +38,7 @@ class SignUpModal extends React.Component {
     this.updateComponentHeight = this.updateComponentHeight.bind(this);
 
     // Handles
+    this.canProceed = this.canProceed.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleProceed = this.handleProceed.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -97,7 +100,7 @@ class SignUpModal extends React.Component {
               />
               <TextField
                 name="password2"
-                label={t("generic-input-repeatpassword")}
+                label={t("signup-input-repeatpassword")}
                 variant="standard"
                 value={this.state.signup.password2 || ""}
                 onChange={this.handleChange}
@@ -111,7 +114,11 @@ class SignUpModal extends React.Component {
             <Button onClick={this.handleClose}>
               {t("generic-button-close")}
             </Button>
-            <Button variant="contained" onClick={this.handleProceed}>
+            <Button
+              variant="contained"
+              onClick={this.handleProceed}
+              disabled={this.state.disabled}
+            >
               {t("generic-button-proceed")}
             </Button>
           </DialogActions>
@@ -148,6 +155,53 @@ class SignUpModal extends React.Component {
     this.setState({
       componentHeight: window.innerHeight - 115,
     });
+  }
+
+  // Helpers
+  canProceed() {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("SignUpModal.canProceed");
+    }
+    let proceed = true;
+    let errors = [];
+    // Checks
+    if (this.state.signup.name === undefined || this.state.signup.name === "") {
+      proceed = false;
+      errors.push(" Name undefined");
+    }
+    if (
+      this.state.signup.login === undefined ||
+      this.state.signup.login === ""
+    ) {
+      proceed = false;
+      errors.push(" Login undefined");
+    }
+    if (
+      this.state.signup.password1 === undefined ||
+      this.state.signup.password1 === ""
+    ) {
+      proceed = false;
+      errors.push(" Password 1 undefined");
+    }
+    if (
+      this.state.signup.password2 === undefined ||
+      this.state.signup.password2 === ""
+    ) {
+      proceed = false;
+      errors.push(" Password 2 undefined");
+    }
+    if (this.state.signup.password1 !== this.state.signup.password2) {
+      proceed = false;
+      errors.push(" Password mismatch");
+    }
+    // Outcome
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("proceed " + proceed);
+    }
+    return {
+      proceed: proceed,
+      errors: errors,
+    };
   }
 
   // Handles
@@ -210,9 +264,19 @@ class SignUpModal extends React.Component {
       console.log("SignUpModal.game");
       console.log(this.state.signup);
     }
-    this.setState((prevState, props) => ({
-      signup: previousSignup,
-    }));
+    // Check inputs
+    let { proceed, errors } = this.canProceed();
+    if (proceed === true) {
+      this.setState((prevState, props) => ({
+        signup: previousSignup,
+        disabled: false,
+      }));
+    } else {
+      this.setState((prevState, props) => ({
+        signup: previousSignup,
+        disabled: true,
+      }));
+    }
   }
   handleProceed() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -222,28 +286,8 @@ class SignUpModal extends React.Component {
     }
 
     // Check inputs
-    let proceed = true;
-    let errors = [];
-    if (this.state.signup.name === undefined) {
-      proceed = false;
-      errors.push(" Name undefined");
-    }
-    if (this.state.signup.login === undefined) {
-      proceed = false;
-      errors.push(" Login undefined");
-    }
-    if (this.state.signup.password1 === undefined) {
-      proceed = false;
-      errors.push(" Password 1 undefined");
-    }
-    if (this.state.signup.password2 === undefined) {
-      proceed = false;
-      errors.push(" Password 2 undefined");
-    }
-    if (this.state.signup.password1 !== this.state.signup.password2) {
-      proceed = false;
-      errors.push(" Password mismatch");
-    }
+    let { proceed, errors } = this.canProceed();
+
     // Proceed or not?
     if (errors !== [] && process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("this.state.signup errors");
@@ -251,6 +295,9 @@ class SignUpModal extends React.Component {
     }
     // Post or publish
     if (proceed === true) {
+      this.setState((prevState, props) => ({
+        disabled: true,
+      }));
       // Prep
       let user = this.state.signup;
       user.password = user.password1;
@@ -262,6 +309,9 @@ class SignUpModal extends React.Component {
       }
       // API call
       apiAuthSignup(user).then((res) => {
+        this.setState((prevState, props) => ({
+          disabled: false,
+        }));
         if (process.env.REACT_APP_DEBUG === "TRUE") {
           console.log("res ");
           console.log(res);
@@ -272,7 +322,7 @@ class SignUpModal extends React.Component {
             this.setState({
               signup: emptySignup,
               openSnack: true,
-              snack: { id: "signup-snack-success" },
+              snack: { uid: random_id(), id: "signup-snack-success" },
             });
             this.props.callback("closeItem");
             break;
@@ -280,7 +330,7 @@ class SignUpModal extends React.Component {
             //console.log("modified");
             this.setState((prevState, props) => ({
               openSnack: true,
-              snack: { id: "signup-snack-existinguser" },
+              snack: { uid: random_id(), id: "signup-snack-existinguser" },
             }));
             break;
           case 400:
@@ -288,14 +338,14 @@ class SignUpModal extends React.Component {
             //console.log(res);
             this.setState({
               openSnack: true,
-              snack: { id: "generic-snack-errornetwork" },
+              snack: { uid: random_id(), id: "generic-snack-errornetwork" },
             });
             break;
           default:
             //console.log("default");
             this.setState((prevState, props) => ({
               openSnack: true,
-              snack: { id: "generic-snack-errorunknown" },
+              snack: { uid: random_id(), id: "generic-snack-errorunknown" },
             }));
         }
       });
@@ -303,7 +353,7 @@ class SignUpModal extends React.Component {
       // Snack
       this.setState((prevState, props) => ({
         openSnack: true,
-        snack: { id: "generic-snack-error", details: errors },
+        snack: { uid: random_id(), id: "generic-snack-error", details: errors },
       }));
     }
   }

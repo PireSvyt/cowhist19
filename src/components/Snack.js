@@ -19,6 +19,7 @@ success
 
 function getDummySnack() {
   return {
+    uid: undefined,
     id: undefined,
     duration: undefined,
     message: undefined,
@@ -72,7 +73,7 @@ class Snack extends React.Component {
     const { t } = this.props;
 
     if (this.props.snack !== undefined) {
-      if (prevState.snack.id !== this.props.snack.id) {
+      if (prevState.snack.uid !== this.props.snack.uid) {
         // Add optional inputs
         var newSnack = snacks[this.props.snack.id];
         if (newSnack === undefined) {

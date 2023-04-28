@@ -261,8 +261,8 @@ class SignInModal extends React.Component {
             // https://medium.com/how-to-react/how-to-use-js-cookie-to-store-data-in-cookies-in-react-js-aab47f8a45c3
             Cookies.set("token", res.token);
             // Close modal
-            this.props.callback("close");
             this.props.callback("signedin");
+            this.props.callback("close");
             break;
           case 401:
             this.setState((prevState, props) => ({

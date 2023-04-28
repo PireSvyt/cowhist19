@@ -1,4 +1,4 @@
-const axios = require("axios");
+import axios, * as others from "axios";
 
 let apiURL = process.env.REACT_APP_SERVER_URL;
 
@@ -11,7 +11,7 @@ export async function apiUserInvite(user) {
       status: 400,
       message: "error on apiUserInvite",
       error: err,
-      user: user
+      user: user,
     };
     return res;
   }
@@ -26,7 +26,7 @@ export async function apiUserDetails(id) {
       status: 400,
       message: "error on apiUserDetails",
       error: err,
-      user: {}
+      user: {},
     };
     return res;
   }
@@ -41,7 +41,7 @@ export async function apiUserTables(id) {
       status: 400,
       message: "error on apiUserTables",
       error: err,
-      tables: []
+      tables: [],
     };
     return res;
   }

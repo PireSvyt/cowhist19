@@ -28,9 +28,6 @@ class SignUpModal extends React.Component {
       console.log("SignUpModal.constructor");
     }
     super(props);
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignUpModal language = " + this.props.language);
-    }
     this.state = {
       signup: { ...emptySignup },
       componentHeight: undefined,
@@ -68,6 +65,7 @@ class SignUpModal extends React.Component {
             }}
           >
             <Box
+              component="form"
               sx={{
                 display: "flex",
                 flexDirection: "column",
@@ -219,9 +217,6 @@ class SignUpModal extends React.Component {
     }));
   }
   handleProceed() {
-    console.log("SignUpModal.handleProceed");
-    console.log("this.state.signup");
-    console.log(this.state.signup);
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("SignUpModal.handleProceed");
       console.log("this.state.signup");
@@ -253,20 +248,26 @@ class SignUpModal extends React.Component {
     }
     // Proceed or not?
     if (errors !== [] && process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("this.state.signup errors");
       console.log(errors);
     }
     // Post or publish
     if (proceed === true) {
-      if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log(this.state.signup);
-      }
       // Prep
       let user = this.state.signup;
       user.password = user.password1;
       delete user.password1;
       delete user.password2;
+      if (process.env.REACT_APP_DEBUG === "TRUE") {
+        console.log("user ");
+        console.log(user);
+      }
       // API call
       apiAuthSignup(user).then((res) => {
+        if (process.env.REACT_APP_DEBUG === "TRUE") {
+          console.log("res ");
+          console.log(res);
+        }
         switch (res.status) {
           case 201:
             //console.log("default");

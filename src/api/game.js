@@ -1,4 +1,4 @@
-const axios = require("axios");
+import axios, * as others from "axios";
 
 let apiURL = process.env.REACT_APP_SERVER_URL;
 

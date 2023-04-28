@@ -219,6 +219,9 @@ class SignUpModal extends React.Component {
     }));
   }
   handleProceed() {
+    console.log("SignUpModal.handleProceed");
+    console.log("this.state.signup");
+    console.log(this.state.signup);
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("SignUpModal.handleProceed");
       console.log("this.state.signup");

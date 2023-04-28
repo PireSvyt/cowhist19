@@ -29,7 +29,12 @@ export default class App extends React.Component {
           <Route
             exact
             path="/"
-            element={<Home callback={this.handleHomeCallback} />}
+            element={
+              <Home
+                callback={this.handleHomeCallback}
+                signedin={this.state.signedin}
+              />
+            }
           />
           <Route path="/:id" element={<Table />} />
         </Routes>
@@ -54,6 +59,11 @@ export default class App extends React.Component {
       case "signedin":
         this.setState((prevState, props) => ({
           signedin: true,
+        }));
+        break;
+      case "signedout":
+        this.setState((prevState, props) => ({
+          signedin: false,
         }));
         break;
       default:

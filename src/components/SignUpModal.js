@@ -9,6 +9,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 import { apiAuthSignup } from "../api/auth";
 import Snack from "./Snack";
@@ -30,6 +31,7 @@ class SignUpModal extends React.Component {
     this.state = {
       signup: { ...emptySignup },
       disabled: true,
+      loading: false,
       componentHeight: undefined,
       openSnack: false,
       snack: { id: undefined },
@@ -112,15 +114,16 @@ class SignUpModal extends React.Component {
 
           <DialogActions>
             <Button onClick={this.handleClose}>
-              {t("generic-button-close")}
+              {t("generic-button-cancel")}
             </Button>
-            <Button
+            <LoadingButton
               variant="contained"
               onClick={this.handleProceed}
               disabled={this.state.disabled}
+              loading={this.state.loading}
             >
               {t("generic-button-proceed")}
-            </Button>
+            </LoadingButton>
           </DialogActions>
         </Dialog>
 
@@ -209,8 +212,6 @@ class SignUpModal extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("SignUpModal.handleClose");
     }
-    // i18n
-    const { t } = this.props;
 
     this.setState((prevState, props) => ({
       signup: { ...emptySignup },
@@ -298,6 +299,7 @@ class SignUpModal extends React.Component {
     if (proceed === true) {
       this.setState((prevState, props) => ({
         disabled: true,
+        loading: true,
       }));
       // Prep
       let user = this.state.signup;
@@ -323,12 +325,18 @@ class SignUpModal extends React.Component {
               snack: { uid: random_id(), id: "signup-snack-success" },
             });
             this.props.callback("close");
+            this.setState((prevState, props) => ({
+              disabled: false,
+              loading: false,
+            }));
             break;
           case 409:
             //console.log("modified");
             this.setState((prevState, props) => ({
               openSnack: true,
               snack: { uid: random_id(), id: "signup-snack-existinguser" },
+              disabled: false,
+              loading: false,
             }));
             break;
           case 400:
@@ -337,6 +345,8 @@ class SignUpModal extends React.Component {
             this.setState({
               openSnack: true,
               snack: { uid: random_id(), id: "generic-snack-errornetwork" },
+              disabled: false,
+              loading: false,
             });
             break;
           default:
@@ -344,6 +354,8 @@ class SignUpModal extends React.Component {
             this.setState((prevState, props) => ({
               openSnack: true,
               snack: { uid: random_id(), id: "generic-snack-errorunknown" },
+              disabled: false,
+              loading: false,
             }));
         }
       });
@@ -354,9 +366,6 @@ class SignUpModal extends React.Component {
         snack: { uid: random_id(), id: "generic-snack-error", details: errors },
       }));
     }
-    this.setState((prevState, props) => ({
-      disabled: false,
-    }));
   }
   handleSnack(action) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {

@@ -10,6 +10,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 import { apiAuthSignin } from "../api/auth";
 import Snack from "./Snack";
@@ -29,6 +30,7 @@ class SignInModal extends React.Component {
     this.state = {
       signin: { ...emptySignin },
       disabled: true,
+      loading: false,
       componentHeight: undefined,
       openSnack: false,
       snack: { id: undefined },
@@ -94,15 +96,16 @@ class SignInModal extends React.Component {
 
           <DialogActions>
             <Button onClick={this.handleClose}>
-              {t("generic-button-close")}
+              {t("generic-button-cancel")}
             </Button>
-            <Button
+            <LoadingButton
               variant="contained"
               onClick={this.handleProceed}
               disabled={this.state.disabled}
+              loading={this.state.loading}
             >
               {t("generic-button-proceed")}
-            </Button>
+            </LoadingButton>
           </DialogActions>
         </Dialog>
 
@@ -170,8 +173,6 @@ class SignInModal extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("SignInModal.handleClose");
     }
-    // i18n
-    const { t } = this.props;
 
     this.setState((prevState, props) => ({
       signin: { ...emptySignin },
@@ -247,6 +248,7 @@ class SignInModal extends React.Component {
     if (proceed === true) {
       this.setState((prevState, props) => ({
         disabled: true,
+        loading: true,
       }));
       // API call
       apiAuthSignin(this.state.signin).then((res) => {
@@ -265,31 +267,43 @@ class SignInModal extends React.Component {
             // https://medium.com/how-to-react/how-to-use-js-cookie-to-store-data-in-cookies-in-react-js-aab47f8a45c3
             Cookies.set("token", res.token);
             // Close modal
-            this.props.callback("signedin");
             this.props.callback("close");
+            this.props.callback("signedin");
+            this.setState((prevState, props) => ({
+              disabled: false,
+              loading: false,
+            }));
             break;
           case 401:
             this.setState((prevState, props) => ({
               openSnack: true,
               snack: { uid: random_id(), id: "signin-snack-unauthorized" },
+              disabled: false,
+              loading: false,
             }));
             break;
           case 404:
             this.setState((prevState, props) => ({
               openSnack: true,
               snack: { uid: random_id(), id: "signin-snack-notfound" },
+              disabled: false,
+              loading: false,
             }));
             break;
           case 400:
             this.setState({
               openSnack: true,
               snack: { uid: random_id(), id: "generic-snack-errornetwork" },
+              disabled: false,
+              loading: false,
             });
             break;
           default:
             this.setState((prevState, props) => ({
               openSnack: true,
               snack: { uid: random_id(), id: "generic-snack-errorunknown" },
+              disabled: false,
+              loading: false,
             }));
         }
       });
@@ -300,9 +314,6 @@ class SignInModal extends React.Component {
         snack: { uid: random_id(), id: "generic-snack-error", details: errors },
       }));
     }
-    this.setState((prevState, props) => ({
-      disabled: false,
-    }));
   }
   handleSnack(action) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {

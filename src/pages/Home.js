@@ -1,9 +1,8 @@
 import React from "react";
 import { withTranslation } from "react-i18next";
-import { Button } from "@mui/material";
 
-import SignUpModal from "../components/SignUpModal";
-import SignInModal from "../components/SignInModal";
+import Appbar from "../components/Appbar";
+import Landing from "../components/Landing";
 
 class Home extends React.Component {
   constructor(props) {
@@ -11,16 +10,11 @@ class Home extends React.Component {
       console.log("Home.constructor");
     }
     super(props);
-    this.state = {
-      showSignup: false,
-      showSignin: false,
-    };
+    this.state = {};
 
     // Handles
-    this.handleSignupOpen = this.handleSignupOpen.bind(this);
-    this.handleSignupCallback = this.handleSignupCallback.bind(this);
-    this.handleSigninOpen = this.handleSigninOpen.bind(this);
-    this.handleSigninCallback = this.handleSigninCallback.bind(this);
+    this.handleAppbarCallback = this.handleAppbarCallback.bind(this);
+    this.handleLandingCallback = this.handleLandingCallback.bind(this);
   }
   render() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -31,22 +25,13 @@ class Home extends React.Component {
 
     return (
       <div>
-        <h1>HOME</h1>
-
-        <Button onClick={this.handleSignupOpen}>
-          {t("signup-button-signup")}
-        </Button>
-        <Button onClick={this.handleSigninOpen}>
-          {t("signin-button-signin")}
-        </Button>
-
-        <SignUpModal
-          open={this.state.showSignup}
-          callback={this.handleSignupCallback}
+        <Appbar
+          signedin={this.props.signedin}
+          callback={this.handleAppbarCallback}
         />
-        <SignInModal
-          open={this.state.showSignin}
-          callback={this.handleSigninCallback}
+        <Landing
+          open={!this.props.signedin}
+          callback={this.handleLandingCallback}
         />
       </div>
     );
@@ -60,45 +45,22 @@ class Home extends React.Component {
   }
 
   // Handles
-  handleSignupOpen() {
+  handleAppbarCallback(action) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Home.handleSignupOpen");
-    }
-    this.setState((prevState, props) => ({
-      showSignup: true,
-    }));
-  }
-  handleSignupCallback(action) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Home.handleSignupCallback");
+      console.log("Home.handleLandingCallback");
     }
     switch (action) {
-      case "close":
-        this.setState((prevState, props) => ({
-          showSignup: false,
-        }));
+      case "signedout":
+        this.props.callback("signedout");
         break;
       default:
     }
   }
-  handleSigninOpen() {
+  handleLandingCallback(action) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Home.handleSigninOpen");
-    }
-    this.setState((prevState, props) => ({
-      showSignin: true,
-    }));
-  }
-  handleSigninCallback(action) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Home.handleSigninCallback");
+      console.log("Home.handleLandingCallback");
     }
     switch (action) {
-      case "close":
-        this.setState((prevState, props) => ({
-          showSignin: false,
-        }));
-        break;
       case "signedin":
         this.props.callback("signedin");
         break;

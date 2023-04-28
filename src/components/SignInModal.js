@@ -1,4 +1,5 @@
 import * as React from "react";
+import Cookies from "js-cookie";
 import { withTranslation } from "react-i18next";
 import {
   Button,
@@ -174,7 +175,7 @@ class SignInModal extends React.Component {
     this.setState((prevState, props) => ({
       signin: { ...emptySignin },
     }));
-    this.props.callback("closeItem");
+    this.props.callback("close");
   }
   handleChange(event, newValue) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -250,38 +251,37 @@ class SignInModal extends React.Component {
         }
         switch (res.status) {
           case 200:
-            //console.log("default");
             this.setState({
               signin: emptySignin,
               openSnack: true,
               snack: { uid: random_id(), id: "signin-snack-success" },
             });
-            this.props.callback("closeItem");
+            // Store token
+            // https://medium.com/how-to-react/how-to-use-js-cookie-to-store-data-in-cookies-in-react-js-aab47f8a45c3
+            Cookies.set("token", res.token);
+            // Close modal
+            this.props.callback("close");
+            this.props.callback("signedin");
             break;
           case 401:
-            //console.log("modified");
             this.setState((prevState, props) => ({
               openSnack: true,
               snack: { uid: random_id(), id: "signin-snack-unauthorized" },
             }));
             break;
           case 404:
-            //console.log("modified");
             this.setState((prevState, props) => ({
               openSnack: true,
               snack: { uid: random_id(), id: "signin-snack-notfound" },
             }));
             break;
           case 400:
-            //console.log("error");
-            //console.log(res);
             this.setState({
               openSnack: true,
               snack: { uid: random_id(), id: "generic-snack-errornetwork" },
             });
             break;
           default:
-            //console.log("default");
             this.setState((prevState, props) => ({
               openSnack: true,
               snack: { uid: random_id(), id: "generic-snack-errorunknown" },
@@ -295,6 +295,9 @@ class SignInModal extends React.Component {
         snack: { uid: random_id(), id: "generic-snack-error", details: errors },
       }));
     }
+    this.setState((prevState, props) => ({
+      disabled: false,
+    }));
   }
   handleSnack(action) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {

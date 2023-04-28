@@ -3,7 +3,6 @@ import * as React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // https://www.geeksforgeeks.org/how-to-create-a-multi-page-website-using-react-js/
-import Landing from "./pages/Landing";
 import Home from "./pages/Home";
 import Table from "./pages/Table";
 
@@ -14,10 +13,11 @@ export default class App extends React.Component {
     }
     super(props);
     this.state = {
-      loggedin: false,
+      signedin: false,
     };
 
     // Handles
+    this.handleHomeCallback = this.handleHomeCallback.bind(this);
   }
   render() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -26,8 +26,11 @@ export default class App extends React.Component {
     return (
       <Router>
         <Routes>
-          <Route exact path="/" element={<Landing />} />
-          <Route path="/home" element={<Home />} />
+          <Route
+            exact
+            path="/"
+            element={<Home callback={this.handleHomeCallback} />}
+          />
           <Route path="/:id" element={<Table />} />
         </Routes>
       </Router>
@@ -43,4 +46,17 @@ export default class App extends React.Component {
   }
 
   // Handles
+  handleHomeCallback(action) {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("App.handleHomeCallback");
+    }
+    switch (action) {
+      case "signedin":
+        this.setState((prevState, props) => ({
+          signedin: true,
+        }));
+        break;
+      default:
+    }
+  }
 }

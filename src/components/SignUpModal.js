@@ -309,9 +309,6 @@ class SignUpModal extends React.Component {
       }
       // API call
       apiAuthSignup(user).then((res) => {
-        this.setState((prevState, props) => ({
-          disabled: false,
-        }));
         if (process.env.REACT_APP_DEBUG === "TRUE") {
           console.log("res ");
           console.log(res);
@@ -324,7 +321,7 @@ class SignUpModal extends React.Component {
               openSnack: true,
               snack: { uid: random_id(), id: "signup-snack-success" },
             });
-            this.props.callback("closeItem");
+            this.props.callback("close");
             break;
           case 409:
             //console.log("modified");
@@ -356,6 +353,9 @@ class SignUpModal extends React.Component {
         snack: { uid: random_id(), id: "generic-snack-error", details: errors },
       }));
     }
+    this.setState((prevState, props) => ({
+      disabled: false,
+    }));
   }
   handleSnack(action) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {

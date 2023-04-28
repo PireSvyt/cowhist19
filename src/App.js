@@ -51,19 +51,19 @@ export default class App extends React.Component {
     // Check token from cookies
     // token stored at sign in from SignInModal.handleProceed
     // token destroyed at sign out from Appbar.handleSignout
-    let token = Cookies.get("token");
+    let token = Cookies.get("cowhist19-token");
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("App.componentDidMount token");
+      console.log("token");
       console.log(token);
     }
     if (token !== undefined) {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("App.componentDidMount assessing token from cookies");
+        console.log("assessing token from cookies");
       }
       apiAuthAssess(token).then((assessment) => {
         if (assessment.status === 200) {
           if (process.env.REACT_APP_DEBUG === "TRUE") {
-            console.log("App.componentDidMount token valid");
+            console.log("token valid");
           }
           this.setState((prevState, props) => ({
             signedin: true,
@@ -71,10 +71,14 @@ export default class App extends React.Component {
           }));
         } else {
           if (process.env.REACT_APP_DEBUG === "TRUE") {
-            console.log("App.componentDidMount token invalid");
+            console.log("token invalid");
           }
         }
       });
+    } else {
+      if (process.env.REACT_APP_DEBUG === "TRUE") {
+        console.log("token missing from cookies");
+      }
     }
 
     // Load

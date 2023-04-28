@@ -34,7 +34,7 @@ export async function apiAuthSignin(user) {
 
 export async function apiAuthAssess(token) {
   try {
-    const res = await axios.post(apiURL + "/auth/assess", token);
+    const res = await axios.post(apiURL + "/auth/assess", { token: token });
     return res.data;
   } catch (err) {
     let res = {

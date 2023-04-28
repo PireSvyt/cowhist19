@@ -42,11 +42,11 @@ class Home extends React.Component {
 
         <SignUpModal
           open={this.state.showSignup}
-          callback={this.handleSignupClose}
+          callback={this.handleSignupCallback}
         />
         <SignInModal
           open={this.state.showSignin}
-          callback={this.handleSigninClose}
+          callback={this.handleSigninCallback}
         />
       </div>
     );

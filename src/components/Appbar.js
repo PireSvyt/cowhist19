@@ -80,10 +80,8 @@ class Appbar extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       //console.log("Appbar.componentDidMount");
     }
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Appbar.componentDidMount");
-    }
     // Check token from cookies
+    // https://medium.com/how-to-react/how-to-use-js-cookie-to-store-data-in-cookies-in-react-js-aab47f8a45c3
     // token stored at sign in from SignInModal.handleProceed
     // token destroyed at sign out from Appbar.handleSignout
     let token = Cookies.get("cowhist19-token");

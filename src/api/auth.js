@@ -31,3 +31,18 @@ export async function apiAuthSignin(user) {
     return res;
   }
 }
+
+export async function apiAuthAssess(token) {
+  try {
+    const res = await axios.post(apiURL + "/auth/assess", token);
+    return res.data;
+  } catch (err) {
+    let res = {
+      status: err.response.status,
+      message: "error on apiAuthAssess",
+      error: err,
+      user: user,
+    };
+    return res;
+  }
+}

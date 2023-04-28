@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 // https://www.geeksforgeeks.org/how-to-create-a-multi-page-website-using-react-js/
 import Home from "./pages/Home";
 import Table from "./pages/Table";
+import { apiAuthAssess } from "./api/auth";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -47,7 +48,25 @@ export default class App extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("App.componentDidMount");
     }
-    // Check cookies
+    // Check token from cookies
+    let token = Cookies.get("token");
+    if (token !== undefined) {
+      apiAuthAssess(token).then((assessment) => {
+        if (assessment.status === 200) {
+          if (process.env.REACT_APP_DEBUG === "TRUE") {
+            console.log("App.componentDidMount token valid");
+          }
+          this.setState((prevState, props) => ({
+            signedin: true,
+            token: token,
+          }));
+        } else {
+          if (process.env.REACT_APP_DEBUG === "TRUE") {
+            console.log("App.componentDidMount token invalid");
+          }
+        }
+      });
+    }
 
     // Load
   }

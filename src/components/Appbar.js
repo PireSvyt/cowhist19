@@ -1,4 +1,5 @@
 import * as React from "react";
+import Cookies from "js-cookie";
 import { withTranslation } from "react-i18next";
 import {
   AppBar,

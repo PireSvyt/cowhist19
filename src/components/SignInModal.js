@@ -175,6 +175,7 @@ class SignInModal extends React.Component {
     this.setState((prevState, props) => ({
       signin: { ...emptySignin },
     }));
+
     this.props.callback("close");
   }
   handleChange(event, newValue) {

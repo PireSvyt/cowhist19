@@ -97,14 +97,16 @@ class SignUpModal extends React.Component {
                 value={this.state.signup.password1 || ""}
                 onChange={this.handleChange}
                 autoComplete="off"
+                type="password"
               />
               <TextField
                 name="password2"
-                label={t("signup-input-password")}
+                label={t("signup-input-repeatpassword")}
                 variant="standard"
                 value={this.state.signup.password2 || ""}
                 onChange={this.handleChange}
                 autoComplete="off"
+                type="password"
               />
             </Box>
           </DialogContent>

@@ -18,6 +18,7 @@
   "signup-input-pseudo": "Pseudo",
   "signup-input-email": "Email",
   "signup-input-password": "Password",
+  "signup-input-repeatpassword": "Repeat password",
   "signup-button-signup": "Sign up",
   "signup-snack-discarded": "Sign up discarded",
   "signup-snack-success": "Signed up!",

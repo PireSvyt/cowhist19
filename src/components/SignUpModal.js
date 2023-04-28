@@ -215,7 +215,8 @@ class SignUpModal extends React.Component {
     this.setState((prevState, props) => ({
       signup: { ...emptySignup },
     }));
-    this.props.callback("closeItem");
+
+    this.props.callback("close");
   }
   handleChange(event, newValue) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {

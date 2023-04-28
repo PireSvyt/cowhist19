@@ -37,6 +37,7 @@ class SignInModal extends React.Component {
     this.updateComponentHeight = this.updateComponentHeight.bind(this);
 
     // Handles
+    this.canProceed = this.canProceed.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleProceed = this.handleProceed.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -244,6 +245,9 @@ class SignInModal extends React.Component {
     }
     // Post or publish
     if (proceed === true) {
+      this.setState((prevState, props) => ({
+        disabled: true,
+      }));
       // API call
       apiAuthSignin(this.state.signin).then((res) => {
         if (process.env.REACT_APP_DEBUG === "TRUE") {

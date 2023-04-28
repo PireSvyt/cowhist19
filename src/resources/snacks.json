@@ -4,6 +4,7 @@
   "generic-snack-errornetwork": { "severity": "error" },
   "generic-snack-errorunknown": { "severity": "error" },
   "generic-snack-error": { "severity": "error" },
+  "signup-snack-success": { "severity": "success" },
   "game-snack-saved": { "severity": "success" },
   "game-snack-edited": { "severity": "success" },
   "game-snack-discarded": { "severity": "info" }

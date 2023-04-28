@@ -8,7 +8,7 @@ export async function apiAuthSignup(user) {
     return res.data;
   } catch (err) {
     let res = {
-      status: 400,
+      status: err.response.status,
       message: "error on apiAuthSignup",
       error: err,
       user: user,
@@ -23,7 +23,7 @@ export async function apiAuthLogin(user) {
     return res.data;
   } catch (err) {
     let res = {
-      status: 400,
+      status: err.response.status,
       message: "error on apiAuthLogin",
       error: err,
       user: user,

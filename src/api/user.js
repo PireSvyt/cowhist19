@@ -8,7 +8,7 @@ export async function apiUserInvite(user) {
     return res.data;
   } catch (err) {
     let res = {
-      status: 400,
+      status: err.response.status,
       message: "error on apiUserInvite",
       error: err,
       user: user,
@@ -23,7 +23,7 @@ export async function apiUserDetails(id) {
     return res.data;
   } catch (err) {
     let res = {
-      status: 400,
+      status: err.response.status,
       message: "error on apiUserDetails",
       error: err,
       user: {},
@@ -38,7 +38,7 @@ export async function apiUserTables(id) {
     return res.data;
   } catch (err) {
     let res = {
-      status: 400,
+      status: err.response.status,
       message: "error on apiUserTables",
       error: err,
       tables: [],

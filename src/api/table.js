@@ -8,10 +8,10 @@ export async function apiTableSave(table) {
     return res.data;
   } catch (err) {
     let res = {
-      status: 400,
+      status: err.response.status,
       message: "error on apiTableSave",
       error: err,
-      table: table
+      table: table,
     };
     return res;
   }
@@ -23,10 +23,10 @@ export async function apiTableDetails(id) {
     return res.data;
   } catch (err) {
     const res = {
-      status: 400,
+      status: err.response.status,
       message: "error on apiTableDetails " + id,
       table: {},
-      error: err
+      error: err,
     };
     console.error(res);
     return res;
@@ -39,10 +39,10 @@ export async function apiTableHistory(id, parameters) {
     return res.data;
   } catch (err) {
     const res = {
-      status: 400,
+      status: err.response.status,
       message: "error on apiTableHistory " + id,
       games: [],
-      error: err
+      error: err,
     };
     console.error(res);
     return res;
@@ -55,9 +55,9 @@ export async function apiTableDelete(table) {
     return res.data;
   } catch (err) {
     const res = {
-      status: 400,
+      status: err.response.status,
       message: "error on apiTableDelete",
-      error: err
+      error: err,
     };
     console.error(res);
     return res;

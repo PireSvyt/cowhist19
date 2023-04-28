@@ -13,6 +13,8 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import { FormatColorResetRounded } from "@mui/icons-material";
 
+import { apiAuthAssess } from "../api/auth";
+
 class Appbar extends React.Component {
   constructor(props) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -77,6 +79,38 @@ class Appbar extends React.Component {
   componentDidMount() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       //console.log("Appbar.componentDidMount");
+    }
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("Appbar.componentDidMount");
+    }
+    // Check token from cookies
+    // token stored at sign in from SignInModal.handleProceed
+    // token destroyed at sign out from Appbar.handleSignout
+    let token = Cookies.get("cowhist19-token");
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("token");
+      console.log(token);
+    }
+    if (token !== undefined) {
+      if (process.env.REACT_APP_DEBUG === "TRUE") {
+        console.log("assessing token from cookies");
+      }
+      apiAuthAssess(token).then((assessment) => {
+        if (assessment.status === 200) {
+          if (process.env.REACT_APP_DEBUG === "TRUE") {
+            console.log("token valid");
+          }
+          this.props.callback("signedin", token);
+        } else {
+          if (process.env.REACT_APP_DEBUG === "TRUE") {
+            console.log("token invalid");
+          }
+        }
+      });
+    } else {
+      if (process.env.REACT_APP_DEBUG === "TRUE") {
+        console.log("token missing from cookies");
+      }
     }
   }
   componentDidUpdate(prevState) {

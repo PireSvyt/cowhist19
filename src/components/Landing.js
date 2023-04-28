@@ -97,7 +97,7 @@ class Landing extends React.Component {
       showSignin: true,
     }));
   }
-  handleSigninCallback(action) {
+  handleSigninCallback(action, details) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("Landing.handleSigninCallback");
     }
@@ -108,7 +108,7 @@ class Landing extends React.Component {
         }));
         break;
       case "signedin":
-        this.props.callback("signedin");
+        this.props.callback("signedin", details);
         break;
       default:
     }

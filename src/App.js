@@ -1,10 +1,12 @@
 import "./styles.css";
 import * as React from "react";
+import Cookies from "js-cookie";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // https://www.geeksforgeeks.org/how-to-create-a-multi-page-website-using-react-js/
 import Home from "./pages/Home";
 import Table from "./pages/Table";
+import { apiAuthAssess } from "./api/auth";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -14,6 +16,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       signedin: false,
+      token: null,
     };
 
     // Handles
@@ -45,13 +48,44 @@ export default class App extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("App.componentDidMount");
     }
-    // Update
+    // Check token from cookies
+    // token stored at sign in from SignInModal.handleProceed
+    // token destroyed at sign out from Appbar.handleSignout
+    let token = Cookies.get("cowhist19-token");
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("token");
+      console.log(token);
+    }
+    if (token !== undefined) {
+      if (process.env.REACT_APP_DEBUG === "TRUE") {
+        console.log("assessing token from cookies");
+      }
+      apiAuthAssess(token).then((assessment) => {
+        if (assessment.status === 200) {
+          if (process.env.REACT_APP_DEBUG === "TRUE") {
+            console.log("token valid");
+          }
+          this.setState((prevState, props) => ({
+            signedin: true,
+            token: token,
+          }));
+        } else {
+          if (process.env.REACT_APP_DEBUG === "TRUE") {
+            console.log("token invalid");
+          }
+        }
+      });
+    } else {
+      if (process.env.REACT_APP_DEBUG === "TRUE") {
+        console.log("token missing from cookies");
+      }
+    }
 
     // Load
   }
 
   // Handles
-  handleHomeCallback(action) {
+  handleHomeCallback(action, details) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("App.handleHomeCallback");
     }
@@ -59,11 +93,13 @@ export default class App extends React.Component {
       case "signedin":
         this.setState((prevState, props) => ({
           signedin: true,
+          token: details,
         }));
         break;
       case "signedout":
         this.setState((prevState, props) => ({
           signedin: false,
+          token: null,
         }));
         break;
       default:

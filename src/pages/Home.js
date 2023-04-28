@@ -56,13 +56,13 @@ class Home extends React.Component {
       default:
     }
   }
-  handleLandingCallback(action) {
+  handleLandingCallback(action, details) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("Home.handleLandingCallback");
     }
     switch (action) {
       case "signedin":
-        this.props.callback("signedin");
+        this.props.callback("signedin", details);
         break;
       default:
     }

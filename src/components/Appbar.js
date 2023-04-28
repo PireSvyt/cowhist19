@@ -1,4 +1,5 @@
 import * as React from "react";
+import Cookies from "js-cookie";
 import { withTranslation } from "react-i18next";
 import {
   AppBar,
@@ -113,7 +114,7 @@ class Appbar extends React.Component {
     }
     // Destroy token
     // https://medium.com/how-to-react/how-to-use-js-cookie-to-store-data-in-cookies-in-react-js-aab47f8a45c3
-    Cookies.remove("token");
+    Cookies.remove("cowhist19-token");
     this.handleCloseMenu();
     this.props.callback("signedout");
   }

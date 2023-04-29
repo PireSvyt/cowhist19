@@ -15,12 +15,13 @@ export default class App extends React.Component {
     }
     super(props);
     this.state = {
-      signedin: false,
+      signedin: undefined,
       token: null,
     };
 
     // Handles
     this.handleHomeCallback = this.handleHomeCallback.bind(this);
+    this.handleAccountCallback = this.handleAccountCallback.bind(this);
   }
   render() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -40,7 +41,15 @@ export default class App extends React.Component {
             }
           />
           <Route path="/:id" element={<Table />} />
-          <Route path="/account" element={<Account />} />
+          <Route
+            path="/account"
+            element={
+              <Account
+                callback={this.handleAccountCallback}
+                signedin={this.state.signedin}
+              />
+            }
+          />
         </Routes>
       </Router>
     );
@@ -55,7 +64,27 @@ export default class App extends React.Component {
   // Handles
   handleHomeCallback(action, details) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("App.handleHomeCallback");
+      console.log("App.handleHomeCallback " + action);
+    }
+    switch (action) {
+      case "signedin":
+        this.setState((prevState, props) => ({
+          signedin: true,
+          token: details,
+        }));
+        break;
+      case "signedout":
+        this.setState((prevState, props) => ({
+          signedin: false,
+          token: null,
+        }));
+        break;
+      default:
+    }
+  }
+  handleAccountCallback(action, details) {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("App.handleAccountCallback " + action);
     }
     switch (action) {
       case "signedin":

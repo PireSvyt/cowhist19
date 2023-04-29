@@ -254,9 +254,7 @@ export default class GameModal extends React.Component {
   }
   componentDidUpdate(prevState) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      //console.log("GameModal.componentDidUpdate");
-      //console.log("GameModal.state");
-      //console.log(this.state);
+      console.log("GameModal.componentDidUpdate");
     }
     if (
       prevState.open !== this.props.open ||

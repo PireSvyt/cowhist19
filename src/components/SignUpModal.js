@@ -144,9 +144,7 @@ class SignUpModal extends React.Component {
   }
   componentDidUpdate(prevState) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      //console.log("SignUpModal.componentDidUpdate");
-      //console.log("SignUpModal.state");
-      //console.log(this.state);
+      console.log("SignUpModal.componentDidUpdate");
     }
   }
 

@@ -30,7 +30,7 @@ class Landing extends React.Component {
     const { t } = this.props;
 
     return (
-      <Box hidden={!this.props.open}>
+      <Box hidden={this.props.open === undefined || this.props.open === false}>
         <Box
           textAlign="center"
           sx={{
@@ -62,8 +62,6 @@ class Landing extends React.Component {
   componentDidUpdate(prevState) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("Landing.componentDidUpdate");
-      console.log("Landing.state");
-      console.log(this.state);
     }
   }
 
@@ -78,7 +76,7 @@ class Landing extends React.Component {
   }
   handleSignupCallback(action) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Landing.handleSignupCallback");
+      console.log("Landing.handleSignupCallback " + action);
     }
     switch (action) {
       case "close":
@@ -99,7 +97,7 @@ class Landing extends React.Component {
   }
   handleSigninCallback(action, details) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Landing.handleSigninCallback");
+      console.log("Landing.handleSigninCallback " + action);
     }
     switch (action) {
       case "close":

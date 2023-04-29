@@ -20,17 +20,15 @@ class Home extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("Home.render");
     }
-    // i18n
-    const { t } = this.props;
-
     return (
       <div>
         <Appbar
           signedin={this.props.signedin}
           callback={this.handleAppbarCallback}
+          route="home"
         />
         <Landing
-          open={!this.props.signedin}
+          open={this.props.signedin === false}
           callback={this.handleLandingCallback}
         />
       </div>
@@ -39,15 +37,13 @@ class Home extends React.Component {
   componentDidUpdate(prevState) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("Home.componentDidUpdate");
-      console.log("Home.state");
-      console.log(this.state);
     }
   }
 
   // Handles
   handleAppbarCallback(action, details) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Home.handleLandingCallback");
+      console.log("Home.handleLandingCallback " + action);
     }
     switch (action) {
       case "signedout":
@@ -61,7 +57,7 @@ class Home extends React.Component {
   }
   handleLandingCallback(action, details) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Home.handleLandingCallback");
+      console.log("Home.handleLandingCallback " + action);
     }
     switch (action) {
       case "signedin":

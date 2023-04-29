@@ -8,12 +8,13 @@ import {
   Typography,
   Menu,
   MenuItem,
-  fabClasses,
+  Box,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { FormatColorResetRounded } from "@mui/icons-material";
+import CloseIcon from "@mui/icons-material/Close";
 
 import { apiAuthAssess } from "../api/auth";
+import { random_id } from "../resources/toolkit";
 
 class Appbar extends React.Component {
   constructor(props) {
@@ -21,15 +22,21 @@ class Appbar extends React.Component {
       console.log("Appbar.constructor");
     }
     super(props);
+    // i18n
+    const { t } = this.props;
+
     this.state = {
+      title: t("generic-product-title"),
       openMenu: false,
       menuAnchorEl: null,
+      menuItems: [],
     };
 
     // Handles
     this.handleOpenMenu = this.handleOpenMenu.bind(this);
     this.handleCloseMenu = this.handleCloseMenu.bind(this);
     this.handleSignout = this.handleSignout.bind(this);
+    this.handleToHome = this.handleToHome.bind(this);
     this.handleToAccount = this.handleToAccount.bind(this);
   }
   render() {
@@ -45,9 +52,10 @@ class Appbar extends React.Component {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            {t("generic-product-title")}
+            {this.state.title}
           </Typography>
-          <div hidden={!this.props.signedin}>
+
+          <div hidden={!this.props.signedin || this.props.route === "account"}>
             <IconButton
               size="large"
               edge="end"
@@ -68,13 +76,25 @@ class Appbar extends React.Component {
               "aria-labelledby": "basic-button",
             }}
           >
-            <MenuItem onClick={this.handleToAccount}>
-              {t("generic-menu-account")}
-            </MenuItem>
-            <MenuItem onClick={this.handleSignout}>
-              {t("generic-menu-signout")}
-            </MenuItem>
+            {this.state.menuItems.map((item) => {
+              return (
+                <MenuItem key={random_id()} onClick={item.onclick}>
+                  {t(item.label)}
+                </MenuItem>
+              );
+            })}
           </Menu>
+
+          <div hidden={!(this.props.route === "account")}>
+            <IconButton
+              size="large"
+              edge="end"
+              color="inherit"
+              onClick={this.handleToHome}
+            >
+              <CloseIcon />
+            </IconButton>
+          </div>
         </Toolbar>
       </AppBar>
     );
@@ -83,6 +103,9 @@ class Appbar extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       //console.log("Appbar.componentDidMount");
     }
+    // i18n
+    const { t } = this.props;
+
     // Check token from cookies
     // https://medium.com/how-to-react/how-to-use-js-cookie-to-store-data-in-cookies-in-react-js-aab47f8a45c3
     // token stored at sign in from SignInModal.handleProceed
@@ -112,13 +135,73 @@ class Appbar extends React.Component {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
         console.log("token missing from cookies");
       }
+      this.props.callback("signedout");
+    }
+
+    // Update menu
+    switch (this.props.route) {
+      case "home":
+        this.setState((prevState, props) => ({
+          title: t("generic-product-title"),
+          menuItems: [
+            {
+              item: "account",
+              label: "generic-menu-account",
+              onclick: this.handleToAccount,
+            },
+            {
+              item: "signout",
+              label: "generic-menu-signout",
+              onclick: this.handleSignout,
+            },
+          ],
+        }));
+        break;
+      case "account":
+        this.setState((prevState, props) => ({
+          title: t("generic-menu-account"),
+          menuItems: [
+            {
+              item: "home",
+              label: "generic-menu-home",
+              onclick: this.handleToHome,
+            },
+            {
+              item: "signout",
+              label: "generic-menu-signout",
+              onclick: this.handleSignout,
+            },
+          ],
+        }));
+        break;
+      case "table":
+        this.setState((prevState, props) => ({
+          title: t("generic-menu-table"),
+          menuItems: [
+            {
+              item: "home",
+              label: "generic-menu-home",
+              onclick: this.handleToHome,
+            },
+            {
+              item: "account",
+              label: "generic-menu-account",
+              onclick: this.handleToAccount,
+            },
+            {
+              item: "signout",
+              label: "generic-menu-signout",
+              onclick: this.handleSignout,
+            },
+          ],
+        }));
+        break;
+      default:
     }
   }
   componentDidUpdate(prevState) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      //console.log("Appbar.componentDidUpdate");
-      //console.log("Appbar.state");
-      //console.log(this.state);
+      console.log("Appbar.componentDidUpdate");
     }
   }
 
@@ -152,6 +235,13 @@ class Appbar extends React.Component {
     Cookies.remove("cowhist19-token");
     this.handleCloseMenu();
     this.props.callback("signedout");
+  }
+  handleToHome() {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("Appbar.handleToHome");
+    }
+    this.handleCloseMenu();
+    window.location = "/";
   }
   handleToAccount() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {

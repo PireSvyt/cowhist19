@@ -66,8 +66,6 @@ class Snack extends React.Component {
   componentDidUpdate(prevState) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("Snack.componentDidUpdate");
-      console.log("Snack.state");
-      console.log(this.state);
     }
     // i18n
     const { t } = this.props;

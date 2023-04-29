@@ -126,9 +126,7 @@ class SignInModal extends React.Component {
   }
   componentDidUpdate(prevState) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      //console.log("SignInModal.componentDidUpdate");
-      //console.log("SignInModal.state");
-      //console.log(this.state);
+      console.log("SignInModal.componentDidUpdate");
     }
   }
 

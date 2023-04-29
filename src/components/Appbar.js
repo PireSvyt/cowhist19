@@ -49,7 +49,7 @@ class Appbar extends React.Component {
     const { anchorEl } = this.state;
 
     return (
-      <AppBar position="static">
+      <AppBar position="fixed" sx={{ top: 0, bottom: "auto" }}>
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             {this.state.title}

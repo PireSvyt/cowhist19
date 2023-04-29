@@ -2,6 +2,7 @@ import React from "react";
 import { withTranslation } from "react-i18next";
 
 import Appbar from "../components/Appbar";
+import AppbarPlaceholder from "../components/AppbarPlaceholder";
 import Landing from "../components/Landing";
 
 class Home extends React.Component {
@@ -27,6 +28,7 @@ class Home extends React.Component {
           callback={this.handleAppbarCallback}
           route="home"
         />
+        <AppbarPlaceholder />
         <Landing
           open={this.props.signedin === false}
           callback={this.handleLandingCallback}

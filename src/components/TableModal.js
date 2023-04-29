@@ -13,6 +13,7 @@ import {
   IconButton,
   List,
   ListItem,
+  Card,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import AddIcon from "@mui/icons-material/Add";
@@ -210,11 +211,15 @@ class TableModal extends React.Component {
     switch (action) {
       case "useradd":
         var previousTable = this.state.table;
-        // TODO Check if user is in
-        // If not add the user
-        previousTable.users.push(details);
-        console.log("previousTable");
-        console.log(previousTable);
+        let toAdd = true;
+        previousTable.users.forEach((user) => {
+          if (user.id === details.id) {
+            toAdd = false;
+          }
+        });
+        if (toAdd) {
+          previousTable.users.push(details);
+        }
         this.setState((prevState, props) => ({
           table: previousTable,
           openInviteModal: false,
@@ -236,8 +241,8 @@ class TableModal extends React.Component {
       case "userremove":
         var previousTable = this.state.table;
         // filter
-        function filter(user, id) {
-          let status = user.id !== id;
+        function filter(user) {
+          let status = user.id !== details;
           return status;
         }
         let sublist = previousTable.users.ingredients.filter((user) => {
@@ -381,7 +386,7 @@ class User extends React.Component {
   constructor(props) {
     super(props);
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("User.constructor " + this.props.table._id);
+      console.log("User.constructor " + this.props.user.id);
     }
     // Handlers
     this.handleRemoveUser = this.handleRemoveUser.bind(this);

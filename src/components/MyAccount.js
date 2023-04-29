@@ -1,9 +1,14 @@
 import React from "react";
 import { withTranslation } from "react-i18next";
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
 import { Paper, Button, Typography, Box } from "@mui/material";
 
 import ToComeModal from "../components/ToComeModal";
+
+let emptyAccount = {
+  pseudo: "",
+  email: "",
+};
 
 class MyAccount extends React.Component {
   constructor(props) {
@@ -13,6 +18,7 @@ class MyAccount extends React.Component {
     super(props);
     this.state = {
       showToComeModal: false,
+      token: emptyAccount,
     };
 
     // Handles
@@ -50,7 +56,7 @@ class MyAccount extends React.Component {
             </Typography>
             <Box textAlign="center">
               <Typography variant="body1" gutterBottom>
-                {jwt(this.props.token).pseudo}
+                {this.state.token.pseudo}
               </Typography>
               <Button
                 variant="outlined"
@@ -74,7 +80,7 @@ class MyAccount extends React.Component {
             </Typography>
             <Box textAlign="center">
               <Typography variant="body1" gutterBottom>
-                {jwt(this.props.token).login}
+                {this.state.token.login}
               </Typography>
               <Button
                 variant="outlined"
@@ -205,6 +211,12 @@ class MyAccount extends React.Component {
   componentDidUpdate(prevState) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("MyAccount.componentDidUpdate");
+    }
+    let token = jwt.decode(this.props.token);
+    if (token !== undefined && token !== null) {
+      this.setState((prevState, props) => ({
+        token: token,
+      }));
     }
   }
 

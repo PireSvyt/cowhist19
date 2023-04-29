@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import AddIcon from "@mui/icons-material/Add";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 
 import InviteModal from "./InviteModal";
 import { apiTableSave } from "../api/table";
@@ -202,11 +203,23 @@ class TableModal extends React.Component {
       openInviteModal: true,
     }));
   }
-  handleInviteModalCallback(action) {
+  handleInviteModalCallback(action, details) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("TableModal.handleInviteModalCallback");
+      console.log("TableModal.handleInviteModalCallback " + action);
     }
     switch (action) {
+      case "useradd":
+        var previousTable = this.state.table;
+        // TODO Check if user is in
+        // If not add the user
+        previousTable.users.push(details);
+        console.log("previousTable");
+        console.log(previousTable);
+        this.setState((prevState, props) => ({
+          table: previousTable,
+          openInviteModal: false,
+        }));
+        break;
       case "close":
         this.setState((prevState, props) => ({
           openInviteModal: false,
@@ -215,11 +228,25 @@ class TableModal extends React.Component {
       default:
     }
   }
-  handleUserCallback(action) {
+  handleUserCallback(action, details) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("TableModal.handleUserCallback");
+      console.log("TableModal.handleUserCallback " + action);
     }
     switch (action) {
+      case "userremove":
+        var previousTable = this.state.table;
+        // filter
+        function filter(user, id) {
+          let status = user.id !== id;
+          return status;
+        }
+        let sublist = previousTable.users.ingredients.filter((user) => {
+          return filter(user);
+        });
+        this.setState((prevState, props) => ({
+          table: sublist,
+        }));
+        break;
       default:
     }
   }
@@ -347,6 +374,51 @@ class TableModal extends React.Component {
         break;
       default:
     }
+  }
+}
+
+class User extends React.Component {
+  constructor(props) {
+    super(props);
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("User.constructor " + this.props.table._id);
+    }
+    // Handlers
+    this.handleRemoveUser = this.handleRemoveUser.bind(this);
+  }
+  render() {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("User.render " + this.props.user.id);
+    }
+    return (
+      <Card sx={{ width: "100%", pl: "1em", pr: "1em" }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Typography>{this.props.user.name}</Typography>
+          <IconButton
+            onClick={() => {
+              this.handleRemoveUser;
+            }}
+          >
+            <RemoveCircleOutlineIcon />
+          </IconButton>
+        </Box>
+      </Card>
+    );
+  }
+
+  // Handles
+  handleRemoveUser() {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("User.handleRemoveUser " + this.props.user.id);
+    }
+    this.props.callback("userremove", this.props.user.id);
   }
 }
 

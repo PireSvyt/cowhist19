@@ -117,7 +117,7 @@ class InviteModal extends React.Component {
               disabled={this.state.disabled}
               loading={this.state.loading}
             >
-              {t("generic-button-save")}
+              {t("invite-button-invite")}
             </LoadingButton>
           </DialogActions>
         </Dialog>
@@ -279,13 +279,24 @@ class InviteModal extends React.Component {
         }
         switch (res.status) {
           case 201:
-            //console.log("default");
             this.setState({
               user: emptyUser,
               openSnack: true,
               snack: { uid: random_id(), id: "invite-snack-success" },
             });
-            this.props.callback("close");
+            this.props.callback("useradd", res.user);
+            this.setState((prevState, props) => ({
+              disabled: false,
+              loading: false,
+            }));
+            break;
+          case 202:
+            this.setState({
+              user: emptyUser,
+              openSnack: true,
+              snack: { uid: random_id(), id: "invite-snack-success" },
+            });
+            this.props.callback("useradd", res.user);
             this.setState((prevState, props) => ({
               disabled: false,
               loading: false,

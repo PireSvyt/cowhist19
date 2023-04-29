@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Table from "./pages/Table";
 import Account from "./pages/Account";
+import { apiUserDetails } from "./api/user";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -17,7 +18,12 @@ export default class App extends React.Component {
     this.state = {
       signedin: undefined,
       token: null,
+      userid: undefined,
+      user: undefined,
     };
+
+    // Helpers
+    this.getUserDetails = this.getUserDetails.bind(this);
 
     // Handles
     this.handleHomeCallback = this.handleHomeCallback.bind(this);
@@ -47,7 +53,7 @@ export default class App extends React.Component {
               <Account
                 callback={this.handleAccountCallback}
                 signedin={this.state.signedin}
-                token={this.state.token}
+                user={this.state.user}
               />
             }
           />
@@ -62,6 +68,20 @@ export default class App extends React.Component {
     // Load
   }
 
+  // Helpers
+  getUserDetails(token) {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("App.getUserDetails " + userid);
+    }
+    apiUserDetails(token).then((data) => {
+      /*console.log("apiUserDetails data.user");
+      console.log(data.user);*/
+      this.setState((prevState, props) => ({
+        user: data.user,
+      }));
+    });
+  }
+
   // Handles
   handleHomeCallback(action, details) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -71,13 +91,17 @@ export default class App extends React.Component {
       case "signedin":
         this.setState((prevState, props) => ({
           signedin: true,
-          token: details,
+          token: details.token,
+          userid: details.id,
         }));
+        this.getUserDetails(details.token);
         break;
       case "signedout":
         this.setState((prevState, props) => ({
           signedin: false,
           token: null,
+          userid: undefined,
+          user: undefined,
         }));
         break;
       default:
@@ -88,16 +112,12 @@ export default class App extends React.Component {
       console.log("App.handleAccountCallback " + action);
     }
     switch (action) {
-      case "signedin":
-        this.setState((prevState, props) => ({
-          signedin: true,
-          token: details,
-        }));
-        break;
       case "signedout":
         this.setState((prevState, props) => ({
           signedin: false,
           token: null,
+          userid: undefined,
+          user: undefined,
         }));
         break;
       default:

@@ -101,7 +101,7 @@ class Appbar extends React.Component {
   }
   componentDidMount() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      //console.log("Appbar.componentDidMount");
+      console.log("Appbar.componentDidMount");
     }
     // i18n
     const { t } = this.props;
@@ -111,29 +111,29 @@ class Appbar extends React.Component {
     // token stored at sign in from SignInModal.handleProceed
     // token destroyed at sign out from Appbar.handleSignout
     let token = Cookies.get("cowhist19-token");
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
+    /*if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("token");
       console.log(token);
-    }
+    }*/
     if (token !== undefined) {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("assessing token from cookies");
+        console.log("Appbar.componentDidMount assessing token from cookies");
       }
       apiAuthAssess(token).then((assessment) => {
         if (assessment.status === 200) {
           if (process.env.REACT_APP_DEBUG === "TRUE") {
-            console.log("token valid");
+            console.log("Appbar.componentDidMount token valid");
           }
           this.props.callback("signedin", token);
         } else {
           if (process.env.REACT_APP_DEBUG === "TRUE") {
-            console.log("token invalid");
+            console.log("Appbar.componentDidMount token invalid");
           }
         }
       });
     } else {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("token missing from cookies");
+        console.log("Appbar.componentDidMount token missing from cookies");
       }
       this.props.callback("signedout");
     }

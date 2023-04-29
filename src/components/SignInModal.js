@@ -157,9 +157,9 @@ class SignInModal extends React.Component {
       errors.push(" Password undefined");
     }
     // Outcome
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
+    /*if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("proceed " + proceed);
-    }
+    }*/
     return {
       proceed: proceed,
       errors: errors,
@@ -184,11 +184,11 @@ class SignInModal extends React.Component {
     }
 
     const target = event.target;
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
+    /*if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("target.name : " + target.name);
       console.log("target.value : " + target.value);
       console.log("newValue : " + newValue);
-    }
+    }*/
     var previousSignin = this.state.signin;
     switch (target.name) {
       case "login":
@@ -209,10 +209,10 @@ class SignInModal extends React.Component {
         }
     }
     // Update
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
+    /*if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("SignInModal.game");
       console.log(this.state.signin);
-    }
+    }*/
     // Check inputs
     let { proceed, errors } = this.canProceed();
     if (proceed === true) {
@@ -230,15 +230,15 @@ class SignInModal extends React.Component {
   handleProceed() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("SignInModal.handleProceed");
-      console.log("this.state.signin");
-      console.log(this.state.signin);
+      /*console.log("this.state.signin");
+      console.log(this.state.signin);*/
     }
 
     // Check inputs
     let { proceed, errors } = this.canProceed();
 
     // Proceed or not?
-    if (errors !== [] && process.env.REACT_APP_DEBUG === "TRUE") {
+    if (!proceed && process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("this.state.signin errors");
       console.log(errors);
     }
@@ -250,10 +250,10 @@ class SignInModal extends React.Component {
       }));
       // API call
       apiAuthSignin(this.state.signin).then((res) => {
-        if (process.env.REACT_APP_DEBUG === "TRUE") {
+        /*if (process.env.REACT_APP_DEBUG === "TRUE") {
           console.log("res ");
           console.log(res);
-        }
+        }*/
         switch (res.status) {
           case 200:
             this.setState({

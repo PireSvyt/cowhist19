@@ -1,8 +1,8 @@
 import React from "react";
 import { withTranslation } from "react-i18next";
+import { Box } from "@mui/material";
 
 import Appbar from "../components/Appbar";
-import AppbarPlaceholder from "../components/AppbarPlaceholder";
 import Landing from "../components/Landing";
 
 class Home extends React.Component {
@@ -28,7 +28,7 @@ class Home extends React.Component {
           callback={this.handleAppbarCallback}
           route="home"
         />
-        <AppbarPlaceholder />
+        <Box sx={{ height: 48 }} />
         <Landing
           open={this.props.signedin === false}
           callback={this.handleLandingCallback}
@@ -50,9 +50,6 @@ class Home extends React.Component {
     switch (action) {
       case "signedout":
         this.props.callback("signedout");
-        break;
-      case "signedin":
-        this.props.callback("signedin", details);
         break;
       default:
     }

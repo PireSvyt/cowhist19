@@ -22,6 +22,7 @@ export default class App extends React.Component {
       token: null,
       userid: undefined,
       user: undefined,
+      tables: [],
     };
 
     // Helpers
@@ -47,6 +48,8 @@ export default class App extends React.Component {
               <Home
                 callback={this.handleHomeCallback}
                 signedin={this.state.signedin}
+                token={this.state.token}
+                tables={this.state.tables}
               />
             }
           />
@@ -57,6 +60,7 @@ export default class App extends React.Component {
               <Account
                 callback={this.handleAccountCallback}
                 signedin={this.state.signedin}
+                token={this.state.token}
                 user={this.state.user}
               />
             }

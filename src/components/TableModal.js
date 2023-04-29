@@ -1,5 +1,4 @@
 import * as React from "react";
-import Cookies from "js-cookie";
 import { withTranslation } from "react-i18next";
 import {
   Button,
@@ -9,29 +8,37 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Stack,
+  Typography,
+  IconButton,
+  List,
+  ListItem,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
+import AddIcon from "@mui/icons-material/Add";
 
-import { apiAuthSignin } from "../api/auth";
+import InviteModal from "./InviteModal";
+import { apiTableSave } from "../api/table";
 import Snack from "./Snack";
 import { random_id } from "../resources/toolkit";
 
-let emptySignin = {
-  login: undefined,
-  password: undefined,
+let emptyTable = {
+  name: undefined,
+  users: [],
 };
 
-class SignInModal extends React.Component {
+class TableModal extends React.Component {
   constructor(props) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignInModal.constructor");
+      console.log("TableModal.constructor");
     }
     super(props);
     this.state = {
-      signin: { ...emptySignin },
+      table: { ...emptyTable },
       disabled: true,
       loading: false,
       componentHeight: undefined,
+      openInviteModal: false,
       openSnack: false,
       snack: { id: undefined },
     };
@@ -39,15 +46,18 @@ class SignInModal extends React.Component {
     this.updateComponentHeight = this.updateComponentHeight.bind(this);
 
     // Handles
+    this.handleUserCallback = this.handleUserCallback.bind(this);
+    this.handleInviteModalOpen = this.handleInviteModalOpen.bind(this);
+    this.handleInviteModalCallback = this.handleInviteModalCallback.bind(this);
     this.canProceed = this.canProceed.bind(this);
     this.handleClose = this.handleClose.bind(this);
-    this.handleProceed = this.handleProceed.bind(this);
+    this.handleSave = this.handleSave.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSnack = this.handleSnack.bind(this);
   }
   render() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignInModal.render");
+      console.log("TableModal.render");
     }
     // i18n
     const { t } = this.props;
@@ -55,12 +65,12 @@ class SignInModal extends React.Component {
     return (
       <div>
         <Dialog
-          id="dialog_signin"
+          id="dialog_table"
           open={this.props.open}
           onClose={this.handleClose}
           fullWidth={true}
         >
-          <DialogTitle>{t("signin-title")}</DialogTitle>
+          <DialogTitle>{t("table-title")}</DialogTitle>
           <DialogContent
             sx={{
               height: this.state.componentHeight,
@@ -75,22 +85,37 @@ class SignInModal extends React.Component {
               }}
             >
               <TextField
-                name="login"
-                label={t("generic-input-email")}
+                name="name"
+                label={t("generic-input-name")}
                 variant="standard"
-                value={this.state.signin.login || ""}
+                value={this.state.table.name || ""}
                 onChange={this.handleChange}
                 autoComplete="off"
+                sx={{ mb: 1 }}
               />
-              <TextField
-                name="password"
-                label={t("generic-input-password")}
-                variant="standard"
-                value={this.state.signin.password || ""}
-                onChange={this.handleChange}
-                autoComplete="off"
-                type="password"
-              />
+
+              <Stack direction="row" justifyContent="space-between">
+                <Typography
+                  variant="h6"
+                  sx={{
+                    pt: 2,
+                    pb: 2,
+                  }}
+                >
+                  {t("table-label-players")}
+                </Typography>
+                <IconButton sx={{ p: 2 }} onClick={this.handleInviteModalOpen}>
+                  <AddIcon />
+                </IconButton>
+              </Stack>
+
+              <List dense={true}>
+                {this.state.table.users.map((user) => (
+                  <ListItem key={"user-" + user._id}>
+                    <User user={user} callback={this.handleUserCallback} />
+                  </ListItem>
+                ))}
+              </List>
             </Box>
           </DialogContent>
 
@@ -100,39 +125,46 @@ class SignInModal extends React.Component {
             </Button>
             <LoadingButton
               variant="contained"
-              onClick={this.handleProceed}
+              onClick={this.handleSave}
               disabled={this.state.disabled}
               loading={this.state.loading}
             >
-              {t("generic-button-proceed")}
+              {t("generic-button-save")}
             </LoadingButton>
           </DialogActions>
         </Dialog>
+
+        <InviteModal
+          open={this.state.openInviteModal}
+          callback={this.handleInviteModalCallback}
+          token={this.props.token}
+        />
 
         <Snack
           open={this.state.openSnack}
           snack={this.state.snack}
           callback={this.handleSnack}
+          language={this.props.language}
         />
       </div>
     );
   }
   componentDidMount() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      //console.log("SignInModal.componentDidMount");
+      //console.log("TableModal.componentDidMount");
     }
     this.updateComponentHeight();
   }
   componentDidUpdate(prevState) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignInModal.componentDidUpdate");
+      console.log("TableModal.componentDidUpdate");
     }
   }
 
   // Updates
   updateComponentHeight() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignInModal.updateComponentHeight");
+      console.log("TableModal.updateComponentHeight");
     }
     this.setState({
       componentHeight: window.innerHeight - 115,
@@ -142,44 +174,69 @@ class SignInModal extends React.Component {
   // Helpers
   canProceed() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignInModal.canProceed");
+      console.log("TableModal.canProceed");
     }
     let proceed = true;
     let errors = [];
     // Checks
-    if (this.state.signin.login === undefined) {
+    if (this.state.table.name === undefined || this.state.table.name === "") {
       proceed = false;
-      errors.push(" Login undefined");
-    }
-    if (this.state.signin.password === undefined) {
-      proceed = false;
-      errors.push(" Password undefined");
+      errors.push(" Name undefined");
     }
     // Outcome
-    /*if (process.env.REACT_APP_DEBUG === "TRUE") {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("proceed " + proceed);
-    }*/
+    }
     return {
       proceed: proceed,
       errors: errors,
     };
   }
 
-  // Handles
+  // handleCloseMenu
+  handleInviteModalOpen() {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("MyAccount.handleInviteModalOpen");
+    }
+    this.setState((prevState, props) => ({
+      openInviteModal: true,
+    }));
+  }
+  handleInviteModalCallback(action) {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("TableModal.handleInviteModalCallback");
+    }
+    switch (action) {
+      case "close":
+        this.setState((prevState, props) => ({
+          openInviteModal: false,
+        }));
+        break;
+      default:
+    }
+  }
+  handleUserCallback(action) {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("TableModal.handleUserCallback");
+    }
+    switch (action) {
+      default:
+    }
+  }
   handleClose() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignInModal.handleClose");
+      console.log("TableModal.handleClose");
     }
 
     this.setState((prevState, props) => ({
-      signin: { ...emptySignin },
+      table: { ...emptyTable },
     }));
 
     this.props.callback("close");
   }
   handleChange(event, newValue) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignInModal.handleChange");
+      console.log("TableModal.handleChange");
     }
 
     const target = event.target;
@@ -188,19 +245,13 @@ class SignInModal extends React.Component {
       console.log("target.value : " + target.value);
       console.log("newValue : " + newValue);
     }*/
-    var previousSignin = this.state.signin;
+    var previousTable = this.state.table;
     switch (target.name) {
-      case "login":
+      case "name":
         if (process.env.REACT_APP_DEBUG === "TRUE") {
-          console.log("change login : " + target.value);
+          console.log("change name : " + target.value);
         }
-        previousSignin.login = target.value;
-        break;
-      case "password":
-        if (process.env.REACT_APP_DEBUG === "TRUE") {
-          console.log("change password : " + target.value);
-        }
-        previousSignin.password = target.value;
+        previousTable.name = target.value;
         break;
       default:
         if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -209,36 +260,36 @@ class SignInModal extends React.Component {
     }
     // Update
     /*if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignInModal.signin");
-      console.log(this.state.signin);
+      console.log("TableModal.table");
+      console.log(this.state.table);
     }*/
     // Check inputs
     let { proceed, errors } = this.canProceed();
     if (proceed === true) {
       this.setState((prevState, props) => ({
-        signin: previousSignin,
+        table: previousTable,
         disabled: false,
       }));
     } else {
       this.setState((prevState, props) => ({
-        signin: previousSignin,
+        table: previousTable,
         disabled: true,
       }));
     }
   }
-  handleProceed() {
+  handleSave() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignInModal.handleProceed");
-      /*console.log("this.state.signin");
-      console.log(this.state.signin);*/
+      console.log("TableModal.handleSave");
+      //console.log("this.state.table");
+      //console.log(this.state.table);
     }
 
     // Check inputs
     let { proceed, errors } = this.canProceed();
 
     // Proceed or not?
-    if (!proceed && process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("this.state.signin errors");
+    if (errors !== [] && process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("this.state.table errors");
       console.log(errors);
     }
     // Post or publish
@@ -248,52 +299,24 @@ class SignInModal extends React.Component {
         loading: true,
       }));
       // API call
-      apiAuthSignin(this.state.signin).then((res) => {
-        /*if (process.env.REACT_APP_DEBUG === "TRUE") {
+      apiTableSave(this.state.table).then((res) => {
+        if (process.env.REACT_APP_DEBUG === "TRUE") {
           console.log("res ");
           console.log(res);
-        }*/
+        }
         switch (res.status) {
-          case 200:
+          case 201:
+            //console.log("default");
             this.setState({
-              signin: emptySignin,
+              table: emptyTable,
               openSnack: true,
-              snack: { uid: random_id(), id: "signin-snack-success" },
+              snack: { uid: random_id(), id: "table-snack-success" },
             });
-            // Store token
-            // https://medium.com/how-to-react/how-to-use-js-cookie-to-store-data-in-cookies-in-react-js-aab47f8a45c3
-            Cookies.set("cowhist19-token", res.token);
-            // Close modal
             this.props.callback("close");
-            this.props.callback("signedin", res.token);
             this.setState((prevState, props) => ({
               disabled: false,
               loading: false,
             }));
-            break;
-          case 401:
-            this.setState((prevState, props) => ({
-              openSnack: true,
-              snack: { uid: random_id(), id: "signin-snack-unauthorized" },
-              disabled: false,
-              loading: false,
-            }));
-            break;
-          case 404:
-            this.setState((prevState, props) => ({
-              openSnack: true,
-              snack: { uid: random_id(), id: "signin-snack-notfound" },
-              disabled: false,
-              loading: false,
-            }));
-            break;
-          case 400:
-            this.setState({
-              openSnack: true,
-              snack: { uid: random_id(), id: "generic-snack-errornetwork" },
-              disabled: false,
-              loading: false,
-            });
             break;
           default:
             this.setState((prevState, props) => ({
@@ -314,7 +337,7 @@ class SignInModal extends React.Component {
   }
   handleSnack(action) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignInModal.handleSnack " + action);
+      console.log("TableModal.handleSnack " + action);
     }
     switch (action) {
       case "close":
@@ -327,4 +350,4 @@ class SignInModal extends React.Component {
   }
 }
 
-export default withTranslation()(SignInModal);
+export default withTranslation()(TableModal);

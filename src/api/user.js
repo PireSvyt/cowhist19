@@ -3,9 +3,11 @@ import jwt_decode from "jwt-decode";
 
 let apiURL = process.env.REACT_APP_SERVER_URL;
 
-export async function apiUserInvite(user) {
+export async function apiUserInvite(token, user) {
   try {
-    const res = await axios.post(apiURL + "/user/invite", user);
+    const res = await axios.post(apiURL + "/user/invite", user, {
+      headers: { Authorization: "Bearer " + token },
+    });
     return res.data;
   } catch (err) {
     let res = {

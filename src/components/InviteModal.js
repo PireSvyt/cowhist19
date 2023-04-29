@@ -1,5 +1,4 @@
 import * as React from "react";
-import Cookies from "js-cookie";
 import { withTranslation } from "react-i18next";
 import {
   Button,
@@ -9,26 +8,29 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 
-import { apiAuthSignin } from "../api/auth";
+import { apiUserInvite } from "../api/user";
 import Snack from "./Snack";
 import { random_id } from "../resources/toolkit";
 
-let emptySignin = {
+let emptyUser = {
+  name: undefined,
   login: undefined,
-  password: undefined,
+  acknowledgement: false,
 };
 
-class SignInModal extends React.Component {
+class InviteModal extends React.Component {
   constructor(props) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignInModal.constructor");
+      console.log("InviteModal.constructor");
     }
     super(props);
     this.state = {
-      signin: { ...emptySignin },
+      user: { ...emptyUser },
       disabled: true,
       loading: false,
       componentHeight: undefined,
@@ -47,7 +49,7 @@ class SignInModal extends React.Component {
   }
   render() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignInModal.render");
+      console.log("InviteModal.render");
     }
     // i18n
     const { t } = this.props;
@@ -55,12 +57,12 @@ class SignInModal extends React.Component {
     return (
       <div>
         <Dialog
-          id="dialog_signin"
+          id="dialog_invite"
           open={this.props.open}
           onClose={this.handleClose}
           fullWidth={true}
         >
-          <DialogTitle>{t("signin-title")}</DialogTitle>
+          <DialogTitle>{t("invite-title")}</DialogTitle>
           <DialogContent
             sx={{
               height: this.state.componentHeight,
@@ -75,21 +77,32 @@ class SignInModal extends React.Component {
               }}
             >
               <TextField
+                name="name"
+                label={t("generic-input-name")}
+                variant="standard"
+                value={this.state.user.name || ""}
+                onChange={this.handleChange}
+                autoComplete="off"
+                sx={{ mb: 1 }}
+              />
+              <TextField
                 name="login"
                 label={t("generic-input-email")}
                 variant="standard"
-                value={this.state.signin.login || ""}
+                value={this.state.user.login || ""}
                 onChange={this.handleChange}
                 autoComplete="off"
+                sx={{ mb: 1 }}
               />
-              <TextField
-                name="password"
-                label={t("generic-input-password")}
-                variant="standard"
-                value={this.state.signin.password || ""}
-                onChange={this.handleChange}
-                autoComplete="off"
-                type="password"
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    name="acknowledgement"
+                    checked={this.state.user.acknowledgement}
+                    onChange={this.handleChange}
+                  />
+                }
+                label={t("invite-input-acknowledgement")}
               />
             </Box>
           </DialogContent>
@@ -104,7 +117,7 @@ class SignInModal extends React.Component {
               disabled={this.state.disabled}
               loading={this.state.loading}
             >
-              {t("generic-button-proceed")}
+              {t("generic-button-save")}
             </LoadingButton>
           </DialogActions>
         </Dialog>
@@ -113,26 +126,27 @@ class SignInModal extends React.Component {
           open={this.state.openSnack}
           snack={this.state.snack}
           callback={this.handleSnack}
+          language={this.props.language}
         />
       </div>
     );
   }
   componentDidMount() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      //console.log("SignInModal.componentDidMount");
+      //console.log("InviteModal.componentDidMount");
     }
     this.updateComponentHeight();
   }
   componentDidUpdate(prevState) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignInModal.componentDidUpdate");
+      console.log("InviteModal.componentDidUpdate");
     }
   }
 
   // Updates
   updateComponentHeight() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignInModal.updateComponentHeight");
+      console.log("InviteModal.updateComponentHeight");
     }
     this.setState({
       componentHeight: window.innerHeight - 115,
@@ -142,44 +156,48 @@ class SignInModal extends React.Component {
   // Helpers
   canProceed() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignInModal.canProceed");
+      console.log("InviteModal.canProceed");
     }
     let proceed = true;
     let errors = [];
     // Checks
-    if (this.state.signin.login === undefined) {
+    if (this.state.user.name === undefined || this.state.user.name === "") {
       proceed = false;
-      errors.push(" Login undefined");
+      errors.push(" Name undefined");
     }
-    if (this.state.signin.password === undefined) {
+    if (this.state.user.login === undefined || this.state.user.login === "") {
       proceed = false;
-      errors.push(" Password undefined");
+      errors.push(" Email undefined");
+    }
+    if (this.state.user.acknowledgement !== true) {
+      proceed = false;
+      errors.push(" Acknowledgement missing");
     }
     // Outcome
-    /*if (process.env.REACT_APP_DEBUG === "TRUE") {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("proceed " + proceed);
-    }*/
+    }
     return {
       proceed: proceed,
       errors: errors,
     };
   }
 
-  // Handles
+  // handleCloseMenu
   handleClose() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignInModal.handleClose");
+      console.log("InviteModal.handleClose");
     }
 
     this.setState((prevState, props) => ({
-      signin: { ...emptySignin },
+      user: { ...emptyUser },
     }));
 
     this.props.callback("close");
   }
   handleChange(event, newValue) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignInModal.handleChange");
+      console.log("InviteModal.handleChange");
     }
 
     const target = event.target;
@@ -188,19 +206,25 @@ class SignInModal extends React.Component {
       console.log("target.value : " + target.value);
       console.log("newValue : " + newValue);
     }*/
-    var previousSignin = this.state.signin;
+    var previousUser = this.state.user;
     switch (target.name) {
+      case "name":
+        if (process.env.REACT_APP_DEBUG === "TRUE") {
+          console.log("change name : " + target.value);
+        }
+        previousUser.name = target.value;
+        break;
       case "login":
         if (process.env.REACT_APP_DEBUG === "TRUE") {
           console.log("change login : " + target.value);
         }
-        previousSignin.login = target.value;
+        previousUser.login = target.value;
         break;
-      case "password":
+      case "acknowledgement":
         if (process.env.REACT_APP_DEBUG === "TRUE") {
-          console.log("change password : " + target.value);
+          console.log("change acknowledgement : " + target.checked);
         }
-        previousSignin.password = target.value;
+        previousUser.acknowledgement = target.checked;
         break;
       default:
         if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -209,36 +233,36 @@ class SignInModal extends React.Component {
     }
     // Update
     /*if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignInModal.signin");
-      console.log(this.state.signin);
+      console.log("InviteModal.user");
+      console.log(this.state.user);
     }*/
     // Check inputs
     let { proceed, errors } = this.canProceed();
     if (proceed === true) {
       this.setState((prevState, props) => ({
-        signin: previousSignin,
+        user: previousUser,
         disabled: false,
       }));
     } else {
       this.setState((prevState, props) => ({
-        signin: previousSignin,
+        user: previousUser,
         disabled: true,
       }));
     }
   }
   handleProceed() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignInModal.handleProceed");
-      /*console.log("this.state.signin");
-      console.log(this.state.signin);*/
+      console.log("InviteModal.handleProceed");
+      //console.log("this.state.user");
+      //console.log(this.state.user);
     }
 
     // Check inputs
     let { proceed, errors } = this.canProceed();
 
     // Proceed or not?
-    if (!proceed && process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("this.state.signin errors");
+    if (errors !== [] && process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("this.state.user errors");
       console.log(errors);
     }
     // Post or publish
@@ -248,52 +272,24 @@ class SignInModal extends React.Component {
         loading: true,
       }));
       // API call
-      apiAuthSignin(this.state.signin).then((res) => {
-        /*if (process.env.REACT_APP_DEBUG === "TRUE") {
+      apiUserInvite(this.props.token, this.state.user).then((res) => {
+        if (process.env.REACT_APP_DEBUG === "TRUE") {
           console.log("res ");
           console.log(res);
-        }*/
+        }
         switch (res.status) {
-          case 200:
+          case 201:
+            //console.log("default");
             this.setState({
-              signin: emptySignin,
+              user: emptyUser,
               openSnack: true,
-              snack: { uid: random_id(), id: "signin-snack-success" },
+              snack: { uid: random_id(), id: "invite-snack-success" },
             });
-            // Store token
-            // https://medium.com/how-to-react/how-to-use-js-cookie-to-store-data-in-cookies-in-react-js-aab47f8a45c3
-            Cookies.set("cowhist19-token", res.token);
-            // Close modal
             this.props.callback("close");
-            this.props.callback("signedin", res.token);
             this.setState((prevState, props) => ({
               disabled: false,
               loading: false,
             }));
-            break;
-          case 401:
-            this.setState((prevState, props) => ({
-              openSnack: true,
-              snack: { uid: random_id(), id: "signin-snack-unauthorized" },
-              disabled: false,
-              loading: false,
-            }));
-            break;
-          case 404:
-            this.setState((prevState, props) => ({
-              openSnack: true,
-              snack: { uid: random_id(), id: "signin-snack-notfound" },
-              disabled: false,
-              loading: false,
-            }));
-            break;
-          case 400:
-            this.setState({
-              openSnack: true,
-              snack: { uid: random_id(), id: "generic-snack-errornetwork" },
-              disabled: false,
-              loading: false,
-            });
             break;
           default:
             this.setState((prevState, props) => ({
@@ -314,7 +310,7 @@ class SignInModal extends React.Component {
   }
   handleSnack(action) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignInModal.handleSnack " + action);
+      console.log("InviteModal.handleSnack " + action);
     }
     switch (action) {
       case "close":
@@ -327,4 +323,4 @@ class SignInModal extends React.Component {
   }
 }
 
-export default withTranslation()(SignInModal);
+export default withTranslation()(InviteModal);

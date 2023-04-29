@@ -4,6 +4,8 @@ import { Box } from "@mui/material";
 
 import Appbar from "../components/Appbar";
 import Landing from "../components/Landing";
+import MyStats from "../components/MyStats";
+import MyTables from "../components/MyTables";
 
 class Home extends React.Component {
   constructor(props) {
@@ -26,12 +28,20 @@ class Home extends React.Component {
         <Appbar
           signedin={this.props.signedin}
           callback={this.handleAppbarCallback}
+          token={this.props.token}
           route="home"
         />
         <Box sx={{ height: 48 }} />
         <Landing
           open={this.props.signedin === false}
           callback={this.handleLandingCallback}
+        />
+        <MyStats open={this.props.signedin === true} token={this.props.token} />
+        <MyTables
+          open={this.props.signedin === true}
+          callback={this.handleMyTablesCallback}
+          token={this.props.token}
+          tables={this.props.tables}
         />
       </div>
     );

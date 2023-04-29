@@ -12,11 +12,7 @@ class MyAccount extends React.Component {
     super(props);
     this.state = {
       showToComeModal: false,
-      componentHeight: 300,
     };
-
-    // Updates
-    this.updateComponentHeight = this.updateComponentHeight.bind(this);
 
     // Handles
     this.handleToComeModalOpen = this.handleToComeModalOpen.bind(this);
@@ -30,10 +26,7 @@ class MyAccount extends React.Component {
     const { t } = this.props;
 
     return (
-      <Box
-        component="span"
-        style={{ height: this.state.componentHeight, overflow: "auto" }}
-      >
+      <Box component="span">
         <Paper
           sx={{
             p: 2,
@@ -214,23 +207,6 @@ class MyAccount extends React.Component {
         />
       </Box>
     );
-  }
-  componentDidMount() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("MyAccount.componentDidMount");
-    }
-    // Update
-    this.updateComponentHeight();
-  }
-
-  // Updates
-  updateComponentHeight() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("MyAccount.updateComponentHeight");
-    }
-    this.setState({
-      componentHeight: window.innerHeight - 115,
-    });
   }
 
   // Handles

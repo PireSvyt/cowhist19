@@ -131,7 +131,6 @@ class SignUpModal extends React.Component {
           open={this.state.openSnack}
           snack={this.state.snack}
           callback={this.handleSnack}
-          language={this.props.language}
         />
       </div>
     );
@@ -260,10 +259,10 @@ class SignUpModal extends React.Component {
         }
     }
     // Update
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignUpModal.game");
+    /*if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("SignUpModal.signup");
       console.log(this.state.signup);
-    }
+    }*/
     // Check inputs
     let { proceed, errors } = this.canProceed();
     if (proceed === true) {

@@ -9,6 +9,7 @@
   "signin-snack-unauthorized": { "severity": "error" },
   "signin-snack-notfound": { "severity": "error" },
   "signin-snack-success": { "severity": "success" },
+  "invite-snack-success": { "severity": "success" },
   "game-snack-saved": { "severity": "success" },
   "game-snack-edited": { "severity": "success" },
   "game-snack-discarded": { "severity": "info" }

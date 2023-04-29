@@ -1,6 +1,6 @@
 import React from "react";
 import { withTranslation } from "react-i18next";
-import jwt from "jsonwebtoken";
+//import jwt from "jsonwebtoken";
 import { Paper, Button, Typography, Box } from "@mui/material";
 
 import ToComeModal from "../components/ToComeModal";
@@ -212,12 +212,14 @@ class MyAccount extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("MyAccount.componentDidUpdate");
     }
+    /*
     let token = jwt.decode(this.props.token);
     if (token !== undefined && token !== null) {
       this.setState((prevState, props) => ({
         token: token,
       }));
     }
+    */
   }
 
   // Handles

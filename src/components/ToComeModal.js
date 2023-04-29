@@ -55,6 +55,7 @@ class ToComeModal extends React.Component {
                     variant="h6"
                     sx={{
                       pt: 1,
+                      whiteSpace: "pre-line",
                     }}
                   >
                     {t("tocome-label-explanation")}

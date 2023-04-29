@@ -13,7 +13,6 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 
-import { apiAuthAssess } from "../api/auth";
 import { random_id } from "../resources/toolkit";
 
 class Appbar extends React.Component {
@@ -105,38 +104,6 @@ class Appbar extends React.Component {
     }
     // i18n
     const { t } = this.props;
-
-    // Check token from cookies
-    // https://medium.com/how-to-react/how-to-use-js-cookie-to-store-data-in-cookies-in-react-js-aab47f8a45c3
-    // token stored at sign in from SignInModal.handleProceed
-    // token destroyed at sign out from Appbar.handleSignout
-    let token = Cookies.get("cowhist19-token");
-    /*if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("token");
-      console.log(token);
-    }*/
-    if (token !== undefined) {
-      if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("Appbar.componentDidMount assessing token from cookies");
-      }
-      apiAuthAssess(token).then((assessment) => {
-        if (assessment.status === 200) {
-          if (process.env.REACT_APP_DEBUG === "TRUE") {
-            console.log("Appbar.componentDidMount token valid");
-          }
-          this.props.callback("signedin", token);
-        } else {
-          if (process.env.REACT_APP_DEBUG === "TRUE") {
-            console.log("Appbar.componentDidMount token invalid");
-          }
-        }
-      });
-    } else {
-      if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("Appbar.componentDidMount token missing from cookies");
-      }
-      this.props.callback("signedout");
-    }
 
     // Update menu
     switch (this.props.route) {

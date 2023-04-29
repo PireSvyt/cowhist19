@@ -47,6 +47,7 @@ export default class App extends React.Component {
               <Account
                 callback={this.handleAccountCallback}
                 signedin={this.state.signedin}
+                token={this.state.token}
               />
             }
           />

@@ -1,4 +1,5 @@
 import axios, * as others from "axios";
+import jwt_decode from "jwt-decode";
 
 let apiURL = process.env.REACT_APP_SERVER_URL;
 
@@ -17,9 +18,13 @@ export async function apiUserInvite(user) {
   }
 }
 
-export async function apiUserDetails(id) {
+export async function apiUserDetails(token) {
+  // Prep
+  let decodedToken = jwt_decode(token);
   try {
-    const res = await axios.ge(apiURL + "/user/" + id);
+    const res = await axios.get(apiURL + "/user/" + decodedToken.id, {
+      headers: { Authorization: "Bearer " + token },
+    });
     return res.data;
   } catch (err) {
     let res = {
@@ -32,9 +37,11 @@ export async function apiUserDetails(id) {
   }
 }
 
-export async function apiUserTables(id) {
+export async function apiUserTables(token, id) {
   try {
-    const res = await axios.ge(apiURL + "/user/tables/" + id);
+    const res = await axios.get(apiURL + "/user/tables/" + id, {
+      headers: { Authorization: "Bearer " + token },
+    });
     return res.data;
   } catch (err) {
     let res = {

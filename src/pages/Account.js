@@ -1,5 +1,6 @@
 import React from "react";
 import { withTranslation } from "react-i18next";
+import { Box } from "@mui/material";
 
 import Appbar from "../components/Appbar";
 import MyAccount from "../components/MyAccount";
@@ -27,10 +28,11 @@ class Account extends React.Component {
           callback={this.handleAppbarCallback}
           route="account"
         />
+        <Box sx={{ height: 48 }} />
         <MyAccount
           signedin={this.props.signedin}
           callback={this.handleMyAccountCallback}
-          token={this.props.token}
+          user={this.props.user}
         />
       </div>
     );

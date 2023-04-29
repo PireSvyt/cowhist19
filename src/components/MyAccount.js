@@ -1,14 +1,8 @@
 import React from "react";
 import { withTranslation } from "react-i18next";
-import jwt from "jsonwebtoken";
 import { Paper, Button, Typography, Box } from "@mui/material";
 
 import ToComeModal from "../components/ToComeModal";
-
-let emptyAccount = {
-  pseudo: "",
-  email: "",
-};
 
 class MyAccount extends React.Component {
   constructor(props) {
@@ -18,8 +12,11 @@ class MyAccount extends React.Component {
     super(props);
     this.state = {
       showToComeModal: false,
-      token: emptyAccount,
+      componentHeight: 300,
     };
+
+    // Updates
+    this.updateComponentHeight = this.updateComponentHeight.bind(this);
 
     // Handles
     this.handleToComeModalOpen = this.handleToComeModalOpen.bind(this);
@@ -33,7 +30,10 @@ class MyAccount extends React.Component {
     const { t } = this.props;
 
     return (
-      <Box component="span">
+      <Box
+        component="span"
+        style={{ height: this.state.componentHeight, overflow: "auto" }}
+      >
         <Paper
           sx={{
             p: 2,
@@ -56,7 +56,9 @@ class MyAccount extends React.Component {
             </Typography>
             <Box textAlign="center">
               <Typography variant="body1" gutterBottom>
-                {this.state.token.pseudo}
+                {this.props.user !== undefined
+                  ? this.props.user.name
+                  : "pseudo place holder"}
               </Typography>
               <Button
                 variant="outlined"
@@ -80,7 +82,9 @@ class MyAccount extends React.Component {
             </Typography>
             <Box textAlign="center">
               <Typography variant="body1" gutterBottom>
-                {this.state.token.login}
+                {this.props.user !== undefined
+                  ? this.props.user.login
+                  : "email place holder"}
               </Typography>
               <Button
                 variant="outlined"
@@ -141,6 +145,7 @@ class MyAccount extends React.Component {
             </Typography>
             <Box textAlign="center">
               <Button
+                color="error"
                 variant="outlined"
                 sx={{
                   width: "80%",
@@ -165,6 +170,7 @@ class MyAccount extends React.Component {
             </Typography>
             <Box textAlign="center">
               <Button
+                color="error"
                 variant="outlined"
                 sx={{
                   width: "80%",
@@ -189,6 +195,7 @@ class MyAccount extends React.Component {
             </Typography>
             <Box textAlign="center">
               <Button
+                color="error"
                 variant="outlined"
                 sx={{
                   width: "80%",
@@ -208,16 +215,22 @@ class MyAccount extends React.Component {
       </Box>
     );
   }
-  componentDidUpdate(prevState) {
+  componentDidMount() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("MyAccount.componentDidUpdate");
+      console.log("MyAccount.componentDidMount");
     }
-    let token = jwt.decode(this.props.token);
-    if (token !== undefined && token !== null) {
-      this.setState((prevState, props) => ({
-        token: token,
-      }));
+    // Update
+    this.updateComponentHeight();
+  }
+
+  // Updates
+  updateComponentHeight() {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("MyAccount.updateComponentHeight");
     }
+    this.setState({
+      componentHeight: window.innerHeight - 115,
+    });
   }
 
   // Handles

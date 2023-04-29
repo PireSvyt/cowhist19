@@ -30,6 +30,7 @@ class Account extends React.Component {
         <MyAccount
           signedin={this.props.signedin}
           callback={this.handleMyAccountCallback}
+          token={this.props.token}
         />
       </div>
     );

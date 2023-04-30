@@ -9,7 +9,8 @@ import Home from "./pages/Home";
 import Table from "./pages/Table";
 import Account from "./pages/Account";
 import { apiAuthAssess } from "./api/auth";
-import { apiUserDetails } from "./api/user";
+import { apiUserDetails, apiUserTables } from "./api/user";
+import { apiTableDetails } from "./api/table";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -23,12 +24,15 @@ export default class App extends React.Component {
       userid: undefined,
       user: undefined,
       tables: [],
+      table: undefined,
     };
 
     // Helpers
     this.signIn = this.signIn.bind(this);
     this.signOut = this.signOut.bind(this);
     this.getUserDetails = this.getUserDetails.bind(this);
+    this.getUserTables = this.getUserTables.bind(this);
+    this.getTableDetails = this.getTableDetails.bind(this);
 
     // Handles
     this.handleHomeCallback = this.handleHomeCallback.bind(this);
@@ -119,6 +123,7 @@ export default class App extends React.Component {
     }));
     // Get user details
     this.getUserDetails(token);
+    this.getUserTables(token);
   }
   signOut() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -143,6 +148,32 @@ export default class App extends React.Component {
       });
     }
   }
+  getUserTables(token) {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("App.getUserTables ");
+    }
+    if (token !== undefined) {
+      apiUserTables(token).then((data) => {
+        console.log("App.getUserTables tables");
+        console.log(data.tables);
+        this.setState((prevState, props) => ({
+          tables: data.tables,
+        }));
+      });
+    }
+  }
+  getTableDetails(id) {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("App.getTableDetails ");
+    }
+    if (token !== undefined) {
+      apiTableDetails(this.state.token, id).then((data) => {
+        this.setState((prevState, props) => ({
+          table: data.table,
+        }));
+      });
+    }
+  }
 
   // Handles
   handleHomeCallback(action, details) {
@@ -155,6 +186,9 @@ export default class App extends React.Component {
         break;
       case "signedout":
         this.signOut();
+        break;
+      case "loadtable":
+        this.getTableDetails(details);
         break;
       default:
     }

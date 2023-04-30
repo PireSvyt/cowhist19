@@ -18,6 +18,7 @@ class Home extends React.Component {
     // Handles
     this.handleAppbarCallback = this.handleAppbarCallback.bind(this);
     this.handleLandingCallback = this.handleLandingCallback.bind(this);
+    this.handleMyTablesCallback = this.handleMyTablesCallback.bind(this);
   }
   render() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -71,6 +72,17 @@ class Home extends React.Component {
     switch (action) {
       case "signedin":
         this.props.callback("signedin", details);
+        break;
+      default:
+    }
+  }
+  handleMyTablesCallback(action, details) {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("Home.handleMyTablesCallback " + action);
+    }
+    switch (action) {
+      case "loadtable":
+        this.props.callback("loadtable", details);
         break;
       default:
     }

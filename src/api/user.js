@@ -21,10 +21,8 @@ export async function apiUserInvite(token, user) {
 }
 
 export async function apiUserDetails(token) {
-  // Prep
-  let decodedToken = jwt_decode(token);
   try {
-    const res = await axios.get(apiURL + "/user/" + decodedToken.id, {
+    const res = await axios.get(apiURL + "/user/", {
       headers: { Authorization: "Bearer " + token },
     });
     return res.data;
@@ -39,9 +37,9 @@ export async function apiUserDetails(token) {
   }
 }
 
-export async function apiUserTables(token, id) {
+export async function apiUserTables(token) {
   try {
-    const res = await axios.get(apiURL + "/user/tables/" + id, {
+    const res = await axios.get(apiURL + "/user/tables", {
       headers: { Authorization: "Bearer " + token },
     });
     return res.data;

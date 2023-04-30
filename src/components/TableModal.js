@@ -356,7 +356,7 @@ class TableModal extends React.Component {
               openSnack: true,
               snack: { uid: random_id(), id: "table-snack-success" },
             });
-            this.props.callback("close");
+            this.props.callback("totable", res.id);
             this.setState((prevState, props) => ({
               disabled: false,
               loading: false,

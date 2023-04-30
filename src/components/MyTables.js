@@ -136,7 +136,7 @@ class MyTable extends React.Component {
         sx={{ width: "100%", pl: "1em", pr: "1em" }}
         onClick={this.handleOpen}
       >
-        <Typography>{this.props.table.name}</Typography>
+        <Typography>Table : {this.props.table.name}</Typography>
       </Card>
     );
   }

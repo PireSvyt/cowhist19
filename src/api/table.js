@@ -2,9 +2,11 @@ import axios, * as others from "axios";
 
 let apiURL = process.env.REACT_APP_SERVER_URL;
 
-export async function apiTableSave(table) {
+export async function apiTableSave(token, table) {
   try {
-    const res = await axios.post(apiURL + "/table/save", table);
+    const res = await axios.post(apiURL + "/table/save", table, {
+      headers: { Authorization: "Bearer " + token },
+    });
     return res.data;
   } catch (err) {
     let res = {
@@ -17,9 +19,11 @@ export async function apiTableSave(table) {
   }
 }
 
-export async function apiTableDetails(id) {
+export async function apiTableDetails(token, id) {
   try {
-    const res = await axios.get(apiURL + "/table/" + id);
+    const res = await axios.get(apiURL + "/table/" + id, {
+      headers: { Authorization: "Bearer " + token },
+    });
     return res.data;
   } catch (err) {
     const res = {
@@ -33,9 +37,11 @@ export async function apiTableDetails(id) {
   }
 }
 
-export async function apiTableHistory(id, parameters) {
+export async function apiTableHistory(token, id, parameters) {
   try {
-    const res = await axios.get(apiURL + "/table/history/" + id, parameters);
+    const res = await axios.get(apiURL + "/table/history/" + id, parameters, {
+      headers: { Authorization: "Bearer " + token },
+    });
     return res.data;
   } catch (err) {
     const res = {
@@ -49,9 +55,11 @@ export async function apiTableHistory(id, parameters) {
   }
 }
 
-export async function apiTableDelete(table) {
+export async function apiTableDelete(token, table) {
   try {
-    const res = await axios.delete(apiURL + "/table/" + id);
+    const res = await axios.delete(apiURL + "/table/" + id, {
+      headers: { Authorization: "Bearer " + token },
+    });
     return res.data;
   } catch (err) {
     const res = {

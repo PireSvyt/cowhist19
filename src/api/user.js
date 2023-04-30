@@ -1,11 +1,12 @@
 import axios, * as others from "axios";
-import jwt_decode from "jwt-decode";
 
 let apiURL = process.env.REACT_APP_SERVER_URL;
 
-export async function apiUserInvite(user) {
+export async function apiUserInvite(token, user) {
   try {
-    const res = await axios.post(apiURL + "/user/invite", user);
+    const res = await axios.post(apiURL + "/user/invite", user, {
+      headers: { Authorization: "Bearer " + token },
+    });
     return res.data;
   } catch (err) {
     let res = {
@@ -19,10 +20,8 @@ export async function apiUserInvite(user) {
 }
 
 export async function apiUserDetails(token) {
-  // Prep
-  let decodedToken = jwt_decode(token);
   try {
-    const res = await axios.get(apiURL + "/user/" + decodedToken.id, {
+    const res = await axios.get(apiURL + "/user/", {
       headers: { Authorization: "Bearer " + token },
     });
     return res.data;
@@ -37,9 +36,9 @@ export async function apiUserDetails(token) {
   }
 }
 
-export async function apiUserTables(token, id) {
+export async function apiUserTables(token) {
   try {
-    const res = await axios.get(apiURL + "/user/tables/" + id, {
+    const res = await axios.get(apiURL + "/user/tables", {
       headers: { Authorization: "Bearer " + token },
     });
     return res.data;

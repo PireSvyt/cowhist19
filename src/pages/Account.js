@@ -25,22 +25,19 @@ class Account extends React.Component {
       <div>
         <Appbar
           signedin={this.props.signedin}
+          token={this.props.token}
           callback={this.handleAppbarCallback}
           route="account"
         />
         <Box sx={{ height: 48 }} />
         <MyAccount
           signedin={this.props.signedin}
+          token={this.props.token}
           callback={this.handleMyAccountCallback}
           user={this.props.user}
         />
       </div>
     );
-  }
-  componentDidUpdate(prevState) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Account.componentDidUpdate");
-    }
   }
 
   // Handles

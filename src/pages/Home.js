@@ -4,6 +4,8 @@ import { Box } from "@mui/material";
 
 import Appbar from "../components/Appbar";
 import Landing from "../components/Landing";
+import MyStats from "../components/MyStats";
+import MyTables from "../components/MyTables";
 
 class Home extends React.Component {
   constructor(props) {
@@ -16,6 +18,7 @@ class Home extends React.Component {
     // Handles
     this.handleAppbarCallback = this.handleAppbarCallback.bind(this);
     this.handleLandingCallback = this.handleLandingCallback.bind(this);
+    this.handleMyTablesCallback = this.handleMyTablesCallback.bind(this);
   }
   render() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -26,6 +29,7 @@ class Home extends React.Component {
         <Appbar
           signedin={this.props.signedin}
           callback={this.handleAppbarCallback}
+          token={this.props.token}
           route="home"
         />
         <Box sx={{ height: 48 }} />
@@ -33,13 +37,15 @@ class Home extends React.Component {
           open={this.props.signedin === false}
           callback={this.handleLandingCallback}
         />
+        <MyStats open={this.props.signedin === true} token={this.props.token} />
+        <MyTables
+          open={this.props.signedin === true}
+          callback={this.handleMyTablesCallback}
+          token={this.props.token}
+          tables={this.props.tables}
+        />
       </div>
     );
-  }
-  componentDidUpdate(prevState) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Home.componentDidUpdate");
-    }
   }
 
   // Handles
@@ -61,6 +67,17 @@ class Home extends React.Component {
     switch (action) {
       case "signedin":
         this.props.callback("signedin", details);
+        break;
+      default:
+    }
+  }
+  handleMyTablesCallback(action, details) {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("Home.handleMyTablesCallback " + action);
+    }
+    switch (action) {
+      case "loadtable":
+        this.props.callback("loadtable", details);
         break;
       default:
     }

@@ -52,7 +52,7 @@ class ToComeModal extends React.Component {
                     {t("tocome-label-intro")}
                   </Typography>
                   <Typography
-                    variant="h6"
+                    variant="body1"
                     sx={{
                       pt: 1,
                       whiteSpace: "pre-line",

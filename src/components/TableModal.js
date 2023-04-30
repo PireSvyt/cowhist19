@@ -25,6 +25,7 @@ import Snack from "./Snack";
 import { random_id } from "../resources/toolkit";
 
 let emptyTable = {
+  _id: "",
   name: undefined,
   users: [],
 };
@@ -41,6 +42,7 @@ class TableModal extends React.Component {
       loading: false,
       componentHeight: undefined,
       openInviteModal: false,
+      userid: "",
       openSnack: false,
       snack: { id: undefined },
     };
@@ -140,6 +142,7 @@ class TableModal extends React.Component {
           open={this.state.openInviteModal}
           callback={this.handleInviteModalCallback}
           token={this.props.token}
+          userid={this.state.userid}
         />
 
         <Snack
@@ -213,7 +216,7 @@ class TableModal extends React.Component {
         var previousTable = this.state.table;
         let toAdd = true;
         previousTable.users.forEach((user) => {
-          if (user.id === details.id) {
+          if (user._id === details._id) {
             toAdd = false;
           }
         });
@@ -240,16 +243,12 @@ class TableModal extends React.Component {
     switch (action) {
       case "userremove":
         var previousTable = this.state.table;
-        // filter
-        function filter(user) {
-          let status = user.id !== details;
-          return status;
-        }
-        let sublist = previousTable.users.ingredients.filter((user) => {
-          return filter(user);
+        let sublist = previousTable.users.filter((user) => {
+          return user._id !== details;
         });
+        previousTable.users = sublist;
         this.setState((prevState, props) => ({
-          table: sublist,
+          table: previousTable,
         }));
         break;
       default:
@@ -320,10 +319,10 @@ class TableModal extends React.Component {
     let { proceed, errors } = this.canProceed();
 
     // Proceed or not?
-    if (errors !== [] && process.env.REACT_APP_DEBUG === "TRUE") {
+    /*if (errors !== [] && process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("this.state.table errors");
       console.log(errors);
-    }
+    }*/
     // Post or publish
     if (proceed === true) {
       this.setState((prevState, props) => ({
@@ -331,16 +330,29 @@ class TableModal extends React.Component {
         loading: true,
       }));
       // API call
-      apiTableSave(this.state.table).then((res) => {
-        if (process.env.REACT_APP_DEBUG === "TRUE") {
+      apiTableSave(this.props.token, this.state.table).then((res) => {
+        /*if (process.env.REACT_APP_DEBUG === "TRUE") {
           console.log("res ");
           console.log(res);
-        }
+        }*/
         switch (res.status) {
           case 201:
-            //console.log("default");
+            // Table creation
             this.setState({
-              table: emptyTable,
+              table: { ...emptyTable },
+              openSnack: true,
+              snack: { uid: random_id(), id: "table-snack-success" },
+            });
+            this.props.callback("totable", res.id);
+            this.setState((prevState, props) => ({
+              disabled: false,
+              loading: false,
+            }));
+            break;
+          case 200:
+            // Table edit
+            this.setState({
+              table: { ...emptyTable },
               openSnack: true,
               snack: { uid: random_id(), id: "table-snack-success" },
             });
@@ -386,14 +398,14 @@ class User extends React.Component {
   constructor(props) {
     super(props);
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("User.constructor " + this.props.user.id);
+      console.log("User.constructor");
     }
     // Handlers
     this.handleRemoveUser = this.handleRemoveUser.bind(this);
   }
   render() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("User.render " + this.props.user.id);
+      console.log("User.render " + this.props.user._id);
     }
     return (
       <Card sx={{ width: "100%", pl: "1em", pr: "1em" }}>
@@ -406,11 +418,7 @@ class User extends React.Component {
           }}
         >
           <Typography>{this.props.user.name}</Typography>
-          <IconButton
-            onClick={() => {
-              this.handleRemoveUser;
-            }}
-          >
+          <IconButton onClick={this.handleRemoveUser}>
             <RemoveCircleOutlineIcon />
           </IconButton>
         </Box>
@@ -421,9 +429,9 @@ class User extends React.Component {
   // Handles
   handleRemoveUser() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("User.handleRemoveUser " + this.props.user.id);
+      console.log("User.handleRemoveUser " + this.props.user._id);
     }
-    this.props.callback("userremove", this.props.user.id);
+    this.props.callback("userremove", this.props.user._id);
   }
 }
 

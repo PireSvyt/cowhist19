@@ -141,6 +141,46 @@ class InviteModal extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("InviteModal.componentDidUpdate");
     }
+    if (prevState.open !== this.props.open) {
+      if (this.props.userid !== "") {
+        // Load
+        /*
+        apiGetIngredient(this.props.ingredient).then((res) => {
+          switch (res.status) {
+            case 200:
+              console.log("loaded ingredient");
+              console.log(res.ingredient);
+              this.setState({
+                ingredient: res.ingredient,
+                shelf: this.getShelfName(res.ingredient.shelf)
+              });
+              break;
+            case 400:
+              this.setState((prevState, props) => ({
+                ingredient: emptyIngredient,
+                shelf: "",
+                openSnack: true,
+                snack: appcopy["generic"]["snack"]["errornetwork"]
+              }));
+              this.props.callback("closeItem");
+              break;
+            default:
+              this.setState((prevState, props) => ({
+                ingredient: emptyIngredient,
+                shelf: "",
+                openSnack: true,
+                snack: appcopy["generic"]["snack"]["errorunknown"]
+              }));
+              this.props.callback("closeItem");
+          }
+        });
+        */
+      } else {
+        this.setState((prevState, props) => ({
+          user: { ...emptyUser },
+        }));
+      }
+    }
   }
 
   // Updates
@@ -261,10 +301,10 @@ class InviteModal extends React.Component {
     let { proceed, errors } = this.canProceed();
 
     // Proceed or not?
-    if (errors !== [] && process.env.REACT_APP_DEBUG === "TRUE") {
+    /*if (errors !== [] && process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("this.state.user errors");
       console.log(errors);
-    }
+    }*/
     // Post or publish
     if (proceed === true) {
       this.setState((prevState, props) => ({
@@ -273,12 +313,13 @@ class InviteModal extends React.Component {
       }));
       // API call
       apiUserInvite(this.props.token, this.state.user).then((res) => {
-        if (process.env.REACT_APP_DEBUG === "TRUE") {
+        /*if (process.env.REACT_APP_DEBUG === "TRUE") {
           console.log("res ");
           console.log(res);
-        }
+        }*/
         switch (res.status) {
           case 201:
+            // User creation
             this.setState({
               user: emptyUser,
               openSnack: true,
@@ -291,6 +332,7 @@ class InviteModal extends React.Component {
             }));
             break;
           case 202:
+            // User already existing
             this.setState({
               user: emptyUser,
               openSnack: true,

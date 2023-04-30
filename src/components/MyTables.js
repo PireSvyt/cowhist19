@@ -82,11 +82,19 @@ class MyTables extends React.Component {
       tableid: undefined,
     }));
   }
-  handleTableModalCallback(action) {
+  handleTableModalCallback(action, details) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("MyTables.handleTableModalCallback ");
+      console.log("MyTables.handleTableModalCallback " + action);
     }
     switch (action) {
+      case "totable":
+        // TODO load table
+        // TODO Add table to my tables
+        this.setState((prevState, props) => ({
+          openTableModal: false,
+        }));
+        window.location = "/" + details;
+        break;
       case "close":
         this.setState((prevState, props) => ({
           openTableModal: false,

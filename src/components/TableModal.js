@@ -1,5 +1,6 @@
 import * as React from "react";
 import { withTranslation } from "react-i18next";
+import jwt_decode from "jwt-decode";
 import {
   Button,
   TextField,
@@ -24,12 +25,6 @@ import { apiTableSave } from "../api/table";
 import Snack from "./Snack";
 import { random_id } from "../resources/toolkit";
 
-let emptyTable = {
-  _id: "",
-  name: undefined,
-  users: [],
-};
-
 class TableModal extends React.Component {
   constructor(props) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -37,7 +32,7 @@ class TableModal extends React.Component {
     }
     super(props);
     this.state = {
-      table: { ...emptyTable },
+      table: this.getEmptyTable(),
       disabled: true,
       loading: false,
       componentHeight: undefined,
@@ -48,6 +43,7 @@ class TableModal extends React.Component {
     };
     // Updates
     this.updateComponentHeight = this.updateComponentHeight.bind(this);
+    this.getEmptyTable = this.getEmptyTable.bind(this);
 
     // Handles
     this.handleUserCallback = this.handleUserCallback.bind(this);
@@ -116,7 +112,11 @@ class TableModal extends React.Component {
               <List dense={true}>
                 {this.state.table.users.map((user) => (
                   <ListItem key={"user-" + user._id}>
-                    <User user={user} callback={this.handleUserCallback} />
+                    <User
+                      user={user}
+                      callback={this.handleUserCallback}
+                      userid={this.state.userid}
+                    />
                   </ListItem>
                 ))}
               </List>
@@ -142,7 +142,6 @@ class TableModal extends React.Component {
           open={this.state.openInviteModal}
           callback={this.handleInviteModalCallback}
           token={this.props.token}
-          userid={this.state.userid}
         />
 
         <Snack
@@ -163,6 +162,14 @@ class TableModal extends React.Component {
   componentDidUpdate(prevState) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("TableModal.componentDidUpdate");
+    }
+    if (this.props.token !== undefined && this.props.token !== null) {
+      if (this.state.userid === "") {
+        const decodedToken = jwt_decode(this.props.token);
+        this.setState((prevState, props) => ({
+          userid: decodedToken.id,
+        }));
+      }
     }
   }
 
@@ -196,6 +203,30 @@ class TableModal extends React.Component {
       proceed: proceed,
       errors: errors,
     };
+  }
+  getEmptyTable() {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("TableModal.getEmptyTable");
+    }
+    if (this.props.token !== undefined) {
+      const decodedToken = jwt_decode(this.props.token);
+      return {
+        _id: "",
+        name: undefined,
+        users: [
+          {
+            _id: decodedToken._id,
+            pseudo: decodedToken.pseudo,
+          },
+        ],
+      };
+    } else {
+      return {
+        _id: "",
+        name: undefined,
+        users: [],
+      };
+    }
   }
 
   // handleCloseMenu
@@ -260,7 +291,7 @@ class TableModal extends React.Component {
     }
 
     this.setState((prevState, props) => ({
-      table: { ...emptyTable },
+      table: this.getEmptyTable(),
     }));
 
     this.props.callback("close");
@@ -339,7 +370,7 @@ class TableModal extends React.Component {
           case 201:
             // Table creation
             this.setState({
-              table: { ...emptyTable },
+              table: this.getEmptyTable(),
               openSnack: true,
               snack: { uid: random_id(), id: "table-snack-success" },
             });
@@ -352,7 +383,7 @@ class TableModal extends React.Component {
           case 200:
             // Table edit
             this.setState({
-              table: { ...emptyTable },
+              table: this.getEmptyTable(),
               openSnack: true,
               snack: { uid: random_id(), id: "table-snack-success" },
             });
@@ -417,8 +448,11 @@ class User extends React.Component {
             alignItems: "center",
           }}
         >
-          <Typography>{this.props.user.name}</Typography>
-          <IconButton onClick={this.handleRemoveUser}>
+          <Typography>{this.props.user.pseudo}</Typography>
+          <IconButton
+            onClick={this.handleRemoveUser}
+            disabled={this.props.user._id === this.props.userid}
+          >
             <RemoveCircleOutlineIcon />
           </IconButton>
         </Box>

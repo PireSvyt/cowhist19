@@ -47,11 +47,6 @@ class Home extends React.Component {
       </div>
     );
   }
-  componentDidUpdate(prevState) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Home.componentDidUpdate");
-    }
-  }
 
   // Handles
   handleAppbarCallback(action, details) {

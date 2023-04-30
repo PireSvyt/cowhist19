@@ -1,5 +1,4 @@
 import axios, * as others from "axios";
-import jwt_decode from "jwt-decode";
 
 let apiURL = process.env.REACT_APP_SERVER_URL;
 

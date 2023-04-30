@@ -50,7 +50,7 @@ class MyAccount extends React.Component {
             <Box textAlign="center">
               <Typography variant="body1" gutterBottom>
                 {this.props.user !== undefined
-                  ? this.props.user.name
+                  ? this.props.user.pseudo
                   : "pseudo place holder"}
               </Typography>
               <Button

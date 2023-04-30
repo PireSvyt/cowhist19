@@ -20,7 +20,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       signedin: undefined,
-      token: null,
+      token: undefined,
       userid: undefined,
       user: undefined,
       tables: [],
@@ -57,7 +57,7 @@ export default class App extends React.Component {
               />
             }
           />
-          <Route path="/:id" element={<Table />} />
+          <Route path="/table/:id" element={<Table />} />
           <Route
             path="/account"
             element={

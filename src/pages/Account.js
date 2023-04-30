@@ -39,11 +39,6 @@ class Account extends React.Component {
       </div>
     );
   }
-  componentDidUpdate(prevState) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Account.componentDidUpdate");
-    }
-  }
 
   // Handles
   handleAppbarCallback(action, details) {

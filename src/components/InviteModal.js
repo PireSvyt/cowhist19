@@ -18,7 +18,7 @@ import Snack from "./Snack";
 import { random_id } from "../resources/toolkit";
 
 let emptyUser = {
-  name: undefined,
+  pseudo: undefined,
   login: undefined,
   acknowledgement: false,
 };
@@ -77,10 +77,10 @@ class InviteModal extends React.Component {
               }}
             >
               <TextField
-                name="name"
-                label={t("generic-input-name")}
+                name="pseudo"
+                label={t("generic-input-pseudo")}
                 variant="standard"
-                value={this.state.user.name || ""}
+                value={this.state.user.pseudo || ""}
                 onChange={this.handleChange}
                 autoComplete="off"
                 sx={{ mb: 1 }}
@@ -142,44 +142,9 @@ class InviteModal extends React.Component {
       console.log("InviteModal.componentDidUpdate");
     }
     if (prevState.open !== this.props.open) {
-      if (this.props.userid !== "") {
-        // Load
-        /*
-        apiGetIngredient(this.props.ingredient).then((res) => {
-          switch (res.status) {
-            case 200:
-              console.log("loaded ingredient");
-              console.log(res.ingredient);
-              this.setState({
-                ingredient: res.ingredient,
-                shelf: this.getShelfName(res.ingredient.shelf)
-              });
-              break;
-            case 400:
-              this.setState((prevState, props) => ({
-                ingredient: emptyIngredient,
-                shelf: "",
-                openSnack: true,
-                snack: appcopy["generic"]["snack"]["errornetwork"]
-              }));
-              this.props.callback("closeItem");
-              break;
-            default:
-              this.setState((prevState, props) => ({
-                ingredient: emptyIngredient,
-                shelf: "",
-                openSnack: true,
-                snack: appcopy["generic"]["snack"]["errorunknown"]
-              }));
-              this.props.callback("closeItem");
-          }
-        });
-        */
-      } else {
-        this.setState((prevState, props) => ({
-          user: { ...emptyUser },
-        }));
-      }
+      this.setState((prevState, props) => ({
+        user: { ...emptyUser },
+      }));
     }
   }
 
@@ -201,9 +166,9 @@ class InviteModal extends React.Component {
     let proceed = true;
     let errors = [];
     // Checks
-    if (this.state.user.name === undefined || this.state.user.name === "") {
+    if (this.state.user.pseudo === undefined || this.state.user.pseudo === "") {
       proceed = false;
-      errors.push(" Name undefined");
+      errors.push(" Pseudo undefined");
     }
     if (this.state.user.login === undefined || this.state.user.login === "") {
       proceed = false;
@@ -248,11 +213,11 @@ class InviteModal extends React.Component {
     }*/
     var previousUser = this.state.user;
     switch (target.name) {
-      case "name":
+      case "pseudo":
         if (process.env.REACT_APP_DEBUG === "TRUE") {
-          console.log("change name : " + target.value);
+          console.log("change pseudo : " + target.value);
         }
-        previousUser.name = target.value;
+        previousUser.pseudo = target.value;
         break;
       case "login":
         if (process.env.REACT_APP_DEBUG === "TRUE") {

@@ -16,7 +16,7 @@ import Snack from "./Snack";
 import { random_id } from "../resources/toolkit";
 
 let emptySignup = {
-  name: undefined,
+  pseudo: undefined,
   login: undefined,
   password1: undefined,
   password2: undefined,
@@ -76,10 +76,10 @@ class SignUpModal extends React.Component {
               }}
             >
               <TextField
-                name="name"
+                name="pseudo"
                 label={t("generic-input-pseudo")}
                 variant="standard"
-                value={this.state.signup.name || ""}
+                value={this.state.signup.pseudo || ""}
                 onChange={this.handleChange}
                 autoComplete="off"
               />
@@ -165,7 +165,7 @@ class SignUpModal extends React.Component {
     let proceed = true;
     let errors = [];
     // Checks
-    if (this.state.signup.name === undefined || this.state.signup.name === "") {
+    if (this.state.signup.pseudo === undefined || this.state.signup.pseudo === "") {
       proceed = false;
       errors.push(" Name undefined");
     }
@@ -222,18 +222,18 @@ class SignUpModal extends React.Component {
     }
 
     const target = event.target;
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
+    /*if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("target.name : " + target.name);
       console.log("target.value : " + target.value);
       console.log("newValue : " + newValue);
-    }
+    }*/
     var previousSignup = this.state.signup;
     switch (target.name) {
-      case "name":
+      case "pseudo":
         if (process.env.REACT_APP_DEBUG === "TRUE") {
-          console.log("change name : " + target.value);
+          console.log("change pseudo : " + target.value);
         }
-        previousSignup.name = target.value;
+        previousSignup.pseudo = target.value;
         break;
       case "login":
         if (process.env.REACT_APP_DEBUG === "TRUE") {

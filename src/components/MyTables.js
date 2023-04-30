@@ -93,7 +93,7 @@ class MyTables extends React.Component {
         this.setState((prevState, props) => ({
           openTableModal: false,
         }));
-        window.location = "/" + details;
+        window.location = "/table/" + details;
         break;
       case "close":
         this.setState((prevState, props) => ({
@@ -132,11 +132,8 @@ class MyTable extends React.Component {
       console.log("MyTable.render " + this.props.table._id);
     }
     return (
-      <Card
-        sx={{ width: "100%", pl: "1em", pr: "1em" }}
-        onClick={this.handleOpen}
-      >
-        <Typography>Table : {this.props.table.name}</Typography>
+      <Card sx={{ width: "100%", p: 1 }} onClick={this.handleOpen}>
+        <Typography>{this.props.table.name}</Typography>
       </Card>
     );
   }
@@ -146,7 +143,7 @@ class MyTable extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("MyTable.handleOpen " + this.props.table._id);
     }
-    window.location = "/" + this.props.table._id;
+    window.location = "/table/" + this.props.table._id;
   }
 }
 

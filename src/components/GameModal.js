@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useTranslation } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import {
   Button,
   TextField,
@@ -8,15 +8,22 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Autocomplete,
+  Typography,
   Slider,
+  Select,
+  NativeSelect,
+  InputLabel,
+  MenuItem,
+  FormControl,
 } from "@mui/material";
+import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import frLocale from "date-fns/locale/fr";
 
 import contracts from "../resources/contracts";
 import { apiGameDetails, apiGameSave } from "../api/game";
 import Snack from "./Snack";
-
-const { t } = useTranslation();
 
 let emptyGame = {
   _id: undefined,
@@ -27,15 +34,12 @@ let emptyGame = {
   outcome: undefined,
 };
 
-export default class GameModal extends React.Component {
+class GameModal extends React.Component {
   constructor(props) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("GameModal.constructor");
     }
     super(props);
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("GameModal language = " + this.props.language);
-    }
     this.state = {
       game: { ...emptyGame },
       gameDate: undefined,
@@ -47,6 +51,9 @@ export default class GameModal extends React.Component {
     // Updates
     this.updateComponentHeight = this.updateComponentHeight.bind(this);
 
+    // Helpers
+    this.getContractOptions = this.getContractOptions.bind(this);
+
     // Handles
     this.handleClose = this.handleClose.bind(this);
     this.handleSave = this.handleSave.bind(this);
@@ -57,6 +64,8 @@ export default class GameModal extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("GameModal.render");
     }
+    // i18n
+    const { t } = this.props;
 
     // Selectors
     const ITEM_HEIGHT = 48;
@@ -91,47 +100,19 @@ export default class GameModal extends React.Component {
                 justifyContent: "space-evenly",
               }}
             >
-              <Autocomplete
-                disablePortal
-                id="combo-box-demo"
-                options={this.state.contracts}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    variant="standard"
-                    label={t("game-input-contract")}
-                  />
-                )}
-                renderOption={(props, option) => (
-                  <li {...props}>{option.name}</li>
-                )}
-                value={this.state.game.contract || ""}
-                onChange={(event, newValue) => {
-                  event.target = {
-                    name: "contract",
-                    value: newValue.name,
-                  };
-                  this.handleChange(event, newValue.name);
-                }}
-                getOptionLabel={(option) => {
-                  var shorlist = this.state.contracts.filter(function (
-                    value,
-                    index,
-                    arr
-                  ) {
-                    if (typeof option === "string") {
-                      return value.name === option;
-                    } else {
-                      return value.name === option.name;
-                    }
-                  });
-                  if (shorlist.length === 1) {
-                    return shorlist[0].name;
-                  } else {
-                    return "";
-                  }
-                }}
-              />
+              <FormControl sx={{ m: 1 }} variant="standard">
+                <InputLabel>{t("game-input-contract")}</InputLabel>
+                <Select
+                  value={this.state.game.contract}
+                  onChange={this.handleChange}
+                >
+                  {contracts.map((contract) => (
+                    <MenuItem key={contract.key} value={contract.key}>
+                      {t("game-input-" + contract.key)}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
 
               <LocalizationProvider
                 dateAdapter={AdapterDateFns}
@@ -155,69 +136,12 @@ export default class GameModal extends React.Component {
                 />
               </LocalizationProvider>
 
-              <FormControl>
-                <Select
-                  name="attack"
-                  label={t("game-input-attack")}
-                  multiple
-                  value={this.state.game.attack || ""}
-                  onChange={this.handleChange}
-                  renderValue={(selected) => (
-                    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                      {selected.map((value) => (
-                        <Chip key={value} label={value} />
-                      ))}
-                    </Box>
-                  )}
-                  MenuProps={MenuProps}
-                >
-                  {this.state.users.map((name) => (
-                    <MenuItem
-                      key={name}
-                      value={name}
-                      style={getStyles(name, this.state.game.attack)}
-                    >
-                      {name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-
-              <FormControl>
-                <Select
-                  name="defense"
-                  label={t("game-input-defense")}
-                  multiple
-                  value={this.state.game.defense || ""}
-                  onChange={this.handleChange}
-                  renderValue={(selected) => (
-                    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                      {selected.map((value) => (
-                        <Chip key={value} label={value} />
-                      ))}
-                    </Box>
-                  )}
-                  MenuProps={MenuProps}
-                >
-                  {this.state.users.map((name) => (
-                    <MenuItem
-                      key={name}
-                      value={name}
-                      style={getStyles(name, this.state.game.defense)}
-                    >
-                      {name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-
               <Slider
                 name="outcome"
                 label={t("game-input-outcome")}
                 defaultValue={0}
                 value={this.state.game.outcome || ""}
                 onChange={this.handleChange}
-                getAriaValueText={valuetext}
                 valueLabelDisplay="auto"
                 step={1}
                 marks
@@ -260,7 +184,10 @@ export default class GameModal extends React.Component {
       prevState.open !== this.props.open ||
       prevState.game !== this.props.game
     ) {
-      if (this.props.game !== "") {
+      // i18n
+      const { t } = this.props;
+
+      if (this.props.gameid !== "") {
         // Load
         apiGameDetails(this.props.game).then((res) => {
           switch (res.status) {
@@ -294,6 +221,21 @@ export default class GameModal extends React.Component {
         }));
       }
     }
+  }
+
+  // Helpers
+  getContractOptions() {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("GameModal.getContactOptions");
+    }
+    // i18n
+    const { t } = this.props;
+
+    let options = [];
+    contracts.forEach((contract) => {
+      options.push(t("game-label-" + contract.key));
+    });
+    return options;
   }
 
   // Updates
@@ -466,3 +408,5 @@ export default class GameModal extends React.Component {
     }
   }
 }
+
+export default withTranslation()(GameModal);

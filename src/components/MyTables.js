@@ -27,7 +27,7 @@ class MyTables extends React.Component {
       snack: undefined,
     };
     // Handles
-    this.handleNewTable = this.handleNewTable.bind(this);
+    this.handleOpenTableModal = this.handleOpenTableModal.bind(this);
     this.handleTableModalCallback = this.handleTableModalCallback.bind(this);
     this.handleSnack = this.handleSnack.bind(this);
   }
@@ -44,7 +44,7 @@ class MyTables extends React.Component {
           <Typography sx={{ p: 2 }} variant="h6" component="span">
             {t("mytables-label-mytables")}
           </Typography>
-          <IconButton sx={{ p: 2 }} onClick={this.handleNewTable}>
+          <IconButton sx={{ p: 2 }} onClick={this.handleOpenTableModal}>
             <AddIcon />
           </IconButton>
         </Stack>
@@ -73,9 +73,9 @@ class MyTables extends React.Component {
   }
 
   // Handlers
-  handleNewTable() {
+  handleOpenTableModal() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("MyTables.handleNewTable ");
+      console.log("MyTables.handleOpenTableModal ");
     }
     this.setState((prevState, props) => ({
       openTableModal: true,
@@ -88,8 +88,6 @@ class MyTables extends React.Component {
     }
     switch (action) {
       case "totable":
-        // TODO load table
-        // TODO Add table to my tables
         this.setState((prevState, props) => ({
           openTableModal: false,
         }));

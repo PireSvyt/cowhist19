@@ -21,6 +21,9 @@ class AccountPage extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("AccountPage.render");
     }
+    // i18n
+    const { t } = this.props;
+
     return (
       <div>
         <Appbar
@@ -28,6 +31,7 @@ class AccountPage extends React.Component {
           token={this.props.token}
           callback={this.handleAppbarCallback}
           route="account"
+          title={t("generic-menu-account")}
         />
         <Box sx={{ height: 48 }} />
         <MyAccount

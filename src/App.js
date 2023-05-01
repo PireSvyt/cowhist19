@@ -10,7 +10,6 @@ import TablePage from "./pages/TablePage";
 import AccountPage from "./pages/AccountPage";
 import { apiAuthAssess } from "./api/auth";
 import { apiUserDetails, apiUserTables } from "./api/user";
-import { apiTableDetails } from "./api/table";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -24,7 +23,6 @@ export default class App extends React.Component {
       userid: undefined,
       user: undefined,
       tables: [],
-      table: undefined,
     };
 
     // Helpers
@@ -32,7 +30,6 @@ export default class App extends React.Component {
     this.signOut = this.signOut.bind(this);
     this.getUserDetails = this.getUserDetails.bind(this);
     this.getUserTables = this.getUserTables.bind(this);
-    this.getTableDetails = this.getTableDetails.bind(this);
 
     // Handles
     this.handleHomeCallback = this.handleHomeCallback.bind(this);
@@ -106,10 +103,13 @@ export default class App extends React.Component {
             console.log("App.componentDidMount token valid");
           }
           this.signIn(token);
-        } else {
+        }
+        if (assessment.status === 404) {
           if (process.env.REACT_APP_DEBUG === "TRUE") {
             console.log("App.componentDidMount token invalid");
           }
+          Cookies.remove("cowhist19-token");
+          this.signOut();
         }
       });
     } else {
@@ -137,6 +137,7 @@ export default class App extends React.Component {
   }
   signOut() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
+      Cookies.remove("cowhist19-token");
       console.log("App.signOut ");
     }
     this.setState((prevState, props) => ({
@@ -164,22 +165,10 @@ export default class App extends React.Component {
     }
     if (token !== undefined) {
       apiUserTables(token).then((data) => {
-        console.log("App.getUserTables tables");
-        console.log(data.tables);
+        //console.log("App.getUserTables tables");
+        //console.log(data.tables);
         this.setState((prevState, props) => ({
           tables: data.tables,
-        }));
-      });
-    }
-  }
-  getTableDetails(id) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("App.getTableDetails ");
-    }
-    if (token !== undefined) {
-      apiTableDetails(this.state.token, id).then((data) => {
-        this.setState((prevState, props) => ({
-          table: data.table,
         }));
       });
     }
@@ -196,9 +185,6 @@ export default class App extends React.Component {
         break;
       case "signedout":
         this.signOut();
-        break;
-      case "loadtable":
-        this.getTableDetails(details);
         break;
       default:
     }

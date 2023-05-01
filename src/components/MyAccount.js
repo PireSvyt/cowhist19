@@ -15,7 +15,7 @@ class MyAccount extends React.Component {
     };
 
     // Handles
-    this.handleToComeModalOpen = this.handleToComeModalOpen.bind(this);
+    this.handleOpenToComeModal = this.handleOpenToComeModal.bind(this);
     this.handleToComeModalCallback = this.handleToComeModalCallback.bind(this);
   }
   render() {
@@ -59,7 +59,7 @@ class MyAccount extends React.Component {
                   width: "80%",
                   m: 1,
                 }}
-                onClick={this.handleToComeModalOpen}
+                onClick={this.handleOpenToComeModal}
               >
                 {t("myaccount-button-changepseudo")}
               </Button>
@@ -85,7 +85,7 @@ class MyAccount extends React.Component {
                   width: "80%",
                   m: 1,
                 }}
-                onClick={this.handleToComeModalOpen}
+                onClick={this.handleOpenToComeModal}
               >
                 {t("myaccount-button-changeemail")}
               </Button>
@@ -106,7 +106,7 @@ class MyAccount extends React.Component {
                   width: "80%",
                   m: 1,
                 }}
-                onClick={this.handleToComeModalOpen}
+                onClick={this.handleOpenToComeModal}
               >
                 {t("myaccount-button-changepassword")}
               </Button>
@@ -144,7 +144,7 @@ class MyAccount extends React.Component {
                   width: "80%",
                   m: 1,
                 }}
-                onClick={this.handleToComeModalOpen}
+                onClick={this.handleOpenToComeModal}
               >
                 {t("myaccount-button-merge")}
               </Button>
@@ -169,7 +169,7 @@ class MyAccount extends React.Component {
                   width: "80%",
                   m: 1,
                 }}
-                onClick={this.handleToComeModalOpen}
+                onClick={this.handleOpenToComeModal}
               >
                 {t("myaccount-button-anonymize")}
               </Button>
@@ -194,7 +194,7 @@ class MyAccount extends React.Component {
                   width: "80%",
                   m: 1,
                 }}
-                onClick={this.handleToComeModalOpen}
+                onClick={this.handleOpenToComeModal}
               >
                 {t("myaccount-button-close")}
               </Button>
@@ -210,9 +210,9 @@ class MyAccount extends React.Component {
   }
 
   // Handles
-  handleToComeModalOpen() {
+  handleOpenToComeModal() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("MyAccount.handleToComeModalOpen");
+      console.log("MyAccount.handleOpenToComeModal");
     }
     this.setState((prevState, props) => ({
       showToComeModal: true,

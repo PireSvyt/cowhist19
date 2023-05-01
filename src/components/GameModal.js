@@ -2,7 +2,6 @@ import * as React from "react";
 import { withTranslation } from "react-i18next";
 import {
   Button,
-  TextField,
   Box,
   Dialog,
   DialogActions,
@@ -11,27 +10,26 @@ import {
   Typography,
   Slider,
   Select,
-  NativeSelect,
+  Autocomplete,
+  TextField,
   InputLabel,
   MenuItem,
   FormControl,
 } from "@mui/material";
-import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import frLocale from "date-fns/locale/fr";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 import contracts from "../resources/contracts";
 import { apiGameDetails, apiGameSave } from "../api/game";
 import Snack from "./Snack";
+import { random_id } from "../resources/toolkit";
 
 let emptyGame = {
   _id: undefined,
-  contract: undefined,
+  contract: "",
   date: undefined,
-  attack: undefined,
-  defense: undefined,
-  outcome: undefined,
+  attack: [],
+  defense: [],
+  outcome: 0,
 };
 
 class GameModal extends React.Component {
@@ -41,6 +39,8 @@ class GameModal extends React.Component {
     }
     super(props);
     this.state = {
+      disabled: true,
+      loading: false,
       game: { ...emptyGame },
       gameDate: undefined,
       users: [],
@@ -51,10 +51,8 @@ class GameModal extends React.Component {
     // Updates
     this.updateComponentHeight = this.updateComponentHeight.bind(this);
 
-    // Helpers
-    this.getContractOptions = this.getContractOptions.bind(this);
-
     // Handles
+    this.canSave = this.canSave.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -66,18 +64,6 @@ class GameModal extends React.Component {
     }
     // i18n
     const { t } = this.props;
-
-    // Selectors
-    const ITEM_HEIGHT = 48;
-    const ITEM_PADDING_TOP = 8;
-    const MenuProps = {
-      PaperProps: {
-        style: {
-          maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-          width: 250,
-        },
-      },
-    };
 
     return (
       <div>
@@ -100,53 +86,84 @@ class GameModal extends React.Component {
                 justifyContent: "space-evenly",
               }}
             >
-              <FormControl sx={{ m: 1 }} variant="standard">
+              <FormControl variant="standard">
                 <InputLabel>{t("game-input-contract")}</InputLabel>
                 <Select
+                  name="contract"
                   value={this.state.game.contract}
                   onChange={this.handleChange}
                 >
                   {contracts.map((contract) => (
                     <MenuItem key={contract.key} value={contract.key}>
-                      {t("game-input-" + contract.key)}
+                      {t("game-label-" + contract.key)}
                     </MenuItem>
                   ))}
                 </Select>
               </FormControl>
 
-              <LocalizationProvider
-                dateAdapter={AdapterDateFns}
-                locale={frLocale}
-              >
-                <MobileDatePicker
-                  name="date"
-                  label={t("game-input-date")}
-                  value={this.state.gameDate}
-                  onChange={(newValue) => {
-                    this.setState((prevState, props) => ({
-                      gameDate: newValue,
-                    }));
-                  }}
-                  onAccept={(newValue) => {
-                    this.handleChange({
-                      target: { name: "date", value: newValue },
-                    });
-                  }}
-                  renderInput={(params) => <TextField {...params} />}
-                />
-              </LocalizationProvider>
+              <FormControl variant="standard">
+                <Autocomplete
+                  name="attack"
+                  value={this.state.game.attack}
+                  onChange={this.handleChange}
+                  options={this.props.users}
+                  multiple
+                  defaultValue={[]}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      variant="standard"
+                      label={t("game-input-attack")}
+                    />
+                  )}
+                  renderTags={(value, getTagProps) =>
+                    value.map((option, index) => (
+                      <Chip
+                        variant="outlined"
+                        label={option.pseudo}
+                        {...getTagProps({ index })}
+                      />
+                    ))
+                  }
+                >
+                  {this.props.users.map((user) => (
+                    <MenuItem key={user._id} value={user._id}>
+                      {user.pseudo}
+                    </MenuItem>
+                  ))}
+                </Autocomplete>
+              </FormControl>
 
+              <FormControl variant="standard">
+                <InputLabel>{t("game-input-defense")}</InputLabel>
+                <Select
+                  name="defense"
+                  value={this.state.game.defense}
+                  onChange={this.handleChange}
+                >
+                  {this.props.users.map((user) => (
+                    <MenuItem key={user._id} value={user._id}>
+                      {user.pseudo}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+
+              <Typography variant="caption" gutterBottom>
+                {t("game-input-outcome")}
+              </Typography>
               <Slider
                 name="outcome"
-                label={t("game-input-outcome")}
                 defaultValue={0}
-                value={this.state.game.outcome || ""}
+                value={this.state.game.outcome || 0}
                 onChange={this.handleChange}
                 valueLabelDisplay="auto"
                 step={1}
                 marks
-                min={-10}
-                max={10}
+                min={-8}
+                max={8}
+                valueLabelDisplay="on"
+                sx={{ mt: 4 }}
               />
             </Box>
           </DialogContent>
@@ -155,9 +172,14 @@ class GameModal extends React.Component {
             <Button onClick={this.handleClose}>
               {t("generic-button-close")}
             </Button>
-            <Button variant="contained" onClick={this.handleSave}>
+            <LoadingButton
+              variant="contained"
+              onClick={this.handleSave}
+              disabled={this.state.disabled}
+              loading={this.state.loading}
+            >
               {t("generic-button-save")}
-            </Button>
+            </LoadingButton>
           </DialogActions>
         </Dialog>
 
@@ -202,7 +224,7 @@ class GameModal extends React.Component {
               this.setState((prevState, props) => ({
                 game: emptyGame,
                 openSnack: true,
-                snack: t("generic-snack-errornetwork"),
+                snack: { uid: random_id(), id: "generic-snack-errornetwork" },
               }));
               this.props.callback("closeItem");
               break;
@@ -210,7 +232,7 @@ class GameModal extends React.Component {
               this.setState((prevState, props) => ({
                 game: emptyGame,
                 openSnack: true,
-                snack: t("generic-snack-errorunknown"),
+                snack: { uid: random_id(), id: "generic-snack-errorunknown" },
               }));
               this.props.callback("closeItem");
           }
@@ -223,21 +245,6 @@ class GameModal extends React.Component {
     }
   }
 
-  // Helpers
-  getContractOptions() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("GameModal.getContactOptions");
-    }
-    // i18n
-    const { t } = this.props;
-
-    let options = [];
-    contracts.forEach((contract) => {
-      options.push(t("game-label-" + contract.key));
-    });
-    return options;
-  }
-
   // Updates
   updateComponentHeight() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -248,28 +255,87 @@ class GameModal extends React.Component {
     });
   }
 
+  // Helpers
+  canSave() {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("GameModal.canSave");
+    }
+    let proceed = true;
+    let errors = [];
+    // Checks
+    if (
+      this.state.game.contract === undefined ||
+      this.state.game.contract === ""
+    ) {
+      proceed = false;
+      errors.push(" Contract undefined");
+    }
+    if (this.state.game.attack === []) {
+      proceed = false;
+      errors.push(" Attack empty");
+    }
+    if (
+      this.state.game.attack.length !==
+      contracts[this.state.game.contract]["attack"]
+    ) {
+      proceed = false;
+      errors.push(
+        " Attack incompatible with contract (" +
+          contracts[this.state.game.contract]["attack"] +
+          ")"
+      );
+    }
+    if (this.state.game.defense === []) {
+      proceed = false;
+      errors.push(" Defense empty");
+    }
+    if (
+      this.state.game.defense.length !==
+      contracts[this.state.game.contract]["defense"]
+    ) {
+      proceed = false;
+      errors.push(
+        " Defense incompatible with contract (" +
+          contracts[this.state.game.contract]["defense"] +
+          ")"
+      );
+    }
+    if (this.state.game.outcome === undefined) {
+      proceed = false;
+      errors.push(" Outcome undefined");
+    }
+    // Outcome
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("proceed " + proceed);
+    }
+    return {
+      proceed: proceed,
+      errors: errors,
+    };
+  }
+
   // Handles
   handleClose() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("GameModal.handleClose");
     }
+
     this.setState((prevState, props) => ({
       game: { ...emptyGame },
-      openSnack: true,
-      snack: t("game-snack-discarded"),
     }));
-    this.props.callback("closeItem");
+
+    this.props.callback("close");
   }
   handleChange(event, newValue) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("GameModal.handleChange");
     }
     const target = event.target;
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
+    /*if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("target.name : " + target.name);
       console.log("target.value : " + target.value);
       console.log("newValue : " + newValue);
-    }
+    }*/
     var previousGame = this.state.game;
     switch (target.name) {
       case "contract":
@@ -277,15 +343,6 @@ class GameModal extends React.Component {
           console.log("change contract : " + target.value);
         }
         previousGame.contract = target.value;
-        break;
-      case "date":
-        if (process.env.REACT_APP_DEBUG === "TRUE") {
-          console.log("change date : " + target.value);
-        }
-        previousGame.date = target.value;
-        this.setState((prevState, props) => ({
-          gameDate: previousGame.date,
-        }));
         break;
       case "attack":
         if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -311,10 +368,10 @@ class GameModal extends React.Component {
         }
     }
     // Update
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
+    /*if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("GameModal.game");
       console.log(this.state.game);
-    }
+    }*/
     this.setState((prevState, props) => ({
       game: previousGame,
     }));
@@ -322,75 +379,64 @@ class GameModal extends React.Component {
   handleSave() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("GameModal.handleSave");
-      console.log("this.state.game");
-      console.log(this.state.game);
     }
+    // i18n
+    const { t } = this.props;
+
     // Check inputs
-    let save = true;
-    let errors = [];
-    if (this.state.game.contract === undefined) {
-      save = false;
-      errors.push(" Contract undefined");
-    }
-    if (this.state.game.outcome === undefined) {
-      save = false;
-      errors.push(" Outcome undefined");
-    }
+    let { save, errors } = this.canSave();
+
     // Save or not?
-    if (errors !== [] && process.env.REACT_APP_DEBUG === "TRUE") {
+    /*if (errors !== [] && process.env.REACT_APP_DEBUG === "TRUE") {
       console.log(errors);
-    }
+    }*/
     // Post or publish
     if (save === true) {
-      if (process.env.REACT_APP_DEBUG === "TRUE") {
+      /*if (process.env.REACT_APP_DEBUG === "TRUE") {
         console.log(this.props.game);
         console.log(this.state.game);
-      }
+      }*/
       apiGameSave(this.state.game).then((res) => {
         switch (res.status) {
           case 201:
             //console.log("default");
             this.setState({
               game: emptyGame,
-              shelf: "",
               openSnack: true,
-              snack: t("game-snack-saved"),
+              snack: { uid: random_id(), id: "game-snack-saved" },
             });
-            this.props.callback("closeItem");
+            this.props.callback("close");
             break;
           case 200:
             //console.log("modified");
             this.setState((prevState, props) => ({
               game: emptyGame,
-              shelf: "",
               openSnack: true,
-              snack: t("game-snack-edited"),
+              snack: { uid: random_id(), id: "game-snack-edited" },
             }));
-            this.props.callback("closeItem");
+            this.props.callback("close");
             break;
           case 400:
             //console.log("error");
             //console.log(res);
             this.setState({
               openSnack: true,
-              snack: t("generic-snack-errornetwork"),
+              snack: { uid: random_id(), id: "generic-snack-errornetwork" },
             });
             break;
           default:
             //console.log("default");
             this.setState((prevState, props) => ({
               openSnack: true,
-              snack: t("generic-snack-errorunknown"),
+              snack: { uid: random_id(), id: "generic-snack-errorunknown" },
             }));
         }
       });
     } else {
       // Snack
-      var snack = t("generic-snack-error");
-      snack.message = t("generic-snack-error") + errors;
       this.setState((prevState, props) => ({
         openSnack: true,
-        snack: snack,
+        snack: { uid: random_id(), id: "generic-snack-error" }, //, message = (t("generic-snack-error") + errors)},
       }));
     }
   }

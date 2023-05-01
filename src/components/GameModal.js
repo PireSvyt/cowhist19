@@ -157,7 +157,6 @@ class GameModal extends React.Component {
                 defaultValue={0}
                 value={this.state.game.outcome || 0}
                 onChange={this.handleChange}
-                valueLabelDisplay="auto"
                 step={1}
                 marks
                 min={-8}

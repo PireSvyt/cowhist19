@@ -11,6 +11,9 @@ import {
   Typography,
   Slider,
   Select,
+  NativeSelect,
+  InputLabel,
+  MenuItem,
   FormControl,
 } from "@mui/material";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
@@ -97,28 +100,16 @@ class GameModal extends React.Component {
                 justifyContent: "space-evenly",
               }}
             >
-              <FormControl>
+              <FormControl sx={{ m: 1 }} variant="standard">
+                <InputLabel>{t("game-input-contract")}</InputLabel>
                 <Select
-                  name="contract"
-                  label={t("game-input-contract")}
-                  value={this.state.game.contract || ""}
+                  value={this.state.game.contract}
                   onChange={this.handleChange}
-                  renderValue={(selected) => (
-                    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                      {selected.map((value) => (
-                        <Chip
-                          key={value.key}
-                          label={t("game-label-" + value.key)}
-                        />
-                      ))}
-                    </Box>
-                  )}
-                  MenuProps={MenuProps}
                 >
                   {contracts.map((contract) => (
-                    <Typography key={contract.key} value={contract.key}>
-                      {t("game-label-" + value.key)}
-                    </Typography>
+                    <MenuItem key={contract.key} value={contract.key}>
+                      {t("game-input-" + contract.key)}
+                    </MenuItem>
                   ))}
                 </Select>
               </FormControl>
@@ -144,62 +135,6 @@ class GameModal extends React.Component {
                   renderInput={(params) => <TextField {...params} />}
                 />
               </LocalizationProvider>
-
-              <FormControl>
-                <Select
-                  name="attack"
-                  label={t("game-input-attack")}
-                  multiple
-                  value={this.state.game.attack || ""}
-                  onChange={this.handleChange}
-                  renderValue={(selected) => (
-                    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                      {selected.map((value) => (
-                        <Chip key={value} label={value} />
-                      ))}
-                    </Box>
-                  )}
-                  MenuProps={MenuProps}
-                >
-                  {this.state.users.map((name) => (
-                    <Typography
-                      key={name}
-                      value={name}
-                      style={getStyles(name, this.state.game.attack)}
-                    >
-                      {name}
-                    </Typography>
-                  ))}
-                </Select>
-              </FormControl>
-
-              <FormControl>
-                <Select
-                  name="defense"
-                  label={t("game-input-defense")}
-                  multiple
-                  value={this.state.game.defense || ""}
-                  onChange={this.handleChange}
-                  renderValue={(selected) => (
-                    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                      {selected.map((value) => (
-                        <Chip key={value} label={value} />
-                      ))}
-                    </Box>
-                  )}
-                  MenuProps={MenuProps}
-                >
-                  {this.state.users.map((name) => (
-                    <Typography
-                      key={name}
-                      value={name}
-                      style={getStyles(name, this.state.game.defense)}
-                    >
-                      {name}
-                    </Typography>
-                  ))}
-                </Select>
-              </FormControl>
 
               <Slider
                 name="outcome"

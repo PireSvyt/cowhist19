@@ -166,11 +166,6 @@ class Appbar extends React.Component {
       default:
     }
   }
-  componentDidUpdate(prevState) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Appbar.componentDidUpdate");
-    }
-  }
 
   // Helpers
 

@@ -54,7 +54,7 @@ class SignUpModal extends React.Component {
     const { t } = this.props;
 
     return (
-      <div>
+      <Box>
         <Dialog
           id="dialog_signup"
           open={this.props.open}
@@ -132,7 +132,7 @@ class SignUpModal extends React.Component {
           snack={this.state.snack}
           callback={this.handleSnack}
         />
-      </div>
+      </Box>
     );
   }
   componentDidMount() {
@@ -165,7 +165,10 @@ class SignUpModal extends React.Component {
     let proceed = true;
     let errors = [];
     // Checks
-    if (this.state.signup.pseudo === undefined || this.state.signup.pseudo === "") {
+    if (
+      this.state.signup.pseudo === undefined ||
+      this.state.signup.pseudo === ""
+    ) {
       proceed = false;
       errors.push(" Name undefined");
     }

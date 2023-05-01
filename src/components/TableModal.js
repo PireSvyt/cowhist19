@@ -63,7 +63,7 @@ class TableModal extends React.Component {
     const { t } = this.props;
 
     return (
-      <div>
+      <Box>
         <Dialog
           id="dialog_table"
           open={this.props.open}
@@ -150,7 +150,7 @@ class TableModal extends React.Component {
           callback={this.handleSnack}
           language={this.props.language}
         />
-      </div>
+      </Box>
     );
   }
   componentDidMount() {
@@ -349,6 +349,26 @@ class TableModal extends React.Component {
     // Check inputs
     let { proceed, errors } = this.canProceed();
 
+    // Add user on table create if not yet in
+    let tableToSave = this.state.table;
+    if (tableToSave._id === "") {
+      const decodedToken = jwt_decode(this.props.token);
+      let users = tableToSave.users;
+      let addCreator = true;
+      users.forEach((user) => {
+        if (user._id === decodedToken.id) {
+          addCreator = false;
+        }
+      });
+      if (addCreator) {
+        tableToSave.users.push({
+          _id: decodedToken.id,
+          pseudo: decodedToken.pseudo,
+          login: decodedToken.login,
+        });
+      }
+    }
+
     // Proceed or not?
     /*if (errors !== [] && process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("this.state.table errors");
@@ -361,7 +381,7 @@ class TableModal extends React.Component {
         loading: true,
       }));
       // API call
-      apiTableSave(this.props.token, this.state.table).then((res) => {
+      apiTableSave(this.props.token, tableToSave).then((res) => {
         /*if (process.env.REACT_APP_DEBUG === "TRUE") {
           console.log("res ");
           console.log(res);

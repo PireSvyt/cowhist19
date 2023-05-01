@@ -53,7 +53,7 @@ class SignInModal extends React.Component {
     const { t } = this.props;
 
     return (
-      <div>
+      <Box>
         <Dialog
           id="dialog_signin"
           open={this.props.open}
@@ -114,7 +114,7 @@ class SignInModal extends React.Component {
           snack={this.state.snack}
           callback={this.handleSnack}
         />
-      </div>
+      </Box>
     );
   }
   componentDidMount() {

@@ -5,10 +5,10 @@ import { Box } from "@mui/material";
 import Appbar from "../components/Appbar";
 import MyAccount from "../components/MyAccount";
 
-class Account extends React.Component {
+class AccountPage extends React.Component {
   constructor(props) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Account.constructor");
+      console.log("AccountPage.constructor");
     }
     super(props);
     this.state = {};
@@ -19,7 +19,7 @@ class Account extends React.Component {
   }
   render() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Account.render");
+      console.log("AccountPage.render");
     }
     return (
       <div>
@@ -43,7 +43,7 @@ class Account extends React.Component {
   // Handles
   handleAppbarCallback(action, details) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Account.handleLandingCallback " + action);
+      console.log("AccountPage.handleAppbarCallback " + action);
     }
     switch (action) {
       case "signedout":
@@ -57,7 +57,7 @@ class Account extends React.Component {
   }
   handleMyAccountCallback(action, details) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Account.handleMyAccountCallback " + action);
+      console.log("AccountPage.handleMyAccountCallback " + action);
     }
     switch (action) {
       default:
@@ -65,4 +65,4 @@ class Account extends React.Component {
   }
 }
 
-export default withTranslation()(Account);
+export default withTranslation()(AccountPage);

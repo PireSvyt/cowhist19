@@ -46,7 +46,7 @@ class TableModal extends React.Component {
     this.getEmptyTable = this.getEmptyTable.bind(this);
 
     // Handles
-    this.handleUserCallback = this.handleUserCallback.bind(this);
+    this.handleUserCardCallback = this.handleUserCardCallback.bind(this);
     this.handleInviteModalOpen = this.handleInviteModalOpen.bind(this);
     this.handleInviteModalCallback = this.handleInviteModalCallback.bind(this);
     this.canProceed = this.canProceed.bind(this);
@@ -63,7 +63,7 @@ class TableModal extends React.Component {
     const { t } = this.props;
 
     return (
-      <div>
+      <Box>
         <Dialog
           id="dialog_table"
           open={this.props.open}
@@ -112,9 +112,9 @@ class TableModal extends React.Component {
               <List dense={true}>
                 {this.state.table.users.map((user) => (
                   <ListItem key={"user-" + user._id}>
-                    <User
+                    <UserCard
                       user={user}
-                      callback={this.handleUserCallback}
+                      callback={this.handleUserCardCallback}
                       userid={this.state.userid}
                     />
                   </ListItem>
@@ -150,7 +150,7 @@ class TableModal extends React.Component {
           callback={this.handleSnack}
           language={this.props.language}
         />
-      </div>
+      </Box>
     );
   }
   componentDidMount() {
@@ -267,9 +267,9 @@ class TableModal extends React.Component {
       default:
     }
   }
-  handleUserCallback(action, details) {
+  handleUserCardCallback(action, details) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("TableModal.handleUserCallback " + action);
+      console.log("TableModal.handleUserCardCallback " + action);
     }
     switch (action) {
       case "userremove":
@@ -349,6 +349,26 @@ class TableModal extends React.Component {
     // Check inputs
     let { proceed, errors } = this.canProceed();
 
+    // Add user on table create if not yet in
+    let tableToSave = this.state.table;
+    if (tableToSave._id === "") {
+      const decodedToken = jwt_decode(this.props.token);
+      let users = tableToSave.users;
+      let addCreator = true;
+      users.forEach((user) => {
+        if (user._id === decodedToken.id) {
+          addCreator = false;
+        }
+      });
+      if (addCreator) {
+        tableToSave.users.push({
+          _id: decodedToken.id,
+          pseudo: decodedToken.pseudo,
+          login: decodedToken.login,
+        });
+      }
+    }
+
     // Proceed or not?
     /*if (errors !== [] && process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("this.state.table errors");
@@ -361,7 +381,7 @@ class TableModal extends React.Component {
         loading: true,
       }));
       // API call
-      apiTableSave(this.props.token, this.state.table).then((res) => {
+      apiTableSave(this.props.token, tableToSave).then((res) => {
         /*if (process.env.REACT_APP_DEBUG === "TRUE") {
           console.log("res ");
           console.log(res);
@@ -425,7 +445,7 @@ class TableModal extends React.Component {
   }
 }
 
-class User extends React.Component {
+class UserCard extends React.Component {
   constructor(props) {
     super(props);
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -436,7 +456,7 @@ class User extends React.Component {
   }
   render() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("User.render " + this.props.user._id);
+      console.log("UserCard.render " + this.props.user._id);
     }
     return (
       <Card sx={{ width: "100%", pl: "1em", pr: "1em" }}>
@@ -463,7 +483,7 @@ class User extends React.Component {
   // Handles
   handleRemoveUser() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("User.handleRemoveUser " + this.props.user._id);
+      console.log("UserCard.handleRemoveUser " + this.props.user._id);
     }
     this.props.callback("userremove", this.props.user._id);
   }

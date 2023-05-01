@@ -4,10 +4,10 @@ import { Typography, Box, Button } from "@mui/material";
 
 import ToComeModal from "../components/ToComeModal";
 
-class MyStats extends React.Component {
+class TableStats extends React.Component {
   constructor(props) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("MyStats.constructor");
+      console.log("TableStats.constructor");
     }
     super(props);
     this.state = {
@@ -19,22 +19,17 @@ class MyStats extends React.Component {
   }
   render() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("MyStats.render");
+      console.log("TableStats.render");
     }
     // i18n
     const { t } = this.props;
 
     return (
       <Box
-        hidden={this.props.open === undefined || this.props.open === false}
         sx={{
           m: 2,
         }}
       >
-        <Typography variant="h6" component="span">
-          {t("mystats-label-mystats")}
-        </Typography>
-
         <Box
           textAlign="center"
           sx={{
@@ -63,7 +58,7 @@ class MyStats extends React.Component {
   // Handlers
   handleToComeModalOpen() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("MyStats.handleToComeModalOpen");
+      console.log("TableStats.handleToComeModalOpen");
     }
     this.setState((prevState, props) => ({
       showToComeModal: true,
@@ -71,7 +66,7 @@ class MyStats extends React.Component {
   }
   handleToComeModalCallback(action) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("MyStats.handleToComeModalCallback " + action);
+      console.log("TableStats.handleToComeModalCallback " + action);
     }
     switch (action) {
       case "close":
@@ -84,4 +79,4 @@ class MyStats extends React.Component {
   }
 }
 
-export default withTranslation()(MyStats);
+export default withTranslation()(TableStats);

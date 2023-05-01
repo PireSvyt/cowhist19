@@ -30,48 +30,46 @@ class ToComeModal extends React.Component {
     const { t } = this.props;
 
     return (
-      <div>
-        <Dialog
-          id="dialog_tocome"
-          open={this.props.open}
-          onClose={this.handleClose}
-          fullWidth={true}
-        >
-          <DialogTitle>{t("tocome-title")}</DialogTitle>
-          <DialogContent>
-            <Box component="span">
-              <Paper
-                sx={{
-                  p: 2,
-                  g: 2,
-                  m: 2,
-                }}
-              >
-                <Box>
-                  <Typography variant="h5" gutterBottom>
-                    {t("tocome-label-intro")}
-                  </Typography>
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      pt: 1,
-                      whiteSpace: "pre-line",
-                    }}
-                  >
-                    {t("tocome-label-explanation")}
-                  </Typography>
-                </Box>
-              </Paper>
-            </Box>
-          </DialogContent>
+      <Dialog
+        id="dialog_tocome"
+        open={this.props.open}
+        onClose={this.handleClose}
+        fullWidth={true}
+      >
+        <DialogTitle>{t("tocome-title")}</DialogTitle>
+        <DialogContent>
+          <Box component="span">
+            <Paper
+              sx={{
+                p: 2,
+                g: 2,
+                m: 2,
+              }}
+            >
+              <Box>
+                <Typography variant="h5" gutterBottom>
+                  {t("tocome-label-intro")}
+                </Typography>
+                <Typography
+                  variant="body1"
+                  sx={{
+                    pt: 1,
+                    whiteSpace: "pre-line",
+                  }}
+                >
+                  {t("tocome-label-explanation")}
+                </Typography>
+              </Box>
+            </Paper>
+          </Box>
+        </DialogContent>
 
-          <DialogActions>
-            <Button onClick={this.handleClose}>
-              {t("generic-button-close")}
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
+        <DialogActions>
+          <Button onClick={this.handleClose}>
+            {t("generic-button-close")}
+          </Button>
+        </DialogActions>
+      </Dialog>
     );
   }
 

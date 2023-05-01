@@ -52,7 +52,7 @@ class MyTables extends React.Component {
         <List dense={true}>
           {this.props.tables.map((table) => (
             <ListItem key={"table-" + table._id}>
-              <MyTable table={table} />
+              <TableCard table={table} />
             </ListItem>
           ))}
         </List>
@@ -118,18 +118,18 @@ class MyTables extends React.Component {
   }
 }
 
-class MyTable extends React.Component {
+class TableCard extends React.Component {
   constructor(props) {
     super(props);
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("MyTable.constructor " + this.props.table._id);
+      console.log("TableCard.constructor " + this.props.table._id);
     }
     // Handlers
     this.handleOpen = this.handleOpen.bind(this);
   }
   render() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("MyTable.render " + this.props.table._id);
+      console.log("TableCard.render " + this.props.table._id);
     }
     return (
       <Card sx={{ width: "100%", p: 1 }} onClick={this.handleOpen}>
@@ -141,7 +141,7 @@ class MyTable extends React.Component {
   // Handles
   handleOpen() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("MyTable.handleOpen " + this.props.table._id);
+      console.log("TableCard.handleOpen " + this.props.table._id);
     }
     window.location = "/table/" + this.props.table._id;
   }

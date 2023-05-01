@@ -7,10 +7,10 @@ import Landing from "../components/Landing";
 import MyStats from "../components/MyStats";
 import MyTables from "../components/MyTables";
 
-class Home extends React.Component {
+class HomePage extends React.Component {
   constructor(props) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Home.constructor");
+      console.log("HomePage.constructor");
     }
     super(props);
     this.state = {};
@@ -22,7 +22,7 @@ class Home extends React.Component {
   }
   render() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Home.render");
+      console.log("HomePage.render");
     }
     return (
       <div>
@@ -51,7 +51,7 @@ class Home extends React.Component {
   // Handles
   handleAppbarCallback(action, details) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Home.handleLandingCallback " + action);
+      console.log("HomePage.handleLandingCallback " + action);
     }
     switch (action) {
       case "signedout":
@@ -62,7 +62,7 @@ class Home extends React.Component {
   }
   handleLandingCallback(action, details) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Home.handleLandingCallback " + action);
+      console.log("HomePage.handleLandingCallback " + action);
     }
     switch (action) {
       case "signedin":
@@ -73,7 +73,7 @@ class Home extends React.Component {
   }
   handleMyTablesCallback(action, details) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Home.handleMyTablesCallback " + action);
+      console.log("HomePage.handleMyTablesCallback " + action);
     }
     switch (action) {
       case "loadtable":
@@ -84,4 +84,4 @@ class Home extends React.Component {
   }
 }
 
-export default withTranslation()(Home);
+export default withTranslation()(HomePage);

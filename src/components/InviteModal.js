@@ -55,7 +55,7 @@ class InviteModal extends React.Component {
     const { t } = this.props;
 
     return (
-      <div>
+      <Box>
         <Dialog
           id="dialog_invite"
           open={this.props.open}
@@ -128,7 +128,7 @@ class InviteModal extends React.Component {
           callback={this.handleSnack}
           language={this.props.language}
         />
-      </div>
+      </Box>
     );
   }
   componentDidMount() {

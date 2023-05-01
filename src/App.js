@@ -5,9 +5,9 @@ import jwt_decode from "jwt-decode";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // https://www.geeksforgeeks.org/how-to-create-a-multi-page-website-using-react-js/
-import Home from "./pages/Home";
-import Table from "./pages/Table";
-import Account from "./pages/Account";
+import HomePage from "./pages/HomePage";
+import TablePage from "./pages/TablePage";
+import AccountPage from "./pages/AccountPage";
 import { apiAuthAssess } from "./api/auth";
 import { apiUserDetails, apiUserTables } from "./api/user";
 import { apiTableDetails } from "./api/table";
@@ -37,6 +37,7 @@ export default class App extends React.Component {
     // Handles
     this.handleHomeCallback = this.handleHomeCallback.bind(this);
     this.handleAccountCallback = this.handleAccountCallback.bind(this);
+    this.handleTableCallback = this.handleTableCallback.bind(this);
   }
   render() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -49,7 +50,7 @@ export default class App extends React.Component {
             exact
             path="/"
             element={
-              <Home
+              <HomePage
                 callback={this.handleHomeCallback}
                 signedin={this.state.signedin}
                 token={this.state.token}
@@ -57,15 +58,24 @@ export default class App extends React.Component {
               />
             }
           />
-          <Route path="/table/:id" element={<Table />} />
           <Route
             path="/account"
             element={
-              <Account
+              <AccountPage
                 callback={this.handleAccountCallback}
                 signedin={this.state.signedin}
                 token={this.state.token}
                 user={this.state.user}
+              />
+            }
+          />
+          <Route
+            path="/table/:id"
+            element={
+              <TablePage
+                callback={this.handleTableCallback}
+                signedin={this.state.signedin}
+                token={this.state.token}
               />
             }
           />
@@ -196,6 +206,17 @@ export default class App extends React.Component {
   handleAccountCallback(action, details) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("App.handleAccountCallback " + action);
+    }
+    switch (action) {
+      case "signedout":
+        this.signOut();
+        break;
+      default:
+    }
+  }
+  handleTableCallback(action, details) {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("App.handleTableCallback " + action);
     }
     switch (action) {
       case "signedout":

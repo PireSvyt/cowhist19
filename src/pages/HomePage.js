@@ -24,6 +24,9 @@ class HomePage extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("HomePage.render");
     }
+    // i18n
+    const { t } = this.props;
+
     return (
       <div>
         <Appbar
@@ -31,6 +34,7 @@ class HomePage extends React.Component {
           callback={this.handleAppbarCallback}
           token={this.props.token}
           route="home"
+          title={t("generic-product-title")}
         />
         <Box sx={{ height: 48 }} />
         <Landing
@@ -76,9 +80,6 @@ class HomePage extends React.Component {
       console.log("HomePage.handleMyTablesCallback " + action);
     }
     switch (action) {
-      case "loadtable":
-        this.props.callback("loadtable", details);
-        break;
       default:
     }
   }

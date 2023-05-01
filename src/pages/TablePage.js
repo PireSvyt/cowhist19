@@ -3,9 +3,12 @@ import { withTranslation } from "react-i18next";
 import { Box, Tabs, Tab, Fab } from "@mui/material";
 
 import Appbar from "../components/Appbar";
+import TableModal from "../components/TableModal";
 import TableStats from "../components/TableStats";
 import TableHistory from "../components/TableHistory";
 import GameModal from "../components/GameModal";
+
+import { apiTableDetails } from "../api/table";
 
 class TablePage extends React.Component {
   constructor(props) {
@@ -15,18 +18,30 @@ class TablePage extends React.Component {
     super(props);
     this.state = {
       selectedTab: 0,
+      table: {
+        _id: "",
+        name: "Table",
+        users: [],
+      },
+      users: [],
       tableHistory: [],
+      openTableModal: false,
       openGameModal: false,
       gameid: "",
     };
 
+    // Helpers
+    this.getTableDetails = this.getTableDetails.bind(this);
+
     // Handles
     this.handleAppbarCallback = this.handleAppbarCallback.bind(this);
-    this.handleChangeTab = this.handleChangeTab.bind(this);
+    this.handleTableChangeTab = this.handleTableChangeTab.bind(this);
     this.handleTableStatsCallback = this.handleTableStatsCallback.bind(this);
     this.handleTableHistoryCallback =
       this.handleTableHistoryCallback.bind(this);
-    this.handleNewGame = this.handleNewGame.bind(this);
+    this.handleOpenTableModal = this.handleOpenTableModal.bind(this);
+    this.handleTableModalCallback = this.handleTableModalCallback.bind(this);
+    this.handleOpenGameModal = this.handleOpenGameModal.bind(this);
     this.handleGameModalCallback = this.handleGameModalCallback.bind(this);
   }
   render() {
@@ -43,12 +58,13 @@ class TablePage extends React.Component {
           callback={this.handleAppbarCallback}
           token={this.props.token}
           route="table"
+          title={this.state.table.name}
         />
         <Box sx={{ height: 48 }} />
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Tabs
             value={this.state.selectedTab}
-            onChange={this.handleChangeTab}
+            onChange={this.handleTableChangeTab}
             variant="fullWidth"
           >
             <Tab
@@ -76,18 +92,51 @@ class TablePage extends React.Component {
           variant="extended"
           color="primary"
           sx={{ position: "absolute", bottom: 20, right: 20 }}
-          onClick={this.handleNewGame}
+          onClick={this.handleOpenGameModal}
         >
           {t("table-button-newgame")}
         </Fab>
+        <TableModal
+          open={this.state.openTableModal}
+          callback={this.handleTableModalCallback}
+          token={this.props.token}
+          table={this.state.table}
+        />
         <GameModal
           open={this.state.openGameModal}
           callback={this.handleGameModalCallback}
           token={this.props.token}
           gameid={this.state.gameid}
+          users={this.state.users}
         />
       </Box>
     );
+  }
+  componentDidUpdate(prevState) {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("TablePage.componentDidUpdate");
+    }
+    // Load
+    if (this.state.table._id === "") {
+      this.getTableDetails();
+    }
+  }
+
+  // Helpers
+  getTableDetails() {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("TablePage.getTableDetails ");
+    }
+    if (this.props.token !== undefined) {
+      let tableid = window.location.href.split("/table/")[1];
+      apiTableDetails(this.props.token, tableid).then((data) => {
+        console.log("TABLE PAGE TABLE DETAILS");
+        console.log(data.table);
+        this.setState((prevState, props) => ({
+          table: data.table,
+        }));
+      });
+    }
   }
 
   // Handles
@@ -102,9 +151,9 @@ class TablePage extends React.Component {
       default:
     }
   }
-  handleChangeTab(event, newTabIndex) {
+  handleTableChangeTab(event, newTabIndex) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Table.handleChangeTab " + newTabIndex);
+      console.log("Table.handleTableChangeTab " + newTabIndex);
     }
     switch (newTabIndex) {
       case 0:
@@ -141,9 +190,33 @@ class TablePage extends React.Component {
       default:
     }
   }
-  handleNewGame() {
+  handleOpenTableModal() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("TablePage.handleNewGame ");
+      console.log("TablePage.handleOpenTableModal ");
+    }
+    this.setState((prevState, props) => ({
+      openTableModal: true,
+    }));
+  }
+  handleTableModalCallback(action, details) {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("TablePage.handleTableModalCallback " + action);
+    }
+    switch (action) {
+      case "close":
+        this.setState((prevState, props) => ({
+          openTableModal: false,
+        }));
+        break;
+      case "updategames":
+        console.log("TODO updategames");
+        break;
+      default:
+    }
+  }
+  handleOpenGameModal() {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("TablePage.handleOpenGameModal ");
     }
     this.setState((prevState, props) => ({
       openGameModal: true,
@@ -155,6 +228,14 @@ class TablePage extends React.Component {
       console.log("TablePage.handleGameModalCallback " + action);
     }
     switch (action) {
+      case "close":
+        this.setState((prevState, props) => ({
+          openGameModal: false,
+        }));
+        break;
+      case "updategames":
+        console.log("TODO updategames");
+        break;
       default:
     }
   }

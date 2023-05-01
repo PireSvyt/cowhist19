@@ -7,13 +7,12 @@ export async function apiAuthSignup(user) {
     const res = await axios.post(apiURL + "/auth/signup", user);
     return res.data;
   } catch (err) {
-    let res = {
+    return {
       status: err.response.status,
       message: "error on apiAuthSignup",
       error: err,
       user: user,
     };
-    return res;
   }
 }
 
@@ -22,13 +21,12 @@ export async function apiAuthSignin(user) {
     const res = await axios.post(apiURL + "/auth/login", user);
     return res.data;
   } catch (err) {
-    let res = {
+    return {
       status: err.response.status,
       message: "error on apiAuthSignin",
       error: err,
       user: user,
     };
-    return res;
   }
 }
 
@@ -37,12 +35,18 @@ export async function apiAuthAssess(token) {
     const res = await axios.post(apiURL + "/auth/assess", { token: token });
     return res.data;
   } catch (err) {
-    let res = {
-      status: err.response.status,
-      message: "error on apiAuthAssess",
-      error: err,
-      user: user,
-    };
-    return res;
+    if (err.response.status === 404) {
+      return {
+        status: 404,
+        message: "unauthorized token",
+        error: err,
+      };
+    } else {
+      return {
+        status: err.response.status,
+        message: "error on apiAuthAssess",
+        error: err,
+      };
+    }
   }
 }

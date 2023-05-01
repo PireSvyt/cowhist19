@@ -25,7 +25,6 @@ class Appbar extends React.Component {
     const { t } = this.props;
 
     this.state = {
-      title: t("generic-product-title"),
       openMenu: false,
       menuAnchorEl: null,
       menuItems: [],
@@ -51,7 +50,7 @@ class Appbar extends React.Component {
       <AppBar position="fixed" sx={{ top: 0, bottom: "auto" }}>
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            {this.state.title}
+            {this.props.title}
           </Typography>
 
           <div hidden={!this.props.signedin || this.props.route === "account"}>
@@ -109,7 +108,6 @@ class Appbar extends React.Component {
     switch (this.props.route) {
       case "home":
         this.setState((prevState, props) => ({
-          title: t("generic-product-title"),
           menuItems: [
             {
               item: "account",
@@ -126,7 +124,6 @@ class Appbar extends React.Component {
         break;
       case "account":
         this.setState((prevState, props) => ({
-          title: t("generic-menu-account"),
           menuItems: [
             {
               item: "home",
@@ -143,7 +140,6 @@ class Appbar extends React.Component {
         break;
       case "table":
         this.setState((prevState, props) => ({
-          title: t("generic-menu-table"),
           menuItems: [
             {
               item: "home",
@@ -197,6 +193,7 @@ class Appbar extends React.Component {
     Cookies.remove("cowhist19-token");
     this.handleCloseMenu();
     this.props.callback("signedout");
+    window.location = "/";
   }
   handleToHome() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {

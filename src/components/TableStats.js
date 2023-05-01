@@ -14,7 +14,7 @@ class TableStats extends React.Component {
       showToComeModal: false,
     };
     // Handles
-    this.handleToComeModalOpen = this.handleToComeModalOpen.bind(this);
+    this.handleOpenToComeModal = this.handleOpenToComeModal.bind(this);
     this.handleToComeModalCallback = this.handleToComeModalCallback.bind(this);
   }
   render() {
@@ -42,7 +42,7 @@ class TableStats extends React.Component {
               width: "80%",
               m: 1,
             }}
-            onClick={this.handleToComeModalOpen}
+            onClick={this.handleOpenToComeModal}
           >
             {t("generic-label-tocome")}
           </Button>
@@ -56,9 +56,9 @@ class TableStats extends React.Component {
   }
 
   // Handlers
-  handleToComeModalOpen() {
+  handleOpenToComeModal() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("TableStats.handleToComeModalOpen");
+      console.log("TableStats.handleOpenToComeModal");
     }
     this.setState((prevState, props) => ({
       showToComeModal: true,

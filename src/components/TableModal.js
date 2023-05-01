@@ -47,9 +47,9 @@ class TableModal extends React.Component {
 
     // Handles
     this.handleUserCardCallback = this.handleUserCardCallback.bind(this);
-    this.handleInviteModalOpen = this.handleInviteModalOpen.bind(this);
+    this.handleOpenInviteModal = this.handleOpenInviteModal.bind(this);
     this.handleInviteModalCallback = this.handleInviteModalCallback.bind(this);
-    this.canProceed = this.canProceed.bind(this);
+    this.canSave = this.canSave.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -104,7 +104,7 @@ class TableModal extends React.Component {
                 >
                   {t("table-label-players")}
                 </Typography>
-                <IconButton sx={{ p: 2 }} onClick={this.handleInviteModalOpen}>
+                <IconButton sx={{ p: 2 }} onClick={this.handleOpenInviteModal}>
                   <AddIcon />
                 </IconButton>
               </Stack>
@@ -184,9 +184,9 @@ class TableModal extends React.Component {
   }
 
   // Helpers
-  canProceed() {
+  canSave() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("TableModal.canProceed");
+      console.log("TableModal.canSave");
     }
     let proceed = true;
     let errors = [];
@@ -230,9 +230,9 @@ class TableModal extends React.Component {
   }
 
   // handleCloseMenu
-  handleInviteModalOpen() {
+  handleOpenInviteModal() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("MyAccount.handleInviteModalOpen");
+      console.log("MyAccount.handleOpenInviteModal");
     }
     this.setState((prevState, props) => ({
       openInviteModal: true,
@@ -326,7 +326,7 @@ class TableModal extends React.Component {
       console.log(this.state.table);
     }*/
     // Check inputs
-    let { proceed, errors } = this.canProceed();
+    let { proceed, errors } = this.canSave();
     if (proceed === true) {
       this.setState((prevState, props) => ({
         table: previousTable,
@@ -347,7 +347,7 @@ class TableModal extends React.Component {
     }
 
     // Check inputs
-    let { proceed, errors } = this.canProceed();
+    let { proceed, errors } = this.canSave();
 
     // Add user on table create if not yet in
     let tableToSave = this.state.table;

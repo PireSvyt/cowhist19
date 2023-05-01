@@ -17,9 +17,9 @@ class Landing extends React.Component {
     };
 
     // Handles
-    this.handleSignupOpen = this.handleSignupOpen.bind(this);
+    this.handleOpenSignupModal = this.handleOpenSignupModal.bind(this);
     this.handleSignupCallback = this.handleSignupCallback.bind(this);
-    this.handleSigninOpen = this.handleSigninOpen.bind(this);
+    this.handleOpenSigninModal = this.handleOpenSigninModal.bind(this);
     this.handleSigninCallback = this.handleSigninCallback.bind(this);
   }
   render() {
@@ -38,10 +38,10 @@ class Landing extends React.Component {
           }}
         >
           <ButtonGroup variant="contained" size="large">
-            <Button onClick={this.handleSignupOpen} size="large">
+            <Button onClick={this.handleOpenSignupModal} size="large">
               {t("signup-button-signup")}
             </Button>
-            <Button onClick={this.handleSigninOpen} size="large">
+            <Button onClick={this.handleOpenSigninModal} size="large">
               {t("signin-button-signin")}
             </Button>
           </ButtonGroup>
@@ -66,9 +66,9 @@ class Landing extends React.Component {
   }
 
   // Handles
-  handleSignupOpen() {
+  handleOpenSignupModal() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Landing.handleSignupOpen");
+      console.log("Landing.handleOpenSignupModal");
     }
     this.setState((prevState, props) => ({
       showSignup: true,
@@ -87,9 +87,9 @@ class Landing extends React.Component {
       default:
     }
   }
-  handleSigninOpen() {
+  handleOpenSigninModal() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Landing.handleSigninOpen");
+      console.log("Landing.handleOpenSigninModal");
     }
     this.setState((prevState, props) => ({
       showSignin: true,

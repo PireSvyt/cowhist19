@@ -14,6 +14,7 @@ class TablePage extends React.Component {
     super(props);
     this.state = {
       selectedTab: 0,
+      tableHistory: [],
     };
 
     // Handles
@@ -61,7 +62,10 @@ class TablePage extends React.Component {
           <TableStats token={this.props.token} />
         </TabPanel>
         <TabPanel value={this.state.selectedTab} index={1}>
-          <TableHistory token={this.props.token} />
+          <TableHistory
+            token={this.props.token}
+            history={this.state.tableHistory}
+          />
         </TabPanel>
         <Fab
           variant="extended"

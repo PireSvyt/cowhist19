@@ -46,7 +46,7 @@ class TableModal extends React.Component {
     this.getEmptyTable = this.getEmptyTable.bind(this);
 
     // Handles
-    this.handleUserCallback = this.handleUserCallback.bind(this);
+    this.handleUserCardCallback = this.handleUserCardCallback.bind(this);
     this.handleInviteModalOpen = this.handleInviteModalOpen.bind(this);
     this.handleInviteModalCallback = this.handleInviteModalCallback.bind(this);
     this.canProceed = this.canProceed.bind(this);
@@ -112,9 +112,9 @@ class TableModal extends React.Component {
               <List dense={true}>
                 {this.state.table.users.map((user) => (
                   <ListItem key={"user-" + user._id}>
-                    <User
+                    <UserCard
                       user={user}
-                      callback={this.handleUserCallback}
+                      callback={this.handleUserCardCallback}
                       userid={this.state.userid}
                     />
                   </ListItem>
@@ -267,9 +267,9 @@ class TableModal extends React.Component {
       default:
     }
   }
-  handleUserCallback(action, details) {
+  handleUserCardCallback(action, details) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("TableModal.handleUserCallback " + action);
+      console.log("TableModal.handleUserCardCallback " + action);
     }
     switch (action) {
       case "userremove":
@@ -445,7 +445,7 @@ class TableModal extends React.Component {
   }
 }
 
-class User extends React.Component {
+class UserCard extends React.Component {
   constructor(props) {
     super(props);
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -456,7 +456,7 @@ class User extends React.Component {
   }
   render() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("User.render " + this.props.user._id);
+      console.log("UserCard.render " + this.props.user._id);
     }
     return (
       <Card sx={{ width: "100%", pl: "1em", pr: "1em" }}>
@@ -483,7 +483,7 @@ class User extends React.Component {
   // Handles
   handleRemoveUser() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("User.handleRemoveUser " + this.props.user._id);
+      console.log("UserCard.handleRemoveUser " + this.props.user._id);
     }
     this.props.callback("userremove", this.props.user._id);
   }

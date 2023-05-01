@@ -5,6 +5,7 @@ import { Box, Tabs, Tab, Fab } from "@mui/material";
 import Appbar from "../components/Appbar";
 import TableStats from "../components/TableStats";
 import TableHistory from "../components/TableHistory";
+import GameModal from "../components/GameModal";
 
 class TablePage extends React.Component {
   constructor(props) {
@@ -15,6 +16,8 @@ class TablePage extends React.Component {
     this.state = {
       selectedTab: 0,
       tableHistory: [],
+      openGameModal: false,
+      gameid: "",
     };
 
     // Handles
@@ -23,6 +26,8 @@ class TablePage extends React.Component {
     this.handleTableStatsCallback = this.handleTableStatsCallback.bind(this);
     this.handleTableHistoryCallback =
       this.handleTableHistoryCallback.bind(this);
+    this.handleNewGame = this.handleNewGame.bind(this);
+    this.handleGameModalCallback = this.handleGameModalCallback.bind(this);
   }
   render() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -71,9 +76,16 @@ class TablePage extends React.Component {
           variant="extended"
           color="primary"
           sx={{ position: "absolute", bottom: 20, right: 20 }}
+          onClick={this.handleNewGame}
         >
           {t("table-button-newgame")}
         </Fab>
+        <GameModal
+          open={this.state.openGameModal}
+          callback={this.handleGameModalCallback}
+          token={this.props.token}
+          gameid={this.state.gameid}
+        />
       </Box>
     );
   }
@@ -124,6 +136,23 @@ class TablePage extends React.Component {
   handleTableHistoryCallback(action, details) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("TablePage.handleTableHistoryCallback " + action);
+    }
+    switch (action) {
+      default:
+    }
+  }
+  handleNewGame() {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("TablePage.handleNewGame ");
+    }
+    this.setState((prevState, props) => ({
+      openGameModal: true,
+      gameid: "",
+    }));
+  }
+  handleGameModalCallback(action, details) {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("TablePage.handleGameModalCallback " + action);
     }
     switch (action) {
       default:

@@ -26,6 +26,7 @@ class TablePage extends React.Component {
       users: [],
       tableHistory: [],
       openTableModal: false,
+      tableid:"",
       openGameModal: false,
       gameid: "",
     };
@@ -59,6 +60,7 @@ class TablePage extends React.Component {
           token={this.props.token}
           route="table"
           title={this.state.table.name}
+          edittable={this.handleOpenTableModal}
         />
         <Box sx={{ height: 48 }} />
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -100,7 +102,7 @@ class TablePage extends React.Component {
           open={this.state.openTableModal}
           callback={this.handleTableModalCallback}
           token={this.props.token}
-          table={this.state.table}
+          tableid={this.state.table._id}
         />
         <GameModal
           open={this.state.openGameModal}
@@ -130,10 +132,9 @@ class TablePage extends React.Component {
     if (this.props.token !== undefined) {
       let tableid = window.location.href.split("/table/")[1];
       apiTableDetails(this.props.token, tableid).then((data) => {
-        console.log("TABLE PAGE TABLE DETAILS");
-        console.log(data.table);
         this.setState((prevState, props) => ({
           table: data.table,
+          tableid: tableid
         }));
       });
     }
@@ -195,6 +196,7 @@ class TablePage extends React.Component {
       console.log("TablePage.handleOpenTableModal ");
     }
     this.setState((prevState, props) => ({
+      tableid: this.state.table._id,
       openTableModal: true,
     }));
   }

@@ -21,7 +21,7 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 
 import InviteModal from "./InviteModal";
-import { apiTableSave } from "../api/table";
+import { apiTableSave, apiTableDetails } from "../api/table";
 import Snack from "./Snack";
 import { random_id } from "../resources/toolkit";
 
@@ -44,6 +44,7 @@ class TableModal extends React.Component {
     // Updates
     this.updateComponentHeight = this.updateComponentHeight.bind(this);
     this.getEmptyTable = this.getEmptyTable.bind(this);
+    this.getTableDetails = this.getTableDetails.bind(this)
 
     // Handles
     this.handleUserCardCallback = this.handleUserCardCallback.bind(this);
@@ -164,13 +165,23 @@ class TableModal extends React.Component {
       console.log("TableModal.componentDidUpdate");
     }
     if (this.props.token !== undefined && this.props.token !== null) {
+      // Capture userid for table creation
       if (this.state.userid === "") {
         const decodedToken = jwt_decode(this.props.token);
         this.setState((prevState, props) => ({
           userid: decodedToken.id,
         }));
       }
+      // Load table data for table edit
+      if (
+        prevState.open !== this.props.open
+      ) {
+      if (this.props.tableid !== "") {
+          this.getTableDetails()
+          }
+      }
     }
+
   }
 
   // Updates
@@ -226,6 +237,19 @@ class TableModal extends React.Component {
         name: undefined,
         users: [],
       };
+    }
+  }
+  getTableDetails() {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("TableModal.getTableDetails ");
+    }
+    if (this.props.token !== undefined) {
+      apiTableDetails(this.props.token, this.props.tableid).then((data) => {
+        this.setState((prevState, props) => ({
+          table: data.table,
+          disabled: false,
+        }));
+      });
     }
   }
 

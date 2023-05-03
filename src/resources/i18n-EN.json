@@ -23,6 +23,7 @@
   "generic-menu-home": "Home",
   "generic-menu-account": "My account",
   "generic-menu-table": "Table",
+  "generic-menu-edittable":"Edit table",
   "generic-menu-signout": "Sign out",
   "signup-title": "Sign up",
   "signup-input-repeatpassword": "Repeat password",

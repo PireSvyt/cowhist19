@@ -22,7 +22,6 @@ export default class App extends React.Component {
       token: undefined,
       userid: undefined,
       user: undefined,
-      tables: [],
     };
 
     // Helpers
@@ -51,7 +50,7 @@ export default class App extends React.Component {
                 callback={this.handleHomeCallback}
                 signedin={this.state.signedin}
                 token={this.state.token}
-                tables={this.state.tables}
+                tables={this.state.user.tables}
               />
             }
           />
@@ -133,7 +132,6 @@ export default class App extends React.Component {
     }));
     // Get user details
     this.getUserDetails(token);
-    this.getUserTables(token);
   }
   signOut() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -165,10 +163,10 @@ export default class App extends React.Component {
     }
     if (token !== undefined) {
       apiUserTables(token).then((data) => {
-        //console.log("App.getUserTables tables");
-        //console.log(data.tables);
+        let updatedUser = this.state.user
+        updatedUser.tables = data.tables
         this.setState((prevState, props) => ({
-          tables: data.tables,
+          user: user,
         }));
       });
     }

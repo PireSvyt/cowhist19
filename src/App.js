@@ -50,7 +50,7 @@ export default class App extends React.Component {
                 callback={this.handleHomeCallback}
                 signedin={this.state.signedin}
                 token={this.state.token}
-                tables={this.state.user.tables}
+                user={this.state.user}
               />
             }
           />

@@ -47,7 +47,7 @@ class TableModal extends React.Component {
     this.getTableDetails = this.getTableDetails.bind(this)
 
     // Handles
-    this.handleUserCardCallback = this.handleUserCardCallback.bind(this);
+    this.handlePlayerCardCallback = this.handlePlayerCardCallback.bind(this);
     this.handleOpenInviteModal = this.handleOpenInviteModal.bind(this);
     this.handleInviteModalCallback = this.handleInviteModalCallback.bind(this);
     this.canSave = this.canSave.bind(this);
@@ -110,17 +110,22 @@ class TableModal extends React.Component {
                 </IconButton>
               </Stack>
 
-              <List dense={true}>
-                {this.state.table.users.map((user) => (
-                  <ListItem key={"user-" + user._id}>
-                    <UserCard
-                      user={user}
-                      callback={this.handleUserCardCallback}
-                      userid={this.state.userid}
-                    />
-                  </ListItem>
-                ))}
-              </List>
+              { this.state.table === undefined ? 
+                <div/> 
+              : 
+                <List dense={true}>
+                  {this.state.table.players.map((player) => (
+                    <ListItem key={"player-" + player._id}>
+                      <PlayerCard
+                        player={player}
+                        callback={this.handlePlayerCardCallback}
+                        userid={this.state.userid}
+                      />
+                    </ListItem>
+                  ))}
+                </List> 
+              }
+              
             </Box>
           </DialogContent>
 
@@ -174,7 +179,7 @@ class TableModal extends React.Component {
       }
       // Load table data for table edit
       if (
-        prevState.open !== this.props.open
+        prevState.open !== this.props.open && this.props.open === true
       ) {
       if (this.props.tableid !== "") {
           this.getTableDetails()
@@ -224,7 +229,7 @@ class TableModal extends React.Component {
       return {
         _id: "",
         name: undefined,
-        users: [
+        players: [
           {
             _id: decodedToken._id,
             pseudo: decodedToken.pseudo,
@@ -235,7 +240,7 @@ class TableModal extends React.Component {
       return {
         _id: "",
         name: undefined,
-        users: [],
+        players: [],
       };
     }
   }
@@ -270,13 +275,13 @@ class TableModal extends React.Component {
       case "useradd":
         var previousTable = this.state.table;
         let toAdd = true;
-        previousTable.users.forEach((user) => {
-          if (user._id === details._id) {
+        previousTable.players.forEach((player) => {
+          if (player._id === details._id) {
             toAdd = false;
           }
         });
         if (toAdd) {
-          previousTable.users.push(details);
+          previousTable.players.push(details);
         }
         this.setState((prevState, props) => ({
           table: previousTable,
@@ -291,17 +296,17 @@ class TableModal extends React.Component {
       default:
     }
   }
-  handleUserCardCallback(action, details) {
+  handlePlayerCardCallback(action, details) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("TableModal.handleUserCardCallback " + action);
+      console.log("TableModal.handlePlayerCardCallback " + action);
     }
     switch (action) {
       case "userremove":
         var previousTable = this.state.table;
-        let sublist = previousTable.users.filter((user) => {
-          return user._id !== details;
+        let sublist = previousTable.players.filter((player) => {
+          return player._id !== details;
         });
-        previousTable.users = sublist;
+        previousTable.players = sublist;
         this.setState((prevState, props) => ({
           table: previousTable,
         }));
@@ -469,21 +474,21 @@ class TableModal extends React.Component {
   }
 }
 
-class UserCard extends React.Component {
+class PlayerCard extends React.Component {
   constructor(props) {
     super(props);
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("User.constructor");
+      console.log("PlayerCard.constructor");
     }
     // Handlers
     this.handleRemoveUser = this.handleRemoveUser.bind(this);
   }
   render() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("UserCard.render " + this.props.user._id);
+      console.log("PlayerCard.render " + this.props.player._id);
     }
     return (
-      <Card sx={{ width: "100%", pl: "1em", pr: "1em" }}>
+      <Card sx={{ width: "100%" }}>
         <Box
           sx={{
             display: "flex",
@@ -492,10 +497,10 @@ class UserCard extends React.Component {
             alignItems: "center",
           }}
         >
-          <Typography>{this.props.user.pseudo}</Typography>
+          <Typography>{this.props.player.pseudo}</Typography>
           <IconButton
             onClick={this.handleRemoveUser}
-            disabled={this.props.user._id === this.props.userid}
+            disabled={this.props.player._id === this.props.userid}
           >
             <RemoveCircleOutlineIcon />
           </IconButton>
@@ -507,9 +512,9 @@ class UserCard extends React.Component {
   // Handles
   handleRemoveUser() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("UserCard.handleRemoveUser " + this.props.user._id);
+      console.log("PlayerCard.handleRemoveUser " + this.props.player._id);
     }
-    this.props.callback("userremove", this.props.user._id);
+    this.props.callback("userremove", this.props.player._id);
   }
 }
 

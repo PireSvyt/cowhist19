@@ -21,12 +21,10 @@ class TablePage extends React.Component {
       table: {
         _id: "",
         name: "Table",
-        users: [],
+        players: [],
       },
-      users: [],
       tableHistory: [],
       openTableModal: false,
-      tableid:"",
       openGameModal: false,
       gameid: "",
     };
@@ -102,17 +100,20 @@ class TablePage extends React.Component {
           open={this.state.openTableModal}
           callback={this.handleTableModalCallback}
           token={this.props.token}
-          tableid={this.state.table._id}
-        />
+          tableid={this.state.table === undefined ? "" : this.state.table._id }
+        /> 
+      </Box>
+    );
+    /*
         <GameModal
           open={this.state.openGameModal}
           callback={this.handleGameModalCallback}
           token={this.props.token}
           gameid={this.state.gameid}
-          users={this.state.users}
+          players={this.state.table === undefined ? [] : this.state.table.players }
         />
-      </Box>
-    );
+    
+     */
   }
   componentDidUpdate(prevState) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -133,8 +134,7 @@ class TablePage extends React.Component {
       let tableid = window.location.href.split("/table/")[1];
       apiTableDetails(this.props.token, tableid).then((data) => {
         this.setState((prevState, props) => ({
-          table: data.table,
-          tableid: tableid
+          table: data.table
         }));
       });
     }
@@ -158,13 +158,13 @@ class TablePage extends React.Component {
     }
     switch (newTabIndex) {
       case 0:
-        //this.updateSummary();
+        //this.updateTableStats();
         this.setState({
           selectedTab: newTabIndex,
         });
         break;
       case 1:
-        //this.updateTransactions();
+        //this.updateTableHistory();
         this.setState({
           selectedTab: newTabIndex,
         });
@@ -196,7 +196,6 @@ class TablePage extends React.Component {
       console.log("TablePage.handleOpenTableModal ");
     }
     this.setState((prevState, props) => ({
-      tableid: this.state.table._id,
       openTableModal: true,
     }));
   }
@@ -206,6 +205,13 @@ class TablePage extends React.Component {
     }
     switch (action) {
       case "close":
+        this.setState((prevState, props) => ({
+          openTableModal: false,
+        }));
+        break;
+      case "totable":
+        // Reload table
+        this.getTableDetails()
         this.setState((prevState, props) => ({
           openTableModal: false,
         }));

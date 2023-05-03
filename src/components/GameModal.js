@@ -27,8 +27,7 @@ let emptyGame = {
   _id: undefined,
   contract: "",
   date: undefined,
-  attack: [],
-  defense: [],
+  players: [],
   outcome: 0,
 };
 
@@ -43,7 +42,6 @@ class GameModal extends React.Component {
       loading: false,
       game: { ...emptyGame },
       gameDate: undefined,
-      users: [],
       componentHeight: undefined,
       openSnack: false,
       snack: undefined,
@@ -104,9 +102,9 @@ class GameModal extends React.Component {
               <FormControl variant="standard">
                 <Autocomplete
                   name="attack"
-                  value={this.state.game.attack}
+                  value={ this.state.game.players.filter(player => player.role === 'attack') }
                   onChange={this.handleChange}
-                  options={this.props.users}
+                  options={this.props.players}
                   multiple
                   defaultValue={[]}
                   renderInput={(params) => (
@@ -138,7 +136,7 @@ class GameModal extends React.Component {
                 <InputLabel>{t("game-input-defense")}</InputLabel>
                 <Select
                   name="defense"
-                  value={this.state.game.defense}
+                  value={ this.state.game.players.filter(player => player.role === 'defense') }
                   onChange={this.handleChange}
                 >
                   {this.props.users.map((user) => (

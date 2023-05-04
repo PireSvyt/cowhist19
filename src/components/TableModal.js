@@ -172,7 +172,7 @@ class TableModal extends React.Component {
       if (
         prevState.open !== this.props.open && this.props.open === true
       ) {
-      if (this.props.tableid !== "") {
+      if (this.props.tableid !== "" && this.props.tableid !== undefined) {
           this.getTableDetails()
           }
       }

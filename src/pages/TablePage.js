@@ -24,6 +24,7 @@ class TablePage extends React.Component {
         players: [],
       },
       tableHistory: [],
+      tableStats: {},
       openTableModal: false,
       openGameModal: false,
       gameid: "",
@@ -81,7 +82,12 @@ class TablePage extends React.Component {
           </Tabs>
         </Box>
         <TabPanel value={this.state.selectedTab} index={0}>
-          <TableStats token={this.props.token} />
+          <TableStats 
+            token={this.props.token}
+            callback={this.handleTableStatsCallback} 
+            stats={this.state.tableStats} 
+            players={this.state.table === undefined ? [] : this.state.table.players }
+          />
         </TabPanel>
         <TabPanel value={this.state.selectedTab} index={1}>
           <TableHistory

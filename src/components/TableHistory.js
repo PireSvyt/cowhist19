@@ -43,6 +43,8 @@ class GameCard extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("GameCard.constructor " + this.props.game._id);
     }
+    // Helpers
+    this.stringifyPlayers = this.stringifyPlayers.bind(this)
     // Handlers
     this.handleOpen = this.handleOpen.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
@@ -54,34 +56,36 @@ class GameCard extends React.Component {
     // i18n
     const { t } = this.props;
 
-    function stringifyPlayers (players) {
-      let res = ""
-      // Attack
-      players.forEach(player => {
-        if (player.role === "attack") {
-          // TODO FIND ON PLAYERS _ID
-          res = res + this.props.players[player._id].pseudo + " "
-        }
-      });
-      res = res + "against "
-      // Defense
-      players.forEach(player => {
-        if (player.role === "defense") {
-          res = res + this.props.players[player._id].pseudo + " "
-        }
-      });
-      return res
-    }
-
     return (
       <Card sx={{ width: "100%", p: 1 }} >
         <Typography variant="caption" >{this.props.game.date}</Typography>
         <Typography>{this.props.game.contract}</Typography>
         <Typography>{this.props.game.outcome}</Typography>
-        <Typography variant="body2">{stringifyPlayers(this.props.game.players)}</Typography>
+        <Typography variant="body2">{this.stringifyPlayers()}</Typography>
       </Card>
     );
   }
+
+  // Hedlpers
+  stringifyPlayers () {
+      let res = ""
+      // Attack
+      this.props.game.players.forEach(actualPlayer => {
+        if (actualPlayer.role === "attack") {
+          let pseudoPlayer = this.props.players.filter(player => {return player._id === actualPlayer._id})
+          res = res + pseudoPlayer[0].pseudo + " "
+        }
+      });
+      res = res + "against "
+      // Defense
+      this.props.game.players.forEach(actualPlayer => {
+        if (actualPlayer.role === "defense") {
+          let pseudoPlayer = this.props.players.filter(player => {return player._id === actualPlayer._id})
+          res = res + pseudoPlayer[0].pseudo + " "
+        }
+      });
+      return res
+    }
 
   // Handles
   handleOpen() {

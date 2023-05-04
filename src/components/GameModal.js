@@ -25,9 +25,9 @@ import Snack from "./Snack";
 import { random_id } from "../resources/toolkit";
 
 let emptyGame = {
-  _id: undefined,
+  _id: "",
+  table: "",
   contract: "",
-  date: undefined,
   players: [],
   outcome: 0,
 };
@@ -280,7 +280,7 @@ class GameModal extends React.Component {
 
       if (this.props.gameid !== "") {
         // Load
-        apiGameDetails(this.props.game).then((res) => {
+        apiGameDetails(this.props.token, this.props.game).then((res) => {
           switch (res.status) {
             case 200:
               console.log("loaded game");
@@ -309,8 +309,10 @@ class GameModal extends React.Component {
           }
         });
       } else {
+        let game = { ...emptyGame }
+        game.table = this.props.tableid
         this.setState((prevState, props) => ({
-          game: { ...emptyGame },
+          game: game,
         }));
       }
     }

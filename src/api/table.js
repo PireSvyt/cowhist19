@@ -39,7 +39,7 @@ export async function apiTableDetails(token, id) {
 
 export async function apiTableHistory(token, id, parameters) {
   try {
-    const res = await axios.get(apiURL + "/table/history/" + id, parameters, {
+    const res = await axios.post(apiURL + "/table/history/" + id, parameters, {
       headers: { Authorization: "Bearer " + token },
     });
     return res.data;

@@ -37,7 +37,6 @@ class TableModal extends React.Component {
       loading: false,
       componentHeight: undefined,
       openInviteModal: false,
-      userid: "",
       openSnack: false,
       snack: { id: undefined },
     };
@@ -119,7 +118,6 @@ class TableModal extends React.Component {
                       <PlayerCard
                         player={player}
                         callback={this.handlePlayerCardCallback}
-                        userid={this.state.userid}
                       />
                     </ListItem>
                   ))}
@@ -170,13 +168,6 @@ class TableModal extends React.Component {
       console.log("TableModal.componentDidUpdate");
     }
     if (this.props.token !== undefined && this.props.token !== null) {
-      // Capture userid for table creation
-      if (this.state.userid === "") {
-        const decodedToken = jwt_decode(this.props.token);
-        this.setState((prevState, props) => ({
-          userid: decodedToken.id,
-        }));
-      }
       // Load table data for table edit
       if (
         prevState.open !== this.props.open && this.props.open === true
@@ -488,7 +479,7 @@ class PlayerCard extends React.Component {
       console.log("PlayerCard.render " + this.props.player._id);
     }
     return (
-      <Card sx={{ width: "100%" }}>
+      <Card sx={{ width: "100%", p: 1 }}>
         <Box
           sx={{
             display: "flex",
@@ -500,7 +491,6 @@ class PlayerCard extends React.Component {
           <Typography>{this.props.player.pseudo}</Typography>
           <IconButton
             onClick={this.handleRemoveUser}
-            disabled={this.props.player._id === this.props.userid}
           >
             <RemoveCircleOutlineIcon />
           </IconButton>

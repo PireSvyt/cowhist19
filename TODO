@@ -1,2 +1,5 @@
 GameModal
     add pseudo to getGameDetails outcome
+
+TableModal
+    saving without users leads to delete confim

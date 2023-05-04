@@ -45,23 +45,26 @@ class GameCard extends React.Component {
   
     // Hedlpers
     stringifyPlayers () {
-      let res = ""
-      // Attack
-      this.props.game.players.forEach(actualPlayer => {
-        if (actualPlayer.role === "attack") {
-          let pseudoPlayer = this.props.players.filter(player => {return player._id === actualPlayer._id})
-          res = res + pseudoPlayer[0].pseudo + " "
-        }
-      });
-      res = res + "against "
-      // Defense
-      this.props.game.players.forEach(actualPlayer => {
-        if (actualPlayer.role === "defense") {
-          let pseudoPlayer = this.props.players.filter(player => {return player._id === actualPlayer._id})
-          res = res + pseudoPlayer[0].pseudo + " "
-        }
-      });
-      return res
+        // i18n
+        const { t } = this.props;
+
+        let res = ""
+        // Attack
+        this.props.game.players.forEach(actualPlayer => {
+            if (actualPlayer.role === "attack") {
+            let pseudoPlayer = this.props.players.filter(player => {return player._id === actualPlayer._id})
+            res = res + pseudoPlayer[0].pseudo + " "
+            }
+        });
+        res = res + t("table-label-against") + " "
+        // Defense
+        this.props.game.players.forEach(actualPlayer => {
+            if (actualPlayer.role === "defense") {
+            let pseudoPlayer = this.props.players.filter(player => {return player._id === actualPlayer._id})
+            res = res + pseudoPlayer[0].pseudo + " "
+            }
+        });
+        return res
     }
     stringifyOutcome () {
       // i18n

@@ -102,9 +102,6 @@ class TablePage extends React.Component {
           token={this.props.token}
           tableid={this.state.table === undefined ? "" : this.state.table._id }
         /> 
-      </Box>
-    );
-    /*
         <GameModal
           open={this.state.openGameModal}
           callback={this.handleGameModalCallback}
@@ -112,8 +109,8 @@ class TablePage extends React.Component {
           gameid={this.state.gameid}
           players={this.state.table === undefined ? [] : this.state.table.players }
         />
-    
-     */
+      </Box>
+    );
   }
   componentDidUpdate(prevState) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {

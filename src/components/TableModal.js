@@ -96,7 +96,7 @@ class TableModal extends React.Component {
 
               <Stack direction="row" justifyContent="space-between">
                 <Typography
-                  variant="h6"
+                  variant="body1"
                   sx={{
                     pt: 2,
                     pb: 2,

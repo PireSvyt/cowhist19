@@ -499,7 +499,7 @@ class GameModal extends React.Component {
               openSnack: true,
               snack: { uid: random_id(), id: "game-snack-saved" },
             });
-            this.props.callback("close");
+            this.props.callback("updategames");
             break;
           case 200:
             //console.log("modified");
@@ -508,7 +508,7 @@ class GameModal extends React.Component {
               openSnack: true,
               snack: { uid: random_id(), id: "game-snack-saved" },
             }));
-            this.props.callback("close");
+            this.props.callback("updategames");
             break;
           case 400:
             //console.log("error");

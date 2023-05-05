@@ -35,8 +35,8 @@ class GameCard extends React.Component {
               alignItems: "center",
             }}
           >
-            <Typography sx={{ fontWeight: 'bold', pr: 1 }}>{this.props.game.contract}</Typography>
-            <Typography>{this.stringifyOutcome()}</Typography>
+            <Typography sx={{ fontWeight: 'bold' }}>{this.props.game.contract}</Typography>
+            <Typography sx={{ fontWeight: 'bold' }}>{" " + this.stringifyOutcome()}</Typography>
           </Box>        
           <Typography variant="body2">{this.stringifyPlayers()}</Typography>
         </Card>

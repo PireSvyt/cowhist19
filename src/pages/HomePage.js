@@ -46,7 +46,7 @@ class HomePage extends React.Component {
           open={this.props.signedin === true}
           callback={this.handleMyTablesCallback}
           token={this.props.token}
-          tables={this.props.tables}
+          tables={this.props.user === undefined ? [] : this.props.user.tables}
         />
       </div>
     );

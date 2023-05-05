@@ -8,7 +8,7 @@ import TableStats from "../components/TableStats";
 import TableHistory from "../components/TableHistory";
 import GameModal from "../components/GameModal";
 
-import { apiTableDetails } from "../api/table";
+import { apiTableDetails, apiTableHistory, apiTableStats } from "../api/table";
 
 class TablePage extends React.Component {
   constructor(props) {
@@ -21,10 +21,10 @@ class TablePage extends React.Component {
       table: {
         _id: "",
         name: "Table",
-        users: [],
+        players: [],
       },
-      users: [],
       tableHistory: [],
+      tableStats: {},
       openTableModal: false,
       openGameModal: false,
       gameid: "",
@@ -32,6 +32,8 @@ class TablePage extends React.Component {
 
     // Helpers
     this.getTableDetails = this.getTableDetails.bind(this);
+    this.getTableHistory = this.getTableHistory.bind(this);
+    this.getTableStats = this.getTableStats.bind(this);
 
     // Handles
     this.handleAppbarCallback = this.handleAppbarCallback.bind(this);
@@ -59,6 +61,7 @@ class TablePage extends React.Component {
           token={this.props.token}
           route="table"
           title={this.state.table.name}
+          edittable={this.handleOpenTableModal}
         />
         <Box sx={{ height: 48 }} />
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -79,19 +82,26 @@ class TablePage extends React.Component {
             />
           </Tabs>
         </Box>
-        <TabPanel value={this.state.selectedTab} index={0}>
-          <TableStats token={this.props.token} />
+        <TabPanel value={this.state.selectedTab} index={0} >
+          <TableStats 
+            token={this.props.token}
+            callback={this.handleTableStatsCallback} 
+            stats={this.state.tableStats} 
+            players={this.state.table === undefined ? [] : this.state.table.players }
+          />
         </TabPanel>
         <TabPanel value={this.state.selectedTab} index={1}>
           <TableHistory
             token={this.props.token}
+            callback={this.handleTableHistoryCallback}
             history={this.state.tableHistory}
+            players={this.state.table === undefined ? [] : this.state.table.players }
           />
         </TabPanel>
         <Fab
           variant="extended"
           color="primary"
-          sx={{ position: "absolute", bottom: 20, right: 20 }}
+          sx={{ position: "fixed", bottom: 20, right: 20 }}
           onClick={this.handleOpenGameModal}
         >
           {t("table-button-newgame")}
@@ -100,14 +110,15 @@ class TablePage extends React.Component {
           open={this.state.openTableModal}
           callback={this.handleTableModalCallback}
           token={this.props.token}
-          table={this.state.table}
-        />
+          tableid={this.state.table === undefined ? "" : this.state.table._id }
+        /> 
         <GameModal
           open={this.state.openGameModal}
           callback={this.handleGameModalCallback}
           token={this.props.token}
           gameid={this.state.gameid}
-          users={this.state.users}
+          players={this.state.table === undefined ? [] : this.state.table.players }
+          tableid={this.state.table === undefined ? "" : this.state.table._id}
         />
       </Box>
     );
@@ -119,7 +130,15 @@ class TablePage extends React.Component {
     // Load
     if (this.state.table._id === "") {
       this.getTableDetails();
+      this.getTableStats();
     }
+    /*
+    if (this.props.token !== undefined && this.state.table.players !== []) {
+      if (this.state.tableStats === {}) {
+        this.getTableStats();
+      }
+    }
+    */
   }
 
   // Helpers
@@ -130,10 +149,44 @@ class TablePage extends React.Component {
     if (this.props.token !== undefined) {
       let tableid = window.location.href.split("/table/")[1];
       apiTableDetails(this.props.token, tableid).then((data) => {
-        console.log("TABLE PAGE TABLE DETAILS");
-        console.log(data.table);
         this.setState((prevState, props) => ({
-          table: data.table,
+          table: data.table
+        }));
+      });
+    }
+  }
+  getTableHistory() {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("TablePage.getTableHistory ");
+    }
+    if (this.props.token !== undefined) {
+      let tableid = window.location.href.split("/table/")[1];
+      let parameters = {
+        "need": "list",
+        "games": {
+          "index": 0,
+          "number": 10
+        }
+      }
+      apiTableHistory(this.props.token, tableid, parameters).then((data) => {
+        this.setState((prevState, props) => ({
+          tableHistory: data.games
+        }));
+      });
+    }
+  }
+  getTableStats() {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("TablePage.getTableStats ");
+    }
+    let parameters = {
+      "need": "ranking"
+    }
+    if (this.props.token !== undefined) {
+      let tableid = window.location.href.split("/table/")[1];
+      apiTableStats(this.props.token, tableid, parameters).then((data) => {
+        this.setState((prevState, props) => ({
+          tableStats: data.stats
         }));
       });
     }
@@ -157,13 +210,13 @@ class TablePage extends React.Component {
     }
     switch (newTabIndex) {
       case 0:
-        //this.updateSummary();
+        this.getTableStats();
         this.setState({
           selectedTab: newTabIndex,
         });
         break;
       case 1:
-        //this.updateTransactions();
+        this.getTableHistory();
         this.setState({
           selectedTab: newTabIndex,
         });
@@ -187,6 +240,15 @@ class TablePage extends React.Component {
       console.log("TablePage.handleTableHistoryCallback " + action);
     }
     switch (action) {
+      case "open":
+        this.setState((prevState, props) => ({
+          gameid: details,
+          openGameModal: true,
+        }));
+      break
+      case "delete":
+        console.log("TODO DELETE GAME")
+      break
       default:
     }
   }
@@ -204,6 +266,13 @@ class TablePage extends React.Component {
     }
     switch (action) {
       case "close":
+        this.setState((prevState, props) => ({
+          openTableModal: false,
+        }));
+        break;
+      case "totable":
+        // Reload table
+        this.getTableDetails()
         this.setState((prevState, props) => ({
           openTableModal: false,
         }));
@@ -234,7 +303,18 @@ class TablePage extends React.Component {
         }));
         break;
       case "updategames":
-        console.log("TODO updategames");
+        this.setState((prevState, props) => ({
+          openGameModal: false,
+        }));
+        switch (this.state.selectedTab) {
+          case 0:
+            this.getTableStats()
+            break
+          case 1:
+            this.getTableHistory()
+            break
+          default:
+        }
         break;
       default:
     }

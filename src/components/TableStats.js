@@ -1,8 +1,6 @@
 import * as React from "react";
 import { withTranslation } from "react-i18next";
-import { Typography, Box, Button } from "@mui/material";
-
-import ToComeModal from "../components/ToComeModal";
+import { Typography, Box, List, ListItem, Card } from "@mui/material";
 
 class TableStats extends React.Component {
   constructor(props) {
@@ -10,12 +8,10 @@ class TableStats extends React.Component {
       console.log("TableStats.constructor");
     }
     super(props);
-    this.state = {
-      showToComeModal: false,
+    this.state = {      
     };
     // Handles
-    this.handleOpenToComeModal = this.handleOpenToComeModal.bind(this);
-    this.handleToComeModalCallback = this.handleToComeModalCallback.bind(this);
+
   }
   render() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -25,58 +21,81 @@ class TableStats extends React.Component {
     const { t } = this.props;
 
     return (
-      <Box
-        sx={{
-          m: 2,
-        }}
-      >
-        <Box
-          textAlign="center"
-          sx={{
-            m: 2,
-          }}
-        >
-          <Button
-            variant="outlined"
-            sx={{
-              width: "80%",
-              m: 1,
-            }}
-            onClick={this.handleOpenToComeModal}
-          >
-            {t("generic-label-tocome")}
-          </Button>
-        </Box>
-        <ToComeModal
-          open={this.state.showToComeModal}
-          callback={this.handleToComeModalCallback}
-        />
+      <Box>
+        {this.props.stats.ranking !== undefined ?
+          <List dense={true}>
+            {this.props.stats.ranking.map((player) => (
+              <ListItem key={"ranking-" + player._id}>
+                <RankingCard
+                  player={player}
+                  players={this.props.players}
+                />
+              </ListItem>
+            ))}
+          </List>
+          : 
+          <div/>
+        }
+        
       </Box>
     );
   }
 
   // Handlers
-  handleOpenToComeModal() {
+}
+class RankingCard extends React.Component {
+  constructor(props) {
+    super(props);
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("TableStats.handleOpenToComeModal");
+      console.log("RankingCard.constructor " + this.props.player._id);
     }
-    this.setState((prevState, props) => ({
-      showToComeModal: true,
-    }));
+    // Handlers
+    this.stringifyPlayer = this.stringifyPlayer.bind(this)
   }
-  handleToComeModalCallback(action) {
+  render() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("TableStats.handleToComeModalCallback " + action);
+      console.log("RankingCard.render " + this.props.player._id);
     }
-    switch (action) {
-      case "close":
-        this.setState((prevState, props) => ({
-          showToComeModal: false,
-        }));
-        break;
-      default:
-    }
+    return (
+      <Card sx={{ width: "100%", p: 1 }} onClick={this.handleOpen}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Typography sx={{ fontWeight: 'bold'}}>{this.stringifyPlayer()}</Typography>
+        <Typography sx={{ fontWeight: 'bold'}}>{"score " + parseFloat(this.props.player.scorev0).toFixed(1)}</Typography>
+      </Box>  
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-evenly",
+          alignItems: "center",
+        }}
+      >
+      <Typography>{this.props.player.games + " games"}</Typography>
+      <Typography>{parseFloat(this.props.player.ratevictory*100).toFixed(0)+"% victory"}</Typography>
+      <Typography>{parseFloat(this.props.player.rateattack*100).toFixed(0)+"% attack"}</Typography>
+      </Box> 
+      </Card>
+    );
   }
+
+  // Helpers
+  stringifyPlayer () {
+    if (this.props.players.length !== 0) {
+      return this.props.players.filter(aPlayer => this.props.player._id === aPlayer._id)[0]["pseudo"]
+    } else {
+      return "Placeholder"
+    }
+    
+  }
+
+  // Handles
 }
 
 export default withTranslation()(TableStats);

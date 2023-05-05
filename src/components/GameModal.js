@@ -15,6 +15,7 @@ import {
   InputLabel,
   MenuItem,
   FormControl,
+  Chip
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 
@@ -24,11 +25,10 @@ import Snack from "./Snack";
 import { random_id } from "../resources/toolkit";
 
 let emptyGame = {
-  _id: undefined,
+  _id: "",
+  table: "",
   contract: "",
-  date: undefined,
-  attack: [],
-  defense: [],
+  players: [],
   outcome: 0,
 };
 
@@ -43,10 +43,9 @@ class GameModal extends React.Component {
       loading: false,
       game: { ...emptyGame },
       gameDate: undefined,
-      users: [],
       componentHeight: undefined,
       openSnack: false,
-      snack: undefined,
+      snack: { uid: "", id: "generic-snack-errornetwork"},
     };
     // Updates
     this.updateComponentHeight = this.updateComponentHeight.bind(this);
@@ -104,11 +103,10 @@ class GameModal extends React.Component {
               <FormControl variant="standard">
                 <Autocomplete
                   name="attack"
-                  value={this.state.game.attack}
-                  onChange={this.handleChange}
-                  options={this.props.users}
                   multiple
-                  defaultValue={[]}
+                  disableClearable
+                  inputValue=""
+                  
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -116,6 +114,24 @@ class GameModal extends React.Component {
                       label={t("game-input-attack")}
                     />
                   )}
+
+                  options={
+                    this.props.players
+                    .filter(player => !this.state.game.players.find(
+                      actualPlayer => actualPlayer._id === player._id
+                      ))
+                  }                  
+                  getOptionLabel={(option) => option.pseudo}
+
+                  defaultValue={[]}
+                  value={ 
+                    this.state.game === undefined ? 
+                    []
+                    :
+                    this.state.game.players
+                    .filter(player => player.role === 'attack')
+                  }
+
                   renderTags={(value, getTagProps) =>
                     value.map((option, index) => (
                       <Chip
@@ -125,28 +141,82 @@ class GameModal extends React.Component {
                       />
                     ))
                   }
+
+                  onChange={(event, newValue) => {
+                    event.target = {
+                      name: "attack",
+                      value: newValue
+                    };
+                    this.handleChange(event, newValue);
+                  }}
+
                 >
-                  {this.props.users.map((user) => (
-                    <MenuItem key={user._id} value={user._id}>
-                      {user.pseudo}
+                  {this.props.players.map((player) => (
+                    <MenuItem key={player._id} value={player._id}>
+                      {player.pseudo}
                     </MenuItem>
                   ))}
                 </Autocomplete>
               </FormControl>
+              
 
               <FormControl variant="standard">
-                <InputLabel>{t("game-input-defense")}</InputLabel>
-                <Select
+                <Autocomplete
                   name="defense"
-                  value={this.state.game.defense}
-                  onChange={this.handleChange}
+                  multiple
+                  disableClearable
+                  inputValue=""
+                  
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      variant="standard"
+                      label={t("game-input-defense")}
+                    />
+                  )}
+
+                  options={
+                    this.props.players
+                    .filter(player => !this.state.game.players.find(
+                      actualPlayer => actualPlayer._id === player._id
+                      ))
+                  }                  
+                  getOptionLabel={(option) => option.pseudo}
+
+                  defaultValue={[]}
+                  value={ 
+                    this.state.game === undefined ? 
+                    []
+                    :
+                    this.state.game.players
+                    .filter(player => player.role === 'defense')
+                  }
+
+                  renderTags={(value, getTagProps) =>
+                    value.map((option, index) => (
+                      <Chip
+                        variant="outlined"
+                        label={option.pseudo}
+                        {...getTagProps({ index })}
+                      />
+                    ))
+                  }
+
+                  onChange={(event, newValue) => {
+                    event.target = {
+                      name: "defense",
+                      value: newValue
+                    };
+                    this.handleChange(event, newValue);
+                  }}
+
                 >
-                  {this.props.users.map((user) => (
-                    <MenuItem key={user._id} value={user._id}>
-                      {user.pseudo}
+                  {this.props.players.map((player) => (
+                    <MenuItem key={player._id} value={player._id}>
+                      {player.pseudo}
                     </MenuItem>
                   ))}
-                </Select>
+                </Autocomplete>
               </FormControl>
 
               <Typography variant="caption" gutterBottom>
@@ -157,7 +227,6 @@ class GameModal extends React.Component {
                 defaultValue={0}
                 value={this.state.game.outcome || 0}
                 onChange={this.handleChange}
-                valueLabelDisplay="auto"
                 step={1}
                 marks
                 min={-8}
@@ -211,11 +280,13 @@ class GameModal extends React.Component {
 
       if (this.props.gameid !== "") {
         // Load
-        apiGameDetails(this.props.game).then((res) => {
+        apiGameDetails(this.props.token, this.props.game).then((res) => {
           switch (res.status) {
             case 200:
               console.log("loaded game");
               console.log(res.game);
+              // Adding user pseudo
+              // TODO
               this.setState({
                 game: res.game,
               });
@@ -238,8 +309,10 @@ class GameModal extends React.Component {
           }
         });
       } else {
+        let game = { ...emptyGame }
+        game.table = this.props.tableid
         this.setState((prevState, props) => ({
-          game: { ...emptyGame },
+          game: game,
         }));
       }
     }
@@ -256,7 +329,7 @@ class GameModal extends React.Component {
   }
 
   // Helpers
-  canSave() {
+  canSave(game) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("GameModal.canSave");
     }
@@ -264,43 +337,33 @@ class GameModal extends React.Component {
     let errors = [];
     // Checks
     if (
-      this.state.game.contract === undefined ||
-      this.state.game.contract === ""
+      game.contract === undefined ||
+      game.contract === ""
     ) {
       proceed = false;
       errors.push(" Contract undefined");
+    } else {
+      let contract = contracts.filter(c => c.key === game.contract)[0]
+      // Contract behing defined, checking teams
+      if (game.players === []) {
+        proceed = false;
+        errors.push(" Players empty");
+      } else {
+        // Check attack
+        if (game.players
+          .filter(player => player.role === 'attack').length !== contract.attack ) {
+          proceed = false;
+          errors.push(" Not the right number of attackant(s) (" + contract.attack + ")");
+        }
+        // Check defense
+        if (game.players
+          .filter(player => player.role === 'defense').length !== contract.defense ) {
+          proceed = false;
+          errors.push(" Not the right number of defenser(s) (" + contract.defense + ")");
+        }
+      }
     }
-    if (this.state.game.attack === []) {
-      proceed = false;
-      errors.push(" Attack empty");
-    }
-    if (
-      this.state.game.attack.length !==
-      contracts[this.state.game.contract]["attack"]
-    ) {
-      proceed = false;
-      errors.push(
-        " Attack incompatible with contract (" +
-          contracts[this.state.game.contract]["attack"] +
-          ")"
-      );
-    }
-    if (this.state.game.defense === []) {
-      proceed = false;
-      errors.push(" Defense empty");
-    }
-    if (
-      this.state.game.defense.length !==
-      contracts[this.state.game.contract]["defense"]
-    ) {
-      proceed = false;
-      errors.push(
-        " Defense incompatible with contract (" +
-          contracts[this.state.game.contract]["defense"] +
-          ")"
-      );
-    }
-    if (this.state.game.outcome === undefined) {
+    if (game.outcome === undefined) {
       proceed = false;
       errors.push(" Outcome undefined");
     }
@@ -334,7 +397,8 @@ class GameModal extends React.Component {
     /*if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("target.name : " + target.name);
       console.log("target.value : " + target.value);
-      console.log("newValue : " + newValue);
+      console.log("newValue : ");
+      console.log(newValue);
     }*/
     var previousGame = this.state.game;
     switch (target.name) {
@@ -346,15 +410,33 @@ class GameModal extends React.Component {
         break;
       case "attack":
         if (process.env.REACT_APP_DEBUG === "TRUE") {
-          console.log("change attack : " + target.value);
+          console.log("change attack : ");
+          console.log(target.value);
         }
-        previousGame.attack = target.value;
+        let currentDefense = previousGame.players.filter(player => player.role === 'defense')
+        target.value.forEach(attackant => {
+          currentDefense.push({
+            _id: attackant._id,
+            pseudo: attackant.pseudo,
+            role: "attack"
+          })
+        });
+        previousGame.players = currentDefense
         break;
       case "defense":
         if (process.env.REACT_APP_DEBUG === "TRUE") {
-          console.log("change defense : " + target.value);
+          console.log("change defense : ");
+          console.log(target.value);
         }
-        previousGame.defense = target.value;
+        let currentAttack = previousGame.players.filter(player => player.role === 'attack')
+        target.value.forEach(defenser => {
+          currentAttack.push({
+            _id: defenser._id,
+            pseudo: defenser.pseudo,
+            role: "defense"
+          })
+        });
+        previousGame.players = currentAttack
         break;
       case "outcome":
         if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -372,9 +454,21 @@ class GameModal extends React.Component {
       console.log("GameModal.game");
       console.log(this.state.game);
     }*/
-    this.setState((prevState, props) => ({
-      game: previousGame,
-    }));
+    // Check inputs
+    let { proceed, errors } = this.canSave(previousGame);
+    if (proceed === true) {
+      this.setState((prevState, props) => ({
+        game: previousGame,
+        disabled: false,
+      }));
+    } else {
+      /*console.log("canSave errors")
+      console.log(errors)*/
+      this.setState((prevState, props) => ({
+        game: previousGame,
+        disabled: true,
+      }));
+    }
   }
   handleSave() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -384,19 +478,19 @@ class GameModal extends React.Component {
     const { t } = this.props;
 
     // Check inputs
-    let { save, errors } = this.canSave();
+    let canSaveResult = this.canSave(this.state.game);
 
     // Save or not?
-    /*if (errors !== [] && process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log(errors);
-    }*/
+    if (canSaveResult.errors !== [] && process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log(canSaveResult.errors);
+    }
     // Post or publish
-    if (save === true) {
-      /*if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log(this.props.game);
+    if (canSaveResult.proceed === true) {
+      if (process.env.REACT_APP_DEBUG === "TRUE") {
+        console.log("this.state.game");
         console.log(this.state.game);
-      }*/
-      apiGameSave(this.state.game).then((res) => {
+      }
+      apiGameSave(this.props.token, this.state.game).then((res) => {
         switch (res.status) {
           case 201:
             //console.log("default");
@@ -405,16 +499,16 @@ class GameModal extends React.Component {
               openSnack: true,
               snack: { uid: random_id(), id: "game-snack-saved" },
             });
-            this.props.callback("close");
+            this.props.callback("updategames");
             break;
           case 200:
             //console.log("modified");
             this.setState((prevState, props) => ({
               game: emptyGame,
               openSnack: true,
-              snack: { uid: random_id(), id: "game-snack-edited" },
+              snack: { uid: random_id(), id: "game-snack-saved" },
             }));
-            this.props.callback("close");
+            this.props.callback("updategames");
             break;
           case 400:
             //console.log("error");

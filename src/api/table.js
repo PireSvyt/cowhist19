@@ -39,7 +39,7 @@ export async function apiTableDetails(token, id) {
 
 export async function apiTableHistory(token, id, parameters) {
   try {
-    const res = await axios.get(apiURL + "/table/history/" + id, parameters, {
+    const res = await axios.post(apiURL + "/table/history/" + id, parameters, {
       headers: { Authorization: "Bearer " + token },
     });
     return res.data;
@@ -48,6 +48,25 @@ export async function apiTableHistory(token, id, parameters) {
       status: err.response.status,
       message: "error on apiTableHistory " + id,
       games: [],
+      error: err,
+    };
+    console.error(res);
+    return res;
+  }
+}
+
+export async function apiTableStats(token, id, parameters) {
+  try {
+    const res = await axios.post(apiURL + "/table/stats/" + id, parameters, {
+      headers: { Authorization: "Bearer " + token },
+    });
+    // Format
+    return res.data;
+  } catch (err) {
+    const res = {
+      status: err.response.status,
+      message: "error on apiTableStats " + id,
+      stats: {},
       error: err,
     };
     console.error(res);

@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
+import EditIcon from '@mui/icons-material/Edit';
 
 import { random_id } from "../resources/toolkit";
 
@@ -53,7 +54,18 @@ class Appbar extends React.Component {
             {this.props.title}
           </Typography>
 
-          <div hidden={!this.props.signedin || this.props.route === "account"}>
+          <Box hidden={!(this.props.route === "table")}>
+            <IconButton
+              size="large"
+              edge="end"
+              color="inherit"
+              onClick={this.props.edittable}
+            >
+              <EditIcon />
+            </IconButton>
+          </Box>
+
+          <Box hidden={!this.props.signedin || this.props.route === "account"}>
             <IconButton
               size="large"
               edge="end"
@@ -63,7 +75,7 @@ class Appbar extends React.Component {
             >
               <MenuIcon />
             </IconButton>
-          </div>
+          </Box>
           <Menu
             id="basic-menu"
             open={this.state.openMenu}
@@ -83,7 +95,7 @@ class Appbar extends React.Component {
             })}
           </Menu>
 
-          <div hidden={!(this.props.route === "account")}>
+          <Box hidden={!(this.props.route === "account")}>
             <IconButton
               size="large"
               edge="end"
@@ -92,7 +104,7 @@ class Appbar extends React.Component {
             >
               <CloseIcon />
             </IconButton>
-          </div>
+          </Box>
         </Toolbar>
       </AppBar>
     );

@@ -12,6 +12,5 @@
   "invite-snack-success": { "severity": "success" },
   "table-snack-success": { "severity": "success" },
   "game-snack-saved": { "severity": "success" },
-  "game-snack-edited": { "severity": "success" },
   "game-snack-discarded": { "severity": "info" }
 }

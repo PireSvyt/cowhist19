@@ -18,7 +18,7 @@ import apiUserInvite from "./services/apiUserInvite";
 
 // Shared
 import Snack from "../../../Snack/Snack";
-import { random_id } from "../../../../services/toolkit";
+import { random_id, validateEmail } from "../../../../services/toolkit";
 
 let emptyUser = {
   pseudo: undefined,
@@ -34,7 +34,10 @@ class InviteModal extends React.Component {
     super(props);
     this.state = {
       user: { ...emptyUser },
-      disabled: true,
+      pseudoError: false,
+      loginError: false,
+      acknowledgementError: false,
+      disabled: false,
       loading: false,
       componentHeight: undefined,
       openSnack: false,
@@ -87,6 +90,8 @@ class InviteModal extends React.Component {
                 onChange={this.handleChange}
                 autoComplete="off"
                 sx={{ mb: 1 }}
+                required
+                error={this.state.pseudoError}
               />
               <TextField
                 name="login"
@@ -96,6 +101,8 @@ class InviteModal extends React.Component {
                 onChange={this.handleChange}
                 autoComplete="off"
                 sx={{ mb: 1 }}
+                required
+                error={this.state.loginError}
               />
               <FormControlLabel
                 control={
@@ -103,9 +110,11 @@ class InviteModal extends React.Component {
                     name="acknowledgement"
                     checked={this.state.user.acknowledgement}
                     onChange={this.handleChange}
+                    required
                   />
                 }
                 label={t("invite-input-acknowledgement")}
+                error={this.state.acknowledgementError === true}
               />
             </Box>
           </DialogContent>
@@ -168,19 +177,45 @@ class InviteModal extends React.Component {
     }
     let proceed = true;
     let errors = [];
+
     // Checks
+
+    // Is pseudo empty?
     if (this.state.user.pseudo === undefined || this.state.user.pseudo === "") {
       proceed = false;
-      errors.push(" Pseudo undefined");
+      errors.push("invite-error-missingpseudo");
+      this.setState((prevState, props) => ({
+        pseudoError: true,
+      }));
     }
+
+    // Is email empty?
     if (this.state.user.login === undefined || this.state.user.login === "") {
       proceed = false;
-      errors.push(" Email undefined");
+      errors.push("invite-error-missinglogin");
+      this.setState((prevState, props) => ({
+        loginError: true,
+      }));
+    } else {
+      // Login is an email?
+      if (!validateEmail(this.state.user.login)) {
+        proceed = false;
+        errors.push("invite-error-invalidlogin");
+        this.setState((prevState, props) => ({
+          loginError: true,
+        }));
+      }
     }
+
+    // Is it acknowledged?
     if (this.state.user.acknowledgement !== true) {
       proceed = false;
-      errors.push(" Acknowledgement missing");
+      errors.push("invite-error-missingacknowledgement");
+      this.setState((prevState, props) => ({
+        acknowledgementError: true,
+      }));
     }
+
     // Outcome
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("proceed " + proceed);
@@ -199,6 +234,9 @@ class InviteModal extends React.Component {
 
     this.setState((prevState, props) => ({
       user: { ...emptyUser },
+      pseudoError: false,
+      loginError: false,
+      acknowledgementError: false,
     }));
 
     this.props.callback("close");
@@ -220,18 +258,27 @@ class InviteModal extends React.Component {
         if (process.env.REACT_APP_DEBUG === "TRUE") {
           console.log("change pseudo : " + target.value);
         }
+        this.setState((prevState, props) => ({
+          pseudoError: false,
+        }));
         previousUser.pseudo = target.value;
         break;
       case "login":
         if (process.env.REACT_APP_DEBUG === "TRUE") {
           console.log("change login : " + target.value);
         }
+        this.setState((prevState, props) => ({
+          loginError: false,
+        }));
         previousUser.login = target.value;
         break;
       case "acknowledgement":
         if (process.env.REACT_APP_DEBUG === "TRUE") {
           console.log("change acknowledgement : " + target.checked);
         }
+        this.setState((prevState, props) => ({
+          acknowledgementError: false,
+        }));
         previousUser.acknowledgement = target.checked;
         break;
       default:
@@ -245,18 +292,9 @@ class InviteModal extends React.Component {
       console.log(this.state.user);
     }*/
     // Check inputs
-    let { proceed, errors } = this.canProceed();
-    if (proceed === true) {
-      this.setState((prevState, props) => ({
-        user: previousUser,
-        disabled: false,
-      }));
-    } else {
-      this.setState((prevState, props) => ({
-        user: previousUser,
-        disabled: true,
-      }));
-    }
+    this.setState((prevState, props) => ({
+      user: previousUser,
+    }));
   }
   handleProceed() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -266,15 +304,15 @@ class InviteModal extends React.Component {
     }
 
     // Check inputs
-    let { proceed, errors } = this.canProceed();
+    let canProceedOutcome = this.canProceed();
 
     // Proceed or not?
-    /*if (errors !== [] && process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("this.state.user errors");
-      console.log(errors);
+    /*if (canProceedOutcome.errors !== [] && process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("canProceedOutcome.errors");
+      console.log(canProceedOutcome.errors);
     }*/
     // Post or publish
-    if (proceed === true) {
+    if (canProceedOutcome.proceed === true) {
       this.setState((prevState, props) => ({
         disabled: true,
         loading: true,
@@ -325,7 +363,11 @@ class InviteModal extends React.Component {
       // Snack
       this.setState((prevState, props) => ({
         openSnack: true,
-        snack: { uid: random_id(), id: "generic-snack-error", details: errors },
+        snack: {
+          uid: random_id(),
+          id: "generic-snack-error",
+          details: canProceedOutcome.errors,
+        },
       }));
     }
   }

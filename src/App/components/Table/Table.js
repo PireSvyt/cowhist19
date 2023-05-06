@@ -30,8 +30,11 @@ class Table extends React.Component {
         players: [],
         contracts: [],
       },
+      tableDetailsLoaded: false,
       tableHistory: [],
+      tableHistoryLoaded: false,
       tableStats: {},
+      tableStatsLoaded: false,
       openTableModal: false,
       openGameModal: false,
       gameid: "",
@@ -122,7 +125,6 @@ class Table extends React.Component {
           callback={this.handleTableModalCallback}
           token={this.props.token}
           tableid={this.state.table === undefined ? "" : this.state.table._id}
-          tableinput={this.state.table}
         />
         <GameModal
           open={this.state.openGameModal}
@@ -143,8 +145,12 @@ class Table extends React.Component {
     }
     // Load
     if (this.state.table._id === "") {
-      this.getTableDetails();
-      this.getTableStats();
+      if (this.state.tableDetailsLoaded === false) {
+        this.getTableDetails();
+      }
+      if (this.state.tableStatsLoaded === false) {
+        this.getTableStats();
+      }
     }
     /*
     if (this.props.token !== undefined && this.state.table.players !== []) {
@@ -165,6 +171,7 @@ class Table extends React.Component {
       apiTableDetails(this.props.token, tableid).then((data) => {
         this.setState((prevState, props) => ({
           table: data.table,
+          tableDetailsLoaded: true,
         }));
       });
     }
@@ -185,6 +192,7 @@ class Table extends React.Component {
       apiTableHistory(this.props.token, tableid, parameters).then((data) => {
         this.setState((prevState, props) => ({
           tableHistory: data.games,
+          tableHistoryLoaded: true,
         }));
       });
     }
@@ -209,6 +217,7 @@ class Table extends React.Component {
         // Store
         this.setState((prevState, props) => ({
           tableStats: stats,
+          tableStatsLoaded: true,
         }));
       });
     }

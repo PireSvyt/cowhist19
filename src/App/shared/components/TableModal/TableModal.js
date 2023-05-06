@@ -35,7 +35,8 @@ import apiTableDetails from "../../services/apiTableDetails";
 
 let emptyTable = {
   _id: "",
-  name: "Table",
+  name: "",
+  users: [],
   players: [],
   contracts: [],
 };
@@ -48,6 +49,7 @@ class TableModal extends React.Component {
     super(props);
     this.state = {
       table: { ...emptyTable },
+      loaded: false,
       nameError: false,
       disabled: false,
       loading: false,
@@ -63,6 +65,7 @@ class TableModal extends React.Component {
     // Updates
     this.updateComponentHeight = this.updateComponentHeight.bind(this);
     this.getTableDetails = this.getTableDetails.bind(this);
+    this.addUserToPlayers = this.addUserToPlayers.bind(this);
 
     // Handles
     this.handlePlayerCardCallback = this.handlePlayerCardCallback.bind(this);
@@ -196,16 +199,25 @@ class TableModal extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("TableModal.componentDidUpdate");
     }
-    if (this.props.token !== undefined && this.props.token !== null) {
-      // Load table data for table edit
-      if (prevProps.open !== this.props.open && this.props.open === true) {
-        if (this.props.tableid !== "") {
-          this.getTableDetails();
-        } else {
-          this.setState({
-            table: this.props.tableinput,
-          });
-        }
+    // Load
+    if (this.state.loaded === false) {
+      console.log("TableModal loaded = false");
+      // Load
+      if (
+        this.props.tableid !== "" &&
+        this.props.tableid !== undefined &&
+        this.props.open === true
+      ) {
+        console.log("TableModal loading from api " + this.props.tableid);
+        this.getTableDetails();
+      }
+      // Build from scratch
+      if (
+        (this.props.tableid === "" || this.props.tableid === undefined) &&
+        this.props.open === true
+      ) {
+        console.log("TableModal building from scratch");
+        this.addUserToPlayers();
       }
     }
   }
@@ -227,7 +239,10 @@ class TableModal extends React.Component {
     }
     let proceed = true;
     let errors = [];
+
     // Checks
+
+    // Missing name?
     if (this.state.table.name === undefined || this.state.table.name === "") {
       proceed = false;
       errors.push("table-error-missingname");
@@ -235,6 +250,15 @@ class TableModal extends React.Component {
         nameError: true,
       }));
     }
+
+    // Empty use list at create?
+    if (this.state.table._id === "" || this.state.table._id === undefined) {
+      if (this.state.table.players.length === 0) {
+        proceed = false;
+        errors.push("table-error-creationwithoutplayers");
+      }
+    }
+
     // Outcome
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("proceed " + proceed);
@@ -253,8 +277,34 @@ class TableModal extends React.Component {
         this.setState((prevState, props) => ({
           table: data.table,
           disabled: false,
+          loaded: true,
         }));
       });
+    }
+  }
+  addUserToPlayers() {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("TableModal.addUserToPlayers ");
+    }
+    let tableToSave = this.state.table;
+    const decodedToken = jwt_decode(this.props.token);
+
+    let addCreator = true;
+    tableToSave.players.forEach((player) => {
+      if (player._id === decodedToken.id) {
+        addCreator = false;
+      }
+    });
+    if (addCreator) {
+      tableToSave.players.push({
+        _id: decodedToken.id,
+        pseudo: decodedToken.pseudo,
+        login: decodedToken.login,
+      });
+      this.setState((prevState, props) => ({
+        table: tableToSave,
+        loaded: true,
+      }));
     }
   }
 
@@ -363,6 +413,7 @@ class TableModal extends React.Component {
     this.setState((prevState, props) => ({
       table: { ...emptyTable },
       nameError: false,
+      loaded: false,
     }));
 
     this.props.callback("close");
@@ -412,7 +463,7 @@ class TableModal extends React.Component {
     }
 
     // Check inputs
-    let canSaveOutcome = this.canSave();
+    var canSaveOutcome = this.canSave();
 
     // Proceed or not?
     /*if (canSaveOutcome.errors !== [] && process.env.REACT_APP_DEBUG === "TRUE") {
@@ -431,28 +482,14 @@ class TableModal extends React.Component {
       let tableToSave = this.state.table;
       tableToSave.users = tableToSave.players;
 
-      // Add user on table create if not yet in
-      if (tableToSave._id === "") {
-        const decodedToken = jwt_decode(this.props.token);
-        let addCreator = true;
-        tableToSave.users.forEach((user) => {
-          if (user._id === decodedToken.id) {
-            addCreator = false;
-          }
-        });
-        if (addCreator) {
-          tableToSave.users.push({
-            _id: decodedToken.id,
-            pseudo: decodedToken.pseudo,
-            login: decodedToken.login,
-          });
-        }
-      }
-
       // Delete in case of empty player list for an existing table
       if (tableToSave._id !== "") {
         if (tableToSave.users.length === 0) {
-          // Prevent proceeding to saving
+          if (process.env.REACT_APP_DEBUG === "TRUE") {
+            console.log(
+              "TableModal empty list of users for table edit, propose deletion"
+            );
+          }
           canSaveOutcome.proceed = false;
           this.setState({
             openConfirmModal: true,

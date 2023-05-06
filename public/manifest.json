@@ -1,0 +1,18 @@
+{
+    "short_name": "Cowhist19",
+    "name": "Cowhist19 webapp",
+    "description": {
+        "en": "The webapp to record your Whist games between friends!",
+        "fr": "La webapp pour suivre vos parties de Whist entre amis !"
+    },
+    "icons": [
+        {
+            "src": "favicon.ico",
+            "sizes": "64x64 32x32 24x24 16x16",
+            "type": "image/x-icon"
+        }
+    ],
+    "display": "fullscreen",
+    "lang": "en",
+    "author": "SAVOYAT Pierre"
+}

@@ -115,6 +115,9 @@
   "game-error-outcomemissmatch": "inconsistent outcome",
   "game-snack-saved": "Game saved!",
   "game-snack-discarded": "Game discarded",
+  "game-confirm-title-delete": "Sure to delete game?",
+  "game-confirm-content-delete": "You're about to delete the game.\n\nThis will delete the game and update the table accordingly.",
+  "game-snack-deleted": "Game deleted",
   "tocome-title": "To come...",
   "tocome-label-intro": "This functionality is not available yet.",
   "tocome-label-explanation": "We are delighted by your interest and propose to record it for the team to prioritize for this! \n This is anonymous ;)"

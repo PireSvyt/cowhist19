@@ -271,14 +271,14 @@ class Table extends React.Component {
       console.log("Table.handleTableHistoryCallback " + action);
     }
     switch (action) {
+      case "refresh":
+        this.getTableHistory();
+        break;
       case "open":
         this.setState((prevState, props) => ({
           gameid: details,
           openGameModal: true,
         }));
-        break;
-      case "delete":
-        console.log("TODO DELETE GAME");
         break;
       default:
     }

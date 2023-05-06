@@ -21,7 +21,7 @@ class Activation extends React.Component {
     }
     super(props);
     this.state = {
-      status: "inprogress"
+      outcome: "inprogress"
     };
 
     // Helpers
@@ -46,40 +46,42 @@ class Activation extends React.Component {
           title={t("generic-product-title")}
         />
         <Box sx={{ height: 48 }} />
-        
-        <Box 
-          hidden={ this.state.status !== "inprogress" } 
-          sx={{ m: 2,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}>
+            
+        <Box hidden={this.state.outcome !== "inprogress"} >           
+          <Box sx={{ m: 2,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}>    
           <Typography sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }} variant="h6" component="span" >
             {t("activation-label-inprogress")}
           </Typography>
-          <CircularProgress  sx={{ mt: 2, mb: 2 }}/>
+          <CircularProgress  sx={{ mt: 2, mb: 2 }}/>        
+          </Box>      
         </Box>
-      
-        <Box 
-          hidden={ this.state.status !== "error" } 
-          sx={{ m: 2,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}>
+            
+        <Box hidden={this.state.outcome !== "error"} >           
+          <Box             sx={{ m: 2,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}>    
           <Typography sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }} variant="h6" component="span">
             {t("activation-label-error")}
           </Typography>
           <ErrorOutlineIcon  sx={{ mt: 2, mb: 2 }} fontSize="large" color="error"/>
           <Typography sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }} variant="body1" component="span">
             {t("activation-label-errorexplanation")}
-          </Typography>
+          </Typography>        
+          </Box>      
         </Box>
         
-        <Box 
-          hidden={this.state.status !== "activated"} 
-          sx={{ m: 2 }}
-        >
+        <Box hidden={this.state.outcome !== "activated"} >           
+          <Box             sx={{ m: 2,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}>    
           <Typography sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }} variant="h6" component="span">
             {t("activation-label-activatedtitle")}
           </Typography>
@@ -93,20 +95,24 @@ class Activation extends React.Component {
             onClick={() => {window.location = "/";}}
           >
             {t("activation-button-tohome")}
-          </Button>
+          </Button>        
+          </Box>      
         </Box>
       
-        <Box 
-          hidden={this.state.status !== "notfound"} 
-          sx={{ m: 2 }}
-        >
-          <Typography sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }} variant="h6" component="span">
-            {t("activation-label-notfoundtitle")}
-          </Typography>
-          <SentimentVeryDissatisfiedIcon  sx={{ mt: 2, mb: 2 }} fontSize="large" color="error"/>
-          <Typography sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }} variant="body1" component="span">
-            {t("activation-label-notfoundaccountexplanations")}
-          </Typography>          
+        <Box hidden={this.state.outcome !== "notfound"} >           
+          <Box             sx={{ m: 2,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}>          
+            <Typography sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }} variant="h6" component="span">
+              {t("activation-label-notfoundtitle")}
+            </Typography>
+            <SentimentVeryDissatisfiedIcon  sx={{ mt: 2, mb: 2 }} fontSize="large" color="error"/>
+            <Typography sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }} variant="body1" component="span">
+              {t("activation-label-notfoundaccountexplanations")}
+            </Typography>          
+          </Box>        
         </Box>
       
     </Box>)
@@ -129,7 +135,7 @@ class Activation extends React.Component {
     }      
       apiActivate(regToken).then((data) => {
         this.setState((prevState, props) => ({
-          status: data.status,
+          outcome: data.outcome,
         }));
       });
   }

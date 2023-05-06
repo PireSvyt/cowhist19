@@ -44,7 +44,7 @@
   "activation-label-activatedaccountexplanations": "Your account has been successfully activated.\n\nYou can now sign in!",
   "activation-button-tohome": "To home to sign in",
   "activation-label-notfoundtitle": "Account activation impossible",
-  "activation-label-notfoundaccountexplanations": "It seems the token from the url is not valid.",
+  "activation-label-notfoundaccountexplanations": "It seems the token from the url is not valid.\n\nYou may have already activated this account?",
   "signin-title": "Sign in",
   "signin-button-signin": "Sign in",
   "signin-error-missinglogin": "missing email",

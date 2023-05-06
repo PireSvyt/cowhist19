@@ -10,7 +10,7 @@ async function apiActivate(regToken) {
     const res = {
       status: err.response.status,
       message: "error on apiActivate " + regToken,
-      games: [],
+      outcome: "error",
       error: err,
     };
     console.error(res);

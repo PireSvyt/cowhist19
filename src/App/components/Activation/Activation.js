@@ -189,6 +189,8 @@ class Activation extends React.Component {
       console.log("Activation regToken " + regToken);
     }
     apiActivate(regToken).then((data) => {
+      //console.log("Activation data ");
+      //console.log(data);
       this.setState((prevState, props) => ({
         outcome: data.outcome,
       }));

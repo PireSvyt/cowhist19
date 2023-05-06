@@ -15,7 +15,7 @@ import {
   InputLabel,
   MenuItem,
   FormControl,
-  Chip
+  Chip,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 
@@ -43,13 +43,18 @@ class GameModal extends React.Component {
     }
     super(props);
     this.state = {
-      disabled: true,
+      disabled: false,
+      contractError: false,
+      attackError: false,
+      defenseError: false,
+      outcomeError: false,
       loading: false,
       game: { ...emptyGame },
-      gameDate: undefined,
+      attackRequirement: "",
+      defenseRequirement: "",
       componentHeight: undefined,
       openSnack: false,
-      snack: { uid: "", id: "generic-snack-errornetwork"},
+      snack: { uid: "", id: "generic-snack-errornetwork" },
     };
     // Updates
     this.updateComponentHeight = this.updateComponentHeight.bind(this);
@@ -95,6 +100,7 @@ class GameModal extends React.Component {
                   name="contract"
                   value={this.state.game.contract}
                   onChange={this.handleChange}
+                  error={this.state.contractError}
                 >
                   {this.props.contracts.map((contract) => (
                     <MenuItem key={contract.key} value={contract.key}>
@@ -110,32 +116,33 @@ class GameModal extends React.Component {
                   multiple
                   disableClearable
                   inputValue=""
-                  
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       variant="standard"
-                      label={t("game-input-attack")}
+                      label={
+                        t("game-input-attack") +
+                        " " +
+                        this.state.attackRequirement
+                      }
+                      error={this.state.attackError}
                     />
                   )}
-
-                  options={
-                    this.props.players
-                    .filter(player => !this.state.game.players.find(
-                      actualPlayer => actualPlayer._id === player._id
-                      ))
-                  }                  
+                  options={this.props.players.filter(
+                    (player) =>
+                      !this.state.game.players.find(
+                        (actualPlayer) => actualPlayer._id === player._id
+                      )
+                  )}
                   getOptionLabel={(option) => option.pseudo}
-
                   defaultValue={[]}
-                  value={ 
-                    this.state.game === undefined ? 
-                    []
-                    :
-                    this.state.game.players
-                    .filter(player => player.role === 'attack')
+                  value={
+                    this.state.game === undefined
+                      ? []
+                      : this.state.game.players.filter(
+                          (player) => player.role === "attack"
+                        )
                   }
-
                   renderTags={(value, getTagProps) =>
                     value.map((option, index) => (
                       <Chip
@@ -145,15 +152,13 @@ class GameModal extends React.Component {
                       />
                     ))
                   }
-
                   onChange={(event, newValue) => {
                     event.target = {
                       name: "attack",
-                      value: newValue
+                      value: newValue,
                     };
                     this.handleChange(event, newValue);
                   }}
-
                 >
                   {this.props.players.map((player) => (
                     <MenuItem key={player._id} value={player._id}>
@@ -162,7 +167,6 @@ class GameModal extends React.Component {
                   ))}
                 </Autocomplete>
               </FormControl>
-              
 
               <FormControl variant="standard">
                 <Autocomplete
@@ -170,32 +174,33 @@ class GameModal extends React.Component {
                   multiple
                   disableClearable
                   inputValue=""
-                  
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       variant="standard"
-                      label={t("game-input-defense")}
+                      label={
+                        t("game-input-defense") +
+                        " " +
+                        this.state.defenseRequirement
+                      }
+                      error={this.state.defenseError}
                     />
                   )}
-
-                  options={
-                    this.props.players
-                    .filter(player => !this.state.game.players.find(
-                      actualPlayer => actualPlayer._id === player._id
-                      ))
-                  }                  
+                  options={this.props.players.filter(
+                    (player) =>
+                      !this.state.game.players.find(
+                        (actualPlayer) => actualPlayer._id === player._id
+                      )
+                  )}
                   getOptionLabel={(option) => option.pseudo}
-
                   defaultValue={[]}
-                  value={ 
-                    this.state.game === undefined ? 
-                    []
-                    :
-                    this.state.game.players
-                    .filter(player => player.role === 'defense')
+                  value={
+                    this.state.game === undefined
+                      ? []
+                      : this.state.game.players.filter(
+                          (player) => player.role === "defense"
+                        )
                   }
-
                   renderTags={(value, getTagProps) =>
                     value.map((option, index) => (
                       <Chip
@@ -205,15 +210,13 @@ class GameModal extends React.Component {
                       />
                     ))
                   }
-
                   onChange={(event, newValue) => {
                     event.target = {
                       name: "defense",
-                      value: newValue
+                      value: newValue,
                     };
                     this.handleChange(event, newValue);
                   }}
-
                 >
                   {this.props.players.map((player) => (
                     <MenuItem key={player._id} value={player._id}>
@@ -237,6 +240,7 @@ class GameModal extends React.Component {
                 max={8}
                 valueLabelDisplay="on"
                 sx={{ mt: 4 }}
+                color={this.state.outcomeError ? "error" : "primary"}
               />
             </Box>
           </DialogContent>
@@ -313,8 +317,8 @@ class GameModal extends React.Component {
           }
         });
       } else {
-        let game = { ...emptyGame }
-        game.table = this.props.tableid
+        let game = { ...emptyGame };
+        game.table = this.props.tableid;
         this.setState((prevState, props) => ({
           game: game,
         }));
@@ -339,38 +343,60 @@ class GameModal extends React.Component {
     }
     let proceed = true;
     let errors = [];
+
     // Checks
-    if (
-      game.contract === undefined ||
-      game.contract === ""
-    ) {
+
+    // Is contract missing?
+    if (game.contract === undefined || game.contract === "") {
       proceed = false;
-      errors.push(" Contract undefined");
+      errors.push("game-error-missingcontract");
+      this.setState((prevState, props) => ({
+        contractError: true,
+      }));
     } else {
-      let contract = this.props.contracts.filter(c => c.key === game.contract)[0]
       // Contract behing defined, checking teams
+      let contract = this.props.contracts.filter(
+        (c) => c.key === game.contract
+      )[0];
       if (game.players === []) {
         proceed = false;
         errors.push(" Players empty");
       } else {
-        // Check attack
-        if (game.players
-          .filter(player => player.role === 'attack').length !== contract.attack ) {
+        // Is attack well formed?
+        if (
+          game.players.filter((player) => player.role === "attack").length !==
+          contract.attack
+        ) {
           proceed = false;
-          errors.push(" Not the right number of attackant(s) (" + contract.attack + ")");
+          errors.push("game-error-attackmissmatch");
+          this.setState((prevState, props) => ({
+            attackError: true,
+          }));
         }
-        // Check defense
-        if (game.players
-          .filter(player => player.role === 'defense').length !== contract.defense ) {
+
+        // Is defense well formed?
+        if (
+          game.players.filter((player) => player.role === "defense").length !==
+          contract.defense
+        ) {
           proceed = false;
-          errors.push(" Not the right number of defenser(s) (" + contract.defense + ")");
+          errors.push("game-error-defensemissmatch");
+          this.setState((prevState, props) => ({
+            defenseError: true,
+          }));
+        }
+
+        // Is outcome consistent?
+        if (game.outcome + contract.folds > 13) {
+          proceed = false;
+          errors.push("game-error-outcomemissmatch");
+          this.setState((prevState, props) => ({
+            outcomeError: true,
+          }));
         }
       }
     }
-    if (game.outcome === undefined) {
-      proceed = false;
-      errors.push(" Outcome undefined");
-    }
+
     // Outcome
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("proceed " + proceed);
@@ -389,6 +415,12 @@ class GameModal extends React.Component {
 
     this.setState((prevState, props) => ({
       game: { ...emptyGame },
+      attackRequirement: "",
+      defenseRequirement: "",
+      contractError: false,
+      attackError: false,
+      defenseError: false,
+      outcomeError: false,
     }));
 
     this.props.callback("close");
@@ -411,42 +443,64 @@ class GameModal extends React.Component {
           console.log("change contract : " + target.value);
         }
         previousGame.contract = target.value;
+        // Adjust requirements
+        let contract = this.props.contracts.filter(
+          (c) => c.key === previousGame.contract
+        )[0];
+        this.setState((prevState, props) => ({
+          contractError: false,
+          attackRequirement: "(" + contract.attack + ")",
+          defenseRequirement: "(" + contract.defense + ")",
+        }));
         break;
       case "attack":
         if (process.env.REACT_APP_DEBUG === "TRUE") {
           console.log("change attack : ");
           console.log(target.value);
         }
-        let currentDefense = previousGame.players.filter(player => player.role === 'defense')
-        target.value.forEach(attackant => {
+        let currentDefense = previousGame.players.filter(
+          (player) => player.role === "defense"
+        );
+        target.value.forEach((attackant) => {
           currentDefense.push({
             _id: attackant._id,
             pseudo: attackant.pseudo,
-            role: "attack"
-          })
+            role: "attack",
+          });
         });
-        previousGame.players = currentDefense
+        previousGame.players = currentDefense;
+        this.setState((prevState, props) => ({
+          attackError: false,
+        }));
         break;
       case "defense":
         if (process.env.REACT_APP_DEBUG === "TRUE") {
           console.log("change defense : ");
           console.log(target.value);
         }
-        let currentAttack = previousGame.players.filter(player => player.role === 'attack')
-        target.value.forEach(defenser => {
+        let currentAttack = previousGame.players.filter(
+          (player) => player.role === "attack"
+        );
+        target.value.forEach((defenser) => {
           currentAttack.push({
             _id: defenser._id,
             pseudo: defenser.pseudo,
-            role: "defense"
-          })
+            role: "defense",
+          });
         });
-        previousGame.players = currentAttack
+        previousGame.players = currentAttack;
+        this.setState((prevState, props) => ({
+          defenseError: false,
+        }));
         break;
       case "outcome":
         if (process.env.REACT_APP_DEBUG === "TRUE") {
           console.log("change outcome : " + target.value);
         }
         previousGame.outcome = target.value;
+        this.setState((prevState, props) => ({
+          outcomeError: false,
+        }));
         break;
       default:
         if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -459,20 +513,9 @@ class GameModal extends React.Component {
       console.log(this.state.game);
     }*/
     // Check inputs
-    let { proceed, errors } = this.canSave(previousGame);
-    if (proceed === true) {
-      this.setState((prevState, props) => ({
-        game: previousGame,
-        disabled: false,
-      }));
-    } else {
-      /*console.log("canSave errors")
-      console.log(errors)*/
-      this.setState((prevState, props) => ({
-        game: previousGame,
-        disabled: true,
-      }));
-    }
+    this.setState((prevState, props) => ({
+      game: previousGame,
+    }));
   }
   handleSave() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -534,7 +577,11 @@ class GameModal extends React.Component {
       // Snack
       this.setState((prevState, props) => ({
         openSnack: true,
-        snack: { uid: random_id(), id: "generic-snack-error" }, //, message = (t("generic-snack-error") + errors)},
+        snack: {
+          uid: random_id(),
+          id: "generic-snack-error",
+          details: canSaveResult.errors,
+        },
       }));
     }
   }

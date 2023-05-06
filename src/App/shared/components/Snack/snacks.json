@@ -1,0 +1,17 @@
+{
+  "generic-snack-WIP": { "severity": "warning" },
+  "generic-snack-saving": { "severity": "info" },
+  "generic-snack-errornetwork": { "severity": "error" },
+  "generic-snack-errorunknown": { "severity": "error" },
+  "generic-snack-error": { "severity": "error" },
+  "signup-snack-success": { "severity": "success" },
+  "signup-snack-existinguser": { "severity": "warning" },
+  "signin-snack-unauthorized": { "severity": "error" },
+  "signin-snack-notfound": { "severity": "error" },
+  "signin-snack-success": { "severity": "success" },
+  "invite-snack-success": { "severity": "success" },
+  "table-snack-success": { "severity": "success" },
+  "table-snack-deleted": { "severity": "success" },
+  "game-snack-saved": { "severity": "success" },
+  "game-snack-discarded": { "severity": "info" }
+}

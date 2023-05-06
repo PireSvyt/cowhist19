@@ -66,7 +66,7 @@ class RankingCard extends React.Component {
           alignItems: "center",
         }}
       >
-        <Typography sx={{ fontWeight: 'bold'}}>{this.stringifyPlayer()}</Typography>
+        <Typography sx={{ fontWeight: 'bold'}} gutterBottom>{this.stringifyPlayer()}</Typography>
         <Typography sx={{ fontWeight: 'bold'}}>{"score " + parseFloat(this.props.player.scorev0).toFixed(1)}</Typography>
       </Box>  
       <Box
@@ -77,9 +77,9 @@ class RankingCard extends React.Component {
           alignItems: "center",
         }}
       >
-      <Typography>{this.props.player.games + " games"}</Typography>
-      <Typography>{parseFloat(this.props.player.ratevictory*100).toFixed(0)+"% victory"}</Typography>
-      <Typography>{parseFloat(this.props.player.rateattack*100).toFixed(0)+"% attack"}</Typography>
+      <Typography sx={{ typography: 'caption' }}>{this.props.player.games + " games"}</Typography>
+      <Typography sx={{ typography: 'caption' }}>{parseFloat(this.props.player.ratevictory*100).toFixed(0)+"% victory"}</Typography>
+      <Typography sx={{ typography: 'caption' }}>{parseFloat(this.props.player.rateattack*100).toFixed(0)+"% attack"}</Typography>
       </Box> 
       </Card>
     );

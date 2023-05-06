@@ -21,14 +21,18 @@ class TableHistory extends React.Component {
     return (
       <Box>
         <List dense={true}>
-          {this.props.history.map((game) => (
-            <ListItem key={"game-" + game._id}>
-              <GameCard
-                game={game}
-                players={this.props.players}
-              />
-            </ListItem>
-          ))}
+          {this.props.players !== [] ? 
+            this.props.history.map((game) => (
+              <ListItem key={"game-" + game._id}>
+                <GameCard
+                  game={game}
+                  players={this.props.players}
+                />
+              </ListItem>
+            ))
+            :
+            <div/>
+          }
         </List>
       </Box>
     );

@@ -120,6 +120,7 @@ class TablePage extends React.Component {
           players={this.state.table === undefined ? [] : this.state.table.players }
           tableid={this.state.table === undefined ? "" : this.state.table._id}
         />
+        <Box sx={{ height: 60 }} />
       </Box>
     );
   }
@@ -165,7 +166,7 @@ class TablePage extends React.Component {
         "need": "list",
         "games": {
           "index": 0,
-          "number": 10
+          "number": 20
         }
       }
       apiTableHistory(this.props.token, tableid, parameters).then((data) => {

@@ -2,6 +2,8 @@ import * as React from "react";
 import { withTranslation } from "react-i18next";
 import { Typography, Box, Card } from "@mui/material";
 
+import contracts from "../resources/contracts";
+
 class GameCard extends React.Component {
     constructor(props) {
       super(props);
@@ -12,6 +14,7 @@ class GameCard extends React.Component {
       // Helpers
       this.stringifyPlayers = this.stringifyPlayers.bind(this)
       this.stringifyOutcome = this.stringifyOutcome.bind(this)
+      this.stringifyDate = this.stringifyDate.bind(this)
   
       // Handlers
       this.handleOpen = this.handleOpen.bind(this);
@@ -26,18 +29,8 @@ class GameCard extends React.Component {
   
       return (
         <Card sx={{ width: "100%", p: 1 }} >
-          <Typography variant="caption" >{this.props.game.date}</Typography>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <Typography sx={{ fontWeight: 'bold' }}>{this.props.game.contract}</Typography>
-            <Typography sx={{ fontWeight: 'bold' }}>{" " + this.stringifyOutcome()}</Typography>
-          </Box>        
+          <Typography variant="caption" >{this.stringifyDate()}</Typography>
+          <Typography sx={{ fontWeight: 'bold' }}>{t("game-label-" + this.props.game.contract) + " " + this.stringifyOutcome()}</Typography>
           <Typography variant="body2">{this.stringifyPlayers()}</Typography>
         </Card>
       );
@@ -71,11 +64,18 @@ class GameCard extends React.Component {
       const { t } = this.props;
   
       if (this.props.game.outcome >= 0) {
-        return t("table-label-won") + " in +" + this.props.game.outcome
+        return t("table-label-won") + "  +" + this.props.game.outcome
       } else {
-        return t("table-label-lost") + " in " + this.props.game.outcome
+        return t("table-label-lost") + "  " + this.props.game.outcome
       }
     }
+    stringifyDate () {  
+      let date = new Date(this.props.game.date)
+      return date.toLocaleString('fr-FR')
+      //{ weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
+    }
+
+    
   
     // Handles
     handleOpen() {

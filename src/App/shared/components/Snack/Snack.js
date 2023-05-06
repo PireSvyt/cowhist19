@@ -73,7 +73,7 @@ class Snack extends React.Component {
     if (this.props.snack !== undefined) {
       if (prevState.snack.uid !== this.props.snack.uid) {
         // Add optional inputs
-        var newSnack = snacks[this.props.snack.id];
+        var newSnack = { ...snacks[this.props.snack.id] }
         if (newSnack === undefined) {
           newSnack = {
             severity: "error",
@@ -82,6 +82,7 @@ class Snack extends React.Component {
           };
         } else {
           newSnack.id = this.props.snack.id;
+          newSnack.uid = this.props.snack.uid;
           if (newSnack !== undefined) {
             if (newSnack.duration === undefined) {
               newSnack.duration = 3000;
@@ -92,8 +93,12 @@ class Snack extends React.Component {
             if (newSnack.message === undefined) {
               newSnack.message = t(this.props.snack.id);
             }
-            if (this.props.snack.details !== undefined) {
-              newSnack.message = newSnack.message + this.props.snack.details;
+            if (this.props.snack.details !== undefined && this.props.snack.details !== []) {
+              let detailedErrors = "";
+              this.props.snack.details.forEach(detail => {
+                detailedErrors = detailedErrors + t(detail) + ", ";
+              });
+              newSnack.message = newSnack.message + " " + detailedErrors.slice(0, detailedErrors.length-2);
             }
             this.setState((prevState, props) => ({
               snack: newSnack,

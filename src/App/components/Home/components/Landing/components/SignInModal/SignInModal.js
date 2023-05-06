@@ -9,6 +9,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControl
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 
@@ -17,11 +18,11 @@ import apiSignIn from "./services/apiSignIn";
 
 // Shared
 import Snack from "../../../../../../shared/components/Snack/Snack";
-import { random_id } from "../../../../../../shared/services/toolkit";
+import { random_id, validateEmail } from "../../../../../../shared/services/toolkit";
 
 let emptySignin = {
-  login: undefined,
-  password: undefined,
+  login: "",
+  password: "",
 };
 
 class SignInModal extends React.Component {
@@ -32,7 +33,9 @@ class SignInModal extends React.Component {
     super(props);
     this.state = {
       signin: { ...emptySignin },
-      disabled: true,
+      loginError: false,
+      passwordError: false,
+      disabled: false,
       loading: false,
       componentHeight: undefined,
       openSnack: false,
@@ -77,23 +80,30 @@ class SignInModal extends React.Component {
                 justifyContent: "space-evenly",
               }}
             >
-              <TextField
-                name="login"
-                label={t("generic-input-email")}
-                variant="standard"
-                value={this.state.signin.login || ""}
-                onChange={this.handleChange}
-                autoComplete="off"
-              />
-              <TextField
-                name="password"
-                label={t("generic-input-password")}
-                variant="standard"
-                value={this.state.signin.password || ""}
-                onChange={this.handleChange}
-                autoComplete="off"
-                type="password"
-              />
+              <FormControl>
+                <TextField
+                  name="login"
+                  required
+                  label={t("generic-input-email")}
+                  variant="standard"
+                  value={this.state.signin.login || ""}
+                  onChange={this.handleChange}
+                  autoComplete="off"
+                  type="email"
+                  error={this.state.loginError}
+                />
+                <TextField
+                  name="password"
+                  required
+                  label={t("generic-input-password")}
+                  variant="standard"
+                  value={this.state.signin.password || ""}
+                  onChange={this.handleChange}
+                  autoComplete="off"
+                  type="password"
+                  error={this.state.passwordError}
+                />
+              </FormControl>
             </Box>
           </DialogContent>
 
@@ -144,15 +154,36 @@ class SignInModal extends React.Component {
     }
     let proceed = true;
     let errors = [];
+
     // Checks
-    if (this.state.signin.login === undefined) {
+    
+    // Login is empty?
+    if (this.state.signin.login === "") {
       proceed = false;
-      errors.push(" Login undefined");
+      errors.push("signin-error-missinglogin");
+      this.setState((prevState, props) => ({
+        loginError: true,
+      }));
+    } else {
+      // Login is an email?
+      if ( !validateEmail(this.state.signin.login) ) {
+        proceed = false;
+        errors.push("signin-error-invalidlogin");
+        this.setState((prevState, props) => ({
+          loginError: true,
+        }));
+      }
     }
-    if (this.state.signin.password === undefined) {
+
+    // Password is empty?
+    if (this.state.signin.password === "") {
       proceed = false;
-      errors.push(" Password undefined");
+      errors.push("signin-error-missingpassword");
+      this.setState((prevState, props) => ({
+        passwordError: true,
+      }));
     }
+
     // Outcome
     /*if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("proceed " + proceed);
@@ -171,6 +202,8 @@ class SignInModal extends React.Component {
 
     this.setState((prevState, props) => ({
       signin: { ...emptySignin },
+      loginError: false,
+      passwordError: false,
     }));
 
     this.props.callback("close");
@@ -192,12 +225,18 @@ class SignInModal extends React.Component {
         if (process.env.REACT_APP_DEBUG === "TRUE") {
           console.log("change login : " + target.value);
         }
+        this.setState((prevState, props) => ({
+          loginError: false,
+        }));
         previousSignin.login = target.value;
         break;
       case "password":
         if (process.env.REACT_APP_DEBUG === "TRUE") {
           console.log("change password : " + target.value);
         }
+        this.setState((prevState, props) => ({
+          passwordError: false,
+        }));
         previousSignin.password = target.value;
         break;
       default:
@@ -211,18 +250,9 @@ class SignInModal extends React.Component {
       console.log(this.state.signin);
     }*/
     // Check inputs
-    let { proceed, errors } = this.canProceed();
-    if (proceed === true) {
-      this.setState((prevState, props) => ({
-        signin: previousSignin,
-        disabled: false,
-      }));
-    } else {
-      this.setState((prevState, props) => ({
-        signin: previousSignin,
-        disabled: true,
-      }));
-    }
+    this.setState((prevState, props) => ({
+      signin: previousSignin
+    }));
   }
   handleProceed() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -232,15 +262,15 @@ class SignInModal extends React.Component {
     }
 
     // Check inputs
-    let { proceed, errors } = this.canProceed();
+    let canProceedOutcome = this.canProceed();
 
     // Proceed or not?
-    if (!proceed && process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("this.state.signin errors");
-      console.log(errors);
+    if (!canProceedOutcome.proceed && process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("tcanProceedOutcome.errors");
+      console.log(canProceedOutcome.errors);
     }
     // Post or publish
-    if (proceed === true) {
+    if (canProceedOutcome.proceed === true) {
       this.setState((prevState, props) => ({
         disabled: true,
         loading: true,
@@ -306,7 +336,7 @@ class SignInModal extends React.Component {
       // Snack
       this.setState((prevState, props) => ({
         openSnack: true,
-        snack: { uid: random_id(), id: "generic-snack-error", details: errors },
+        snack: { uid: random_id(), id: "generic-snack-error", details: canProceedOutcome.errors },
       }));
     }
   }

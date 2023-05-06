@@ -16,7 +16,7 @@ import apiSignUp from "./services/apiSignUp";
 
 // Shared
 import Snack from "../../../../../../shared/components/Snack/Snack";
-import { random_id } from "../../../../../../shared/services/toolkit";
+import { random_id, validateEmail } from "../../../../../../shared/services/toolkit";
 
 let emptySignup = {
   pseudo: undefined,
@@ -33,7 +33,11 @@ class SignUpModal extends React.Component {
     super(props);
     this.state = {
       signup: { ...emptySignup },
-      disabled: true,
+      pseudoError: false,
+      loginError: false,
+      passwordError: false,
+      repeatPasswordError: false,
+      disabled: false,
       loading: false,
       componentHeight: undefined,
       openSnack: false,
@@ -80,37 +84,46 @@ class SignUpModal extends React.Component {
             >
               <TextField
                 name="pseudo"
+                required
                 label={t("generic-input-pseudo")}
                 variant="standard"
                 value={this.state.signup.pseudo || ""}
                 onChange={this.handleChange}
                 autoComplete="off"
+                error={this.state.pseudoError}
               />
               <TextField
                 name="login"
+                required
                 label={t("generic-input-email")}
                 variant="standard"
                 value={this.state.signup.login || ""}
                 onChange={this.handleChange}
                 autoComplete="off"
+                type="email"
+                error={this.state.loginError}
               />
               <TextField
                 name="password1"
+                required
                 label={t("generic-input-password")}
                 variant="standard"
                 value={this.state.signup.password1 || ""}
                 onChange={this.handleChange}
                 autoComplete="off"
                 type="password"
+                error={this.state.passwordError}
               />
               <TextField
                 name="password2"
+                required
                 label={t("signup-input-repeatpassword")}
                 variant="standard"
                 value={this.state.signup.password2 || ""}
                 onChange={this.handleChange}
                 autoComplete="off"
                 type="password"
+                error={this.state.repeatPasswordError}
               />
             </Box>
           </DialogContent>
@@ -160,41 +173,77 @@ class SignUpModal extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("SignUpModal.canProceed");
     }
-    let proceed = true;
-    let errors = [];
+    var proceed = true;
+    var errors = [];
+
     // Checks
+
+    // Pseudo is empty?
     if (
       this.state.signup.pseudo === undefined ||
       this.state.signup.pseudo === ""
     ) {
       proceed = false;
-      errors.push(" Name undefined");
+      errors.push("signup-error-missingpseudo");
+      this.setState((prevState, props) => ({
+        pseudoError: true,
+      }));
     }
+
+    // Login is empty?
     if (
       this.state.signup.login === undefined ||
       this.state.signup.login === ""
     ) {
       proceed = false;
-      errors.push(" Login undefined");
+      errors.push("signup-error-missinglogin");
+      this.setState((prevState, props) => ({
+        loginError: true,
+      }));
+    } else {
+      // Login is an email?
+      if ( !validateEmail(this.state.signup.login) ) {
+        proceed = false;
+        errors.push("signup-error-invalidlogin");
+        this.setState((prevState, props) => ({
+          loginError: true,
+        }));
+      }
     }
+
+    // Password is empty?
     if (
       this.state.signup.password1 === undefined ||
       this.state.signup.password1 === ""
     ) {
       proceed = false;
-      errors.push(" Password 1 undefined");
+      errors.push("signup-error-missingpassword");
+      this.setState((prevState, props) => ({
+        passwordError: true,
+      }));
     }
+    
+    // Repeated password is empty?
     if (
       this.state.signup.password2 === undefined ||
       this.state.signup.password2 === ""
     ) {
       proceed = false;
-      errors.push(" Password 2 undefined");
+      errors.push("signup-error-missingrepeatpassword");
+      this.setState((prevState, props) => ({
+        repeatPasswordError: true,
+      }));
+    } else {
+      // Password match?
+      if (this.state.signup.password1 !== this.state.signup.password2) {
+        proceed = false;
+        errors.push("signup-error-passwordmissmatch");
+        this.setState((prevState, props) => ({
+          repeatPasswordError: true,
+        }));
+      }      
     }
-    if (this.state.signup.password1 !== this.state.signup.password2) {
-      proceed = false;
-      errors.push(" Password mismatch");
-    }
+
     // Outcome
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("proceed " + proceed);
@@ -213,6 +262,10 @@ class SignUpModal extends React.Component {
 
     this.setState((prevState, props) => ({
       signup: { ...emptySignup },
+      pseudoError: false,
+      loginError: false,
+      passwordError: false,
+      repeatPasswordError: false,
     }));
 
     this.props.callback("close");
@@ -234,24 +287,36 @@ class SignUpModal extends React.Component {
         if (process.env.REACT_APP_DEBUG === "TRUE") {
           console.log("change pseudo : " + target.value);
         }
+        this.setState((prevState, props) => ({
+          pseudoError: false,
+        }));
         previousSignup.pseudo = target.value;
         break;
       case "login":
         if (process.env.REACT_APP_DEBUG === "TRUE") {
           console.log("change login : " + target.value);
         }
+        this.setState((prevState, props) => ({
+          loginError: false,
+        }));
         previousSignup.login = target.value;
         break;
       case "password1":
         if (process.env.REACT_APP_DEBUG === "TRUE") {
           console.log("change password1 : " + target.value);
         }
+        this.setState((prevState, props) => ({
+          passwordError: false,
+        }));
         previousSignup.password1 = target.value;
         break;
       case "password2":
         if (process.env.REACT_APP_DEBUG === "TRUE") {
           console.log("change password2 : " + target.value);
         }
+        this.setState((prevState, props) => ({
+          repeatPasswordError: false,
+        }));
         previousSignup.password2 = target.value;
         break;
       default:
@@ -265,36 +330,27 @@ class SignUpModal extends React.Component {
       console.log(this.state.signup);
     }*/
     // Check inputs
-    let { proceed, errors } = this.canProceed();
-    if (proceed === true) {
-      this.setState((prevState, props) => ({
-        signup: previousSignup,
-        disabled: false,
-      }));
-    } else {
-      this.setState((prevState, props) => ({
-        signup: previousSignup,
-        disabled: true,
-      }));
-    }
+    this.setState((prevState, props) => ({
+      signup: previousSignup
+    }));
   }
   handleProceed() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("SignUpModal.handleProceed");
-      console.log("this.state.signup");
-      console.log(this.state.signup);
+      //console.log("this.state.signup");
+      //console.log(this.state.signup);
     }
 
     // Check inputs
-    let { proceed, errors } = this.canProceed();
+    let canProceedOutcome = this.canProceed();
 
     // Proceed or not?
-    if (errors !== [] && process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("this.state.signup errors");
-      console.log(errors);
+    if (!canProceedOutcome.proceed && process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("canProceedOutcome.errors");
+      console.log(canProceedOutcome.errors);
     }
     // Post or publish
-    if (proceed === true) {
+    if (canProceedOutcome.proceed === true) {
       this.setState((prevState, props) => ({
         disabled: true,
         loading: true,
@@ -361,7 +417,7 @@ class SignUpModal extends React.Component {
       // Snack
       this.setState((prevState, props) => ({
         openSnack: true,
-        snack: { uid: random_id(), id: "generic-snack-error", details: errors },
+        snack: { uid: random_id(), id: "generic-snack-error", details: canProceedOutcome.errors },
       }));
     }
   }

@@ -88,7 +88,12 @@ class RankingCard extends React.Component {
   // Helpers
   stringifyPlayer () {
     if (this.props.players.length !== 0) {
-      return this.props.players.filter(aPlayer => this.props.player._id === aPlayer._id)[0]["pseudo"]
+      let pseudolist = this.props.players.filter(p => this.props.player._id === p._id)
+      if (pseudolist.length > 0) {
+        return pseudolist[0]["pseudo"]
+      } else {
+        return "Placeholder"
+      }
     } else {
       return "Placeholder"
     }

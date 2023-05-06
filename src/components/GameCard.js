@@ -45,16 +45,24 @@ class GameCard extends React.Component {
         // Attack
         this.props.game.players.forEach(actualPlayer => {
             if (actualPlayer.role === "attack") {
-            let pseudoPlayer = this.props.players.filter(player => {return player._id === actualPlayer._id})
-            res = res + pseudoPlayer[0].pseudo + " "
+              let pseudoPlayer = this.props.players.filter(player => {return player._id === actualPlayer._id})
+              if (pseudoPlayer.length > 0) {
+                res = res + pseudoPlayer[0].pseudo + ", "
+              } else {
+                res = res + "a removed user, "
+              }
             }
         });
         res = res + t("table-label-against") + " "
         // Defense
         this.props.game.players.forEach(actualPlayer => {
             if (actualPlayer.role === "defense") {
-            let pseudoPlayer = this.props.players.filter(player => {return player._id === actualPlayer._id})
-            res = res + pseudoPlayer[0].pseudo + " "
+              let pseudoPlayer = this.props.players.filter(player => {return player._id === actualPlayer._id})
+              if (pseudoPlayer.length > 0) {
+                res = res + pseudoPlayer[0].pseudo + ", "
+              } else {
+                res = res + "a removed user, "
+              }
             }
         });
         return res

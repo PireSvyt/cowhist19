@@ -183,11 +183,17 @@ class TablePage extends React.Component {
     let parameters = {
       "need": "ranking"
     }
-    if (this.props.token !== undefined) {
+    if (this.props.token !== undefined && this.state.table.players !== []) {
       let tableid = window.location.href.split("/table/")[1];
       apiTableStats(this.props.token, tableid, parameters).then((data) => {
+        let stats = data.stats
+        let playerids = this.state.table.players.map(p => p._id);
+        // Filter by current players
+        stats.ranking =  stats.ranking.filter(rank => playerids.includes(rank._id))
+
+        // Store
         this.setState((prevState, props) => ({
-          tableStats: data.stats
+          tableStats: stats
         }));
       });
     }

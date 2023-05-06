@@ -74,7 +74,7 @@ export async function apiTableStats(token, id, parameters) {
   }
 }
 
-export async function apiTableDelete(token, table) {
+export async function apiTableDelete(token, id) {
   try {
     const res = await axios.delete(apiURL + "/table/" + id, {
       headers: { Authorization: "Bearer " + token },

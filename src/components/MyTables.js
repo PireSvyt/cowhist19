@@ -88,9 +88,6 @@ class MyTables extends React.Component {
     }
     switch (action) {
       case "totable":
-        this.setState((prevState, props) => ({
-          openTableModal: false,
-        }));
         window.location = "/table/" + details;
         break;
       case "close":

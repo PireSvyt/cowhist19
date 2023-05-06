@@ -33,6 +33,13 @@ import Snack from "../Snack/Snack";
 import { random_id } from "../../services/toolkit";
 import apiTableDetails from "../../services/apiTableDetails";
 
+let emptyTable = {
+  _id: "",
+  name: "Table",
+  players: [],
+  contracts: [],
+};
+
 class TableModal extends React.Component {
   constructor(props) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -40,8 +47,9 @@ class TableModal extends React.Component {
     }
     super(props);
     this.state = {
-      table: this.getEmptyTable(),
-      disabled: true,
+      table: { ...emptyTable },
+      nameError: false,
+      disabled: false,
       loading: false,
       componentHeight: undefined,
       openInviteModal: false,
@@ -54,14 +62,14 @@ class TableModal extends React.Component {
     };
     // Updates
     this.updateComponentHeight = this.updateComponentHeight.bind(this);
-    this.getEmptyTable = this.getEmptyTable.bind(this);
-    this.getTableDetails = this.getTableDetails.bind(this)
+    this.getTableDetails = this.getTableDetails.bind(this);
 
     // Handles
     this.handlePlayerCardCallback = this.handlePlayerCardCallback.bind(this);
     this.handleOpenInviteModal = this.handleOpenInviteModal.bind(this);
     this.handleInviteModalCallback = this.handleInviteModalCallback.bind(this);
-    this.handleConfirmModalCallback = this.handleConfirmModalCallback.bind(this);
+    this.handleConfirmModalCallback =
+      this.handleConfirmModalCallback.bind(this);
     this.canSave = this.canSave.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleSave = this.handleSave.bind(this);
@@ -105,6 +113,7 @@ class TableModal extends React.Component {
                 onChange={this.handleChange}
                 autoComplete="off"
                 sx={{ mb: 1 }}
+                error={this.state.nameError}
               />
 
               <Stack direction="row" justifyContent="space-between">
@@ -122,9 +131,9 @@ class TableModal extends React.Component {
                 </IconButton>
               </Stack>
 
-              { this.state.table === undefined ? 
-                <div/> 
-              : 
+              {this.state.table === undefined ? (
+                <div />
+              ) : (
                 <List dense={true}>
                   {this.state.table.players.map((player) => (
                     <ListItem key={"player-" + player._id}>
@@ -134,9 +143,8 @@ class TableModal extends React.Component {
                       />
                     </ListItem>
                   ))}
-                </List> 
-              }
-              
+                </List>
+              )}
             </Box>
           </DialogContent>
 
@@ -184,21 +192,22 @@ class TableModal extends React.Component {
     }
     this.updateComponentHeight();
   }
-  componentDidUpdate(prevState) {
+  componentDidUpdate(prevState, prevProps) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("TableModal.componentDidUpdate");
     }
     if (this.props.token !== undefined && this.props.token !== null) {
       // Load table data for table edit
-      if (
-        prevState.open !== this.props.open && this.props.open === true
-      ) {
-      if (this.props.tableid !== "" && this.props.tableid !== undefined) {
-          this.getTableDetails()
-          }
+      if (prevProps.open !== this.props.open && this.props.open === true) {
+        if (this.props.tableid !== "") {
+          this.getTableDetails();
+        } else {
+          this.setState({
+            table: this.props.tableinput,
+          });
+        }
       }
     }
-
   }
 
   // Updates
@@ -221,7 +230,10 @@ class TableModal extends React.Component {
     // Checks
     if (this.state.table.name === undefined || this.state.table.name === "") {
       proceed = false;
-      errors.push(" Name undefined");
+      errors.push("table-error-missingname");
+      this.setState((prevState, props) => ({
+        nameError: true,
+      }));
     }
     // Outcome
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -230,16 +242,6 @@ class TableModal extends React.Component {
     return {
       proceed: proceed,
       errors: errors,
-    };
-  }
-  getEmptyTable() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("TableModal.getEmptyTable");
-    }
-    return {
-      _id: "",
-      name: undefined,
-      players: [],
     };
   }
   getTableDetails() {
@@ -359,7 +361,8 @@ class TableModal extends React.Component {
     }
 
     this.setState((prevState, props) => ({
-      table: this.getEmptyTable(),
+      table: { ...emptyTable },
+      nameError: false,
     }));
 
     this.props.callback("close");
@@ -381,6 +384,9 @@ class TableModal extends React.Component {
         if (process.env.REACT_APP_DEBUG === "TRUE") {
           console.log("change name : " + target.value);
         }
+        this.setState((prevState, props) => ({
+          nameError: false,
+        }));
         previousTable.name = target.value;
         break;
       default:
@@ -394,18 +400,9 @@ class TableModal extends React.Component {
       console.log(this.state.table);
     }*/
     // Check inputs
-    let { proceed, errors } = this.canSave();
-    if (proceed === true) {
-      this.setState((prevState, props) => ({
-        table: previousTable,
-        disabled: false,
-      }));
-    } else {
-      this.setState((prevState, props) => ({
-        table: previousTable,
-        disabled: true,
-      }));
-    }
+    this.setState((prevState, props) => ({
+      table: previousTable,
+    }));
   }
   handleSave() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -429,10 +426,10 @@ class TableModal extends React.Component {
         disabled: true,
         loading: true,
       }));
-  
+
       // Switch from players to users
       let tableToSave = this.state.table;
-      tableToSave.users = tableToSave.players
+      tableToSave.users = tableToSave.players;
 
       // Add user on table create if not yet in
       if (tableToSave._id === "") {
@@ -456,23 +453,23 @@ class TableModal extends React.Component {
       if (tableToSave._id !== "") {
         if (tableToSave.users.length === 0) {
           // Prevent proceeding to saving
-          canSaveOutcome.proceed = false
+          canSaveOutcome.proceed = false;
           this.setState({
             openConfirmModal: true,
             confirmModalTitle: "table-confirm-title-deletenoeusers",
             confirmModalContent: "table-confirm-content-deletenoeusers",
-            confirmModalCTA: [ 
+            confirmModalCTA: [
               {
-                label: "generic-button-cancel", 
-                callback: () => this.handleConfirmModalCallback("close")
+                label: "generic-button-cancel",
+                callback: () => this.handleConfirmModalCallback("close"),
               },
               {
-                label: "generic-button-proceed", 
+                label: "generic-button-proceed",
                 callback: () => this.handleConfirmModalCallback("delete"),
-                variant: "contained", 
-                color: "error"
-              } 
-            ]
+                variant: "contained",
+                color: "error",
+              },
+            ],
           });
         }
       }
@@ -489,23 +486,10 @@ class TableModal extends React.Component {
             case 201:
               // Table creation
               this.props.callback("totable", res.id);
-              this.setState((prevState, props) => ({
-                disabled: false,
-                loading: false,
-              }));
               break;
             case 200:
               // Table edit
-              this.setState({
-                table: this.getEmptyTable(),
-                openSnack: true,
-                snack: { uid: random_id(), id: "table-snack-success" },
-              });
               this.props.callback("totable", res.id);
-              this.setState((prevState, props) => ({
-                disabled: false,
-                loading: false,
-              }));
               break;
             default:
               this.setState((prevState, props) => ({
@@ -517,15 +501,17 @@ class TableModal extends React.Component {
           }
         });
       }
-
     } else {
       // Snack
       this.setState((prevState, props) => ({
         openSnack: true,
-        snack: { uid: random_id(), id: "generic-snack-error", details: canSaveOutcome.errors },
+        snack: {
+          uid: random_id(),
+          id: "generic-snack-error",
+          details: canSaveOutcome.errors,
+        },
       }));
     }
-
   }
   handleSnack(action) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -566,9 +552,7 @@ class PlayerCard extends React.Component {
           }}
         >
           <Typography>{this.props.player.pseudo}</Typography>
-          <IconButton
-            onClick={this.handleRemoveUser}
-          >
+          <IconButton onClick={this.handleRemoveUser}>
             <RemoveCircleOutlineIcon />
           </IconButton>
         </Box>

@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // Components
 import Home from "./components/Home/Home";
+import Activation from "./components/Activation/Activation";
 import Table from "./components/Table/Table";
 import Account from "./components/Account/Account";
 
@@ -36,6 +37,7 @@ export default class App extends React.Component {
 
     // Handles
     this.handleHomeCallback = this.handleHomeCallback.bind(this);
+    this.handleAssessLoginCallback = this.handleAssessLoginCallback.bind(this);
     this.handleAccountCallback = this.handleAccountCallback.bind(this);
     this.handleTableCallback = this.handleTableCallback.bind(this);
   }
@@ -55,6 +57,15 @@ export default class App extends React.Component {
                 signedin={this.state.signedin}
                 token={this.state.token}
                 user={this.state.user}
+              />
+            }
+          />
+          <Route
+            path="/activation/:id"
+            element={
+              <Activation
+                signedin={this.state.signedin}
+                token={this.state.token}
               />
             }
           />
@@ -202,6 +213,17 @@ export default class App extends React.Component {
         break;
       case "signedout":
         this.signOut();
+        break;
+      default:
+    }
+  }
+  handleAssessLoginCallback(action, details) {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("App.handleAssessLoginCallback " + action);
+    }
+    switch (action) {
+      case "assessed":
+        this.signIn(details);
         break;
       default:
     }

@@ -66,7 +66,9 @@ class Appbar extends React.Component {
             </IconButton>
           </Box>
 
-          <Box hidden={!this.props.signedin || this.props.route === "account"}>
+          <Box
+            hidden={!this.props.signedin || this.state.menuItems.length === 0}
+          >
             <IconButton
               size="large"
               edge="end"
@@ -114,8 +116,6 @@ class Appbar extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("Appbar.componentDidMount");
     }
-    // i18n
-    const { t } = this.props;
 
     // Update menu
     switch (this.props.route) {
@@ -135,20 +135,14 @@ class Appbar extends React.Component {
           ],
         }));
         break;
+      case "activation":
+        this.setState((prevState, props) => ({
+          menuItems: [],
+        }));
+        break;
       case "account":
         this.setState((prevState, props) => ({
-          menuItems: [
-            {
-              item: "home",
-              label: "generic-menu-home",
-              onclick: this.handleToHome,
-            },
-            {
-              item: "signout",
-              label: "generic-menu-signout",
-              onclick: this.handleSignout,
-            },
-          ],
+          menuItems: [],
         }));
         break;
       case "table":

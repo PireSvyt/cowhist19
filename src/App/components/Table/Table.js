@@ -152,13 +152,6 @@ class Table extends React.Component {
         this.getTableStats();
       }
     }
-    /*
-    if (this.props.token !== undefined && this.state.table.players !== []) {
-      if (this.state.tableStats === {}) {
-        this.getTableStats();
-      }
-    }
-    */
   }
 
   // Helpers

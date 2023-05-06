@@ -26,28 +26,15 @@ class MyStats extends React.Component {
     const { t } = this.props;
 
     return (
-      <Box
-        hidden={this.props.open === undefined || this.props.open === false}
-        sx={{
-          m: 2,
-        }}
-      >
+      <Box sx={{ m: 2 }}>
         <Typography variant="h6" component="span">
           {t("mystats-label-mystats")}
         </Typography>
 
-        <Box
-          textAlign="center"
-          sx={{
-            m: 2,
-          }}
-        >
+        <Box textAlign="center" sx={{ m: 2 }}>
           <Button
             variant="outlined"
-            sx={{
-              width: "80%",
-              m: 1,
-            }}
+            sx={{ width: "80%", m: 1 }}
             onClick={this.handleOpenToComeModal}
           >
             {t("generic-label-tocome")}

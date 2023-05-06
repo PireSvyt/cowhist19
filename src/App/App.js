@@ -111,7 +111,6 @@ export default class App extends React.Component {
           if (process.env.REACT_APP_DEBUG === "TRUE") {
             console.log("App.componentDidMount token invalid");
           }
-          Cookies.remove("cowhist19-token");
           this.signOut();
         }
       });
@@ -139,9 +138,25 @@ export default class App extends React.Component {
   }
   signOut() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      Cookies.remove("cowhist19-token");
       console.log("App.signOut ");
     }
+
+    // Remove cookies
+    Cookies.remove("cowhist19-token");
+
+    // Check url
+    if (
+      window.location.href.includes("table") ||
+      window.location.href.includes("account")
+    ) {
+      if (process.env.REACT_APP_DEBUG === "TRUE") {
+        Cookies.remove("cowhist19-token");
+        console.log("App.signOut ");
+      }
+      window.location = "/";
+    }
+
+    // Reset state if on home
     this.setState((prevState, props) => ({
       signedin: false,
       token: null,
@@ -167,8 +182,8 @@ export default class App extends React.Component {
     }
     if (token !== undefined) {
       apiUserTables(token).then((data) => {
-        let updatedUser = this.state.user
-        updatedUser.tables = data.tables
+        let updatedUser = this.state.user;
+        updatedUser.tables = data.tables;
         this.setState((prevState, props) => ({
           user: user,
         }));

@@ -1,6 +1,13 @@
-GameModal
-    add pseudo to getGameDetails outcome
+FUNCTIONAL
+    - email on invite
+    - email to confirm login
+    - reset password
+    - edit game from history
+    - change pseudo
+    - change password
+    - change email
+    - merge account
 
-Redux / RXJS & inversify
-
-Reactive with event
+TECHNICAL
+    - Redux / RXJS & inversify
+    - Reactive with event

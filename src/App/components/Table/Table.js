@@ -28,10 +28,13 @@ class Table extends React.Component {
         _id: "",
         name: "Table",
         players: [],
-        contracts: []
+        contracts: [],
       },
+      tableDetailsLoaded: false,
       tableHistory: [],
+      tableHistoryLoaded: false,
       tableStats: {},
+      tableStatsLoaded: false,
       openTableModal: false,
       openGameModal: false,
       gameid: "",
@@ -89,12 +92,14 @@ class Table extends React.Component {
             />
           </Tabs>
         </Box>
-        <TabPanel value={this.state.selectedTab} index={0} >
-          <TableStats 
+        <TabPanel value={this.state.selectedTab} index={0}>
+          <TableStats
             token={this.props.token}
-            callback={this.handleTableStatsCallback} 
-            stats={this.state.tableStats} 
-            players={this.state.table === undefined ? [] : this.state.table.players }
+            callback={this.handleTableStatsCallback}
+            stats={this.state.tableStats}
+            players={
+              this.state.table === undefined ? [] : this.state.table.players
+            }
           />
         </TabPanel>
         <TabPanel value={this.state.selectedTab} index={1}>
@@ -102,7 +107,9 @@ class Table extends React.Component {
             token={this.props.token}
             callback={this.handleTableHistoryCallback}
             history={this.state.tableHistory}
-            players={this.state.table === undefined ? [] : this.state.table.players }
+            players={
+              this.state.table === undefined ? [] : this.state.table.players
+            }
           />
         </TabPanel>
         <Fab
@@ -117,8 +124,8 @@ class Table extends React.Component {
           open={this.state.openTableModal}
           callback={this.handleTableModalCallback}
           token={this.props.token}
-          tableid={this.state.table === undefined ? "" : this.state.table._id }
-        /> 
+          tableid={this.state.table === undefined ? "" : this.state.table._id}
+        />
         <GameModal
           open={this.state.openGameModal}
           callback={this.handleGameModalCallback}
@@ -138,8 +145,12 @@ class Table extends React.Component {
     }
     // Load
     if (this.state.table._id === "") {
-      this.getTableDetails();
-      this.getTableStats();
+      if (this.state.tableDetailsLoaded === false) {
+        this.getTableDetails();
+      }
+      if (this.state.tableStatsLoaded === false) {
+        this.getTableStats();
+      }
     }
     /*
     if (this.props.token !== undefined && this.state.table.players !== []) {
@@ -159,7 +170,8 @@ class Table extends React.Component {
       let tableid = window.location.href.split("/table/")[1];
       apiTableDetails(this.props.token, tableid).then((data) => {
         this.setState((prevState, props) => ({
-          table: data.table
+          table: data.table,
+          tableDetailsLoaded: true,
         }));
       });
     }
@@ -171,15 +183,16 @@ class Table extends React.Component {
     if (this.props.token !== undefined) {
       let tableid = window.location.href.split("/table/")[1];
       let parameters = {
-        "need": "list",
-        "games": {
-          "index": 0,
-          "number": 20
-        }
-      }
+        need: "list",
+        games: {
+          index: 0,
+          number: 20,
+        },
+      };
       apiTableHistory(this.props.token, tableid, parameters).then((data) => {
         this.setState((prevState, props) => ({
-          tableHistory: data.games
+          tableHistory: data.games,
+          tableHistoryLoaded: true,
         }));
       });
     }
@@ -189,19 +202,22 @@ class Table extends React.Component {
       console.log("Table.getTableStats ");
     }
     let parameters = {
-      "need": "ranking"
-    }
+      need: "ranking",
+    };
     if (this.props.token !== undefined && this.state.table.players !== []) {
       let tableid = window.location.href.split("/table/")[1];
       apiTableStats(this.props.token, tableid, parameters).then((data) => {
-        let stats = data.stats
-        let playerids = this.state.table.players.map(p => p._id);
+        let stats = data.stats;
+        let playerids = this.state.table.players.map((p) => p._id);
         // Filter by current players
-        stats.ranking =  stats.ranking.filter(rank => playerids.includes(rank._id))
+        stats.ranking = stats.ranking.filter((rank) =>
+          playerids.includes(rank._id)
+        );
 
         // Store
         this.setState((prevState, props) => ({
-          tableStats: stats
+          tableStats: stats,
+          tableStatsLoaded: true,
         }));
       });
     }
@@ -255,15 +271,15 @@ class Table extends React.Component {
       console.log("Table.handleTableHistoryCallback " + action);
     }
     switch (action) {
+      case "refresh":
+        this.getTableHistory();
+        break;
       case "open":
         this.setState((prevState, props) => ({
           gameid: details,
           openGameModal: true,
         }));
-      break
-      case "delete":
-        console.log("TODO DELETE GAME")
-      break
+        break;
       default:
     }
   }
@@ -287,7 +303,7 @@ class Table extends React.Component {
         break;
       case "totable":
         // Reload table
-        this.getTableDetails()
+        this.getTableDetails();
         this.setState((prevState, props) => ({
           openTableModal: false,
         }));
@@ -323,11 +339,11 @@ class Table extends React.Component {
         }));
         switch (this.state.selectedTab) {
           case 0:
-            this.getTableStats()
-            break
+            this.getTableStats();
+            break;
           case 1:
-            this.getTableHistory()
-            break
+            this.getTableHistory();
+            break;
           default:
         }
         break;

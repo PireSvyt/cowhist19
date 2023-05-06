@@ -23,7 +23,7 @@ class MyTables extends React.Component {
     super(props);
     this.state = {
       openTableModal: false,
-      tableid: undefined,
+      tableid: "",
       openSnack: false,
       snack: undefined,
     };
@@ -62,7 +62,7 @@ class MyTables extends React.Component {
           open={this.state.openTableModal}
           callback={this.handleTableModalCallback}
           token={this.props.token}
-          table={this.state.table}
+          tableid={this.state.tableid}
         />
         <Snack
           open={this.state.openSnack}

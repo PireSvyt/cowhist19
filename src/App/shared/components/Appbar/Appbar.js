@@ -12,8 +12,9 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
-import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from "@mui/icons-material/Edit";
 
+// Services
 import { random_id } from "../../services/toolkit";
 
 class Appbar extends React.Component {
@@ -100,7 +101,7 @@ class Appbar extends React.Component {
               size="large"
               edge="end"
               color="inherit"
-              onClick={this.handleToHome}
+              onClick={() => history.back()}
             >
               <CloseIcon />
             </IconButton>

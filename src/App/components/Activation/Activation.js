@@ -2,6 +2,10 @@ import React from "react";
 import { withTranslation } from "react-i18next";
 import { Box, Typography, Button, CircularProgress  } from "@mui/material";
 
+import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+
 // Components
 
 // Services
@@ -17,7 +21,7 @@ class Activation extends React.Component {
     }
     super(props);
     this.state = {
-      status: ""
+      status: "inprogress"
     };
 
     // Helpers
@@ -41,19 +45,46 @@ class Activation extends React.Component {
           route="activation"
           title={t("generic-product-title")}
         />
+        <Box sx={{ height: 48 }} />
         
-        <Box hidden={this.state.status !== ""} sx={{ m: 2 }}>
-          <Typography variant="h6" component="span">
+        <Box 
+          hidden={ this.state.status !== "inprogress" } 
+          sx={{ m: 2,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}>
+          <Typography sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }} variant="h6" component="span" >
             {t("activation-label-inprogress")}
           </Typography>
-          <CircularProgress />
+          <CircularProgress  sx={{ mt: 2, mb: 2 }}/>
         </Box>
       
-        <Box hidden={this.state.status !== "activated"} sx={{ m: 2 }}>
-          <Typography variant="h6" component="span">
+        <Box 
+          hidden={ this.state.status !== "error" } 
+          sx={{ m: 2,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}>
+          <Typography sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }} variant="h6" component="span">
+            {t("activation-label-error")}
+          </Typography>
+          <ErrorOutlineIcon  sx={{ mt: 2, mb: 2 }} fontSize="large" color="error"/>
+          <Typography sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }} variant="body1" component="span">
+            {t("activation-label-errorexplanation")}
+          </Typography>
+        </Box>
+        
+        <Box 
+          hidden={this.state.status !== "activated"} 
+          sx={{ m: 2 }}
+        >
+          <Typography sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }} variant="h6" component="span">
             {t("activation-label-activatedtitle")}
           </Typography>
-          <Typography variant="body1" component="span">
+          <SentimentSatisfiedAltIcon  sx={{ mt: 2, mb: 2 }} fontSize="large" color="success"/>
+          <Typography sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }} variant="body1" component="span">
             {t("activation-label-activatedaccountexplanations")}
           </Typography>
           <Button
@@ -65,11 +96,15 @@ class Activation extends React.Component {
           </Button>
         </Box>
       
-        <Box hidden={this.state.status !== "notfound"} sx={{ m: 2 }}>
-          <Typography variant="h6" component="span">
+        <Box 
+          hidden={this.state.status !== "notfound"} 
+          sx={{ m: 2 }}
+        >
+          <Typography sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }} variant="h6" component="span">
             {t("activation-label-notfoundtitle")}
           </Typography>
-          <Typography variant="body1" component="span">
+          <SentimentVeryDissatisfiedIcon  sx={{ mt: 2, mb: 2 }} fontSize="large" color="error"/>
+          <Typography sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }} variant="body1" component="span">
             {t("activation-label-notfoundaccountexplanations")}
           </Typography>          
         </Box>

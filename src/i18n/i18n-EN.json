@@ -38,6 +38,8 @@
   "signup-snack-success": "Signed up!",
   "signup-snack-existinguser": "Account already existing",
   "activation-label-inprogress": "Account activation in progress",
+  "activation-label-error": "Error during activation",
+  "activation-label-errorexplanation": "Sincere apologies for the inconvenience.\n\nPlease try again later.",
   "activation-label-activatedtitle": "Account activated!",
   "activation-label-activatedaccountexplanations": "Your account has been successfully activated.\n\nYou can now sign in!",
   "activation-button-tohome": "To home to sign in",

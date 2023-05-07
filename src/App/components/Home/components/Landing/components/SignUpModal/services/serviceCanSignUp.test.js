@@ -7,7 +7,7 @@ import emptySignup from "../../../../../../../shared/resources/emptySignUp.js";
 describe("TEST OF SERVICE : serviceCanSignUp", () => {
   describe("Assessment of empty signup", () => {
     // Emptycase
-    describe("When signup us empty", () => {
+    describe("When signup is empty", () => {
       test("then the proceed field is false", () => {
         const serviceOutcome = serviceCanSignUp(emptySignup);
         expect(serviceOutcome.proceed).toBeFalsy();

@@ -1,5 +1,5 @@
 // Resources
-import emptySignup from "../resources/emptySignUp.js";
+import emptySignup from "../../../../../../../shared/resources/emptySignUp.js";
 // Services
 import apiSignUp from "./apiSignUp.js";
 // Shared
@@ -29,7 +29,7 @@ function serviceSignUp(user) {
         };
         stateChanges.disabled = true;
         stateChanges.loading = true;
-        callbacks.push("close");
+        callbacks.push({ key: "close" });
         break;
       case 409:
         stateChanges.openSnack = true;
@@ -61,7 +61,8 @@ function serviceSignUp(user) {
         stateChanges.disabled = false;
         stateChanges.loading = false;
     }
-  });
+  })
+  .catch
 
   return {
     stateChanges: stateChanges,

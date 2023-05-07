@@ -1,3 +1,6 @@
+// Shared
+import { validateEmail } from "../../../../../services/toolkit";
+
 function serviceCanInvite(user) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("serviceCanInviteUser");
@@ -9,14 +12,14 @@ function serviceCanInvite(user) {
   // Checks
 
   // Is pseudo empty?
-  if (user.pseudo === undefined || user.pseudo === "") {
+  if (user.pseudo === null || user.pseudo === "") {
     proceed = false;
     errors.push("invite-error-missingpseudo");
     stateChanges.pseudoError = true;
   }
 
   // Is email empty?
-  if (user.login === undefined || user.login === "") {
+  if (user.login === null || user.login === "") {
     proceed = false;
     errors.push("invite-error-missinglogin");
     stateChanges.loginError = true;

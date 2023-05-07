@@ -73,6 +73,17 @@ describe("TEST OF SERVICE : serviceModalChange", () => {
           newvalue: "name",
         },
       },
+      {
+        label: "acknowledgement",
+        inputs: {
+          name: "acknowledgement",
+          checked: true,
+        },
+        outputs: {
+          statechange: "acknowledgementError",
+          newvalue: true,
+        },
+      },
     ];
     describe.each(testcases)("When changing", (testcase, expected) => {
       test(

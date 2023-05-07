@@ -64,7 +64,6 @@ class TableModal extends React.Component {
       snack: { id: undefined },
     };
     // Updates
-    this.updateComponentHeight = this.updateComponentHeight.bind(this);
     this.getTableDetails = this.getTableDetails.bind(this);
     this.addUserToPlayers = this.addUserToPlayers.bind(this);
 
@@ -194,7 +193,9 @@ class TableModal extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       //console.log("TableModal.componentDidMount");
     }
-    this.updateComponentHeight();
+    this.setState({
+      componentHeight: window.innerHeight - 115,
+    });
   }
   componentDidUpdate(prevState, prevProps) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -221,16 +222,6 @@ class TableModal extends React.Component {
         this.addUserToPlayers();
       }
     }
-  }
-
-  // Updates
-  updateComponentHeight() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("TableModal.updateComponentHeight");
-    }
-    this.setState({
-      componentHeight: window.innerHeight - 115,
-    });
   }
 
   // Helpers

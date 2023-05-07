@@ -213,78 +213,22 @@ class SignUpModal extends React.Component {
         loading: true,
       }));
 
-      let serviceSignUpOutcome = serviceSignUp(this.state.signup);
-      if (serviceSignUpOutcome.errors.length !== 0) {
+      let proceedOutcome = serviceSignUp(this.state.signup);
+      if (proceedOutcome.errors.length !== 0) {
         if (process.env.REACT_APP_DEBUG === "TRUE") {
-          console.log("serviceSignUp errors");
-          console.log(serviceSignUpOutcome.errors);
+          console.log("proceedOutcome errors");
+          console.log(proceedOutcome.errors);
         }
       }
-      this.setState((prevState, props) => serviceSignUpOutcome.stateChanges);
-      serviceSignUpOutcome.callbacks.forEach((callback) => {
-        this.props.callback(callback);
-      });
-
-      /*
-      // Prep
-      let user = this.state.signup;
-      user.password = user.password1;
-      delete user.password1;
-      delete user.password2;
-      if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("user ");
-        console.log(user);
-      }
-      // API call
-      apiSignUp(user).then((res) => {
-        if (process.env.REACT_APP_DEBUG === "TRUE") {
-          console.log("res ");
-          console.log(res);
+      this.setState((prevState, props) => proceedOutcome.stateChanges);
+      proceedOutcome.callbacks.forEach((callback) => {
+        if (callback.option === undefined) {
+          this.props.callback(callback.key);
+        } else {
+          this.props.callback(callback.key);
         }
-        switch (res.status) {
-          case 201:
-            //console.log("default");
-            this.setState({
-              signup: emptySignup,
-              openSnack: true,
-              snack: { uid: random_id(), id: "signup-snack-success" },
-            });
-            this.props.callback("close");
-            this.setState((prevState, props) => ({
-              disabled: false,
-              loading: false,
-            }));
-            break;
-          case 409:
-            //console.log("modified");
-            this.setState((prevState, props) => ({
-              openSnack: true,
-              snack: { uid: random_id(), id: "signup-snack-existinguser" },
-              disabled: false,
-              loading: false,
-            }));
-            break;
-          case 400:
-            //console.log("error");
-            //console.log(res);
-            this.setState({
-              openSnack: true,
-              snack: { uid: random_id(), id: "generic-snack-errornetwork" },
-              disabled: false,
-              loading: false,
-            });
-            break;
-          default:
-            //console.log("default");
-            this.setState((prevState, props) => ({
-              openSnack: true,
-              snack: { uid: random_id(), id: "generic-snack-errorunknown" },
-              disabled: false,
-              loading: false,
-            }));
-        }
+        this.props.callback(callback.key, callback.option);
       });
-      */
     } else {
       // Snack
       this.setState((prevState, props) => ({

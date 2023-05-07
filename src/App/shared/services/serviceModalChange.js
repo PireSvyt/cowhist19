@@ -42,6 +42,13 @@ function serviceModalChange(target, previousValue) {
       stateChanges.repeatpasswordError = false;
       newValue.repeatpassword = target.value;
       break;
+    case "acknowledgement":
+      if (process.env.REACT_APP_DEBUG === "TRUE") {
+        console.log("change acknowledgement : " + target.checked);
+      }
+      stateChanges.acknowledgementError = false;
+      newValue.acknowledgement = target.checked;
+      break;
     default:
       if (process.env.REACT_APP_DEBUG === "TRUE") {
         console.log("/!\\ no match : " + target.name);

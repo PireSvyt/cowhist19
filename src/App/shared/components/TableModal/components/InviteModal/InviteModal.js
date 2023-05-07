@@ -14,18 +14,14 @@ import {
 import LoadingButton from "@mui/lab/LoadingButton";
 
 // Services
-import apiUserInvite from "./services/apiUserInvite.js";
 import serviceCanInvite from "./services/serviceCanInvite.js";
+import serviceInvite from "./services/serviceInvite.js";
 
 // Shared
-import Snack from "../../../Snack/Snack";
-import { random_id, validateEmail } from "../../../../services/toolkit";
-
-let emptyUser = {
-  pseudo: undefined,
-  login: undefined,
-  acknowledgement: false,
-};
+import Snack from "../../../Snack/Snack.js";
+import { random_id } from "../../../../services/toolkit.js";
+import emptyUser from "../../../../resources/emptyUser.js";
+import serviceModalChange from "../../../../services/serviceModalChange.js";
 
 class InviteModal extends React.Component {
   constructor(props) {
@@ -44,11 +40,8 @@ class InviteModal extends React.Component {
       openSnack: false,
       snack: { id: undefined },
     };
-    // Updates
-    this.updateComponentHeight = this.updateComponentHeight.bind(this);
 
     // Handles
-    //this.canProceed = this.canProceed.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleProceed = this.handleProceed.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -115,7 +108,7 @@ class InviteModal extends React.Component {
                   />
                 }
                 label={t("invite-input-acknowledgement")}
-                error={this.state.acknowledgementError === true}
+                error={this.state.acknowledgementError ? "dummy" : null}
               />
             </Box>
           </DialogContent>
@@ -148,7 +141,9 @@ class InviteModal extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       //console.log("InviteModal.componentDidMount");
     }
-    this.updateComponentHeight();
+    this.setState({
+      componentHeight: window.innerHeight - 115,
+    });
   }
   componentDidUpdate(prevState) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -160,73 +155,6 @@ class InviteModal extends React.Component {
       }));
     }
   }
-
-  // Updates
-  updateComponentHeight() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("InviteModal.updateComponentHeight");
-    }
-    this.setState({
-      componentHeight: window.innerHeight - 115,
-    });
-  }
-
-  // Helpers
-  /*
-  canProceed() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("InviteModal.canProceed");
-    }
-    let proceed = true;
-    let errors = [];
-
-    // Checks
-
-    // Is pseudo empty?
-    if (this.state.user.pseudo === undefined || this.state.user.pseudo === "") {
-      proceed = false;
-      errors.push("invite-error-missingpseudo");
-      this.setState((prevState, props) => ({
-        pseudoError: true,
-      }));
-    }
-
-    // Is email empty?
-    if (this.state.user.login === undefined || this.state.user.login === "") {
-      proceed = false;
-      errors.push("invite-error-missinglogin");
-      this.setState((prevState, props) => ({
-        loginError: true,
-      }));
-    } else {
-      // Login is an email?
-      if (!validateEmail(this.state.user.login)) {
-        proceed = false;
-        errors.push("invite-error-invalidlogin");
-        this.setState((prevState, props) => ({
-          loginError: true,
-        }));
-      }
-    }
-
-    // Is it acknowledged?
-    if (this.state.user.acknowledgement !== true) {
-      proceed = false;
-      errors.push("invite-error-missingacknowledgement");
-      this.setState((prevState, props) => ({
-        acknowledgementError: true,
-      }));
-    }
-
-    // Outcome
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("proceed " + proceed);
-    }
-    return {
-      proceed: proceed,
-      errors: errors,
-    };
-  }*/
 
   // handleCloseMenu
   handleClose() {
@@ -247,122 +175,62 @@ class InviteModal extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("InviteModal.handleChange");
     }
-
-    const target = event.target;
-    /*if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("target.name : " + target.name);
-      console.log("target.value : " + target.value);
-      console.log("newValue : " + newValue);
-    }*/
-    var previousUser = this.state.user;
-    switch (target.name) {
-      case "pseudo":
-        if (process.env.REACT_APP_DEBUG === "TRUE") {
-          console.log("change pseudo : " + target.value);
-        }
-        this.setState((prevState, props) => ({
-          pseudoError: false,
-        }));
-        previousUser.pseudo = target.value;
-        break;
-      case "login":
-        if (process.env.REACT_APP_DEBUG === "TRUE") {
-          console.log("change login : " + target.value);
-        }
-        this.setState((prevState, props) => ({
-          loginError: false,
-        }));
-        previousUser.login = target.value;
-        break;
-      case "acknowledgement":
-        if (process.env.REACT_APP_DEBUG === "TRUE") {
-          console.log("change acknowledgement : " + target.checked);
-        }
-        this.setState((prevState, props) => ({
-          acknowledgementError: false,
-        }));
-        previousUser.acknowledgement = target.checked;
-        break;
-      default:
-        if (process.env.REACT_APP_DEBUG === "TRUE") {
-          console.log("/!\\ no match : " + target.name);
-        }
+    let serviceChangeOutcome = serviceModalChange(
+      event.target,
+      this.state.user
+    );
+    if (serviceChangeOutcome.errors.length > 0) {
+      console.log("serviceModalChange errors");
+      console.log(serviceChangeOutcome.errors);
+    } else {
+      serviceChangeOutcome.stateChanges.user = serviceChangeOutcome.newValue;
+      this.setState((prevState, props) => serviceChangeOutcome.stateChanges);
     }
-    // Update
-    /*if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("InviteModal.user");
-      console.log(this.state.user);
-    }*/
-    // Check inputs
-    this.setState((prevState, props) => ({
-      user: previousUser,
-    }));
   }
   handleProceed() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("InviteModal.handleProceed");
-      //console.log("this.state.user");
-      //console.log(this.state.user);
     }
 
     // Check inputs
-    let canProceedOutcome = serviceCanInvite();
-    if (canProceedOutcome.stateChanges !== {}) {
-      this.setState((prevState, props) => canProceedOutcome.stateChanges);
+    let canProceedOutcome = serviceCanInvite(this.state.user);
+    if (canProceedOutcome.errors.length !== 0) {
+      if (process.env.REACT_APP_DEBUG === "TRUE") {
+        console.log("serviceCanInvite errors");
+        console.log(canProceedOutcome.errors);
+      }
     }
+    this.setState((prevState, props) => canProceedOutcome.stateChanges);
 
     // Proceed or not?
-    /*if (canProceedOutcome.errors !== [] && process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("canProceedOutcome.errors");
-      console.log(canProceedOutcome.errors);
-    }*/
-    // Post or publish
     if (canProceedOutcome.proceed === true) {
       this.setState((prevState, props) => ({
         disabled: true,
         loading: true,
       }));
-      // API call
-      apiUserInvite(this.props.token, this.state.user).then((res) => {
-        /*if (process.env.REACT_APP_DEBUG === "TRUE") {
-          console.log("res ");
-          console.log(res);
-        }*/
-        switch (res.status) {
-          case 201:
-            // User creation
-            this.setState({
-              user: emptyUser,
-              openSnack: true,
-              snack: { uid: random_id(), id: "invite-snack-success" },
-            });
-            this.props.callback("useradd", res.user);
-            this.setState((prevState, props) => ({
-              disabled: false,
-              loading: false,
-            }));
-            break;
-          case 202:
-            // User already existing
-            this.setState({
-              user: emptyUser,
-              openSnack: true,
-              snack: { uid: random_id(), id: "invite-snack-success" },
-            });
-            this.props.callback("useradd", res.user);
-            this.setState((prevState, props) => ({
-              disabled: false,
-              loading: false,
-            }));
-            break;
-          default:
-            this.setState((prevState, props) => ({
-              openSnack: true,
-              snack: { uid: random_id(), id: "generic-snack-errorunknown" },
-              disabled: false,
-              loading: false,
-            }));
+
+      let proceedOutcome = serviceInvite(this.props.token, this.state.user);
+      if (proceedOutcome.errors.length !== 0) {
+        if (process.env.REACT_APP_DEBUG === "TRUE") {
+          console.log("proceedOutcome errors");
+          console.log(proceedOutcome.errors);
         }
+      }
+      if (process.env.REACT_APP_DEBUG === "TRUE") {
+        console.log("inviteModal proceedOutcome set state");
+        console.log(proceedOutcome.stateChanges);
+      }
+      this.setState((prevState, props) => proceedOutcome.stateChanges);
+      proceedOutcome.callbacks.forEach((callback) => {
+        if (process.env.REACT_APP_DEBUG === "TRUE") {
+          console.log("inviteModal proceedOutcome callback " + callback.key);
+        }
+        if (callback.option === undefined) {
+          this.props.callback(callback.key);
+        } else {
+          this.props.callback(callback.key);
+        }
+        this.props.callback(callback.key, callback.option);
       });
     } else {
       // Snack

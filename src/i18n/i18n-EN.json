@@ -86,6 +86,8 @@
   "table-confirm-content-delete": "You're about to delete the table.\n\nThis will delete the table and all associated games.",
   "table-confirm-title-deletenoeusers": "No more player here!",
   "table-confirm-content-deletenoeusers": "All players have been deleted from this table.\nA table can't exist without any player...\n\nProceeding will delete the table and all associated games.",
+  "table-confirm-title-deletenuser": "Sure to remove this player?",
+  "table-confirm-content-deletenuser": "You're about to remove a player from the table.\n\nIf you proceed and save the table, the player won't have access anymore to this table, the player name will be removed from the table history and statistics.",
   "table-button-newgame": "New game",
   "table-snack-success": "Table saved!",
   "table-snack-deleted": "Table deleted",

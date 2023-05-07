@@ -46,7 +46,7 @@ class Home extends React.Component {
         />
         <MyStats open={this.props.signedin === true} token={this.props.token} />
         <MyTables
-          open={this.props.signedin === true}
+          signedin={this.props.signedin}
           callback={this.handleMyTablesCallback}
           token={this.props.token}
           tables={this.props.user === undefined ? [] : this.props.user.tables}

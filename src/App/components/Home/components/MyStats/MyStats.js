@@ -26,7 +26,7 @@ class MyStats extends React.Component {
     const { t } = this.props;
 
     return (
-      <Box sx={{ m: 2 }}>
+      <Box hidden={this.props.signedin !== true} sx={{ m: 2 }}>
         <Typography variant="h6" component="span">
           {t("mystats-label-mystats")}
         </Typography>

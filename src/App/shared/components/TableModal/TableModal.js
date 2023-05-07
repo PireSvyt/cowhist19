@@ -343,6 +343,22 @@ class TableModal extends React.Component {
       console.log("TableModal.handleConfirmModalCallback " + action);
     }
     switch (action) {
+      case "userremove":
+        var previousTable = this.state.table;
+        let sublist = previousTable.players.filter((player) => {
+          return player._id !== details;
+        });
+        previousTable.players = sublist;
+        this.setState((prevState, props) => ({
+          table: previousTable,
+          openConfirmModal: false,
+          confirmModalTitle: "",
+          confirmModalContent: "",
+          confirmModalCTA: [],
+          disabled: false,
+          loading: false,
+        }));
+        break;
       case "delete":
         // API call
         apiTableDelete(this.props.token, this.state.table._id).then((res) => {
@@ -385,14 +401,25 @@ class TableModal extends React.Component {
     }
     switch (action) {
       case "userremove":
-        var previousTable = this.state.table;
-        let sublist = previousTable.players.filter((player) => {
-          return player._id !== details;
+        this.setState({
+          openConfirmModal: true,
+          confirmModalTitle: "table-confirm-title-deletenuser",
+          confirmModalContent: "table-confirm-content-deletenuser",
+          confirmModalCTA: [
+            {
+              label: "generic-button-cancel",
+              callback: () => this.handleConfirmModalCallback("close"),
+            },
+            {
+              label: "generic-button-proceed",
+              callback: () => {
+                this.handleConfirmModalCallback("userremove", details);
+              },
+              variant: "contained",
+              color: "error",
+            },
+          ],
         });
-        previousTable.players = sublist;
-        this.setState((prevState, props) => ({
-          table: previousTable,
-        }));
         break;
       default:
     }
@@ -518,7 +545,7 @@ class TableModal extends React.Component {
               break;
             case 200:
               // Table edit
-              this.props.callback("totable", res.id);
+              this.props.callback("updatetable");
               break;
             default:
               this.setState((prevState, props) => ({

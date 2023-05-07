@@ -1,8 +1,7 @@
 FUNCTIONAL
-    - confirmation on delete user from existing table
-    - bug of inviting user to an existing table
-    - block non activated usage
     - email to confirm login
+    
+    - refresh table details on table save
     
     - email to reset password
     

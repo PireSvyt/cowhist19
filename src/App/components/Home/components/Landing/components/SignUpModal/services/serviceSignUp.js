@@ -5,22 +5,27 @@ import apiSignUp from "./apiSignUp.js";
 // Shared
 import { random_id } from "../../../../../../../shared/services/toolkit.js";
 
-function serviceSignUp(user) {
+async function serviceSignUp(user) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("serviceSignUp");
   }
-  let callbacks = [];
-  let errors = [];
-  let stateChanges = {};
 
-  // Prep
-  user.password = user.password;
-  delete user.repeatpassword;
+  try {
+    let callbacks = [];
+    let errors = [];
+    let stateChanges = {};
 
-  // API call
-  apiSignUp(user).then((res) => {
+    // Prep
+    user.password = user.password;
+    delete user.repeatpassword;
+
+    // API call
+    let res = await apiSignUp(user);
     switch (res.status) {
       case 201:
+        if (process.env.REACT_APP_DEBUG === "TRUE") {
+          console.log("serviceSignUp account created");
+        }
         stateChanges.signup = emptySignup;
         stateChanges.openSnack = true;
         stateChanges.snack = {
@@ -32,6 +37,9 @@ function serviceSignUp(user) {
         callbacks.push({ key: "close" });
         break;
       case 409:
+        if (process.env.REACT_APP_DEBUG === "TRUE") {
+          console.log("serviceSignUp account already existing");
+        }
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
@@ -42,6 +50,9 @@ function serviceSignUp(user) {
         stateChanges.loading = false;
         break;
       case 400:
+        if (process.env.REACT_APP_DEBUG === "TRUE") {
+          console.log("serviceSignUp error network");
+        }
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
@@ -52,6 +63,9 @@ function serviceSignUp(user) {
         stateChanges.loading = false;
         break;
       default:
+        if (process.env.REACT_APP_DEBUG === "TRUE") {
+          console.log("serviceSignUp error unknown");
+        }
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
@@ -61,14 +75,29 @@ function serviceSignUp(user) {
         stateChanges.disabled = false;
         stateChanges.loading = false;
     }
-  })
-  .catch
 
-  return {
-    stateChanges: stateChanges,
-    callbacks: callbacks,
-    errors: errors,
-  };
+    // Response
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("serviceSignUp return");
+    }
+    return {
+      stateChanges: stateChanges,
+      callbacks: callbacks,
+      errors: errors,
+    };
+  } catch (err) {
+    return {
+      status: err.response.status,
+      message: "error on apiSignUp",
+      error: err,
+      stateChanges: {
+        disabled: false,
+        loading: false,
+      },
+      callbacks: [],
+      errors: ["generic-snack-errorunknown"],
+    };
+  }
 }
 
 export default serviceSignUp;

@@ -2,7 +2,7 @@ require("@jest/globals");
 import serviceCanSignUp from "./serviceCanSignUp.js";
 
 // Resources
-import emptySignup from "../resources/emptySignUp.js";
+import emptySignup from "../../../../../../../shared/resources/emptySignUp.js";
 
 describe("TEST OF SERVICE : serviceCanSignUp", () => {
   describe("Assessment of empty signup", () => {
@@ -17,7 +17,7 @@ describe("TEST OF SERVICE : serviceCanSignUp", () => {
         expect(serviceOutcome.stateChanges.pseudoError).toBeTruthy();
         expect(serviceOutcome.stateChanges.loginError).toBeTruthy();
         expect(serviceOutcome.stateChanges.passwordError).toBeTruthy();
-        expect(serviceOutcome.stateChanges.repeatPasswordError).toBeTruthy();
+        expect(serviceOutcome.stateChanges.repeatpasswordError).toBeTruthy();
       });
       test("then errors are provided", () => {
         const serviceOutcome = serviceCanSignUp(emptySignup);
@@ -35,15 +35,15 @@ describe("TEST OF SERVICE : serviceCanSignUp", () => {
     const wrongEmailSignup = {
       pseudo: "undefined",
       login: "undefined",
-      password1: "undefined",
-      password2: "undefined",
+      password: "undefined",
+      repeatpassword: "undefined",
     };
     // Wrong email case
     const goodEmailSignup = {
       pseudo: "undefined",
       login: "exampleofemail@adomain.com",
-      password1: "undefined",
-      password2: "undefined",
+      password: "undefined",
+      repeatpassword: "undefined",
     };
     describe("When email is badly formed", () => {
       test("then the proceed field is false", () => {
@@ -71,15 +71,15 @@ describe("TEST OF SERVICE : serviceCanSignUp", () => {
     const passwordMissmatchSignup = {
       pseudo: "undefined",
       login: "exampleofemail@adomain.com",
-      password1: "password1",
-      password2: "password2",
+      password: "password1",
+      repeatpassword: "password2",
     };
     // Wrong email case
     const passwordMatchSignup = {
       pseudo: "undefined",
       login: "exampleofemail@adomain.com",
-      password1: "undefined",
-      password2: "undefined",
+      password: "undefined",
+      repeatpassword: "undefined",
     };
     describe("When passwords missmatch", () => {
       test("then the proceed field is false", () => {
@@ -88,7 +88,7 @@ describe("TEST OF SERVICE : serviceCanSignUp", () => {
       });
       test("then the state changes is provided", () => {
         const serviceOutcome = serviceCanSignUp(passwordMissmatchSignup);
-        expect(serviceOutcome.stateChanges.repeatPasswordError).toBeTruthy();
+        expect(serviceOutcome.stateChanges.repeatpasswordError).toBeTruthy();
       });
       test("then the error changes is provided", () => {
         const serviceOutcome = serviceCanSignUp(passwordMissmatchSignup);

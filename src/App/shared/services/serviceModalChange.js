@@ -1,12 +1,19 @@
-function serviceChange(target, previousValue) {
+function serviceModalChange(target, previousValue) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("serviceChange");
+    console.log("serviceModalChange");
   }
   let newValue = previousValue;
   let errors = [];
   let stateChanges = {};
 
   switch (target.name) {
+    case "name":
+      if (process.env.REACT_APP_DEBUG === "TRUE") {
+        console.log("change name : " + target.value);
+      }
+      stateChanges.nameError = false;
+      newValue.name = target.value;
+      break;
     case "pseudo":
       if (process.env.REACT_APP_DEBUG === "TRUE") {
         console.log("change pseudo : " + target.value);
@@ -21,19 +28,19 @@ function serviceChange(target, previousValue) {
       stateChanges.loginError = false;
       newValue.login = target.value;
       break;
-    case "password1":
+    case "password":
       if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("change password1 : " + target.value);
+        console.log("change password : " + target.value);
       }
       stateChanges.passwordError = false;
-      newValue.password1 = target.value;
+      newValue.password = target.value;
       break;
-    case "password2":
+    case "repeatpassword":
       if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("change password2 : " + target.value);
+        console.log("change repeatpassword : " + target.value);
       }
-      stateChanges.repeatPasswordError = false;
-      newValue.password2 = target.value;
+      stateChanges.repeatpasswordError = false;
+      newValue.repeatpassword = target.value;
       break;
     default:
       if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -49,4 +56,4 @@ function serviceChange(target, previousValue) {
   };
 }
 
-export default serviceChange;
+export default serviceModalChange;

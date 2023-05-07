@@ -13,15 +13,15 @@ import {
 import { LoadingButton } from "@mui/lab";
 
 // Resources
-import emptySignup from "./resources/emptySignUp.js";
+import emptySignup from "../../../../../../shared/resources/emptySignUp.js";
 
 // Services
 //import apiSignUp from "./services/apiSignUp.js";
 import serviceCanSignUp from "./services/serviceCanSignUp.js";
-import serviceChange from "./services/serviceChange.js";
 import serviceSignUp from "./services/serviceSignUp.js";
 
 // Shared
+import serviceModalChange from "../../../../../../shared/services/serviceModalChange.js";
 import Snack from "../../../../../../shared/components/Snack/Snack.js";
 import { random_id } from "../../../../../../shared/services/toolkit.js";
 
@@ -36,7 +36,7 @@ class SignUpModal extends React.Component {
       pseudoError: false,
       loginError: false,
       passwordError: false,
-      repeatPasswordError: false,
+      repeatpasswordError: false,
       disabled: false,
       loading: false,
       componentHeight: undefined,
@@ -101,26 +101,26 @@ class SignUpModal extends React.Component {
                 error={this.state.loginError}
               />
               <TextField
-                name="password1"
+                name="password"
                 required
                 label={t("generic-input-password")}
                 variant="standard"
-                value={this.state.signup.password1 || ""}
+                value={this.state.signup.password || ""}
                 onChange={this.handleChange}
                 autoComplete="off"
                 type="password"
                 error={this.state.passwordError}
               />
               <TextField
-                name="password2"
+                name="repeatpassword"
                 required
                 label={t("signup-input-repeatpassword")}
                 variant="standard"
-                value={this.state.signup.password2 || ""}
+                value={this.state.signup.repeatpassword || ""}
                 onChange={this.handleChange}
                 autoComplete="off"
                 type="password"
-                error={this.state.repeatPasswordError}
+                error={this.state.repeatpasswordError}
               />
             </Box>
           </DialogContent>
@@ -168,7 +168,7 @@ class SignUpModal extends React.Component {
       pseudoError: false,
       loginError: false,
       passwordError: false,
-      repeatPasswordError: false,
+      repeatpasswordError: false,
     }));
 
     this.props.callback("close");
@@ -177,9 +177,12 @@ class SignUpModal extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("SignUpModal.handleChange");
     }
-    let serviceChangeOutcome = serviceChange(event.target, this.state.signup);
+    let serviceChangeOutcome = serviceModalChange(
+      event.target,
+      this.state.signup
+    );
     if (serviceChangeOutcome.errors.length > 0) {
-      console.log("serviceChange errors");
+      console.log("serviceModalChange errors");
       console.log(serviceChangeOutcome.errors);
     } else {
       serviceChangeOutcome.stateChanges.signup = serviceChangeOutcome.newValue;
@@ -195,14 +198,13 @@ class SignUpModal extends React.Component {
 
     // Check inputs
     let canProceedOutcome = serviceCanSignUp(this.state.signup);
-    if (canProceedOutcome.errors.length === 0) {
-      this.setState((prevState, props) => canProceedOutcome.stateChanges);
-    } else {
+    if (canProceedOutcome.errors.length !== 0) {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
         console.log("serviceCanSignUp errors");
         console.log(canProceedOutcome.errors);
       }
     }
+    this.setState((prevState, props) => canProceedOutcome.stateChanges);
 
     // Post or publish
     if (canProceedOutcome.proceed === true) {

@@ -14,9 +14,8 @@ function serviceSignUp(user) {
   let stateChanges = {};
 
   // Prep
-  user.password = user.password1;
-  delete user.password1;
-  delete user.password2;
+  user.password = user.password;
+  delete user.repeatpassword;
 
   // API call
   apiSignUp(user).then((res) => {

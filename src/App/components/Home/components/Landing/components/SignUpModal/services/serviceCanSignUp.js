@@ -33,23 +33,23 @@ function serviceCanSignUp(signup) {
   }
 
   // Password is empty?
-  if (signup.password1 === null || signup.password1 === "") {
+  if (signup.password === null || signup.password === "") {
     proceed = false;
     errors.push("signup-error-missingpassword");
     stateChanges.passwordError = true;
   }
 
   // Repeated password is empty?
-  if (signup.password2 === null || signup.password2 === "") {
+  if (signup.repeatpassword === null || signup.repeatpassword === "") {
     proceed = false;
     errors.push("signup-error-missingrepeatpassword");
-    stateChanges.repeatPasswordError = true;
+    stateChanges.repeatpasswordError = true;
   } else {
     // Password match?
-    if (signup.password1 !== signup.password2) {
+    if (signup.password !== signup.repeatpassword) {
       proceed = false;
       errors.push("signup-error-passwordmissmatch");
-      stateChanges.repeatPasswordError = true;
+      stateChanges.repeatpasswordError = true;
     }
   }
 

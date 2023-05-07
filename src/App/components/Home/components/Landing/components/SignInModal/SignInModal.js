@@ -289,8 +289,8 @@ class SignInModal extends React.Component {
           case 200:
             this.setState({
               signin: emptySignin,
-              openSnack: true,
-              snack: { uid: random_id(), id: "signin-snack-success" },
+              //openSnack: true,
+              //snack: { uid: random_id(), id: "signin-snack-success" },
             });
             // Store token
             // https://medium.com/how-to-react/how-to-use-js-cookie-to-store-data-in-cookies-in-react-js-aab47f8a45c3

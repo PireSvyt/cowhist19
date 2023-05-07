@@ -139,13 +139,22 @@ export default class App extends React.Component {
       console.log("App.signIn ");
     }
     let decodedtoken = jwt_decode(token);
-    this.setState((prevState, props) => ({
-      signedin: true,
-      token: token,
-      userid: decodedtoken.id,
-    }));
-    // Get user details
-    this.getUserDetails(token);
+    // User status tollgate
+    if (
+      decodedtoken.status === "registered" ||
+      decodedtoken.status === "signedup"
+    ) {
+      // Then update variables to signed in
+      this.setState((prevState, props) => ({
+        signedin: true,
+        token: token,
+        userid: decodedtoken.id,
+      }));
+      // Get user details
+      this.getUserDetails(token);
+    } else {
+      this.signOut();
+    }
   }
   signOut() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {

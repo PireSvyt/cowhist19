@@ -301,8 +301,14 @@ class Table extends React.Component {
           openTableModal: false,
         }));
         break;
-      case "updategames":
-        console.log("TODO updategames");
+      case "updatetable":
+        // Reload table
+        this.getTableDetails();
+        // Reload history
+        this.getTableHistory();
+        this.setState((prevState, props) => ({
+          openTableModal: false,
+        }));
         break;
       default:
     }

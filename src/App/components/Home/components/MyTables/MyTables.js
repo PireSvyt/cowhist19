@@ -41,7 +41,7 @@ class MyTables extends React.Component {
     const { t } = this.props;
 
     return (
-      <Box hidden={this.props.open === undefined || this.props.open === false}>
+      <Box hidden={this.props.signedin !== true}>
         <Stack direction="row" justifyContent="space-between">
           <Typography sx={{ p: 2 }} variant="h6" component="span">
             {t("mytables-label-mytables")}

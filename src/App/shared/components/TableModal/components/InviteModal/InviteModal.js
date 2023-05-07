@@ -209,29 +209,24 @@ class InviteModal extends React.Component {
         loading: true,
       }));
 
-      let proceedOutcome = serviceInvite(this.props.token, this.state.user);
-      if (proceedOutcome.errors.length !== 0) {
-        if (process.env.REACT_APP_DEBUG === "TRUE") {
-          console.log("proceedOutcome errors");
-          console.log(proceedOutcome.errors);
+      serviceInvite(this.props.token, this.state.user).then(
+        (proceedOutcome) => {
+          if (proceedOutcome.errors.length !== 0) {
+            if (process.env.REACT_APP_DEBUG === "TRUE") {
+              console.log("proceedOutcome errors");
+              console.log(proceedOutcome.errors);
+            }
+          }
+          this.setState((prevState, props) => proceedOutcome.stateChanges);
+          proceedOutcome.callbacks.forEach((callback) => {
+            if (callback.option === undefined) {
+              this.props.callback(callback.key);
+            } else {
+              this.props.callback(callback.key, callback.option);
+            }
+          });
         }
-      }
-      if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("inviteModal proceedOutcome set state");
-        console.log(proceedOutcome.stateChanges);
-      }
-      this.setState((prevState, props) => proceedOutcome.stateChanges);
-      proceedOutcome.callbacks.forEach((callback) => {
-        if (process.env.REACT_APP_DEBUG === "TRUE") {
-          console.log("inviteModal proceedOutcome callback " + callback.key);
-        }
-        if (callback.option === undefined) {
-          this.props.callback(callback.key);
-        } else {
-          this.props.callback(callback.key);
-        }
-        this.props.callback(callback.key, callback.option);
-      });
+      );
     } else {
       // Snack
       this.setState((prevState, props) => ({

@@ -213,21 +213,21 @@ class SignUpModal extends React.Component {
         loading: true,
       }));
 
-      let proceedOutcome = serviceSignUp(this.state.signup);
-      if (proceedOutcome.errors.length !== 0) {
-        if (process.env.REACT_APP_DEBUG === "TRUE") {
-          console.log("proceedOutcome errors");
-          console.log(proceedOutcome.errors);
+      serviceSignUp(this.state.signup).then((proceedOutcome) => {
+        if (proceedOutcome.errors.length !== 0) {
+          if (process.env.REACT_APP_DEBUG === "TRUE") {
+            console.log("proceedOutcome errors");
+            console.log(proceedOutcome.errors);
+          }
         }
-      }
-      this.setState((prevState, props) => proceedOutcome.stateChanges);
-      proceedOutcome.callbacks.forEach((callback) => {
-        if (callback.option === undefined) {
-          this.props.callback(callback.key);
-        } else {
-          this.props.callback(callback.key);
-        }
-        this.props.callback(callback.key, callback.option);
+        this.setState((prevState, props) => proceedOutcome.stateChanges);
+        proceedOutcome.callbacks.forEach((callback) => {
+          if (callback.option === undefined) {
+            this.props.callback(callback.key);
+          } else {
+            this.props.callback(callback.key, callback.option);
+          }
+        });
       });
     } else {
       // Snack

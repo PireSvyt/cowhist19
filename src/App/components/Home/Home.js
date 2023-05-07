@@ -3,13 +3,12 @@ import { withTranslation } from "react-i18next";
 import { Box } from "@mui/material";
 
 // Components
-import Landing from "./components/Landing/Landing";
-import MyStats from "./components/MyStats/MyStats";
-import MyTables from "./components/MyTables/MyTables";
+import Landing from "./components/Landing/Landing.js";
+import MyStats from "./components/MyStats/MyStats.js";
+import MyTables from "./components/MyTables/MyTables.js";
 
 // Shared
-
-import Appbar from "../../shared/components/Appbar/Appbar";
+import Appbar from "../../shared/components/Appbar/Appbar.js";
 
 class Home extends React.Component {
   constructor(props) {

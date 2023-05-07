@@ -3,14 +3,14 @@ import { withTranslation } from "react-i18next";
 import { Box, List, ListItem } from "@mui/material";
 
 // Components
-import GameCard from "./components/GameCard/GameCard";
+import GameCard from "./components/GameCard/GameCard.js";
 
 // Services
-import apiGameDelete from "./services/apiGameDelete";
+import apiGameDelete from "./services/apiGameDelete.js";
 
 // Shared
-import ConfirmModal from "../../../../shared/components/ConfirmModal/ConfirmModal";
-import { random_id } from "../../../../shared/services/toolkit";
+import ConfirmModal from "../../../../shared/components/ConfirmModal/ConfirmModal.js";
+import { random_id } from "../../../../shared/services/toolkit.js";
 
 class TableHistory extends React.Component {
   constructor(props) {

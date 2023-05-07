@@ -17,21 +17,22 @@ import {
   Card,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
+
+import AddIcon from "@mui/icons-material/Add.js";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline.js";
 
 // Components
-import InviteModal from "./components/InviteModal/InviteModal";
+import InviteModal from "./components/InviteModal/InviteModal.js";
 
 // Services
-import apiTableSave from "./services/apiTableSave";
-import apiTableDelete from "./services/apiTableDelete";
+import apiTableSave from "./services/apiTableSave.js";
+import apiTableDelete from "./services/apiTableDelete.js";
 
 // Shared
-import ConfirmModal from "../ConfirmModal/ConfirmModal";
-import Snack from "../Snack/Snack";
-import { random_id } from "../../services/toolkit";
-import apiTableDetails from "../../services/apiTableDetails";
+import ConfirmModal from "../ConfirmModal/ConfirmModal.js";
+import Snack from "../Snack/Snack.js";
+import { random_id } from "../../services/toolkit.js";
+import apiTableDetails from "../../services/apiTableDetails.js";
 
 let emptyTable = {
   _id: "",

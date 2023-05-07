@@ -17,3 +17,6 @@ FUNCTIONAL
 TECHNICAL
     - Redux / RXJS & inversify
     - Reactive with event
+    
+TESTS
+    - serviceSignUp

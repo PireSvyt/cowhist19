@@ -25,6 +25,7 @@
   "generic-menu-table": "Table",
   "generic-menu-edittable": "Edit table",
   "generic-menu-signout": "Sign out",
+  "generic-error-invalidchange": "invalid change",
   "signup-title": "Sign up",
   "signup-input-repeatpassword": "Repeat password",
   "signup-button-signup": "Sign up",

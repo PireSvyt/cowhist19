@@ -2,17 +2,17 @@ import React from "react";
 import { withTranslation } from "react-i18next";
 import { Box, Typography, Button, CircularProgress } from "@mui/material";
 
-import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAlt";
-import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAlt.js";
+import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied.js";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline.js";
 
 // Components
 
 // Services
-import apiActivate from "./services/apiActivate";
+import apiActivate from "./services/apiActivate.js";
 
 // Shared
-import Appbar from "../../shared/components/Appbar/Appbar";
+import Appbar from "../../shared/components/Appbar/Appbar.js";
 
 class Activation extends React.Component {
   constructor(props) {

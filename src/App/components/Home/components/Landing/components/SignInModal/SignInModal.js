@@ -9,16 +9,20 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  FormControl
+  FormControl,
 } from "@mui/material";
-import LoadingButton from "@mui/lab/LoadingButton";
+
+import { LoadingButton } from "@mui/lab";
 
 // Services
-import apiSignIn from "./services/apiSignIn";
+import apiSignIn from "./services/apiSignIn.js";
 
 // Shared
-import Snack from "../../../../../../shared/components/Snack/Snack";
-import { random_id, validateEmail } from "../../../../../../shared/services/toolkit";
+import Snack from "../../../../../../shared/components/Snack/Snack.js";
+import {
+  random_id,
+  validateEmail,
+} from "../../../../../../shared/services/toolkit.js";
 
 let emptySignin = {
   login: "",
@@ -156,7 +160,7 @@ class SignInModal extends React.Component {
     let errors = [];
 
     // Checks
-    
+
     // Login is empty?
     if (this.state.signin.login === "") {
       proceed = false;
@@ -166,7 +170,7 @@ class SignInModal extends React.Component {
       }));
     } else {
       // Login is an email?
-      if ( !validateEmail(this.state.signin.login) ) {
+      if (!validateEmail(this.state.signin.login)) {
         proceed = false;
         errors.push("signin-error-invalidlogin");
         this.setState((prevState, props) => ({
@@ -251,7 +255,7 @@ class SignInModal extends React.Component {
     }*/
     // Check inputs
     this.setState((prevState, props) => ({
-      signin: previousSignin
+      signin: previousSignin,
     }));
   }
   handleProceed() {
@@ -336,7 +340,11 @@ class SignInModal extends React.Component {
       // Snack
       this.setState((prevState, props) => ({
         openSnack: true,
-        snack: { uid: random_id(), id: "generic-snack-error", details: canProceedOutcome.errors },
+        snack: {
+          uid: random_id(),
+          id: "generic-snack-error",
+          details: canProceedOutcome.errors,
+        },
       }));
     }
   }

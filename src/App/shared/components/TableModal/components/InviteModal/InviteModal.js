@@ -14,7 +14,8 @@ import {
 import LoadingButton from "@mui/lab/LoadingButton";
 
 // Services
-import apiUserInvite from "./services/apiUserInvite";
+import apiUserInvite from "./services/apiUserInvite.js";
+import serviceCanInvite from "./services/serviceCanInvite.js";
 
 // Shared
 import Snack from "../../../Snack/Snack";
@@ -47,7 +48,7 @@ class InviteModal extends React.Component {
     this.updateComponentHeight = this.updateComponentHeight.bind(this);
 
     // Handles
-    this.canProceed = this.canProceed.bind(this);
+    //this.canProceed = this.canProceed.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleProceed = this.handleProceed.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -171,6 +172,7 @@ class InviteModal extends React.Component {
   }
 
   // Helpers
+  /*
   canProceed() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("InviteModal.canProceed");
@@ -224,7 +226,7 @@ class InviteModal extends React.Component {
       proceed: proceed,
       errors: errors,
     };
-  }
+  }*/
 
   // handleCloseMenu
   handleClose() {
@@ -304,7 +306,10 @@ class InviteModal extends React.Component {
     }
 
     // Check inputs
-    let canProceedOutcome = this.canProceed();
+    let canProceedOutcome = serviceCanInvite();
+    if (canProceedOutcome.stateChanges !== {}) {
+      this.setState((prevState, props) => canProceedOutcome.stateChanges);
+    }
 
     // Proceed or not?
     /*if (canProceedOutcome.errors !== [] && process.env.REACT_APP_DEBUG === "TRUE") {

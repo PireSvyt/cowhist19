@@ -3,18 +3,18 @@ import { withTranslation } from "react-i18next";
 import { Box, Tabs, Tab, Fab } from "@mui/material";
 
 // Components
-import TableStats from "./components/TableStats/TableStats";
-import TableHistory from "./components/TableHistory/TableHistory";
-import GameModal from "./components/GameModal/GameModal";
+import TableStats from "./components/TableStats/TableStats.js";
+import TableHistory from "./components/TableHistory/TableHistory.js";
+import GameModal from "./components/GameModal/GameModal.js";
 
 // Services
-import apiTableStats from "./services/apiTableStats";
-import apiTableHistory from "./services/apiTableHistory";
+import apiTableStats from "./services/apiTableStats.js";
+import apiTableHistory from "./services/apiTableHistory.js";
 
 // Shared
-import Appbar from "../../shared/components/Appbar/Appbar";
-import TableModal from "../../shared/components/TableModal/TableModal";
-import apiTableDetails from "../../shared/services/apiTableDetails";
+import Appbar from "../../shared/components/Appbar/Appbar.js";
+import TableModal from "../../shared/components/TableModal/TableModal.js";
+import apiTableDetails from "../../shared/services/apiTableDetails.js";
 
 class Table extends React.Component {
   constructor(props) {

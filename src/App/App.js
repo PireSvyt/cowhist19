@@ -6,15 +6,15 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 // https://www.geeksforgeeks.org/how-to-create-a-multi-page-website-using-react-js/
 
 // Components
-import Home from "./components/Home/Home";
-import Activation from "./components/Activation/Activation";
-import Table from "./components/Table/Table";
-import Account from "./components/Account/Account";
+import Home from "./components/Home/Home.js";
+import Activation from "./components/Activation/Activation.js";
+import Table from "./components/Table/Table.js";
+import Account from "./components/Account/Account.js";
 
 // Services
-import apiAuthAssess from "./services/apiAuthAssess";
-import apiUserDetails from "./services/apiUserDetails";
-import apiUserTables from "./services/apiUserTables";
+import apiAuthAssess from "./services/apiAuthAssess.js";
+import apiUserDetails from "./services/apiUserDetails.js";
+import apiUserTables from "./services/apiUserTables.js";
 
 export default class App extends React.Component {
   constructor(props) {

@@ -3,7 +3,7 @@ import { withTranslation } from "react-i18next";
 import { Typography, Box, Button } from "@mui/material";
 
 // Shared
-import ToComeModal from "../../../../shared/components/ToComeModal/ToComeModal";
+import ToComeModal from "../../../../shared/components/ToComeModal/ToComeModal.js";
 
 class MyStats extends React.Component {
   constructor(props) {

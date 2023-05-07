@@ -17,21 +17,22 @@ import {
   Card,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
+
+import AddIcon from "@mui/icons-material/Add.js";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline.js";
 
 // Components
-import InviteModal from "./components/InviteModal/InviteModal";
+import InviteModal from "./components/InviteModal/InviteModal.js";
 
 // Services
-import apiTableSave from "./services/apiTableSave";
-import apiTableDelete from "./services/apiTableDelete";
+import apiTableSave from "./services/apiTableSave.js";
+import apiTableDelete from "./services/apiTableDelete.js";
 
 // Shared
-import ConfirmModal from "../ConfirmModal/ConfirmModal";
-import Snack from "../Snack/Snack";
-import { random_id } from "../../services/toolkit";
-import apiTableDetails from "../../services/apiTableDetails";
+import ConfirmModal from "../ConfirmModal/ConfirmModal.js";
+import Snack from "../Snack/Snack.js";
+import { random_id } from "../../services/toolkit.js";
+import apiTableDetails from "../../services/apiTableDetails.js";
 
 let emptyTable = {
   _id: "",
@@ -63,7 +64,6 @@ class TableModal extends React.Component {
       snack: { id: undefined },
     };
     // Updates
-    this.updateComponentHeight = this.updateComponentHeight.bind(this);
     this.getTableDetails = this.getTableDetails.bind(this);
     this.addUserToPlayers = this.addUserToPlayers.bind(this);
 
@@ -193,7 +193,9 @@ class TableModal extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       //console.log("TableModal.componentDidMount");
     }
-    this.updateComponentHeight();
+    this.setState({
+      componentHeight: window.innerHeight - 115,
+    });
   }
   componentDidUpdate(prevState, prevProps) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -220,16 +222,6 @@ class TableModal extends React.Component {
         this.addUserToPlayers();
       }
     }
-  }
-
-  // Updates
-  updateComponentHeight() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("TableModal.updateComponentHeight");
-    }
-    this.setState({
-      componentHeight: window.innerHeight - 115,
-    });
   }
 
   // Helpers

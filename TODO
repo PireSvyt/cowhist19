@@ -1,7 +1,13 @@
 FUNCTIONAL
-    - email on invite
+    - confirmation on delete user from existing table
+    - bug of inviting user to an existing table
+    - block non activated usage
     - email to confirm login
-    - reset password
+    
+    - email to reset password
+    
+    - email on invite
+    
     - edit game from history
     - change pseudo
     - change password
@@ -11,3 +17,6 @@ FUNCTIONAL
 TECHNICAL
     - Redux / RXJS & inversify
     - Reactive with event
+    
+TESTS
+    - serviceSignUp

@@ -2,15 +2,15 @@ import axios from "axios";
 
 async function apiActivate(regToken) {
   try {
-    const res = await axios.get(
-      process.env.REACT_APP_SERVER_URL + "/user/activate/" + regToken
+    const res = await axios.post(
+      process.env.REACT_APP_SERVER_URL + "/auth/activate/" + regToken
     );
     return res.data;
   } catch (err) {
     const res = {
       status: err.response.status,
       message: "error on apiActivate " + regToken,
-      games: [],
+      outcome: "error",
       error: err,
     };
     console.error(res);

@@ -2,7 +2,7 @@ import * as React from "react";
 import { withTranslation } from "react-i18next";
 import { Typography, Card, Box, IconButton } from "@mui/material";
 
-import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline.js";
 
 class GameCard extends React.Component {
   constructor(props) {

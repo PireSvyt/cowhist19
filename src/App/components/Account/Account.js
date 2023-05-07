@@ -3,8 +3,8 @@ import { withTranslation } from "react-i18next";
 import { Paper, Button, Typography, Box } from "@mui/material";
 
 // Shared
-import Appbar from "../../shared/components/Appbar/Appbar";
-import ToComeModal from "../../shared/components/ToComeModal/ToComeModal";
+import Appbar from "../../shared/components/Appbar/Appbar.js";
+import ToComeModal from "../../shared/components/ToComeModal/ToComeModal.js";
 
 class Account extends React.Component {
   constructor(props) {

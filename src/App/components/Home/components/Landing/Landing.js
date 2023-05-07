@@ -3,8 +3,8 @@ import { withTranslation } from "react-i18next";
 import { ButtonGroup, Button, Box } from "@mui/material";
 
 // Components
-import SignUpModal from "./components/SignUpModal/SignUpModal";
-import SignInModal from "./components/SignInModal/SignInModal";
+import SignUpModal from "./components/SignUpModal/SignUpModal.js";
+import SignInModal from "./components/SignInModal/SignInModal.js";
 
 class Landing extends React.Component {
   constructor(props) {

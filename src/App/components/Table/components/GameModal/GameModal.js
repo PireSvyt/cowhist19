@@ -20,13 +20,12 @@ import {
 import LoadingButton from "@mui/lab/LoadingButton";
 
 // Services
-import apiGameSave from "./services/apiGameSave";
-import apiGameDetails from "./services/apiGameDetails";
-import apiGameDelete from "./services/apiGameDelete";
+import apiGameSave from "./services/apiGameSave.js";
+import apiGameDetails from "./services/apiGameDetails.js";
 
 // Shared
-import Snack from "../../../../shared/components/Snack/Snack";
-import { random_id } from "../../../../shared/services/toolkit";
+import Snack from "../../../../shared/components/Snack/Snack.js";
+import { random_id } from "../../../../shared/services/toolkit.js";
 
 let emptyGame = {
   _id: "",

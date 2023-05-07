@@ -3,7 +3,7 @@ import { withTranslation } from "react-i18next";
 import { Box, List, ListItem, Card } from "@mui/material";
 
 // Components
-import RankingCard from "./components/RankingCard/RankingCard";
+import RankingCard from "./components/RankingCard/RankingCard.js";
 
 class TableStats extends React.Component {
   constructor(props) {

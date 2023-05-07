@@ -10,12 +10,13 @@ import {
   MenuItem,
   Box,
 } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import CloseIcon from "@mui/icons-material/Close";
-import EditIcon from "@mui/icons-material/Edit";
+
+import MenuIcon from "@mui/icons-material/Menu.js";
+import CloseIcon from "@mui/icons-material/Close.js";
+import EditIcon from "@mui/icons-material/Edit.js";
 
 // Services
-import { random_id } from "../../services/toolkit";
+import { random_id } from "../../services/toolkit.js";
 
 class Appbar extends React.Component {
   constructor(props) {

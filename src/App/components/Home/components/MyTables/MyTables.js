@@ -9,11 +9,12 @@ import {
   Box,
   Card,
 } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+
+import AddIcon from "@mui/icons-material/Add.js";
 
 // Shared
-import Snack from "../../../../shared/components/Snack/Snack";
-import TableModal from "../../../../shared/components/TableModal/TableModal";
+import Snack from "../../../../shared/components/Snack/Snack.js";
+import TableModal from "../../../../shared/components/TableModal/TableModal.js";
 
 class MyTables extends React.Component {
   constructor(props) {

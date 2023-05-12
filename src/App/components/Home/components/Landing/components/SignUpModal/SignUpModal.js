@@ -16,7 +16,6 @@ import { LoadingButton } from "@mui/lab";
 import emptySignup from "../../../../../../shared/resources/emptySignUp.js";
 
 // Services
-//import apiSignUp from "./services/apiSignUp.js";
 import serviceCanSignUp from "./services/serviceCanSignUp.js";
 import serviceSignUp from "./services/serviceSignUp.js";
 
@@ -196,7 +195,7 @@ class SignUpModal extends React.Component {
 
     // Check inputs
     let canProceedOutcome = serviceCanSignUp(this.state.signup);
-    if (canProceedOutcome.errors.length !== 0) {
+    if (canProceedOutcome.errors.length > 0) {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
         console.log("serviceCanSignUp errors");
         console.log(canProceedOutcome.errors);
@@ -212,7 +211,9 @@ class SignUpModal extends React.Component {
       }));
 
       serviceSignUp({ ...this.state.signup }).then((proceedOutcome) => {
-        if (proceedOutcome.errors.length !== 0) {
+        console.log("proceedOutcome");
+        console.log(proceedOutcome);
+        if (proceedOutcome.errors.length > 0) {
           if (process.env.REACT_APP_DEBUG === "TRUE") {
             console.log("proceedOutcome errors");
             console.log(proceedOutcome.errors);

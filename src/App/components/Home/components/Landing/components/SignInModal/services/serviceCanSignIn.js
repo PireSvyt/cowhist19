@@ -34,6 +34,9 @@ function serviceCanSignIn(signin) {
   }
 
   // Outcome
+  if (process.env.REACT_APP_DEBUG === "TRUE") {
+    console.log("proceed " + proceed);
+  }
   return {
     stateChanges: stateChanges,
     proceed: proceed,

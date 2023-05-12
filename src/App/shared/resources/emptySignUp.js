@@ -1,8 +1,8 @@
 const emptySignup = {
-  pseudo: null,
-  login: null,
-  password: null,
-  repeatpassword: null,
+  pseudo: "",
+  login: "",
+  password: "",
+  repeatpassword: "",
 };
 
 export default emptySignup;

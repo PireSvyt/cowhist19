@@ -52,6 +52,7 @@
   "signin-error-invalidlogin": "invalid email",
   "signin-error-missingpassword": "missing password",
   "signin-snack-unauthorized": "Wrong password",
+  "signin-snack-error": "Sign in error",
   "signin-snack-notfound": "Account not found",
   "signin-snack-success": "Signed in!",
   "account-label-infos": "My data",

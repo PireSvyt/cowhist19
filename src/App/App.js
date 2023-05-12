@@ -12,7 +12,7 @@ import Table from "./components/Table/Table.js";
 import Account from "./components/Account/Account.js";
 
 // Services
-import apiAuthAssess from "./services/apiAuthAssess.js";
+import serviceAssessCookie from "./services/serviceAssessCookie.js";
 import apiUserDetails from "./services/apiUserDetails.js";
 import apiUserTables from "./services/apiUserTables.js";
 
@@ -98,38 +98,23 @@ export default class App extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("App.componentDidMount");
     }
-    // Load
 
-    // Check token from cookies
-    // https://medium.com/how-to-react/how-to-use-js-cookie-to-store-data-in-cookies-in-react-js-aab47f8a45c3
-    let token = Cookies.get("cowhist19-token");
-    /*if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("App.componentDidMount token");
-      console.log(token);
-    }*/
-    if (token !== undefined) {
-      if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("App.componentDidMount assessing token from cookies");
-      }
-      apiAuthAssess(token).then((assessment) => {
-        if (assessment.status === 200) {
-          if (process.env.REACT_APP_DEBUG === "TRUE") {
-            console.log("App.componentDidMount token valid");
-          }
-          this.signIn(token);
-        }
-        if (assessment.status === 404) {
-          if (process.env.REACT_APP_DEBUG === "TRUE") {
-            console.log("App.componentDidMount token invalid");
-          }
-          this.signOut();
-        }
-      });
-    } else {
-      if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("App.componentDidMount token missing from cookies");
-      }
-      this.signOut();
+    let serviceAssessCookieOutcome = serviceAssessCookie();
+    switch (serviceAssessCookieOutcome.type) {
+      case "assesscookie.signin":
+        this.signIn(serviceAssessCookieOutcome.token);
+      case "assesscookie.signout.invalidtoken":
+        this.signOut();
+        break;
+      case "assesscookie.signout.missingcookie":
+        this.signOut();
+        break;
+      default:
+        console.log(
+          "App.componentDidMount serviceAssessCookie type note matched " +
+            serviceAssessCookieOutcome.type
+        );
+        this.signOut();
     }
   }
 

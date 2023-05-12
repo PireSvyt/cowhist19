@@ -1,6 +1,6 @@
 const emptyUser = {
-  pseudo: null,
-  login: null,
+  pseudo: "",
+  login: "",
   acknowledgement: false,
 };
 

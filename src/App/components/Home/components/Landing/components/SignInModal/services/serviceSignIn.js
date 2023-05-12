@@ -1,4 +1,6 @@
 import Cookies from "js-cookie";
+const bcrypt = require("bcrypt");
+// BCRYPT https://www.makeuseof.com/nodejs-bcrypt-hash-verify-salt-password/
 // Resources
 import emptySignin from "../../../../../../../shared/resources/emptySignIn";
 // Shared
@@ -15,7 +17,7 @@ async function serviceSignIn(user) {
     let stateChanges = {};
 
     // Prep
-    user.password = user.password;
+    user.password = await bcrypt.hash(user.password, 10);
     delete user.repeatpassword;
 
     // API call

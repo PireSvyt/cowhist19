@@ -16,7 +16,7 @@ import { LoadingButton } from "@mui/lab";
 import emptySignup from "../../../../../../shared/resources/emptySignUp.js";
 
 // Services
-import serviceCanSignUp from "./services/serviceCanSignUp.js";
+import serviceSignUpCheck from "./services/serviceSignUpCheck.js";
 import serviceSignUp from "./services/serviceSignUp.js";
 
 // Shared
@@ -194,17 +194,17 @@ class SignUpModal extends React.Component {
     }
 
     // Check inputs
-    let canProceedOutcome = serviceCanSignUp(this.state.signup);
-    if (canProceedOutcome.errors.length > 0) {
+    let proceedCheckOutcome = serviceSignUpCheck(this.state.signup);
+    if (proceedCheckOutcome.errors.length > 0) {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("serviceCanSignUp errors");
-        console.log(canProceedOutcome.errors);
+        console.log("proceedCheckOutcome errors");
+        console.log(proceedCheckOutcome.errors);
       }
     }
-    this.setState((prevState, props) => canProceedOutcome.stateChanges);
+    this.setState((prevState, props) => proceedCheckOutcome.stateChanges);
 
     // Post or publish
-    if (canProceedOutcome.proceed === true) {
+    if (proceedCheckOutcome.proceed === true) {
       this.setState((prevState, props) => ({
         disabled: true,
         loading: true,
@@ -233,7 +233,7 @@ class SignUpModal extends React.Component {
         snack: {
           uid: random_id(),
           id: "generic-snack-error",
-          details: canProceedOutcome.errors,
+          details: proceedCheckOutcome.errors,
         },
       }));
     }

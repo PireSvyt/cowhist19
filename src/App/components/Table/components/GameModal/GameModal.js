@@ -20,20 +20,17 @@ import {
 import LoadingButton from "@mui/lab/LoadingButton";
 
 // Services
-import apiGameSave from "./services/apiGameSave.js";
+import serviceGameSaveCheck from "./services/serviceGameSaveCheck.js";
+import serviceGameSave from "./services/serviceGameSave.js";
 import apiGameDetails from "./services/apiGameDetails.js";
 
+// Resources
+import emptyGame from "./resources/emptyGame.js";
+
 // Shared
+import serviceModalChange from "../../../../shared/services/serviceModalChange.js";
 import Snack from "../../../../shared/components/Snack/Snack.js";
 import { random_id } from "../../../../shared/services/toolkit.js";
-
-let emptyGame = {
-  _id: "",
-  table: "",
-  contract: "",
-  players: [],
-  outcome: 0,
-};
 
 class GameModal extends React.Component {
   constructor(props) {
@@ -55,11 +52,8 @@ class GameModal extends React.Component {
       openSnack: false,
       snack: { uid: "", id: "generic-snack-errornetwork" },
     };
-    // Updates
-    this.updateComponentHeight = this.updateComponentHeight.bind(this);
 
     // Handles
-    this.canSave = this.canSave.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -272,7 +266,9 @@ class GameModal extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       //console.log("GameModal.componentDidMount");
     }
-    this.updateComponentHeight();
+    this.setState({
+      componentHeight: window.innerHeight - 115,
+    });
   }
   componentDidUpdate(prevState) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -325,87 +321,6 @@ class GameModal extends React.Component {
     }
   }
 
-  // Updates
-  updateComponentHeight() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("GameModal.updateComponentHeight");
-    }
-    this.setState({
-      componentHeight: window.innerHeight - 115,
-    });
-  }
-
-  // Helpers
-  canSave(game) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("GameModal.canSave");
-    }
-    let proceed = true;
-    let errors = [];
-
-    // Checks
-
-    // Is contract missing?
-    if (game.contract === undefined || game.contract === "") {
-      proceed = false;
-      errors.push("game-error-missingcontract");
-      this.setState((prevState, props) => ({
-        contractError: true,
-      }));
-    } else {
-      // Contract behing defined, checking teams
-      let contract = this.props.contracts.filter(
-        (c) => c.key === game.contract
-      )[0];
-      if (game.players === []) {
-        proceed = false;
-        errors.push(" Players empty");
-      } else {
-        // Is attack well formed?
-        if (
-          game.players.filter((player) => player.role === "attack").length !==
-          contract.attack
-        ) {
-          proceed = false;
-          errors.push("game-error-attackmissmatch");
-          this.setState((prevState, props) => ({
-            attackError: true,
-          }));
-        }
-
-        // Is defense well formed?
-        if (
-          game.players.filter((player) => player.role === "defense").length !==
-          contract.defense
-        ) {
-          proceed = false;
-          errors.push("game-error-defensemissmatch");
-          this.setState((prevState, props) => ({
-            defenseError: true,
-          }));
-        }
-
-        // Is outcome consistent?
-        if (game.outcome + contract.folds > 13) {
-          proceed = false;
-          errors.push("game-error-outcomemissmatch");
-          this.setState((prevState, props) => ({
-            outcomeError: true,
-          }));
-        }
-      }
-    }
-
-    // Outcome
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("proceed " + proceed);
-    }
-    return {
-      proceed: proceed,
-      errors: errors,
-    };
-  }
-
   // Handles
   handleClose() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -428,150 +343,64 @@ class GameModal extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("GameModal.handleChange");
     }
-    const target = event.target;
-    /*if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("target.name : " + target.name);
-      console.log("target.value : " + target.value);
-      console.log("newValue : ");
-      console.log(newValue);
-    }*/
-    var previousGame = this.state.game;
-    switch (target.name) {
-      case "contract":
-        if (process.env.REACT_APP_DEBUG === "TRUE") {
-          console.log("change contract : " + target.value);
-        }
-        previousGame.contract = target.value;
-        // Adjust requirements
-        let contract = this.props.contracts.filter(
-          (c) => c.key === previousGame.contract
-        )[0];
-        this.setState((prevState, props) => ({
-          contractError: false,
-          attackRequirement: "(" + contract.attack + ")",
-          defenseRequirement: "(" + contract.defense + ")",
-        }));
-        break;
-      case "attack":
-        if (process.env.REACT_APP_DEBUG === "TRUE") {
-          console.log("change attack : ");
-          console.log(target.value);
-        }
-        let currentDefense = previousGame.players.filter(
-          (player) => player.role === "defense"
-        );
-        target.value.forEach((attackant) => {
-          currentDefense.push({
-            _id: attackant._id,
-            pseudo: attackant.pseudo,
-            role: "attack",
-          });
-        });
-        previousGame.players = currentDefense;
-        this.setState((prevState, props) => ({
-          attackError: false,
-        }));
-        break;
-      case "defense":
-        if (process.env.REACT_APP_DEBUG === "TRUE") {
-          console.log("change defense : ");
-          console.log(target.value);
-        }
-        let currentAttack = previousGame.players.filter(
-          (player) => player.role === "attack"
-        );
-        target.value.forEach((defenser) => {
-          currentAttack.push({
-            _id: defenser._id,
-            pseudo: defenser.pseudo,
-            role: "defense",
-          });
-        });
-        previousGame.players = currentAttack;
-        this.setState((prevState, props) => ({
-          defenseError: false,
-        }));
-        break;
-      case "outcome":
-        if (process.env.REACT_APP_DEBUG === "TRUE") {
-          console.log("change outcome : " + target.value);
-        }
-        previousGame.outcome = target.value;
-        this.setState((prevState, props) => ({
-          outcomeError: false,
-        }));
-        break;
-      default:
-        if (process.env.REACT_APP_DEBUG === "TRUE") {
-          console.log("/!\\ no match : " + target.name);
-        }
+    let serviceChangeOutcome = serviceModalChange(
+      event.target,
+      this.state.game,
+      {
+        contracts: this.props.contracts,
+      }
+    );
+    if (serviceChangeOutcome.errors.length > 0) {
+      console.log("serviceModalChange errors");
+      console.log(serviceChangeOutcome.errors);
+    } else {
+      serviceChangeOutcome.stateChanges.signup = serviceChangeOutcome.newValue;
+      this.setState((prevState, props) => serviceChangeOutcome.stateChanges);
     }
-    // Update
-    /*if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("GameModal.game");
-      console.log(this.state.game);
-    }*/
-    // Check inputs
-    this.setState((prevState, props) => ({
-      game: previousGame,
-    }));
   }
   handleSave() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("GameModal.handleSave");
     }
-    // i18n
-    const { t } = this.props;
 
     // Check inputs
-    let canSaveResult = this.canSave(this.state.game);
-
-    // Save or not?
-    if (canSaveResult.errors !== [] && process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log(canSaveResult.errors);
-    }
-    // Post or publish
-    if (canSaveResult.proceed === true) {
+    let proceedCheckOutcome = serviceGameSaveCheck(
+      this.state.game,
+      this.props.contracts
+    );
+    if (proceedCheckOutcome.errors.length > 0) {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("this.state.game");
-        console.log(this.state.game);
+        console.log("proceedCheckOutcome errors");
+        console.log(proceedCheckOutcome.errors);
       }
-      apiGameSave(this.props.token, this.state.game).then((res) => {
-        switch (res.status) {
-          case 201:
-            //console.log("default");
-            this.setState({
-              game: emptyGame,
-              openSnack: true,
-              snack: { uid: random_id(), id: "game-snack-saved" },
-            });
-            this.props.callback("updategames");
-            break;
-          case 200:
-            //console.log("modified");
-            this.setState((prevState, props) => ({
-              game: emptyGame,
-              openSnack: true,
-              snack: { uid: random_id(), id: "game-snack-saved" },
-            }));
-            this.props.callback("updategames");
-            break;
-          case 400:
-            //console.log("error");
-            //console.log(res);
-            this.setState({
-              openSnack: true,
-              snack: { uid: random_id(), id: "generic-snack-errornetwork" },
-            });
-            break;
-          default:
-            //console.log("default");
-            this.setState((prevState, props) => ({
-              openSnack: true,
-              snack: { uid: random_id(), id: "generic-snack-errorunknown" },
-            }));
+    }
+    this.setState((prevState, props) => proceedCheckOutcome.stateChanges);
+
+    // Post or publish
+    if (proceedCheckOutcome.proceed === true) {
+      this.setState((prevState, props) => ({
+        disabled: true,
+        loading: true,
+      }));
+
+      serviceGameSave(this.props.token, { ...this.state.game }).then(
+        (proceedOutcome) => {
+          if (proceedOutcome.errors.length > 0) {
+            if (process.env.REACT_APP_DEBUG === "TRUE") {
+              console.log("proceedOutcome errors");
+              console.log(proceedOutcome.errors);
+            }
+          }
+          this.setState((prevState, props) => proceedOutcome.stateChanges);
+          proceedOutcome.callbacks.forEach((callback) => {
+            if (callback.option === undefined) {
+              this.props.callback(callback.key);
+            } else {
+              this.props.callback(callback.key, callback.option);
+            }
+          });
         }
-      });
+      );
     } else {
       // Snack
       this.setState((prevState, props) => ({
@@ -579,7 +408,7 @@ class GameModal extends React.Component {
         snack: {
           uid: random_id(),
           id: "generic-snack-error",
-          details: canSaveResult.errors,
+          details: proceedCheckOutcome.errors,
         },
       }));
     }

@@ -1,14 +1,13 @@
-import Cookies from "js-cookie";
 // Services
-import apiSignIn from "./apiSignIn.js";
+import apiGameSave from "./apiGameSave.js";
 // Resources
-import emptySignin from "../../../../../../../shared/resources/emptySignIn";
+import emptyGame from "../resources/emptyGame.js";
 // Shared
-import { random_id } from "../../../../../../../shared/services/toolkit.js";
+import { random_id } from "../../../../../shared/services/toolkit.js";
 
-async function serviceSignIn(user) {
+async function serviceGameSave(token, game) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("serviceSignIn");
+    console.log("serviceGameSave");
   }
 
   try {
@@ -19,65 +18,52 @@ async function serviceSignIn(user) {
     // Prep
 
     // API call
-    const data = await apiSignIn(user);
+    const data = await apiGameSave(token, game);
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("data.type : " + data.type);
     }
 
     // Response management
     switch (data.type) {
-      case "auth.signin.success":
-        // https://medium.com/how-to-react/how-to-use-js-cookie-to-store-data-in-cookies-in-react-js-aab47f8a45c3
-        Cookies.set("cowhist19-token", data.data.token);
-        stateChanges.signin = emptySignin;
+      case "game.save.success.created":
+        stateChanges.game = emptyGame;
         stateChanges.disabled = false;
         stateChanges.loading = false;
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
-          id: "signin-snack-success",
+          id: "game-snack-saved",
         };
-        callbacks.push({ key: "close" });
-        callbacks.push({
-          key: "signedin",
-          option: data.data.token,
-        });
+        callbacks.push({ key: "updategames" });
         break;
-      case "auth.signin.error.notfound":
+      case "game.save.success.modified":
+        stateChanges.game = emptyGame;
+        stateChanges.disabled = false;
+        stateChanges.loading = false;
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
-          id: "signin-snack-notfound",
+          id: "game-snack-saved",
         };
-        stateChanges.disabled = false;
-        stateChanges.loading = false;
+        callbacks.push({ key: "updategames" });
         break;
-      case "auth.signin.error.invalidpassword":
+      case "game.save.error.oncreate":
+        stateChanges.disabled = false;
+        stateChanges.loading = false;
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
-          id: "signin-snack-unauthorized",
+          id: "game-snack-erroronsave",
         };
-        stateChanges.disabled = false;
-        stateChanges.loading = false;
         break;
-      case "auth.signin.error.onpasswordcompare":
+      case "game.save.error.onmodify":
+        stateChanges.disabled = false;
+        stateChanges.loading = false;
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
-          id: "generic-snack-error",
+          id: "game-snack-erroronsave",
         };
-        stateChanges.disabled = false;
-        stateChanges.loading = false;
-        break;
-      case "auth.signin.error.onfind":
-        stateChanges.openSnack = true;
-        stateChanges.snack = {
-          uid: random_id(),
-          id: "generic-snack-error",
-        };
-        stateChanges.disabled = false;
-        stateChanges.loading = false;
         break;
       default:
         stateChanges.openSnack = true;
@@ -118,4 +104,4 @@ async function serviceSignIn(user) {
   }
 }
 
-export default serviceSignIn;
+export default serviceGameSave;

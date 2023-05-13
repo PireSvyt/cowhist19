@@ -15,6 +15,7 @@
   "table-snack-success": { "severity": "success" },
   "table-snack-deleted": { "severity": "success" },
   "game-snack-saved": { "severity": "success" },
+  "game-snack-erroronsave": { "severity": "error" },
   "game-snack-deleted": { "severity": "success" },
   "game-snack-discarded": { "severity": "info" }
 }

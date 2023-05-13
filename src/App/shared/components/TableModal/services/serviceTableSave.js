@@ -26,9 +26,7 @@ async function serviceTableSave(token, table) {
     // Response management
     switch (data.type) {
       case "table.save.success.created":
-        stateChanges.disabled = false;
-        stateChanges.loading = false;
-        callbacks.push({ key: "totable", option: res.id });
+        callbacks.push({ key: "totable", option: data.data.id });
         break;
       case "table.save.success.modified":
         stateChanges.disabled = false;

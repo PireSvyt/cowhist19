@@ -442,9 +442,13 @@ class TableModal extends React.Component {
     }
 
     // Check inputs
-    let proceedCheckOutcome = serviceTableSaveCheck(this.state.table, {
-      confirmDelete: this.handleConfirmModalCallback,
-    });
+    function callbackConfirmDelete(action, details) {
+      this.handleConfirmModalCallback(action, details);
+    }
+    let proceedCheckOutcome = serviceTableSaveCheck(
+      this.state.table,
+      this.handleConfirmModalCallback
+    );
     if (proceedCheckOutcome.errors.length > 0) {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
         console.log("proceedCheckOutcome errors");
@@ -478,16 +482,6 @@ class TableModal extends React.Component {
           });
         }
       );
-    } else {
-      // Snack
-      this.setState((prevState, props) => ({
-        openSnack: true,
-        snack: {
-          uid: random_id(),
-          id: "generic-snack-error",
-          details: proceedCheckOutcome.errors,
-        },
-      }));
     }
   }
   handleSnack(action) {

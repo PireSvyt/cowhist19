@@ -1,4 +1,4 @@
-function serviceTableSaveCheck(table, callbacks) {
+function serviceTableSaveCheck(table, callback) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("serviceTableSaveCheck");
   }
@@ -28,11 +28,11 @@ function serviceTableSaveCheck(table, callbacks) {
       stateChanges.confirmModalCTA = [
         {
           label: "generic-button-cancel",
-          callback: () => callbacks.confimDelete("close"),
+          callback: () => callback("close"),
         },
         {
           label: "generic-button-proceed",
-          callback: () => callbacks.confimDelete("delete"),
+          callback: () => callback("delete"),
           variant: "contained",
           color: "error",
         },

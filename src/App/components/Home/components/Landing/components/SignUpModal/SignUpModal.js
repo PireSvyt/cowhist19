@@ -211,8 +211,6 @@ class SignUpModal extends React.Component {
       }));
 
       serviceSignUp({ ...this.state.signup }).then((proceedOutcome) => {
-        console.log("proceedOutcome");
-        console.log(proceedOutcome);
         if (proceedOutcome.errors.length > 0) {
           if (process.env.REACT_APP_DEBUG === "TRUE") {
             console.log("proceedOutcome errors");

@@ -139,7 +139,18 @@ class Table extends React.Component {
       </Box>
     );
   }
-  componentDidUpdate(prevState) {
+  componentDidMount() {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("Table.componentDidMount");
+    }
+    // Load
+    if (this.state.table._id === "") {
+      if (this.state.tableDetailsLoaded === false) {
+        this.getTableDetails();
+      }
+    }
+  }
+  componentDidUpdate(prevState, prevProps) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("Table.componentDidUpdate");
     }

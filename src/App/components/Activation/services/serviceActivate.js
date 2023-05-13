@@ -1,4 +1,5 @@
-import axios from "axios";
+// Services
+import apiActivate from "./apiActivate";
 
 async function serviceActivate() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -6,57 +7,61 @@ async function serviceActivate() {
   }
 
   try {
+    let callbacks = [];
+    let errors = [];
     let stateChanges = {};
 
     // Prep
     let regToken = window.location.href.split("/activation/")[1];
 
     // API call
-    let res = await axios.post(
-      process.env.REACT_APP_SERVER_URL + "/auth/v1/activate/" + regToken
-    );
-    switch (res.data.type) {
+    let data = await apiActivate(regToken);
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("data.type : " + data.type);
+    }
+
+    // Response management
+    switch (data.type) {
       case "auth.activate.success.activated":
-        if (process.env.REACT_APP_DEBUG === "TRUE") {
-          console.log("serviceActivate account activated");
-        }
         stateChanges.outcome = "activated";
         break;
       case "auth.activate.success.alreadyctivated":
-        if (process.env.REACT_APP_DEBUG === "TRUE") {
-          console.log("serviceActivate account already activated");
-        }
         stateChanges.outcome = "activated";
         break;
       case "auth.activate.error.notfound":
-        if (process.env.REACT_APP_DEBUG === "TRUE") {
-          console.log("serviceActivate error not found");
-        }
         stateChanges.outcome = "error";
         break;
       case "auth.activate.error.onsave":
-        if (process.env.REACT_APP_DEBUG === "TRUE") {
-          console.log("serviceActivate error on save");
-        }
         stateChanges.outcome = "error";
         break;
       default:
-        if (process.env.REACT_APP_DEBUG === "TRUE") {
-          console.log("serviceActivate error unknown");
-        }
         stateChanges.outcome = "error";
     }
 
     // Response
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("serviceActivate return");
-    }
     return {
       stateChanges: stateChanges,
+      callbacks: callbacks,
+      errors: errors,
     };
   } catch (err) {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("service caught error");
+      console.log(err);
+    }
+    // Error network
     return {
-      stateChanges: { outcome: "error" },
+      stateChanges: {
+        disabled: false,
+        loading: false,
+        openSnack: true,
+        snack: {
+          uid: random_id(),
+          id: "generic-snack-api-errornetwork",
+        },
+      },
+      callbacks: [],
+      errors: [],
     };
   }
 }

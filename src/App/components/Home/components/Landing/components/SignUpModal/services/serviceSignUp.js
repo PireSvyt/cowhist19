@@ -29,6 +29,7 @@ async function serviceSignUp(user) {
       console.log("data.type : " + data.type);
     }
 
+    // Response management
     switch (data.type) {
       case "auth.signup.success.signedup":
         stateChanges.signup = emptySignup;

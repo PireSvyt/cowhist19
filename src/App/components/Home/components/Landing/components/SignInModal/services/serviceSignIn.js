@@ -24,6 +24,7 @@ async function serviceSignIn(user) {
       console.log("data.type : " + data.type);
     }
 
+    // Response management
     switch (data.type) {
       case "auth.signin.success":
         // https://medium.com/how-to-react/how-to-use-js-cookie-to-store-data-in-cookies-in-react-js-aab47f8a45c3

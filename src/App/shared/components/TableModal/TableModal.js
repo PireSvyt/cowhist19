@@ -482,6 +482,18 @@ class TableModal extends React.Component {
           });
         }
       );
+    } else {
+      // Snack
+      if (proceedCheckOutcome.errors.length > 0) {
+        this.setState((prevState, props) => ({
+          openSnack: true,
+          snack: {
+            uid: random_id(),
+            id: "generic-snack-error",
+            details: proceedCheckOutcome.errors,
+          },
+        }));
+      }
     }
   }
   handleSnack(action) {

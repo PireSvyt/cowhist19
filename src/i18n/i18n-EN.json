@@ -19,6 +19,8 @@
   "generic-snack-saving": "Saving in progress",
   "generic-snack-errornetwork": "Error : Network issue",
   "generic-snack-errorunknown": "Unknown error :/",
+  "generic-snack-errorsaltgeneration": "Encryption preparation failed",
+  "generic-snack-errorpasswordencryption": "Password encryption failed",
   "generic-snack-error": "Error :",
   "generic-menu-home": "Home",
   "generic-menu-account": "My account",

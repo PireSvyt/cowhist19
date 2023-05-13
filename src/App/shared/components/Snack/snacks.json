@@ -4,6 +4,8 @@
   "generic-snack-errornetwork": { "severity": "error" },
   "generic-snack-errorunknown": { "severity": "error" },
   "generic-snack-error": { "severity": "error" },
+  "generic-snack-errorpasswordencryption": { "severity": "error" },
+  "generic-snack-errorsaltgeneration": { "severity": "error" },
   "signup-snack-success": { "severity": "success" },
   "signup-snack-existinguser": { "severity": "warning" },
   "signin-snack-unauthorized": { "severity": "error" },

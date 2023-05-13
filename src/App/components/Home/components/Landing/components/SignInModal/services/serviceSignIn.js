@@ -20,7 +20,6 @@ async function serviceSignIn(user) {
     // Prep
     bcrypt.hashSync(user.password).then((hash) => {
       user.password = hash;
-      delete user.repeatpassword;
 
       // API call
       axios

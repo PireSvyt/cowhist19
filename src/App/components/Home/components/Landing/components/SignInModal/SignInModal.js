@@ -1,5 +1,4 @@
 import * as React from "react";
-import Cookies from "js-cookie";
 import { withTranslation } from "react-i18next";
 import {
   Button,
@@ -14,20 +13,17 @@ import {
 
 import { LoadingButton } from "@mui/lab";
 
+// Resources
+import emptySignin from "../../../../../../shared/resources/emptySignIn";
+
 // Services
-import apiSignIn from "./services/apiSignIn.js";
+import serviceSignInCheck from "./services/serviceSignInCheck.js";
+import serviceSignIn from "./services/serviceSignIn.js";
 
 // Shared
+import serviceModalChange from "../../../../../../shared/services/serviceModalChange.js";
 import Snack from "../../../../../../shared/components/Snack/Snack.js";
-import {
-  random_id,
-  validateEmail,
-} from "../../../../../../shared/services/toolkit.js";
-
-let emptySignin = {
-  login: "",
-  password: "",
-};
+import { random_id } from "../../../../../../shared/services/toolkit.js";
 
 class SignInModal extends React.Component {
   constructor(props) {
@@ -45,11 +41,8 @@ class SignInModal extends React.Component {
       openSnack: false,
       snack: { id: undefined },
     };
-    // Updates
-    this.updateComponentHeight = this.updateComponentHeight.bind(this);
 
     // Handles
-    this.canProceed = this.canProceed.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleProceed = this.handleProceed.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -138,64 +131,9 @@ class SignInModal extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       //console.log("SignInModal.componentDidMount");
     }
-    this.updateComponentHeight();
-  }
-
-  // Updates
-  updateComponentHeight() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignInModal.updateComponentHeight");
-    }
     this.setState({
       componentHeight: window.innerHeight - 115,
     });
-  }
-
-  // Helpers
-  canProceed() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignInModal.canProceed");
-    }
-    let proceed = true;
-    let errors = [];
-
-    // Checks
-
-    // Login is empty?
-    if (this.state.signin.login === "") {
-      proceed = false;
-      errors.push("signin-error-missinglogin");
-      this.setState((prevState, props) => ({
-        loginError: true,
-      }));
-    } else {
-      // Login is an email?
-      if (!validateEmail(this.state.signin.login)) {
-        proceed = false;
-        errors.push("signin-error-invalidlogin");
-        this.setState((prevState, props) => ({
-          loginError: true,
-        }));
-      }
-    }
-
-    // Password is empty?
-    if (this.state.signin.password === "") {
-      proceed = false;
-      errors.push("signin-error-missingpassword");
-      this.setState((prevState, props) => ({
-        passwordError: true,
-      }));
-    }
-
-    // Outcome
-    /*if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("proceed " + proceed);
-    }*/
-    return {
-      proceed: proceed,
-      errors: errors,
-    };
   }
 
   // Handles
@@ -216,136 +154,68 @@ class SignInModal extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("SignInModal.handleChange");
     }
-
-    const target = event.target;
-    /*if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("target.name : " + target.name);
-      console.log("target.value : " + target.value);
-      console.log("newValue : " + newValue);
-    }*/
-    var previousSignin = this.state.signin;
-    switch (target.name) {
-      case "login":
-        if (process.env.REACT_APP_DEBUG === "TRUE") {
-          console.log("change login : " + target.value);
-        }
-        this.setState((prevState, props) => ({
-          loginError: false,
-        }));
-        previousSignin.login = target.value;
-        break;
-      case "password":
-        if (process.env.REACT_APP_DEBUG === "TRUE") {
-          console.log("change password : " + target.value);
-        }
-        this.setState((prevState, props) => ({
-          passwordError: false,
-        }));
-        previousSignin.password = target.value;
-        break;
-      default:
-        if (process.env.REACT_APP_DEBUG === "TRUE") {
-          console.log("/!\\ no match : " + target.name);
-        }
+    let serviceChangeOutcome = serviceModalChange(
+      event.target,
+      this.state.signin
+    );
+    if (serviceChangeOutcome.errors.length > 0) {
+      console.log("serviceModalChange errors");
+      console.log(serviceChangeOutcome.errors);
+    } else {
+      serviceChangeOutcome.stateChanges.signin = serviceChangeOutcome.newValue;
+      this.setState((prevState, props) => serviceChangeOutcome.stateChanges);
     }
-    // Update
-    /*if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignInModal.signin");
-      console.log(this.state.signin);
-    }*/
-    // Check inputs
-    this.setState((prevState, props) => ({
-      signin: previousSignin,
-    }));
   }
   handleProceed() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("SignInModal.handleProceed");
-      /*console.log("this.state.signin");
-      console.log(this.state.signin);*/
     }
 
     // Check inputs
-    let canProceedOutcome = this.canProceed();
-
-    // Proceed or not?
-    if (!canProceedOutcome.proceed && process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("tcanProceedOutcome.errors");
-      console.log(canProceedOutcome.errors);
+    let proceedCheckOutcome = serviceSignInCheck(this.state.signin);
+    if (proceedCheckOutcome.errors.length > 0) {
+      if (process.env.REACT_APP_DEBUG === "TRUE") {
+        console.log("proceedCheckOutcome errors");
+        console.log(proceedCheckOutcome.errors);
+      }
     }
+    this.setState((prevState, props) => proceedCheckOutcome.stateChanges);
+
     // Post or publish
-    if (canProceedOutcome.proceed === true) {
+    if (proceedCheckOutcome.proceed === true) {
       this.setState((prevState, props) => ({
         disabled: true,
         loading: true,
       }));
-      // API call
-      apiSignIn(this.state.signin).then((res) => {
-        /*if (process.env.REACT_APP_DEBUG === "TRUE") {
-          console.log("res ");
-          console.log(res);
-        }*/
-        switch (res.status) {
-          case 200:
-            this.setState({
-              signin: emptySignin,
-              //openSnack: true,
-              //snack: { uid: random_id(), id: "signin-snack-success" },
-            });
-            // Store token
-            // https://medium.com/how-to-react/how-to-use-js-cookie-to-store-data-in-cookies-in-react-js-aab47f8a45c3
-            Cookies.set("cowhist19-token", res.token);
-            // Close modal
-            this.props.callback("close");
-            this.props.callback("signedin", res.token);
-            this.setState((prevState, props) => ({
-              disabled: false,
-              loading: false,
-            }));
-            break;
-          case 401:
-            this.setState((prevState, props) => ({
-              openSnack: true,
-              snack: { uid: random_id(), id: "signin-snack-unauthorized" },
-              disabled: false,
-              loading: false,
-            }));
-            break;
-          case 404:
-            this.setState((prevState, props) => ({
-              openSnack: true,
-              snack: { uid: random_id(), id: "signin-snack-notfound" },
-              disabled: false,
-              loading: false,
-            }));
-            break;
-          case 400:
-            this.setState({
-              openSnack: true,
-              snack: { uid: random_id(), id: "generic-snack-errornetwork" },
-              disabled: false,
-              loading: false,
-            });
-            break;
-          default:
-            this.setState((prevState, props) => ({
-              openSnack: true,
-              snack: { uid: random_id(), id: "generic-snack-errorunknown" },
-              disabled: false,
-              loading: false,
-            }));
+
+      serviceSignIn({ ...this.state.signin }).then((proceedOutcome) => {
+        if (proceedOutcome.errors.length !== 0) {
+          if (process.env.REACT_APP_DEBUG === "TRUE") {
+            console.log("proceedOutcome errors");
+            console.log(proceedOutcome.errors);
+          }
         }
+        this.setState((prevState, props) => proceedOutcome.stateChanges);
+        proceedOutcome.callbacks.forEach((callback) => {
+          if (callback.option === undefined) {
+            this.props.callback(callback.key);
+          } else {
+            this.props.callback(callback.key, callback.option);
+          }
+        });
       });
-    } else {
+    }  else {
       // Snack
-      this.setState((prevState, props) => ({
-        openSnack: true,
-        snack: {
-          uid: random_id(),
-          id: "generic-snack-error",
-          details: canProceedOutcome.errors,
-        },
-      }));
+      if (proceedCheckOutcome.errors.length > 0) {
+        this.setState((prevState, props) => ({
+          openSnack: true,
+          snack: {
+            uid: random_id(),
+            id: "generic-snack-error",
+            details: proceedCheckOutcome.errors,
+          },
+        }));
+      }
     }
   }
   handleSnack(action) {

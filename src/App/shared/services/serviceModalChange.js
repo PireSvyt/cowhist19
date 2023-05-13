@@ -1,4 +1,4 @@
-function serviceModalChange(target, previousValue) {
+function serviceModalChange(target, previousValue, complement) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("serviceModalChange");
   }
@@ -48,6 +48,62 @@ function serviceModalChange(target, previousValue) {
       }
       stateChanges.acknowledgementError = false;
       newValue.acknowledgement = target.checked;
+      break;
+    case "contract":
+      if (process.env.REACT_APP_DEBUG === "TRUE") {
+        console.log("change contract : " + target.value);
+      }
+      newValue.contract = target.value;
+      // Adjust requirements
+      let contract = complement.contracts.filter(
+        (c) => c.key === newValue.contract
+      )[0];
+      stateChanges.contractError = false;
+      stateChanges.attackRequirement = "(" + contract.attack + ")";
+      stateChanges.defenseRequirement = "(" + contract.defense + ")";
+      break;
+    case "attack":
+      if (process.env.REACT_APP_DEBUG === "TRUE") {
+        console.log("change attack : ");
+        console.log(target.value);
+      }
+      let currentDefense = newValue.players.filter(
+        (player) => player.role === "defense"
+      );
+      target.value.forEach((attackant) => {
+        currentDefense.push({
+          _id: attackant._id,
+          pseudo: attackant.pseudo,
+          role: "attack",
+        });
+      });
+      newValue.players = currentDefense;
+      stateChanges.attackError = false;
+      break;
+    case "defense":
+      if (process.env.REACT_APP_DEBUG === "TRUE") {
+        console.log("change defense : ");
+        console.log(target.value);
+      }
+      let currentAttack = newValue.players.filter(
+        (player) => player.role === "attack"
+      );
+      target.value.forEach((defenser) => {
+        currentAttack.push({
+          _id: defenser._id,
+          pseudo: defenser.pseudo,
+          role: "defense",
+        });
+      });
+      newValue.players = currentAttack;
+      stateChanges.defenseError = false;
+      break;
+    case "outcome":
+      if (process.env.REACT_APP_DEBUG === "TRUE") {
+        console.log("change outcome : " + target.value);
+      }
+      newValue.outcome = target.value;
+      stateChanges.outcomeError = false;
       break;
     default:
       if (process.env.REACT_APP_DEBUG === "TRUE") {

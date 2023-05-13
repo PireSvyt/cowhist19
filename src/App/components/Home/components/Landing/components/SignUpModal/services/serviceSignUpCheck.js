@@ -1,9 +1,9 @@
 // Share
 import { validateEmail } from "../../../../../../../shared/services/toolkit.js";
 
-function serviceCanSignUp(signup) {
+function serviceSignUpCheck(signup) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("serviceCanSignUp");
+    console.log("serviceSignUpCheck");
   }
   let proceed = true;
   let errors = [];
@@ -54,9 +54,6 @@ function serviceCanSignUp(signup) {
   }
 
   // Outcome
-  if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("proceed " + proceed);
-  }
   return {
     stateChanges: stateChanges,
     proceed: proceed,
@@ -64,4 +61,4 @@ function serviceCanSignUp(signup) {
   };
 }
 
-export default serviceCanSignUp;
+export default serviceSignUpCheck;

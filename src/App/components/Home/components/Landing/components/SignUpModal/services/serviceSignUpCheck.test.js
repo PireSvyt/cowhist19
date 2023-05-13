@@ -1,26 +1,26 @@
 require("@jest/globals");
-import serviceCanSignUp from "./serviceCanSignUp.js";
+import serviceSignUpCheck from "./serviceSignUpCheck.js";
 
 // Resources
 import emptySignup from "../../../../../../../shared/resources/emptySignUp.js";
 
-describe("TEST OF SERVICE : serviceCanSignUp", () => {
+describe("TEST OF SERVICE : serviceSignUpCheck", () => {
   describe("Assessment of empty signup", () => {
     // Emptycase
     describe("When signup is empty", () => {
       test("then the proceed field is false", () => {
-        const serviceOutcome = serviceCanSignUp(emptySignup);
+        const serviceOutcome = serviceSignUpCheck(emptySignup);
         expect(serviceOutcome.proceed).toBeFalsy();
       });
       test("then state changes are provided", () => {
-        const serviceOutcome = serviceCanSignUp(emptySignup);
+        const serviceOutcome = serviceSignUpCheck(emptySignup);
         expect(serviceOutcome.stateChanges.pseudoError).toBeTruthy();
         expect(serviceOutcome.stateChanges.loginError).toBeTruthy();
         expect(serviceOutcome.stateChanges.passwordError).toBeTruthy();
         expect(serviceOutcome.stateChanges.repeatpasswordError).toBeTruthy();
       });
       test("then errors are provided", () => {
-        const serviceOutcome = serviceCanSignUp(emptySignup);
+        const serviceOutcome = serviceSignUpCheck(emptySignup);
         expect(serviceOutcome.errors).toContain("signup-error-missingpseudo");
         expect(serviceOutcome.errors).toContain("signup-error-missinglogin");
         expect(serviceOutcome.errors).toContain("signup-error-missingpassword");
@@ -47,21 +47,21 @@ describe("TEST OF SERVICE : serviceCanSignUp", () => {
     };
     describe("When email is badly formed", () => {
       test("then the proceed field is false", () => {
-        const serviceOutcome = serviceCanSignUp(wrongEmailSignup);
+        const serviceOutcome = serviceSignUpCheck(wrongEmailSignup);
         expect(serviceOutcome.proceed).toBeFalsy();
       });
       test("then the state changes is provided", () => {
-        const serviceOutcome = serviceCanSignUp(wrongEmailSignup);
+        const serviceOutcome = serviceSignUpCheck(wrongEmailSignup);
         expect(serviceOutcome.stateChanges.loginError).toBeTruthy();
       });
       test("then the error changes is provided", () => {
-        const serviceOutcome = serviceCanSignUp(wrongEmailSignup);
+        const serviceOutcome = serviceSignUpCheck(wrongEmailSignup);
         expect(serviceOutcome.errors).toContain("signup-error-invalidlogin");
       });
     });
     describe("When email is well formed", () => {
       test("then the proceed field is true", () => {
-        const serviceOutcome = serviceCanSignUp(goodEmailSignup);
+        const serviceOutcome = serviceSignUpCheck(goodEmailSignup);
         expect(serviceOutcome.proceed).toBeTruthy();
       });
     });
@@ -83,15 +83,15 @@ describe("TEST OF SERVICE : serviceCanSignUp", () => {
     };
     describe("When passwords missmatch", () => {
       test("then the proceed field is false", () => {
-        const serviceOutcome = serviceCanSignUp(passwordMissmatchSignup);
+        const serviceOutcome = serviceSignUpCheck(passwordMissmatchSignup);
         expect(serviceOutcome.proceed).toBeFalsy();
       });
       test("then the state changes is provided", () => {
-        const serviceOutcome = serviceCanSignUp(passwordMissmatchSignup);
+        const serviceOutcome = serviceSignUpCheck(passwordMissmatchSignup);
         expect(serviceOutcome.stateChanges.repeatpasswordError).toBeTruthy();
       });
       test("then the error changes is provided", () => {
-        const serviceOutcome = serviceCanSignUp(passwordMissmatchSignup);
+        const serviceOutcome = serviceSignUpCheck(passwordMissmatchSignup);
         expect(serviceOutcome.errors).toContain(
           "signup-error-passwordmissmatch"
         );
@@ -99,7 +99,7 @@ describe("TEST OF SERVICE : serviceCanSignUp", () => {
     });
     describe("When email is well formed", () => {
       test("then the proceed field is true", () => {
-        const serviceOutcome = serviceCanSignUp(passwordMatchSignup);
+        const serviceOutcome = serviceSignUpCheck(passwordMatchSignup);
         expect(serviceOutcome.proceed).toBeTruthy();
       });
     });

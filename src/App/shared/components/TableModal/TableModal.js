@@ -25,22 +25,18 @@ import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline.js"
 import InviteModal from "./components/InviteModal/InviteModal.js";
 
 // Services
-import apiTableSave from "./services/apiTableSave.js";
+import serviceTableSaveCheck from "./services/serviceTableSaveCheck.js";
+import serviceTableSave from "./services/serviceTableSave.js";
 import apiTableDelete from "./services/apiTableDelete.js";
+
+// Resources
+import emptyTable from "./resources/emptyTable";
 
 // Shared
 import ConfirmModal from "../ConfirmModal/ConfirmModal.js";
 import Snack from "../Snack/Snack.js";
 import { random_id } from "../../services/toolkit.js";
 import apiTableDetails from "../../services/apiTableDetails.js";
-
-let emptyTable = {
-  _id: "",
-  name: "",
-  users: [],
-  players: [],
-  contracts: [],
-};
 
 class TableModal extends React.Component {
   constructor(props) {
@@ -73,7 +69,6 @@ class TableModal extends React.Component {
     this.handleInviteModalCallback = this.handleInviteModalCallback.bind(this);
     this.handleConfirmModalCallback =
       this.handleConfirmModalCallback.bind(this);
-    this.canSave = this.canSave.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -225,41 +220,6 @@ class TableModal extends React.Component {
   }
 
   // Helpers
-  canSave() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("TableModal.canSave");
-    }
-    let proceed = true;
-    let errors = [];
-
-    // Checks
-
-    // Missing name?
-    if (this.state.table.name === undefined || this.state.table.name === "") {
-      proceed = false;
-      errors.push("table-error-missingname");
-      this.setState((prevState, props) => ({
-        nameError: true,
-      }));
-    }
-
-    // Empty use list at create?
-    if (this.state.table._id === "" || this.state.table._id === undefined) {
-      if (this.state.table.players.length === 0) {
-        proceed = false;
-        errors.push("table-error-creationwithoutplayers");
-      }
-    }
-
-    // Outcome
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("proceed " + proceed);
-    }
-    return {
-      proceed: proceed,
-      errors: errors,
-    };
-  }
   getTableDetails() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("TableModal.getTableDetails ");
@@ -482,91 +442,58 @@ class TableModal extends React.Component {
     }
 
     // Check inputs
-    var canSaveOutcome = this.canSave();
+    function callbackConfirmDelete(action, details) {
+      this.handleConfirmModalCallback(action, details);
+    }
+    let proceedCheckOutcome = serviceTableSaveCheck(
+      this.state.table,
+      this.handleConfirmModalCallback
+    );
+    if (proceedCheckOutcome.errors.length > 0) {
+      if (process.env.REACT_APP_DEBUG === "TRUE") {
+        console.log("proceedCheckOutcome errors");
+        console.log(proceedCheckOutcome.errors);
+      }
+    }
+    this.setState((prevState, props) => proceedCheckOutcome.stateChanges);
 
-    // Proceed or not?
-    /*if (canSaveOutcome.errors !== [] && process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("this.state.table canSaveOutcome.errors");
-      console.log(canSaveOutcome.errors);
-    }*/
     // Post or publish
-    if (canSaveOutcome.proceed === true) {
-      // Lock CTA
+    if (proceedCheckOutcome.proceed === true) {
       this.setState((prevState, props) => ({
         disabled: true,
         loading: true,
       }));
 
-      // Switch from players to users
-      let tableToSave = this.state.table;
-      tableToSave.users = tableToSave.players;
-
-      // Delete in case of empty player list for an existing table
-      if (tableToSave._id !== "") {
-        if (tableToSave.users.length === 0) {
-          if (process.env.REACT_APP_DEBUG === "TRUE") {
-            console.log(
-              "TableModal empty list of users for table edit, propose deletion"
-            );
+      serviceTableSave(this.props.token, { ...this.state.table }).then(
+        (proceedOutcome) => {
+          if (proceedOutcome.errors.length > 0) {
+            if (process.env.REACT_APP_DEBUG === "TRUE") {
+              console.log("proceedOutcome errors");
+              console.log(proceedOutcome.errors);
+            }
           }
-          canSaveOutcome.proceed = false;
-          this.setState({
-            openConfirmModal: true,
-            confirmModalTitle: "table-confirm-title-deletenoeusers",
-            confirmModalContent: "table-confirm-content-deletenoeusers",
-            confirmModalCTA: [
-              {
-                label: "generic-button-cancel",
-                callback: () => this.handleConfirmModalCallback("close"),
-              },
-              {
-                label: "generic-button-proceed",
-                callback: () => this.handleConfirmModalCallback("delete"),
-                variant: "contained",
-                color: "error",
-              },
-            ],
+          this.setState((prevState, props) => proceedOutcome.stateChanges);
+          proceedOutcome.callbacks.forEach((callback) => {
+            if (callback.option === undefined) {
+              this.props.callback(callback.key);
+            } else {
+              this.props.callback(callback.key, callback.option);
+            }
           });
         }
-      }
-
-      // Saving
-      if (canSaveOutcome.proceed === true) {
-        // API call
-        apiTableSave(this.props.token, tableToSave).then((res) => {
-          /*if (process.env.REACT_APP_DEBUG === "TRUE") {
-            console.log("res ");
-            console.log(res);
-          }*/
-          switch (res.status) {
-            case 201:
-              // Table creation
-              this.props.callback("totable", res.id);
-              break;
-            case 200:
-              // Table edit
-              this.props.callback("updatetable");
-              break;
-            default:
-              this.setState((prevState, props) => ({
-                openSnack: true,
-                snack: { uid: random_id(), id: "generic-snack-errorunknown" },
-                disabled: false,
-                loading: false,
-              }));
-          }
-        });
-      }
+      );
     } else {
       // Snack
-      this.setState((prevState, props) => ({
-        openSnack: true,
-        snack: {
-          uid: random_id(),
-          id: "generic-snack-error",
-          details: canSaveOutcome.errors,
-        },
-      }));
+      if (proceedCheckOutcome.errors.length > 0) {
+        this.setState((prevState, props) => ({
+          openSnack: true,
+          snack: {
+            uid: random_id(),
+            id: "generic-snack-error",
+            details: proceedCheckOutcome.errors,
+          },
+        }));
+      }
     }
   }
   handleSnack(action) {

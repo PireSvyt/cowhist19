@@ -6,10 +6,8 @@ import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAlt
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied.js";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline.js";
 
-// Components
-
 // Services
-import apiActivate from "./services/apiActivate.js";
+import serviceActivate from "./services/serviceActivate.js";
 
 // Shared
 import Appbar from "../../shared/components/Appbar/Appbar.js";
@@ -23,9 +21,6 @@ class Activation extends React.Component {
     this.state = {
       outcome: "inprogress",
     };
-
-    // Helpers
-    this.activateAccount = this.activateAccount.bind(this);
 
     // Handles
     this.handleAppbarCallback = this.handleAppbarCallback.bind(this);
@@ -176,24 +171,14 @@ class Activation extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       //console.log("Activation.componentDidMount");
     }
-    this.activateAccount();
-  }
-
-  // Helpers
-  activateAccount() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Activation.activateAccount ");
-    }
-    let regToken = window.location.href.split("/activation/")[1];
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Activation regToken " + regToken);
-    }
-    apiActivate(regToken).then((data) => {
-      //console.log("Activation data ");
-      //console.log(data);
-      this.setState((prevState, props) => ({
-        outcome: data.outcome,
-      }));
+    serviceActivate().then((data) => {
+      if (activateOutcome.errors.length !== 0) {
+        if (process.env.REACT_APP_DEBUG === "TRUE") {
+          console.log("activateOutcome errors");
+          console.log(activateOutcome.errors);
+        }
+      }
+      this.setState((prevState, props) => activateOutcome.stateChanges);
     });
   }
 

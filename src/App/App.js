@@ -12,7 +12,8 @@ import Table from "./components/Table/Table.js";
 import Account from "./components/Account/Account.js";
 
 // Services
-import apiAuthAssess from "./services/apiAuthAssess.js";
+import apiAuthAssessV0 from "./services/apiAuthAssessV0.js";
+//import serviceAssessCookie from "./services/serviceAssessCookie.js";
 import apiUserDetails from "./services/apiUserDetails.js";
 import apiUserTables from "./services/apiUserTables.js";
 
@@ -98,7 +99,6 @@ export default class App extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("App.componentDidMount");
     }
-    // Load
 
     // Check token from cookies
     // https://medium.com/how-to-react/how-to-use-js-cookie-to-store-data-in-cookies-in-react-js-aab47f8a45c3
@@ -111,7 +111,7 @@ export default class App extends React.Component {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
         console.log("App.componentDidMount assessing token from cookies");
       }
-      apiAuthAssess(token).then((assessment) => {
+      apiAuthAssessV0(token).then((assessment) => {
         if (assessment.status === 200) {
           if (process.env.REACT_APP_DEBUG === "TRUE") {
             console.log("App.componentDidMount token valid");

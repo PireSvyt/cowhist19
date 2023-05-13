@@ -229,14 +229,16 @@ class InviteModal extends React.Component {
       );
     } else {
       // Snack
-      this.setState((prevState, props) => ({
-        openSnack: true,
-        snack: {
-          uid: random_id(),
-          id: "generic-snack-error",
-          details: canProceedOutcome.errors,
-        },
-      }));
+      if (proceedCheckOutcome.errors.length > 0) {
+        this.setState((prevState, props) => ({
+          openSnack: true,
+          snack: {
+            uid: random_id(),
+            id: "generic-snack-error",
+            details: proceedCheckOutcome.errors,
+          },
+        }));
+      }
     }
   }
   handleSnack(action) {

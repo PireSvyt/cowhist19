@@ -1,16 +1,14 @@
-import axios from 'axios';
+import axios from "axios";
 
 async function apiSignIn(user) {
   try {
-    const res = await axios.post(process.env.REACT_APP_SERVER_URL + "/auth/login", user);
+    const res = await axios.post(
+      process.env.REACT_APP_SERVER_URL + "/auth/v1/signin",
+      user
+    );
     return res.data;
   } catch (err) {
-    return {
-      status: err.response.status,
-      message: "error on apiSignin",
-      error: err,
-      user: user,
-    };
+    return err.response.data;
   }
 }
 

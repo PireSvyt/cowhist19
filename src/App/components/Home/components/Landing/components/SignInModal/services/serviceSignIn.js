@@ -1,16 +1,14 @@
-import axios from "axios";
-import bcrypt from "bcryptjs-react";
-// BCRYPT https://www.makeuseof.com/nodejs-bcrypt-hash-verify-salt-password/
+import Cookies from "js-cookie";
 // Services
-import apiSignUp from "./apiSignUp.js";
+import apiSignIn from "./apiSignIn.js";
 // Resources
-import emptySignup from "../../../../../../../shared/resources/emptySignUp.js";
+import emptySignin from "../../../../../../../shared/resources/emptySignIn";
 // Shared
 import { random_id } from "../../../../../../../shared/services/toolkit.js";
 
-async function serviceSignUp(user) {
+async function serviceSignIn(user) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("serviceSignUp");
+    console.log("serviceSignIn");
   }
 
   try {
@@ -19,39 +17,51 @@ async function serviceSignUp(user) {
     let stateChanges = {};
 
     // Prep
-    const hash = bcrypt.hashSync(user.password);
-    user.password = hash;
-    delete user.repeatpassword;
 
     // API call
-    const data = await apiSignUp(user);
+    const data = await apiSignIn(user);
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("data.type : " + data.type);
     }
 
     // Response management
     switch (data.type) {
-      case "auth.signup.success.signedup":
-        stateChanges.signup = emptySignup;
+      case "auth.signin.success":
+        // https://medium.com/how-to-react/how-to-use-js-cookie-to-store-data-in-cookies-in-react-js-aab47f8a45c3
+        Cookies.set("cowhist19-token", data.data.token);
+        stateChanges.signin = emptySignin;
+        stateChanges.disabled = false;
+        stateChanges.loading = false;
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
-          id: "signup-snack-success",
+          id: "signin-snack-success",
         };
-        stateChanges.disabled = true;
-        stateChanges.loading = true;
         callbacks.push({ key: "close" });
+        callbacks.push({
+          key: "signedin",
+          option: data.data.token,
+        });
         break;
-      case "auth.signup.success.alreadysignedup":
+      case "auth.signin.error.notfound":
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
-          id: "signup-snack-success",
+          id: "signin-snack-notfound",
         };
         stateChanges.disabled = false;
         stateChanges.loading = false;
         break;
-      case "auth.signup.error.savingoncreate":
+      case "auth.signin.error.invalidpassword":
+        stateChanges.openSnack = true;
+        stateChanges.snack = {
+          uid: random_id(),
+          id: "signin-snack-unauthorized",
+        };
+        stateChanges.disabled = false;
+        stateChanges.loading = false;
+        break;
+      case "auth.signin.error.onpasswordcompare":
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
@@ -60,16 +70,7 @@ async function serviceSignUp(user) {
         stateChanges.disabled = false;
         stateChanges.loading = false;
         break;
-      case "auth.signup.error.savingfrominvited":
-        stateChanges.openSnack = true;
-        stateChanges.snack = {
-          uid: random_id(),
-          id: "generic-snack-error",
-        };
-        stateChanges.disabled = false;
-        stateChanges.loading = false;
-        break;
-      case "auth.signup.error.notfound":
+      case "auth.signin.error.onfind":
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
@@ -83,6 +84,7 @@ async function serviceSignUp(user) {
         stateChanges.snack = {
           uid: random_id(),
           id: "generic-snack-api-unmanagedtype",
+          details: data.type,
         };
         stateChanges.disabled = false;
         stateChanges.loading = false;
@@ -116,4 +118,4 @@ async function serviceSignUp(user) {
   }
 }
 
-export default serviceSignUp;
+export default serviceSignIn;

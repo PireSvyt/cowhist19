@@ -1,16 +1,13 @@
-import axios from "axios";
-import bcrypt from "bcryptjs-react";
-// BCRYPT https://www.makeuseof.com/nodejs-bcrypt-hash-verify-salt-password/
 // Services
-import apiSignUp from "./apiSignUp.js";
+import apiGameSave from "./apiGameSave.js";
 // Resources
-import emptySignup from "../../../../../../../shared/resources/emptySignUp.js";
+import emptyGame from "../resources/emptyGame.js";
 // Shared
-import { random_id } from "../../../../../../../shared/services/toolkit.js";
+import { random_id } from "../../../../../shared/services/toolkit.js";
 
-async function serviceSignUp(user) {
+async function serviceGameSave(token, game) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("serviceSignUp");
+    console.log("serviceGameSave");
   }
 
   try {
@@ -19,70 +16,61 @@ async function serviceSignUp(user) {
     let stateChanges = {};
 
     // Prep
-    const hash = bcrypt.hashSync(user.password);
-    user.password = hash;
-    delete user.repeatpassword;
 
     // API call
-    const data = await apiSignUp(user);
+    const data = await apiGameSave(token, game);
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("data.type : " + data.type);
     }
 
     // Response management
     switch (data.type) {
-      case "auth.signup.success.signedup":
-        stateChanges.signup = emptySignup;
-        stateChanges.openSnack = true;
-        stateChanges.snack = {
-          uid: random_id(),
-          id: "signup-snack-success",
-        };
-        stateChanges.disabled = true;
-        stateChanges.loading = true;
-        callbacks.push({ key: "close" });
-        break;
-      case "auth.signup.success.alreadysignedup":
-        stateChanges.openSnack = true;
-        stateChanges.snack = {
-          uid: random_id(),
-          id: "signup-snack-success",
-        };
+      case "game.save.success.created":
+        stateChanges.game = emptyGame;
         stateChanges.disabled = false;
         stateChanges.loading = false;
-        break;
-      case "auth.signup.error.savingoncreate":
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
-          id: "generic-snack-error",
+          id: "game-snack-saved",
         };
+        callbacks.push({ key: "updategames" });
+        break;
+      case "game.save.success.modified":
+        stateChanges.game = emptyGame;
         stateChanges.disabled = false;
         stateChanges.loading = false;
-        break;
-      case "auth.signup.error.savingfrominvited":
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
-          id: "generic-snack-error",
+          id: "game-snack-saved",
         };
+        callbacks.push({ key: "updategames" });
+        break;
+      case "game.save.error.oncreate":
         stateChanges.disabled = false;
         stateChanges.loading = false;
-        break;
-      case "auth.signup.error.notfound":
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
-          id: "generic-snack-error",
+          id: "game-snack-erroronsave",
         };
+        break;
+      case "game.save.error.onmodify":
         stateChanges.disabled = false;
         stateChanges.loading = false;
+        stateChanges.openSnack = true;
+        stateChanges.snack = {
+          uid: random_id(),
+          id: "game-snack-erroronsave",
+        };
         break;
       default:
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
           id: "generic-snack-api-unmanagedtype",
+          details: data.type,
         };
         stateChanges.disabled = false;
         stateChanges.loading = false;
@@ -116,4 +104,4 @@ async function serviceSignUp(user) {
   }
 }
 
-export default serviceSignUp;
+export default serviceGameSave;

@@ -15,6 +15,9 @@ import MenuIcon from "@mui/icons-material/Menu.js";
 import CloseIcon from "@mui/icons-material/Close.js";
 import EditIcon from "@mui/icons-material/Edit.js";
 
+// Components
+import LanguageSwitcher from "./components/LanguageSwitcher/LanguageSwitcher.js";
+
 // Services
 import { random_id } from "../../services/toolkit.js";
 
@@ -31,6 +34,7 @@ class Appbar extends React.Component {
       openMenu: false,
       menuAnchorEl: null,
       menuItems: [],
+      showLanguageSwitcher: false,
     };
 
     // Handles
@@ -52,62 +56,88 @@ class Appbar extends React.Component {
     return (
       <AppBar position="fixed" sx={{ top: 0, bottom: "auto" }}>
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            {this.props.title}
-          </Typography>
-
-          <Box hidden={!(this.props.route === "table")}>
-            <IconButton
-              size="large"
-              edge="end"
-              color="inherit"
-              onClick={this.props.edittable}
-            >
-              <EditIcon />
-            </IconButton>
-          </Box>
-
           <Box
-            hidden={!this.props.signedin || this.state.menuItems.length === 0}
-          >
-            <IconButton
-              size="large"
-              edge="end"
-              color="inherit"
-              onClick={this.handleOpenMenu}
-              disabled={!this.props.signedin}
-            >
-              <MenuIcon />
-            </IconButton>
-          </Box>
-          <Menu
-            id="basic-menu"
-            open={this.state.openMenu}
-            onClose={this.handleCloseMenu}
-            anchorEl={anchorEl}
-            anchorOrigin={{ vertical: "top", horizontal: "right" }}
-            MenuListProps={{
-              "aria-labelledby": "basic-button",
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "100%",
             }}
           >
-            {this.state.menuItems.map((item) => {
-              return (
-                <MenuItem key={random_id()} onClick={item.onclick}>
-                  {t(item.label)}
-                </MenuItem>
-              );
-            })}
-          </Menu>
-
-          <Box hidden={!(this.props.route === "account")}>
-            <IconButton
-              size="large"
-              edge="end"
-              color="inherit"
-              onClick={() => history.back()}
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
             >
-              <CloseIcon />
-            </IconButton>
+              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                {this.props.title}
+              </Typography>
+
+              <Box hidden={!(this.props.route === "table")}>
+                <IconButton
+                  size="large"
+                  color="inherit"
+                  onClick={this.props.edittable}
+                >
+                  <EditIcon />
+                </IconButton>
+              </Box>
+            </Box>
+
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <LanguageSwitcher show={this.state.showLanguageSwitcher} />
+
+              <Box
+                hidden={
+                  !this.props.signedin || this.state.menuItems.length === 0
+                }
+              >
+                <IconButton
+                  size="large"
+                  color="inherit"
+                  onClick={this.handleOpenMenu}
+                  disabled={!this.props.signedin}
+                >
+                  <MenuIcon />
+                </IconButton>
+              </Box>
+              <Menu
+                open={this.state.openMenu}
+                onClose={this.handleCloseMenu}
+                anchorEl={anchorEl}
+                anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                MenuListProps={{
+                  "aria-labelledby": "basic-button",
+                }}
+              >
+                {this.state.menuItems.map((item) => {
+                  return (
+                    <MenuItem key={random_id()} onClick={item.onclick}>
+                      {t(item.label)}
+                    </MenuItem>
+                  );
+                })}
+              </Menu>
+
+              <Box hidden={!(this.props.route === "account")}>
+                <IconButton
+                  size="large"
+                  color="inherit"
+                  onClick={() => history.back()}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </Box>
+            </Box>
           </Box>
         </Toolbar>
       </AppBar>
@@ -122,15 +152,16 @@ class Appbar extends React.Component {
     switch (this.props.route) {
       case "home":
         this.setState((prevState, props) => ({
+          showLanguageSwitcher: true,
           menuItems: [
             {
               item: "account",
-              label: "generic-menu-account",
+              label: "generic.menu.account",
               onclick: this.handleToAccount,
             },
             {
               item: "signout",
-              label: "generic-menu-signout",
+              label: "generic.menu.signout",
               onclick: this.handleSignout,
             },
           ],
@@ -138,30 +169,33 @@ class Appbar extends React.Component {
         break;
       case "activation":
         this.setState((prevState, props) => ({
+          showLanguageSwitcher: true,
           menuItems: [],
         }));
         break;
       case "account":
         this.setState((prevState, props) => ({
+          showLanguageSwitcher: true,
           menuItems: [],
         }));
         break;
       case "table":
         this.setState((prevState, props) => ({
+          showLanguageSwitcher: false,
           menuItems: [
             {
               item: "home",
-              label: "generic-menu-home",
+              label: "generic.menu.home",
               onclick: this.handleToHome,
             },
             {
               item: "account",
-              label: "generic-menu-account",
+              label: "generic.menu.account",
               onclick: this.handleToAccount,
             },
             {
               item: "signout",
-              label: "generic-menu-signout",
+              label: "generic.menu.signout",
               onclick: this.handleSignout,
             },
           ],

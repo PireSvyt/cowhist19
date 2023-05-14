@@ -36,7 +36,7 @@ class ToComeModal extends React.Component {
         onClose={this.handleClose}
         fullWidth={true}
       >
-        <DialogTitle>{t("tocome-title")}</DialogTitle>
+        <DialogTitle>{t("generic.label.tocome")}</DialogTitle>
         <DialogContent>
           <Box component="span">
             <Paper
@@ -48,7 +48,7 @@ class ToComeModal extends React.Component {
             >
               <Box>
                 <Typography variant="h5" gutterBottom>
-                  {t("tocome-label-intro")}
+                  {t("generic.label.tocomeintro")}
                 </Typography>
                 <Typography
                   variant="body1"
@@ -57,7 +57,7 @@ class ToComeModal extends React.Component {
                     whiteSpace: "pre-line",
                   }}
                 >
-                  {t("tocome-label-explanation")}
+                  {t("generic.label.tocomedetails")}
                 </Typography>
               </Box>
             </Paper>
@@ -66,7 +66,7 @@ class ToComeModal extends React.Component {
 
         <DialogActions>
           <Button onClick={this.handleClose}>
-            {t("generic-button-close")}
+            {t("generic.button.close")}
           </Button>
         </DialogActions>
       </Dialog>

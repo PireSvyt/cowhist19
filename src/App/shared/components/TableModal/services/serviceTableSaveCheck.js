@@ -11,7 +11,7 @@ function serviceTableSaveCheck(table, callback) {
   // Missing name?
   if (table.name === undefined || table.name === "") {
     proceed = false;
-    errors.push("table-error-missingname");
+    errors.push("table.error.missingname");
     stateChanges.nameError = true;
   }
 
@@ -19,19 +19,19 @@ function serviceTableSaveCheck(table, callback) {
   if (table.players.length === 0) {
     proceed = false;
     if (table._id === "" || table._id === undefined) {
-      errors.push("table-error-creationwithoutplayers");
+      errors.push("table.error.creationwithoutplayers");
       stateChanges.playersError = true;
     } else {
       stateChanges.openConfirmModal = true;
-      stateChanges.confirmModalTitle = "table-confirm-title-deletenoeusers";
-      stateChanges.confirmModalContent = "table-confirm-content-deletenoeusers";
+      stateChanges.confirmModalTitle = "table.confirm.deletenoeusers.title";
+      stateChanges.confirmModalContent = "table.confirm.deletenoeusers.content";
       stateChanges.confirmModalCTA = [
         {
-          label: "generic-button-cancel",
+          label: "generic.button.cancel",
           callback: () => callback("close"),
         },
         {
-          label: "generic-button-proceed",
+          label: "generic.button.proceed",
           callback: () => callback("delete"),
           variant: "contained",
           color: "error",

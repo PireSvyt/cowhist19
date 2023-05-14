@@ -40,10 +40,10 @@ class Landing extends React.Component {
         >
           <ButtonGroup variant="contained" size="large">
             <Button onClick={this.handleOpenSignupModal} size="large">
-              {t("signup-button-signup")}
+              {t("signup.button.signup")}
             </Button>
             <Button onClick={this.handleOpenSigninModal} size="large">
-              {t("signin-button-signin")}
+              {t("signin.button.signin")}
             </Button>
           </ButtonGroup>
         </Box>

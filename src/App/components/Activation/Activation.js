@@ -39,7 +39,7 @@ class Activation extends React.Component {
           callback={this.handleAppbarCallback}
           token={this.props.token}
           route="activation"
-          title={t("generic-product-title")}
+          title={t("generic.label.title")}
         />
         <Box sx={{ height: 48 }} />
 
@@ -57,7 +57,7 @@ class Activation extends React.Component {
               variant="h6"
               component="span"
             >
-              {t("activation-label-inprogress")}
+              {t("activation.label.inprogress")}
             </Typography>
             <CircularProgress sx={{ mt: 2, mb: 2 }} />
           </Box>
@@ -77,7 +77,7 @@ class Activation extends React.Component {
               variant="h6"
               component="span"
             >
-              {t("activation-label-error")}
+              {t("activation.label.error")}
             </Typography>
             <ErrorOutlineIcon
               sx={{ mt: 2, mb: 2 }}
@@ -89,7 +89,7 @@ class Activation extends React.Component {
               variant="body1"
               component="span"
             >
-              {t("activation-label-errorexplanation")}
+              {t("activation.label.errorexplanation")}
             </Typography>
           </Box>
         </Box>
@@ -108,7 +108,7 @@ class Activation extends React.Component {
               variant="h6"
               component="span"
             >
-              {t("activation-label-activatedtitle")}
+              {t("activation.label.activatedtitle")}
             </Typography>
             <SentimentSatisfiedAltIcon
               sx={{ mt: 2, mb: 2 }}
@@ -120,7 +120,7 @@ class Activation extends React.Component {
               variant="body1"
               component="span"
             >
-              {t("activation-label-activatedaccountexplanations")}
+              {t("activation.label.activatedaccountexplanations")}
             </Typography>
             <Button
               variant="outlined"
@@ -129,7 +129,7 @@ class Activation extends React.Component {
                 window.location = "/";
               }}
             >
-              {t("activation-button-tohome")}
+              {t("activation.button.tohome")}
             </Button>
           </Box>
         </Box>
@@ -148,7 +148,7 @@ class Activation extends React.Component {
               variant="h6"
               component="span"
             >
-              {t("activation-label-notfoundtitle")}
+              {t("activation.label.notfoundaccount")}
             </Typography>
             <SentimentVeryDissatisfiedIcon
               sx={{ mt: 2, mb: 2 }}
@@ -160,7 +160,7 @@ class Activation extends React.Component {
               variant="body1"
               component="span"
             >
-              {t("activation-label-notfoundaccountexplanations")}
+              {t("activation.label.notfoundaccountexplanations")}
             </Typography>
           </Box>
         </Box>

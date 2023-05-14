@@ -1,6 +1,7 @@
 import * as React from "react";
 import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
+import { withTranslation } from "react-i18next";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // https://www.geeksforgeeks.org/how-to-create-a-multi-page-website-using-react-js/
@@ -16,8 +17,9 @@ import apiAuthAssessV0 from "./services/apiAuthAssessV0.js";
 //import serviceAssessCookie from "./services/serviceAssessCookie.js";
 import apiUserDetails from "./services/apiUserDetails.js";
 import apiUserTables from "./services/apiUserTables.js";
+//import setLanguage from "./shared/services/setLanguage.js";
 
-export default class App extends React.Component {
+class App extends React.Component {
   constructor(props) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("App.constructor");
@@ -102,11 +104,7 @@ export default class App extends React.Component {
 
     // Check token from cookies
     // https://medium.com/how-to-react/how-to-use-js-cookie-to-store-data-in-cookies-in-react-js-aab47f8a45c3
-    let token = Cookies.get("cowhist19-token");
-    /*if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("App.componentDidMount token");
-      console.log(token);
-    }*/
+    let token = Cookies.get("cowhist19_token");
     if (token !== undefined) {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
         console.log("App.componentDidMount assessing token from cookies");
@@ -162,7 +160,7 @@ export default class App extends React.Component {
     }
 
     // Remove cookies
-    Cookies.remove("cowhist19-token");
+    Cookies.remove("cowhist19_token");
 
     // Check url
     if (
@@ -170,7 +168,7 @@ export default class App extends React.Component {
       window.location.href.includes("account")
     ) {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
-        Cookies.remove("cowhist19-token");
+        Cookies.remove("cowhist19_token");
         console.log("App.signOut ");
       }
       window.location = "/";
@@ -260,3 +258,5 @@ export default class App extends React.Component {
     }
   }
 }
+
+export default withTranslation()(App);

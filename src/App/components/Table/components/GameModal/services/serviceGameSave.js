@@ -32,7 +32,7 @@ async function serviceGameSave(token, game) {
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
-          id: "game-snack-saved",
+          id: "game.snack.saved",
         };
         callbacks.push({ key: "updategames" });
         break;
@@ -43,7 +43,7 @@ async function serviceGameSave(token, game) {
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
-          id: "game-snack-saved",
+          id: "game.snack.saved",
         };
         callbacks.push({ key: "updategames" });
         break;
@@ -53,7 +53,7 @@ async function serviceGameSave(token, game) {
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
-          id: "game-snack-erroronsave",
+          id: "game.snack.error.wip",
         };
         break;
       case "game.save.error.onmodify":
@@ -62,14 +62,14 @@ async function serviceGameSave(token, game) {
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
-          id: "game-snack-erroronsave",
+          id: "game.snack.error.wip",
         };
         break;
       default:
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
-          id: "generic-snack-api-unmanagedtype",
+          id: "generic.snack.api.unmanagedtype",
           details: data.type,
         };
         stateChanges.disabled = false;
@@ -95,7 +95,7 @@ async function serviceGameSave(token, game) {
         openSnack: true,
         snack: {
           uid: random_id(),
-          id: "generic-snack-api-errornetwork",
+          id: "generic.snack.api.errornetwork",
         },
       },
       callbacks: [],

@@ -16,7 +16,7 @@ function serviceGameSaveCheck(game, contracts) {
     contracts === undefined
   ) {
     proceed = false;
-    errors.push("game-error-missingcontract");
+    errors.push("game.error.missingcontract");
     stateChanges.contractError = true;
   } else {
     // Contract behing defined, checking teams
@@ -31,7 +31,7 @@ function serviceGameSaveCheck(game, contracts) {
         contract.attack
       ) {
         proceed = false;
-        errors.push("game-error-attackmissmatch");
+        errors.push("game.error.attackmissmatch");
         stateChanges.attackError = true;
       }
 
@@ -41,14 +41,14 @@ function serviceGameSaveCheck(game, contracts) {
         contract.defense
       ) {
         proceed = false;
-        errors.push("game-error-defensemissmatch");
+        errors.push("game.error.defensemissmatch");
         stateChanges.defenseError = true;
       }
 
       // Is outcome consistent?
       if (game.outcome + contract.folds > 13) {
         proceed = false;
-        errors.push("game-error-outcomemissmatch");
+        errors.push("game.error.outcomemissmatch");
         stateChanges.outcomeError = true;
       }
     }

@@ -31,7 +31,7 @@ async function serviceInvite(token, user) {
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
-          id: "invite-snack-success",
+          id: "invite.snack.invited",
         };
         stateChanges.disabled = false;
         stateChanges.loading = false;
@@ -46,7 +46,7 @@ async function serviceInvite(token, user) {
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
-          id: "invite-snack-success",
+          id: "invite.snack.invited",
         };
         stateChanges.disabled = false;
         stateChanges.loading = false;
@@ -59,7 +59,7 @@ async function serviceInvite(token, user) {
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
-          id: "generic-snack-errorunknown",
+          id: "generic.snack.error.unknown",
         };
         stateChanges.disabled = false;
         stateChanges.loading = false;
@@ -76,14 +76,17 @@ async function serviceInvite(token, user) {
   } catch (err) {
     return {
       status: err.response.status,
-      message: "error on apiUserInvite",
       error: err,
       stateChanges: {
         disabled: false,
         loading: false,
+        snack: {
+          uid: random_id(),
+          id: "generic.snack.api.errornetwork",
+        },
       },
       callbacks: [],
-      errors: ["generic-snack-errorunknown"],
+      errors: [],
     };
   }
 }

@@ -109,7 +109,7 @@ function serviceModalChange(target, previousValue, complement) {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
         console.log("/!\\ no match : " + target.name);
       }
-      errors.push("generic-error-invalidchange");
+      errors.push("generic.error.invalidchange");
   }
 
   return {

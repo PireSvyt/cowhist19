@@ -1,9 +1,9 @@
 // Shared
 import { validateEmail } from "../../../../../services/toolkit";
 
-function serviceCanInvite(user) {
+function serviceInviteCheck(user) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("serviceCanInviteUser");
+    console.log("serviceInviteCheckUser");
   }
   let proceed = true;
   let errors = [];
@@ -14,20 +14,20 @@ function serviceCanInvite(user) {
   // Is pseudo empty?
   if (user.pseudo === null || user.pseudo === "") {
     proceed = false;
-    errors.push("invite-error-missingpseudo");
+    errors.push("invite.error.missingpseudo");
     stateChanges.pseudoError = true;
   }
 
   // Is email empty?
   if (user.login === null || user.login === "") {
     proceed = false;
-    errors.push("invite-error-missinglogin");
+    errors.push("invite.error.missinglogin");
     stateChanges.loginError = true;
   } else {
     // Login is an email?
     if (!validateEmail(user.login)) {
       proceed = false;
-      errors.push("invite-error-invalidlogin");
+      errors.push("invite.error.invalidlogin");
       stateChanges.loginError = true;
     }
   }
@@ -35,7 +35,7 @@ function serviceCanInvite(user) {
   // Is it acknowledged?
   if (user.acknowledgement !== true) {
     proceed = false;
-    errors.push("invite-error-missingacknowledgement");
+    errors.push("invite.error.missingacknowledgement");
     stateChanges.acknowledgementError = true;
   }
 
@@ -50,4 +50,4 @@ function serviceCanInvite(user) {
   };
 }
 
-export default serviceCanInvite;
+export default serviceInviteCheck;

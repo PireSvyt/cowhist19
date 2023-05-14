@@ -21,11 +21,11 @@ describe("TEST OF SERVICE : serviceSignUpCheck", () => {
       });
       test("then errors are provided", () => {
         const serviceOutcome = serviceSignUpCheck(emptySignup);
-        expect(serviceOutcome.errors).toContain("signup-error-missingpseudo");
-        expect(serviceOutcome.errors).toContain("signup-error-missinglogin");
-        expect(serviceOutcome.errors).toContain("signup-error-missingpassword");
+        expect(serviceOutcome.errors).toContain("signup.error.missingpseudo");
+        expect(serviceOutcome.errors).toContain("signup.error.missinglogin");
+        expect(serviceOutcome.errors).toContain("signup.error.missingpassword");
         expect(serviceOutcome.errors).toContain(
-          "signup-error-missingrepeatpassword"
+          "signup.error.missingrepeatpassword"
         );
       });
     });
@@ -56,7 +56,7 @@ describe("TEST OF SERVICE : serviceSignUpCheck", () => {
       });
       test("then the error changes is provided", () => {
         const serviceOutcome = serviceSignUpCheck(wrongEmailSignup);
-        expect(serviceOutcome.errors).toContain("signup-error-invalidlogin");
+        expect(serviceOutcome.errors).toContain("signup.error.invalidlogin");
       });
     });
     describe("When email is well formed", () => {
@@ -93,7 +93,7 @@ describe("TEST OF SERVICE : serviceSignUpCheck", () => {
       test("then the error changes is provided", () => {
         const serviceOutcome = serviceSignUpCheck(passwordMissmatchSignup);
         expect(serviceOutcome.errors).toContain(
-          "signup-error-passwordmissmatch"
+          "signup.error.passwordmissmatch"
         );
       });
     });

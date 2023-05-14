@@ -14,7 +14,7 @@ import {
 import LoadingButton from "@mui/lab/LoadingButton";
 
 // Services
-import serviceCanInvite from "./services/serviceCanInvite.js";
+import serviceInviteCheck from "./services/serviceInviteCheck.js";
 import serviceInvite from "./services/serviceInvite.js";
 
 // Shared
@@ -62,7 +62,7 @@ class InviteModal extends React.Component {
           onClose={this.handleClose}
           fullWidth={true}
         >
-          <DialogTitle>{t("invite-title")}</DialogTitle>
+          <DialogTitle>{t("invite.label.title")}</DialogTitle>
           <DialogContent
             sx={{
               height: this.state.componentHeight,
@@ -78,7 +78,7 @@ class InviteModal extends React.Component {
             >
               <TextField
                 name="pseudo"
-                label={t("generic-input-pseudo")}
+                label={t("generic.input.pseudo")}
                 variant="standard"
                 value={this.state.user.pseudo || ""}
                 onChange={this.handleChange}
@@ -89,7 +89,7 @@ class InviteModal extends React.Component {
               />
               <TextField
                 name="login"
-                label={t("generic-input-email")}
+                label={t("generic.input.email")}
                 variant="standard"
                 value={this.state.user.login || ""}
                 onChange={this.handleChange}
@@ -107,7 +107,7 @@ class InviteModal extends React.Component {
                     required
                   />
                 }
-                label={t("invite-input-acknowledgement")}
+                label={t("invite.input.acknowledgement")}
                 error={this.state.acknowledgementError ? "dummy" : null}
               />
             </Box>
@@ -115,7 +115,7 @@ class InviteModal extends React.Component {
 
           <DialogActions>
             <Button onClick={this.handleClose}>
-              {t("generic-button-cancel")}
+              {t("generic.button.cancel")}
             </Button>
             <LoadingButton
               variant="contained"
@@ -123,7 +123,7 @@ class InviteModal extends React.Component {
               disabled={this.state.disabled}
               loading={this.state.loading}
             >
-              {t("invite-button-invite")}
+              {t("invite.button.invite")}
             </LoadingButton>
           </DialogActions>
         </Dialog>
@@ -193,17 +193,17 @@ class InviteModal extends React.Component {
     }
 
     // Check inputs
-    let canProceedOutcome = serviceCanInvite(this.state.user);
-    if (canProceedOutcome.errors.length !== 0) {
+    let proceedCheckOutcome = serviceInviteCheck(this.state.user);
+    if (proceedCheckOutcome.errors.length !== 0) {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("serviceCanInvite errors");
-        console.log(canProceedOutcome.errors);
+        console.log("proceedCheckOutcome errors");
+        console.log(proceedCheckOutcome.errors);
       }
     }
-    this.setState((prevState, props) => canProceedOutcome.stateChanges);
+    this.setState((prevState, props) => proceedCheckOutcome.stateChanges);
 
     // Proceed or not?
-    if (canProceedOutcome.proceed === true) {
+    if (proceedCheckOutcome.proceed === true) {
       this.setState((prevState, props) => ({
         disabled: true,
         loading: true,
@@ -234,7 +234,7 @@ class InviteModal extends React.Component {
           openSnack: true,
           snack: {
             uid: random_id(),
-            id: "generic-snack-error",
+            id: "generic.snack.error.withdetails",
             details: proceedCheckOutcome.errors,
           },
         }));

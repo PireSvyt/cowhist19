@@ -1,21 +1,25 @@
 {
-  "generic-snack-WIP": { "severity": "warning" },
-  "generic-snack-saving": { "severity": "info" },
-  "generic-snack-api-unmanagedtype": { "severity": "warning" },
-  "generic-snack-api-errornetwork": { "severity": "error" },
-  "generic-snack-errorunknown": { "severity": "error" },
-  "generic-snack-error": { "severity": "error" },
-  "generic-snack-errorpasswordencryption": { "severity": "error" },
-  "generic-snack-errorsaltgeneration": { "severity": "error" },
-  "signup-snack-success": { "severity": "success" },
-  "signin-snack-success": { "severity": "success" },
-  "signin-snack-notfound": { "severity": "error" },
-  "signin-snack-unauthorized": { "severity": "error" },
-  "invite-snack-success": { "severity": "success" },
-  "table-snack-success": { "severity": "success" },
-  "table-snack-deleted": { "severity": "success" },
-  "game-snack-saved": { "severity": "success" },
-  "game-snack-erroronsave": { "severity": "error" },
-  "game-snack-deleted": { "severity": "success" },
-  "game-snack-discarded": { "severity": "info" }
+  "generic.snack.api.unmanagedtype": { "severity": "error" },
+  "generic.snack.api.errornetwork": { "severity": "error" },
+
+  "generic.snack.error.unknown": { "severity": "error" },
+  "generic.snack.error.withdetails": { "severity": "error" },
+  "generic.snack.error.invalidchange": { "severity": "error" },
+  "generic.snack.error.wip": { "severity": "error" },
+
+  "generic.snack.feedback.wip": { "severity": "warning" },
+
+  "signup.snack.signedup": { "severity": "success" },
+
+  "signin.snack.signedin": { "severity": "success" },
+  "signin.snack.notfound": { "severity": "error" },
+  "signin.snack.unauthorized": { "severity": "error" },
+
+  "invite.snack.invited": { "severity": "success" },
+
+  "table.snack.saved": { "severity": "success" },
+  "table.snack.deleted": { "severity": "warning" },
+
+  "game.snack.saved": { "severity": "success" },
+  "game.snack.deleted": { "severity": "warning" }
 }

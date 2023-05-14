@@ -64,7 +64,7 @@ class SignUpModal extends React.Component {
           onClose={this.handleClose}
           fullWidth={true}
         >
-          <DialogTitle>{t("signup-title")}</DialogTitle>
+          <DialogTitle>{t("signup.label.title")}</DialogTitle>
           <DialogContent
             sx={{
               height: this.state.componentHeight,
@@ -81,7 +81,7 @@ class SignUpModal extends React.Component {
               <TextField
                 name="pseudo"
                 required
-                label={t("generic-input-pseudo")}
+                label={t("generic.input.pseudo")}
                 variant="standard"
                 value={this.state.signup.pseudo || ""}
                 onChange={this.handleChange}
@@ -91,7 +91,7 @@ class SignUpModal extends React.Component {
               <TextField
                 name="login"
                 required
-                label={t("generic-input-email")}
+                label={t("generic.input.email")}
                 variant="standard"
                 value={this.state.signup.login || ""}
                 onChange={this.handleChange}
@@ -102,7 +102,7 @@ class SignUpModal extends React.Component {
               <TextField
                 name="password"
                 required
-                label={t("generic-input-password")}
+                label={t("generic.input.password")}
                 variant="standard"
                 value={this.state.signup.password || ""}
                 onChange={this.handleChange}
@@ -113,7 +113,7 @@ class SignUpModal extends React.Component {
               <TextField
                 name="repeatpassword"
                 required
-                label={t("signup-input-repeatpassword")}
+                label={t("signup.input.repeatpassword")}
                 variant="standard"
                 value={this.state.signup.repeatpassword || ""}
                 onChange={this.handleChange}
@@ -126,7 +126,7 @@ class SignUpModal extends React.Component {
 
           <DialogActions>
             <Button onClick={this.handleClose}>
-              {t("generic-button-cancel")}
+              {t("generic.button.cancel")}
             </Button>
             <LoadingButton
               variant="contained"
@@ -134,7 +134,7 @@ class SignUpModal extends React.Component {
               disabled={this.state.disabled}
               loading={this.state.loading}
             >
-              {t("generic-button-proceed")}
+              {t("generic.button.proceed")}
             </LoadingButton>
           </DialogActions>
         </Dialog>
@@ -226,14 +226,14 @@ class SignUpModal extends React.Component {
           }
         });
       });
-    }  else {
+    } else {
       // Snack
       if (proceedCheckOutcome.errors.length > 0) {
         this.setState((prevState, props) => ({
           openSnack: true,
           snack: {
             uid: random_id(),
-            id: "generic-snack-error",
+            id: "generic.snack.error.withdetails",
             details: proceedCheckOutcome.errors,
           },
         }));

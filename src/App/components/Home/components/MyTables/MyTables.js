@@ -44,7 +44,7 @@ class MyTables extends React.Component {
       <Box hidden={this.props.signedin !== true}>
         <Stack direction="row" justifyContent="space-between">
           <Typography sx={{ p: 2 }} variant="h6" component="span">
-            {t("mytables-label-mytables")}
+            {t("home.label.mytables")}
           </Typography>
           <IconButton sx={{ p: 2 }} onClick={this.handleOpenTableModal}>
             <AddIcon />

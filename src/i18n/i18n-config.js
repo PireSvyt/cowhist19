@@ -4,7 +4,7 @@ import { initReactI18next } from "react-i18next";
 // https://www.freecodecamp.org/news/how-to-add-localization-to-your-react-app/
 // https://www.tabnine.com/code/javascript/functions/i18next/i18n/changeLanguage
 
-// Language reset on refresh
+// Language reset on refresh from cookies
 import Cookies from "js-cookie";
 let language = Cookies.get("cowhist19_language");
 if (language === undefined) {

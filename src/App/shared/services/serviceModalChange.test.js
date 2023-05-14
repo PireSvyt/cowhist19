@@ -11,7 +11,7 @@ describe("TEST OF SERVICE : serviceModalChange", () => {
     describe("When target name is invalid", () => {
       test("then errors are provided", () => {
         const serviceOutcome = serviceModalChange(invalidTarget, dictToChange);
-        expect(serviceOutcome.errors).toContain("generic-error-invalidchange");
+        expect(serviceOutcome.errors).toContain("generic.error.invalidchange");
       });
     });
   });

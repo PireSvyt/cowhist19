@@ -46,7 +46,7 @@ describe("TEST OF SERVICE : serviceSignInCheck", () => {
       });
       test("then the error changes is provided", () => {
         const serviceOutcome = serviceSignInCheck(wrongEmailSignin);
-        expect(serviceOutcome.errors).toContain("signin-error.invalidlogin");
+        expect(serviceOutcome.errors).toContain("signin.error.invalidlogin");
       });
     });
     describe("When email is well formed", () => {

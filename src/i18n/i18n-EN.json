@@ -3,7 +3,6 @@
     "label": {
       "product": "CoWhist 19",
       "account": "Account",
-      "language": "Language",
       "tocome": "To come...",
       "tocomeintro": "This functionality is not available yet.",
       "tocomedetails": "We are delighted by your interest and propose to record it for the team to prioritize for this! \n This is anonymous ;)"
@@ -42,10 +41,25 @@
         "unknown": "Unknown error :/",
         "withdetails": "Error :",
         "invalidchange": "invalid change",
-        "wip": "We are working on it"
+        "wip": "We are working on it..."
       },
       "feedback": {
-        "wip": "Work in progress..."
+        "wip": "Work in progress...",
+        "languagechange" : "Refresh the page to enjoy this language..."
+      }
+    },
+    "language": {
+      "enGB": {
+        "short": "EN",
+        "long": "English"
+      },
+      "frFR": {
+        "short": "FR",
+        "long": "French"
+      },
+      "nlNL": {
+        "short": "NL",
+        "long": "Dutch"
       }
     }
   },

@@ -28,7 +28,7 @@ async function serviceSignIn(user) {
     switch (data.type) {
       case "auth.signin.success":
         // https://medium.com/how-to-react/how-to-use-js-cookie-to-store-data-in-cookies-in-react-js-aab47f8a45c3
-        Cookies.set("cowhist19-token", data.data.token);
+        Cookies.set("cowhist19_token", data.data.token);
         stateChanges.signin = emptySignin;
         stateChanges.disabled = false;
         stateChanges.loading = false;

@@ -1,25 +1,266 @@
 {
-  "generic-button-add": "Ajouter",
-  "generic-button-save": "Sauver",
-  "generic-button-delete": "Supprimer",
-  "generic-button-select": "Selectionner",
-  "generic-button-confirm": "Confirmer",
-  "generic-button-cancel": "Annuler",
-  "generic-button-close": "Fermer",
-  "generic-button-view": "Voir",
-  "generic-button-edit": "Modifer",
-  "generic-snack-WIP": "En cours de construction...",
-  "generic-snack-saving": "Sauvergarde en cours",
-  "generic-snack-errornetwork": "Erreur : Problème réseau",
-  "generic-snack-errorunknown": "Erreur inconnue :/",
-  "generic-snack-error": "Erreur :",
-  "game-title": "Partie",
-  "game-input-contract": "Contrat",
-  "game-input-date": "Date",
-  "game-input-attack": "En attaque",
-  "game-input-defense": "En défense",
-  "game-input-outcome": "Résultat",
-  "game-snack-saved": "Partie enregistrée",
-  "game-snack-edited": "Partie modifiée",
-  "game-snack-discarded": "Partie abandonnée"
+  "generic": {
+    "label": {
+      "product": "CoWhist 19",
+      "account": "Compte",
+      "tocome": "A venir...",
+      "tocomeintro": "Cette fonctionnalité n'est pas encore disponible.",
+      "tocomedetails": "We are delighted by your interest and propose to record it for the team to prioritize for this! \n This is anonymous ;)"
+    },
+    "menu": {
+      "home": "Accueil",
+      "account": "Mon compte",
+      "table": "Table",
+      "signout": "Se deconnecter"
+    },
+    "input": {
+      "name": "Nom",
+      "pseudo": "Pseudo",
+      "email": "Email",
+      "password": "Mot de passe"
+    },
+    "button": {
+      "add": "Ajouter",
+      "save": "Sauver",
+      "delete": "Supprimer",
+      "select": "Selectionner",
+      "confirm": "Confirmer",
+      "cancel": "Annuler",
+      "close": "Fermer",
+      "view": "Voir",
+      "edit": "Modifier",
+      "proceed": "Procéder",
+      "tocome": "A venir..."
+    },
+    "snack": {
+      "api": {
+        "unmanagedtype": "Réponse d'API non gérée",
+        "errornetwork": "Problème de réseau"
+      },
+      "error": {
+        "unknown": "Erreur inconnue :/",
+        "withdetails": "Erreur :",
+        "invalidchange": "changement non valide",
+        "wip": "On y travaille..."
+      },
+      "feedback": {
+        "wip": "On y travaille...",
+        "languagechange": "Recharger la page pour apprecier cette langue..."
+      }
+    },
+    "language": {
+      "enGB": {
+        "short": "EN",
+        "long": "Anglais"
+      },
+      "frFR": {
+        "short": "FR",
+        "long": "Français"
+      },
+      "nlNL": {
+        "short": "NL",
+        "long": "Néerlandais"
+      }
+    }
+  },
+  "signup": {
+    "label": {
+      "title": "S'enregistrer"
+    },
+    "input": { "repeatpassword": "Répétition du mot de passe" },
+    "button": {
+      "signup": "S'enregistrer"
+    },
+    "error": {
+      "missingpseudo": "pseudo manquant",
+      "missinglogin": "email manquant",
+      "invalidlogin": "email non valide",
+      "missingpassword": "mot de passe manquant",
+      "missingrepeatpassword": "répétition du mot de passe manquante",
+      "passwordmissmatch": "mots de passe différents"
+    },
+    "snack": {
+      "signedup": "Enregistré!"
+    }
+  },
+  "signin": {
+    "label": {
+      "title": "Se connecter"
+    },
+    "input": {},
+    "button": {
+      "signin": "Se connecter"
+    },
+    "error": {
+      "missinglogin": "email manquant",
+      "invalidlogin": "email non valide",
+      "missingpassword": "mot de passe manquant"
+    },
+    "snack": {
+      "signedin": "Connecté!",
+      "unauthorized": "Mot de passe incorrect",
+      "notfound": "Compte introuvable"
+    }
+  },
+  "activation": {
+    "label": {
+      "title": "Activation du compte",
+      "inprogress": "Activation du compte en court",
+      "error": "Erreur durant l'activation",
+      "errorexplanation": "Sincere apologies for the inconvenience.\n\nPlease try again later.",
+      "activatedtitle": "Compte activé!",
+      "activatedaccountexplanations": "Your account has been successfully activated.\n\nYou can now sign in!",
+      "notfoundaccount": "Activation impossible",
+      "notfoundaccountexplanations": "It seems the token from the url is not valid.\n\nYou may have already activated this account?"
+    },
+    "input": {},
+    "button": {
+      "tohome": "Vers l'accueil pour se connecter!"
+    },
+    "error": {},
+    "snack": {}
+  },
+  "account": {
+    "label": {
+      "title": "Mon compte",
+      "mydata": "Mes données",
+      "mypseudo": "Mon pseudo",
+      "myemail": "Mon email",
+      "mypassword": "Mon mot de passe",
+      "myaccount": "Mon compte",
+      "merge": "Fusionner",
+      "mergedetails": "Enables to merge two accounts together, which is relevant if you've been invited with two different emails.",
+      "anonymize": "Anonymiser",
+      "anonymizedetails": "Enables to remove personal information from the app, without affecting the tables you're part of.",
+      "close": "Clôturer",
+      "closedetails": "To permanently delete your account, removing you from any table you've been part of."
+    },
+    "input": {},
+    "button": {
+      "changepseudo": "Changer de pseudo",
+      "changeemail": "Changer d'email",
+      "changepassword": "Changer de password",
+      "merge": "Fusionner deux comptes",
+      "anonymize": "Anonymiser mon compte",
+      "close": "Clôturer mon compte"
+    },
+    "error": {},
+    "snack": {}
+  },
+  "home": {
+    "label": {
+      "mystats": "Mes stats",
+      "mytables": "Mes tables"
+    },
+    "input": {},
+    "button": {},
+    "error": {},
+    "snack": {}
+  },
+  "table": {
+    "label": {
+      "title": "Table",
+      "players": "Joueurs",
+      "stats": "Stats",
+      "history": "Historique",
+      "score": "score",
+      "games": "parties",
+      "victory": "de victore",
+      "attack": "d'attaque"
+    },
+    "input": {},
+    "button": {
+      "newgame": "Nouvelle partie"
+    },
+    "error": {
+      "missingname": "nom manquant",
+      "creationwithoutplayers": "joueurs requis pour créer une table"
+    },
+    "confirm": {
+      "delete": {
+        "title": "Certain de vouloir supprimer cette table?",
+        "content": "You're about to delete the table.\n\nThis will delete the table and all associated games."
+      },
+      "deletenoeusers": {
+        "title": "Il n'y a plus du joueurs!",
+        "content": "All players have been deleted from this table.\nA table can't exist without any player...\n\nProceeding will delete the table and all associated games."
+      },
+      "deleteuser": {
+        "title": "Certain de vouloir supprimer ce joueur?",
+        "content": "You're about to remove a player from the table.\n\nIf you proceed and save the table, the player won't have access anymore to this table, the player name will be removed from the table history and statistics."
+      }
+    },
+    "snack": {
+      "saved": "Table sauvée!",
+      "deleted": "Table supprimée"
+    }
+  },
+  "invite": {
+    "label": {
+      "title": "Inviter un joueur"
+    },
+    "input": {
+      "acknowledgement": "On se connait"
+    },
+    "button": {
+      "invite": "Inviter"
+    },
+    "error": {
+      "missinglogin": "email manquant",
+      "invalidlogin": "email non valide",
+      "missingpseudo": "pseudo manquant",
+      "missingacknowledgement": "connaissance manquante"
+    },
+    "snack": {
+      "invited": "Joureur invité!"
+    }
+  },
+  "game": {
+    "label": {
+      "title": "Partie",
+      "won": "gagné en",
+      "lost": "perdu en",
+      "against": "contre",
+      "contract": {
+        "8plis": "Coop. 8 plis",
+        "9plis": "Coop. 9 plis",
+        "10plis": "Coop. 10 plis",
+        "11plis": "Coop. 11 plis",
+        "12plis": "Coop. 12 plis",
+        "13plis": "Coop. 13 plis",
+        "solo6": "Solo 6 plis",
+        "solo7": "Solo 7 plis",
+        "solo8": "Solo 8 plis",
+        "petitemisere": "Petite misère",
+        "grandemisere": "Grande misère",
+        "trou8": "Trou in 8 plis",
+        "trou9": "Trou in 9 plis",
+        "petitchelem": "Petit Chelem",
+        "grandchelem": "Grand Chelem"
+      }
+    },
+    "input": {
+      "contract": "Contrat",
+      "date": "Date",
+      "attack": "Attaque",
+      "defense": "Défense",
+      "outcome": "Issue"
+    },
+    "error": {
+      "missingcontract": "contrat manquant",
+      "attackmissmatch": "attaque inconsistante",
+      "defensemissmatch": "défense inconsistante",
+      "outcomemissmatch": "issue inconsistante"
+    },
+    "confirm": {
+      "delete": {
+        "title": "Certain de vouloir supprimer cette partie?",
+        "content": "You're about to delete the game.\n\nThis will delete the game and update the table accordingly."
+      }
+    },
+    "snack": {
+      "saved": "Partie sauvée!",
+      "deleted": "Partie supprimée"
+    }
+  }
 }

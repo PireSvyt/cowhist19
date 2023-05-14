@@ -125,12 +125,12 @@ class Appbar extends React.Component {
           menuItems: [
             {
               item: "account",
-              label: "generic-menu-account",
+              label: "generic.menu.account",
               onclick: this.handleToAccount,
             },
             {
               item: "signout",
-              label: "generic-menu-signout",
+              label: "generic.menu.signout",
               onclick: this.handleSignout,
             },
           ],
@@ -151,17 +151,17 @@ class Appbar extends React.Component {
           menuItems: [
             {
               item: "home",
-              label: "generic-menu-home",
+              label: "generic.menu.home",
               onclick: this.handleToHome,
             },
             {
               item: "account",
-              label: "generic-menu-account",
+              label: "generic.menu.account",
               onclick: this.handleToAccount,
             },
             {
               item: "signout",
-              label: "generic-menu-signout",
+              label: "generic.menu.signout",
               onclick: this.handleSignout,
             },
           ],

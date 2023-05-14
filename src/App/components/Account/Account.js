@@ -35,7 +35,7 @@ class Account extends React.Component {
           token={this.props.token}
           callback={this.handleAppbarCallback}
           route="account"
-          title={t("generic-menu-account")}
+          title={t("generic.menu.account")}
         />
         <Box sx={{ height: 48 }} />
         <Box component="span">
@@ -48,7 +48,7 @@ class Account extends React.Component {
           >
             <Box>
               <Typography variant="h5" gutterBottom>
-                {t("account-label-infos")}
+                {t("account.label.mydata")}
               </Typography>
 
               <Typography
@@ -57,7 +57,7 @@ class Account extends React.Component {
                   pt: 1,
                 }}
               >
-                {t("account-label-pseudo")}
+                {t("account.label.mypseudo")}
               </Typography>
               <Box textAlign="center">
                 <Typography variant="body1" gutterBottom>
@@ -73,7 +73,7 @@ class Account extends React.Component {
                   }}
                   onClick={this.handleOpenToComeModal}
                 >
-                  {t("account-button-changepseudo")}
+                  {t("account.button.changepseudo")}
                 </Button>
               </Box>
 
@@ -83,7 +83,7 @@ class Account extends React.Component {
                   pt: 1,
                 }}
               >
-                {t("account-label-email")}
+                {t("account.label.myemail")}
               </Typography>
               <Box textAlign="center">
                 <Typography variant="body1" gutterBottom>
@@ -99,7 +99,7 @@ class Account extends React.Component {
                   }}
                   onClick={this.handleOpenToComeModal}
                 >
-                  {t("account-button-changeemail")}
+                  {t("account.button.changeemail")}
                 </Button>
               </Box>
 
@@ -109,7 +109,7 @@ class Account extends React.Component {
                   pt: 1,
                 }}
               >
-                {t("account-label-password")}
+                {t("account.label.mypassword")}
               </Typography>
               <Box textAlign="center">
                 <Button
@@ -120,7 +120,7 @@ class Account extends React.Component {
                   }}
                   onClick={this.handleOpenToComeModal}
                 >
-                  {t("account-button-changepassword")}
+                  {t("account.button.changepassword")}
                 </Button>
               </Box>
             </Box>
@@ -134,7 +134,7 @@ class Account extends React.Component {
           >
             <Box>
               <Typography variant="h5" gutterBottom>
-                {t("account-label-account")}{" "}
+                {t("account.label.myaccount")}
               </Typography>
 
               <Typography
@@ -143,10 +143,10 @@ class Account extends React.Component {
                   pt: 1,
                 }}
               >
-                {t("account-label-merge")}
+                {t("account.label.merge")}
               </Typography>
               <Typography variant="body2" gutterBottom>
-                {t("account-details-merge")}
+                {t("account.label.mergedetails")}
               </Typography>
               <Box textAlign="center">
                 <Button
@@ -158,7 +158,7 @@ class Account extends React.Component {
                   }}
                   onClick={this.handleOpenToComeModal}
                 >
-                  {t("account-button-merge")}
+                  {t("account.button.merge")}
                 </Button>
               </Box>
 
@@ -168,10 +168,10 @@ class Account extends React.Component {
                   pt: 1,
                 }}
               >
-                {t("account-label-anonymize")}
+                {t("account.label.anonymize")}
               </Typography>
               <Typography variant="body2" gutterBottom>
-                {t("account-details-anonymize")}
+                {t("account.label.anonymizedetails")}
               </Typography>
               <Box textAlign="center">
                 <Button
@@ -183,7 +183,7 @@ class Account extends React.Component {
                   }}
                   onClick={this.handleOpenToComeModal}
                 >
-                  {t("account-button-anonymize")}
+                  {t("account.button.anonymize")}
                 </Button>
               </Box>
 
@@ -193,10 +193,10 @@ class Account extends React.Component {
                   pt: 1,
                 }}
               >
-                {t("account-label-close")}
+                {t("account.label.close")}
               </Typography>
               <Typography variant="body2" gutterBottom>
-                {t("account-details-close")}
+                {t("account.label.closedetails")}
               </Typography>
               <Box textAlign="center">
                 <Button
@@ -208,7 +208,7 @@ class Account extends React.Component {
                   }}
                   onClick={this.handleOpenToComeModal}
                 >
-                  {t("account-button-close")}
+                  {t("account.button.close")}
                 </Button>
               </Box>
             </Box>

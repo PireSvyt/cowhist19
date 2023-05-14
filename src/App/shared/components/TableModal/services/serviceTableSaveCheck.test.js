@@ -19,9 +19,9 @@ describe("TEST OF SERVICE : serviceTableSaveCheck", () => {
       });
       test("then errors are provided", () => {
         const serviceOutcome = serviceTableSaveCheck(emptyTable);
-        expect(serviceOutcome.errors).toContain("table-error-missingname");
+        expect(serviceOutcome.errors).toContain("table.error.missingname");
         expect(serviceOutcome.errors).toContain(
-          "table-error-creationwithoutplayers"
+          "table.error.creationwithoutplayers"
         );
       });
     });

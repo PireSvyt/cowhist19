@@ -36,7 +36,7 @@ async function serviceSignUp(user) {
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
-          id: "signup-snack-success",
+          id: "signup.snack.signedup",
         };
         stateChanges.disabled = true;
         stateChanges.loading = true;
@@ -46,7 +46,7 @@ async function serviceSignUp(user) {
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
-          id: "signup-snack-success",
+          id: "signup.snack.signedup",
         };
         stateChanges.disabled = false;
         stateChanges.loading = false;
@@ -55,7 +55,7 @@ async function serviceSignUp(user) {
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
-          id: "generic-snack-error",
+          id: "generic.snack.error.wip",
         };
         stateChanges.disabled = false;
         stateChanges.loading = false;
@@ -64,7 +64,7 @@ async function serviceSignUp(user) {
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
-          id: "generic-snack-error",
+          id: "generic.snack.error.wip",
         };
         stateChanges.disabled = false;
         stateChanges.loading = false;
@@ -73,7 +73,7 @@ async function serviceSignUp(user) {
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
-          id: "generic-snack-error",
+          id: "generic.snack.error.wip",
         };
         stateChanges.disabled = false;
         stateChanges.loading = false;
@@ -82,7 +82,7 @@ async function serviceSignUp(user) {
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
-          id: "generic-snack-api-unmanagedtype",
+          id: "generic.snack.api.unmanagedtype",
         };
         stateChanges.disabled = false;
         stateChanges.loading = false;
@@ -107,7 +107,7 @@ async function serviceSignUp(user) {
         openSnack: true,
         snack: {
           uid: random_id(),
-          id: "generic-snack-api-errornetwork",
+          id: "generic.snack.api.errornetwork",
         },
       },
       callbacks: [],

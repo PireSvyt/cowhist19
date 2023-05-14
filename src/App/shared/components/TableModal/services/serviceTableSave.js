@@ -35,7 +35,7 @@ async function serviceTableSave(token, table) {
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
-          id: "table-snack-success",
+          id: "table.snack.saved",
         };
         break;
       case "table.save.error.oncreate":
@@ -44,14 +44,14 @@ async function serviceTableSave(token, table) {
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
-          id: "generic-snack-error",
+          id: "generic.snack.error.wip",
         };
         break;
       default:
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
-          id: "generic-snack-api-unmanagedtype",
+          id: "generic.snack.api.unmanagedtype",
         };
         stateChanges.disabled = false;
         stateChanges.loading = false;
@@ -76,7 +76,7 @@ async function serviceTableSave(token, table) {
         openSnack: true,
         snack: {
           uid: random_id(),
-          id: "generic-snack-api-errornetwork",
+          id: "generic.snack.api.errornetwork",
         },
       },
       callbacks: [],

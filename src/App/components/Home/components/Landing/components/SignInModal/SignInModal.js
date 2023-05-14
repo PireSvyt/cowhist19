@@ -63,7 +63,7 @@ class SignInModal extends React.Component {
           onClose={this.handleClose}
           fullWidth={true}
         >
-          <DialogTitle>{t("signin-title")}</DialogTitle>
+          <DialogTitle>{t("signin.label.title")}</DialogTitle>
           <DialogContent
             sx={{
               height: this.state.componentHeight,
@@ -81,7 +81,7 @@ class SignInModal extends React.Component {
                 <TextField
                   name="login"
                   required
-                  label={t("generic-input-email")}
+                  label={t("generic.input.email")}
                   variant="standard"
                   value={this.state.signin.login || ""}
                   onChange={this.handleChange}
@@ -92,7 +92,7 @@ class SignInModal extends React.Component {
                 <TextField
                   name="password"
                   required
-                  label={t("generic-input-password")}
+                  label={t("generic.input.password")}
                   variant="standard"
                   value={this.state.signin.password || ""}
                   onChange={this.handleChange}
@@ -106,7 +106,7 @@ class SignInModal extends React.Component {
 
           <DialogActions>
             <Button onClick={this.handleClose}>
-              {t("generic-button-cancel")}
+              {t("generic.button.cancel")}
             </Button>
             <LoadingButton
               variant="contained"
@@ -114,7 +114,7 @@ class SignInModal extends React.Component {
               disabled={this.state.disabled}
               loading={this.state.loading}
             >
-              {t("generic-button-proceed")}
+              {t("generic.button.proceed")}
             </LoadingButton>
           </DialogActions>
         </Dialog>
@@ -204,14 +204,14 @@ class SignInModal extends React.Component {
           }
         });
       });
-    }  else {
+    } else {
       // Snack
       if (proceedCheckOutcome.errors.length > 0) {
         this.setState((prevState, props) => ({
           openSnack: true,
           snack: {
             uid: random_id(),
-            id: "generic-snack-error",
+            id: "generic.snack.error.withdetails",
             details: proceedCheckOutcome.errors,
           },
         }));

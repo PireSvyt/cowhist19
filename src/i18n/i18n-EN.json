@@ -1,140 +1,252 @@
 {
-  "generic-product-title": "CoWhist 19",
-  "generic-button-add": "Add",
-  "generic-button-save": "Save",
-  "generic-button-delete": "Delete",
-  "generic-button-select": "Select",
-  "generic-button-confirm": "Confirm",
-  "generic-button-cancel": "Cancel",
-  "generic-button-close": "Close",
-  "generic-button-view": "View",
-  "generic-button-edit": "Edit",
-  "generic-button-proceed": "Proceed",
-  "generic-label-tocome": "To come...",
-  "generic-input-name": "Name",
-  "generic-input-pseudo": "Pseudo",
-  "generic-input-email": "Email",
-  "generic-input-password": "Password",
-  "generic-snack-api-unmanagedtype": "Unamanged API response",
-  "generic-snack-api-errornetwork": "Network issue",
-  "generic-snack-WIP": "Work in progress...",
-  "generic-snack-saving": "Saving in progress",
-  "generic-snack-errorunknown": "Unknown error :/",
-  "generic-snack-errorsaltgeneration": "Encryption preparation failed",
-  "generic-snack-errorpasswordencryption": "Password encryption failed",
-  "generic-snack-error": "Error :",
-  "generic-menu-home": "Home",
-  "generic-menu-account": "My account",
-  "generic-menu-table": "Table",
-  "generic-menu-edittable": "Edit table",
-  "generic-menu-signout": "Sign out",
-  "generic-error-invalidchange": "invalid change",
-  "signup-title": "Sign up",
-  "signup-input-repeatpassword": "Repeat password",
-  "signup-button-signup": "Sign up",
-  "signup-error-missingpseudo": "missing pseudo",
-  "signup-error-missinglogin": "missing email",
-  "signup-error-invalidlogin": "invalid email",
-  "signup-error-missingpassword": "missing password",
-  "signup-error-missingrepeatpassword": "missing repeated password",
-  "signup-error-passwordmissmatch": "password missmatch",
-  "signup-snack-success": "Signed up!",
-  "activation-label-inprogress": "Account activation in progress",
-  "activation-label-error": "Error during activation",
-  "activation-label-errorexplanation": "Sincere apologies for the inconvenience.\n\nPlease try again later.",
-  "activation-label-activatedtitle": "Account activated!",
-  "activation-label-activatedaccountexplanations": "Your account has been successfully activated.\n\nYou can now sign in!",
-  "activation-button-tohome": "To home to sign in",
-  "activation-label-notfoundtitle": "Account activation impossible",
-  "activation-label-notfoundaccountexplanations": "It seems the token from the url is not valid.\n\nYou may have already activated this account?",
-  "signin-title": "Sign in",
-  "signin-button-signin": "Sign in",
-  "signin-error-missinglogin": "missing email",
-  "signin-error-invalidlogin": "invalid email",
-  "signin-error-missingpassword": "missing password",
-  "signin-snack-success": "Signed in!",
-  "signin-snack-unauthorized": "Wrong password",
-  "signin-snack-notfound": "Account not found",
-  "account-label-infos": "My data",
-  "account-label-pseudo": "My pseudo",
-  "account-button-changepseudo": "Change pseudo",
-  "account-label-email": "My email",
-  "account-button-changeemail": "Change email",
-  "account-label-password": "My password",
-  "account-button-changepassword": "Change password",
-  "account-label-account": "Account",
-  "account-label-merge": "Merge",
-  "account-details-merge": "Enables to merge two accounts together, which is relevant if you've been invited with two different emails.",
-  "account-button-merge": "Merge accounts",
-  "account-label-anonymize": "Anonymize",
-  "account-details-anonymize": "Enables to remove personal information from the app, without affecting the tables you're part of.",
-  "account-button-anonymize": "Anonymize account",
-  "account-label-close": "Close",
-  "account-details-close": "To permanently delete your account, removing you from any table you've been part of.",
-  "account-button-close": "Close account",
-  "mystats-label-mystats": "My stats",
-  "mytables-label-mytables": "My tables",
-  "table-title": "Table",
-  "table-label-players": "Players",
-  "table-label-tablestats": "Stats",
-  "table-label-tablehistory": "History",
-  "table-label-won": "won in",
-  "table-label-lost": "lost in",
-  "table-label-against": "against",
-  "table-error-missingname": "missing name",
-  "table-error-creationwithoutplayers": "missing players to create a table",
-  "table-confirm-title-delete": "Sure to delete table?",
-  "table-confirm-content-delete": "You're about to delete the table.\n\nThis will delete the table and all associated games.",
-  "table-confirm-title-deletenoeusers": "No more player here!",
-  "table-confirm-content-deletenoeusers": "All players have been deleted from this table.\nA table can't exist without any player...\n\nProceeding will delete the table and all associated games.",
-  "table-confirm-title-deletenuser": "Sure to remove this player?",
-  "table-confirm-content-deletenuser": "You're about to remove a player from the table.\n\nIf you proceed and save the table, the player won't have access anymore to this table, the player name will be removed from the table history and statistics.",
-  "table-button-newgame": "New game",
-  "table-snack-success": "Table saved!",
-  "table-snack-deleted": "Table deleted",
-  "invite-title": "Invite a player",
-  "invite-input-acknowledgement": "I know this person",
-  "invite-button-invite": "Invite",
-  "invite-error-missinglogin": "missing email",
-  "invite-error-invalidlogin": "invalid email",
-  "invite-error-missingpseudo": "missing pseudo",
-  "invite-error-missingacknowledgement": "missing acknowledgement",
-  "invite-snack-success": "User invited!",
-  "game-title": "Game",
-  "game-label-8plis": "Coop. 8 folds",
-  "game-label-9plis": "Coop. 9 folds",
-  "game-label-10plis": "Coop. 10 folds",
-  "game-label-11plis": "Coop. 11 folds",
-  "game-label-12plis": "Coop. 12 folds",
-  "game-label-13plis": "Coop. 13 folds",
-  "game-label-solo6": "Solo 6 folds",
-  "game-label-solo7": "Solo 7 folds",
-  "game-label-solo8": "Solo 8 folds",
-  "game-label-petitemisere": "Small misery",
-  "game-label-grandemisere": "Large misery",
-  "game-label-trou8": "Hole in 8 folds",
-  "game-label-trou9": "Hole in 9 folds",
-  "game-label-petitchelem": "Small Slam",
-  "game-label-grandchelem": "Grand Slam",
-  "game-input-contract": "Contract",
-  "game-input-date": "Date",
-  "game-input-attack": "Attack",
-  "game-input-defense": "Defense",
-  "game-input-outcome": "Outcome",
-  "game-label-score": "score",
-  "game-label-games": "games",
-  "game-label-victory": "victory",
-  "game-label-attack": "attack",
-  "game-error-missingcontract": "missing contract",
-  "game-error-attackmissmatch": "inconsistent attack",
-  "game-error-defensemissmatch": "inconsistent defense",
-  "game-error-outcomemissmatch": "inconsistent outcome",
-  "game-snack-saved": "Game saved!",
-  "game-snack-discarded": "Game discarded",
-  "game-confirm-title-delete": "Sure to delete game?",
-  "game-confirm-content-delete": "You're about to delete the game.\n\nThis will delete the game and update the table accordingly.",
-  "game-snack-deleted": "Game deleted",
-  "tocome-title": "To come...",
-  "tocome-label-intro": "This functionality is not available yet.",
-  "tocome-label-explanation": "We are delighted by your interest and propose to record it for the team to prioritize for this! \n This is anonymous ;)"
+  "generic": {
+    "label": {
+      "product": "CoWhist 19",
+      "account": "Account",
+      "language": "Language",
+      "tocome": "To come...",
+      "tocomeintro": "This functionality is not available yet.",
+      "tocomedetails": "We are delighted by your interest and propose to record it for the team to prioritize for this! \n This is anonymous ;)"
+    },
+    "menu": {
+      "home": "Home",
+      "account": "My account",
+      "table": "Table",
+      "signout": "Sign out"
+    },
+    "input": {
+      "name": "Name",
+      "pseudo": "Pseudo",
+      "email": "Email",
+      "password": "Password"
+    },
+    "button": {
+      "add": "Add",
+      "save": "Save",
+      "delete": "Delete",
+      "select": "Select",
+      "confirm": "Confirm",
+      "cancel": "Cancel",
+      "close": "Close",
+      "view": "View",
+      "edit": "Edit",
+      "proceed": "Proceed",
+      "tocome": "To come..."
+    },
+    "snack": {
+      "api": {
+        "unmanagedtype": "Unmanaged API response",
+        "errornetwork": "Network issue"
+      },
+      "error": {
+        "unknown": "Unknown error :/",
+        "withdetails": "Error :",
+        "invalidchange": "invalid change",
+        "wip": "We are working on it"
+      },
+      "feedback": {
+        "wip": "Work in progress..."
+      }
+    }
+  },
+  "signup": {
+    "label": {
+      "title": "Sign up"
+    },
+    "input": { "repeatpassword": "Repeat password" },
+    "button": {
+      "signup": "Sign up"
+    },
+    "error": {
+      "missingpseudo": "missing pseudo",
+      "missinglogin": "missing email",
+      "invalidlogin": "invalid email",
+      "missingpassword": "missing password",
+      "missingrepeatpassword": "missing repeated password",
+      "passwordmissmatch": "password missmatch"
+    },
+    "snack": {
+      "signedup": "Signed up!"
+    }
+  },
+  "signin": {
+    "label": {
+      "title": "Sign in"
+    },
+    "input": {},
+    "button": {
+      "signin": "Sign in"
+    },
+    "error": {
+      "missinglogin": "missing email",
+      "invalidlogin": "invalid email",
+      "missingpassword": "missing password"
+    },
+    "snack": {
+      "signedin": "Signed in!",
+      "unauthorized": "Wrong password",
+      "notfound": "Account not found"
+    }
+  },
+  "activation": {
+    "label": {
+      "title": "Account activation",
+      "inprogress": "Account activation in progress",
+      "error": "Error during activation",
+      "errorexplanation": "Sincere apologies for the inconvenience.\n\nPlease try again later.",
+      "activatedtitle": "Account activated!",
+      "activatedaccountexplanations": "Your account has been successfully activated.\n\nYou can now sign in!",
+      "notfoundaccount": "Account activation impossible",
+      "notfoundaccountexplanations": "It seems the token from the url is not valid.\n\nYou may have already activated this account?"
+    },
+    "input": {},
+    "button": {
+      "tohome": "To home to sign in"
+    },
+    "error": {},
+    "snack": {}
+  },
+  "account": {
+    "label": {
+      "title": "My account",
+      "mydata": "My data",
+      "mypseudo": "My pseudo",
+      "myemail": "My email",
+      "mypassword": "My password",
+      "myaccount": "My account",
+      "merge": "Merge",
+      "mergedetails": "Enables to merge two accounts together, which is relevant if you've been invited with two different emails.",
+      "anonymize": "Anonymize",
+      "anonymizedetails": "Enables to remove personal information from the app, without affecting the tables you're part of.",
+      "close": "Close",
+      "closedetails": "To permanently delete your account, removing you from any table you've been part of."
+    },
+    "input": {},
+    "button": {
+      "changepseudo": "Change pseudo",
+      "changeemail": "Change email",
+      "changepassword": "Change password",
+      "merge": "Merge accounts",
+      "anonymize": "Anonymize account",
+      "close": "Close account"
+    },
+    "error": {},
+    "snack": {}
+  },
+  "home": {
+    "label": {
+      "mystats": "My stats",
+      "mytables": "My tables"
+    },
+    "input": {},
+    "button": {},
+    "error": {},
+    "snack": {}
+  },
+  "table": {
+    "label": {
+      "title": "Table",
+      "players": "Players",
+      "stats": "Stats",
+      "history": "History",
+      "score": "score",
+      "games": "games",
+      "victory": "victory",
+      "attack": "attack"
+    },
+    "input": {},
+    "button": {
+      "newgame": "New game"
+    },
+    "error": {
+      "missingname": "missing name",
+      "creationwithoutplayers": "missing players to create a table"
+    },
+    "confirm": {
+      "delete": {
+        "title": "Sure to delete table?",
+        "content": "You're about to delete the table.\n\nThis will delete the table and all associated games."
+      },
+      "deletenoeusers": {
+        "title": "No more player here!",
+        "content": "All players have been deleted from this table.\nA table can't exist without any player...\n\nProceeding will delete the table and all associated games."
+      },
+      "deleteuser": {
+        "title": "Sure to remove this player?",
+        "content": "You're about to remove a player from the table.\n\nIf you proceed and save the table, the player won't have access anymore to this table, the player name will be removed from the table history and statistics."
+      }
+    },
+    "snack": {
+      "saved": "Table saved!",
+      "deleted": "Table deleted"
+    }
+  },
+  "invite": {
+    "label": {
+      "title": "Invite a player"
+    },
+    "input": {
+      "acknowledgement": "I know this person"
+    },
+    "button": {
+      "invite": "Invite"
+    },
+    "error": {
+      "missinglogin": "missing email",
+      "invalidlogin": "invalid email",
+      "missingpseudo": "missing pseudo",
+      "missingacknowledgement": "missing acknowledgement"
+    },
+    "snack": {
+      "invited": "User invited!"
+    }
+  },
+  "game": {
+    "label": {
+      "title": "Game",
+      "won": "won in",
+      "lost": "lost in",
+      "against": "against",
+      "contract": {
+        "8plis": "Coop. 8 folds",
+        "9plis": "Coop. 9 folds",
+        "10plis": "Coop. 10 folds",
+        "11plis": "Coop. 11 folds",
+        "12plis": "Coop. 12 folds",
+        "13plis": "Coop. 13 folds",
+        "solo6": "Solo 6 folds",
+        "solo7": "Solo 7 folds",
+        "solo8": "Solo 8 folds",
+        "petitemisere": "Small misery",
+        "grandemisere": "Large misery",
+        "trou8": "Hole in 8 folds",
+        "trou9": "Hole in 9 folds",
+        "petitchelem": "Small Slam",
+        "grandchelem": "Grand Slam"
+      }
+    },
+    "input": {
+      "contract": "Contract",
+      "date": "Date",
+      "attack": "Attack",
+      "defense": "Defense",
+      "outcome": "Outcome"
+    },
+    "error": {
+      "missingcontract": "missing contract",
+      "attackmissmatch": "inconsistent attack",
+      "defensemissmatch": "inconsistent defense",
+      "outcomemissmatch": "inconsistent outcome"
+    },
+    "confirm": {
+      "delete": {
+        "title": "Sure to delete game?",
+        "content": "You're about to delete the game.\n\nThis will delete the game and update the table accordingly."
+      }
+    },
+    "snack": {
+      "saved": "Game saved!",
+      "deleted": "Game deleted"
+    }
+  }
 }

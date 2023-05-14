@@ -19,8 +19,8 @@ describe("TEST OF SERVICE : serviceSignInCheck", () => {
       });
       test("then errors are provided", () => {
         const serviceOutcome = serviceSignInCheck(emptySignin);
-        expect(serviceOutcome.errors).toContain("signin-error-missinglogin");
-        expect(serviceOutcome.errors).toContain("signin-error-missingpassword");
+        expect(serviceOutcome.errors).toContain("signin.error.missinglogin");
+        expect(serviceOutcome.errors).toContain("signin.error.missingpassword");
       });
     });
   });
@@ -46,7 +46,7 @@ describe("TEST OF SERVICE : serviceSignInCheck", () => {
       });
       test("then the error changes is provided", () => {
         const serviceOutcome = serviceSignInCheck(wrongEmailSignin);
-        expect(serviceOutcome.errors).toContain("signin-error-invalidlogin");
+        expect(serviceOutcome.errors).toContain("signin-error.invalidlogin");
       });
     });
     describe("When email is well formed", () => {

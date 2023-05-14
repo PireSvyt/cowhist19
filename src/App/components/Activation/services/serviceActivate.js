@@ -57,7 +57,7 @@ async function serviceActivate() {
         openSnack: true,
         snack: {
           uid: random_id(),
-          id: "generic-snack-api-errornetwork",
+          id: "generic.snack.api.errornetwork",
         },
       },
       callbacks: [],

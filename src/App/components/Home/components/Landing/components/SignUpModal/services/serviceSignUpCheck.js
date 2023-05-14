@@ -14,20 +14,20 @@ function serviceSignUpCheck(signup) {
   // Pseudo is empty?
   if (signup.pseudo === null || signup.pseudo === "") {
     proceed = false;
-    errors.push("signup-error-missingpseudo");
+    errors.push("signup.error.missingpseudo");
     stateChanges.pseudoError = true;
   }
 
   // Login is empty?
   if (signup.login === null || signup.login === "") {
     proceed = false;
-    errors.push("signup-error-missinglogin");
+    errors.push("signup.error.missinglogin");
     stateChanges.loginError = true;
   } else {
     // Login is an email?
     if (!validateEmail(signup.login)) {
       proceed = false;
-      errors.push("signup-error-invalidlogin");
+      errors.push("signup.error.invalidlogin");
       stateChanges.loginError = true;
     }
   }
@@ -35,20 +35,20 @@ function serviceSignUpCheck(signup) {
   // Password is empty?
   if (signup.password === null || signup.password === "") {
     proceed = false;
-    errors.push("signup-error-missingpassword");
+    errors.push("signup.error.missingpassword");
     stateChanges.passwordError = true;
   }
 
   // Repeated password is empty?
   if (signup.repeatpassword === null || signup.repeatpassword === "") {
     proceed = false;
-    errors.push("signup-error-missingrepeatpassword");
+    errors.push("signup.error.missingrepeatpassword");
     stateChanges.repeatpasswordError = true;
   } else {
     // Password match?
     if (signup.password !== signup.repeatpassword) {
       proceed = false;
-      errors.push("signup-error-passwordmissmatch");
+      errors.push("signup.error.passwordmissmatch");
       stateChanges.repeatpasswordError = true;
     }
   }

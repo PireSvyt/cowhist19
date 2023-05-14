@@ -15,13 +15,13 @@ function serviceSignInCheck(signin) {
   // Login is empty?
   if (signin.login === "" || signin.login === undefined) {
     proceed = false;
-    errors.push("signin-error-missinglogin");
+    errors.push("signin.error.missinglogin");
     stateChanges.loginError = true;
   } else {
     // Login is an email?
     if (!validateEmail(signin.login)) {
       proceed = false;
-      errors.push("signin-error-invalidlogin");
+      errors.push("signin.error.invalidlogin");
       stateChanges.loginError = true;
     }
   }
@@ -29,7 +29,7 @@ function serviceSignInCheck(signin) {
   // Password is empty?
   if (signin.password === "" || signin.password === undefined) {
     proceed = false;
-    errors.push("signin-error-missingpassword");
+    errors.push("signin.error.missingpassword");
     stateChanges.passwordError = true;
   }
 

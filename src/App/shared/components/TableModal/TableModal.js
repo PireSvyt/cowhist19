@@ -89,7 +89,7 @@ class TableModal extends React.Component {
           onClose={this.handleClose}
           fullWidth={true}
         >
-          <DialogTitle>{t("table-title")}</DialogTitle>
+          <DialogTitle>{t("table.label.title")}</DialogTitle>
           <DialogContent
             sx={{
               height: this.state.componentHeight,
@@ -105,7 +105,7 @@ class TableModal extends React.Component {
             >
               <TextField
                 name="name"
-                label={t("generic-input-name")}
+                label={t("generic.input.name")}
                 variant="standard"
                 value={this.state.table.name || ""}
                 onChange={this.handleChange}
@@ -122,7 +122,7 @@ class TableModal extends React.Component {
                     pb: 2,
                   }}
                 >
-                  {t("table-label-players")}
+                  {t("table.label.players")}
                 </Typography>
                 <IconButton sx={{ p: 2 }} onClick={this.handleOpenInviteModal}>
                   <AddIcon />
@@ -148,7 +148,7 @@ class TableModal extends React.Component {
 
           <DialogActions>
             <Button onClick={this.handleClose}>
-              {t("generic-button-cancel")}
+              {t("generic.button.cancel")}
             </Button>
             <LoadingButton
               variant="contained"
@@ -156,7 +156,7 @@ class TableModal extends React.Component {
               disabled={this.state.disabled}
               loading={this.state.loading}
             >
-              {t("generic-button-save")}
+              {t("generic.button.save")}
             </LoadingButton>
           </DialogActions>
         </Dialog>
@@ -363,15 +363,15 @@ class TableModal extends React.Component {
       case "userremove":
         this.setState({
           openConfirmModal: true,
-          confirmModalTitle: "table-confirm-title-deletenuser",
-          confirmModalContent: "table-confirm-content-deletenuser",
+          confirmModalTitle: "table.confirm.deleteuser.title",
+          confirmModalContent: "table.confirm.deleteuser.content",
           confirmModalCTA: [
             {
-              label: "generic-button-cancel",
+              label: "generic.button.cancel",
               callback: () => this.handleConfirmModalCallback("close"),
             },
             {
-              label: "generic-button-proceed",
+              label: "generic.button.proceed",
               callback: () => {
                 this.handleConfirmModalCallback("userremove", details);
               },
@@ -489,7 +489,7 @@ class TableModal extends React.Component {
           openSnack: true,
           snack: {
             uid: random_id(),
-            id: "generic-snack-error",
+            id: "generic.snack.error.withdetails",
             details: proceedCheckOutcome.errors,
           },
         }));

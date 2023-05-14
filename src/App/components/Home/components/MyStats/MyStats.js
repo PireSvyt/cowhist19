@@ -28,7 +28,7 @@ class MyStats extends React.Component {
     return (
       <Box hidden={this.props.signedin !== true} sx={{ m: 2 }}>
         <Typography variant="h6" component="span">
-          {t("mystats-label-mystats")}
+          {t("home.label.mystats")}
         </Typography>
 
         <Box textAlign="center" sx={{ m: 2 }}>
@@ -37,7 +37,7 @@ class MyStats extends React.Component {
             sx={{ width: "80%", m: 1 }}
             onClick={this.handleOpenToComeModal}
           >
-            {t("generic-label-tocome")}
+            {t("generic.label.tocome")}
           </Button>
         </Box>
         <ToComeModal

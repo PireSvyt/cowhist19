@@ -37,7 +37,7 @@ class Home extends React.Component {
           callback={this.handleAppbarCallback}
           token={this.props.token}
           route="home"
-          title={t("generic-product-title")}
+          title={t("generic.label.product")}
         />
         <Box sx={{ height: 48 }} />
         <Landing

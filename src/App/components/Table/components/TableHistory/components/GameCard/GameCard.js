@@ -40,7 +40,7 @@ class GameCard extends React.Component {
           <Box>
             <Typography variant="caption">{this.stringifyDate()}</Typography>
             <Typography sx={{ fontWeight: "bold" }}>
-              {t("game-label-" + this.props.game.contract) +
+              {t("game.label.contract." + this.props.game.contract) +
                 " " +
                 this.stringifyOutcome()}
             </Typography>
@@ -74,7 +74,7 @@ class GameCard extends React.Component {
         }
       }
     });
-    res = res + t("table-label-against") + " ";
+    res = res + t("game.label.against") + " ";
     // Defense
     this.props.game.players.forEach((actualPlayer) => {
       if (actualPlayer.role === "defense") {
@@ -95,9 +95,9 @@ class GameCard extends React.Component {
     const { t } = this.props;
 
     if (this.props.game.outcome >= 0) {
-      return t("table-label-won") + "  +" + this.props.game.outcome;
+      return t("game.label.won") + "  +" + this.props.game.outcome;
     } else {
-      return t("table-label-lost") + "  " + this.props.game.outcome;
+      return t("game.label.lost") + "  " + this.props.game.outcome;
     }
   }
   stringifyDate() {

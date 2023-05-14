@@ -32,7 +32,7 @@ class RankingCard extends React.Component {
             {this.stringifyPlayer()}
           </Typography>
           <Typography sx={{ fontWeight: "bold" }}>
-            {t("game-label-score") +
+            {t("table.label.score") +
               " " +
               parseFloat(this.props.player.scorev0).toFixed(1)}
           </Typography>
@@ -46,17 +46,17 @@ class RankingCard extends React.Component {
           }}
         >
           <Typography sx={{ typography: "caption" }}>
-            {this.props.player.games + " " + t("game-label-games")}
+            {this.props.player.games + " " + t("table.label.games")}
           </Typography>
           <Typography sx={{ typography: "caption" }}>
             {parseFloat(this.props.player.ratevictory * 100).toFixed(0) +
               "% " +
-              t("game-label-victory")}
+              t("table.label.victory")}
           </Typography>
           <Typography sx={{ typography: "caption" }}>
             {parseFloat(this.props.player.rateattack * 100).toFixed(0) +
               "% " +
-              t("game-label-attack")}
+              t("table.label.attack")}
           </Typography>
         </Box>
       </Card>

@@ -129,7 +129,7 @@ describe("TEST OF SERVICE : serviceGameSaveCheck", () => {
       });
       test("then errors are provided", () => {
         const serviceOutcome = serviceGameSaveCheck(emptyGame, validContracts);
-        expect(serviceOutcome.errors).toContain("game-error-missingcontract");
+        expect(serviceOutcome.errors).toContain("game.error.missingcontract");
       });
     });
   });
@@ -146,7 +146,7 @@ describe("TEST OF SERVICE : serviceGameSaveCheck", () => {
       });
       test("then errors are provided", () => {
         const serviceOutcome = serviceGameSaveCheck(validGame, emptyContracts);
-        expect(serviceOutcome.errors).toContain("game-error-missingcontract");
+        expect(serviceOutcome.errors).toContain("game.error.missingcontract");
       });
     });
   });
@@ -199,7 +199,7 @@ describe("TEST OF SERVICE : serviceGameSaveCheck", () => {
           invalidAttackGame,
           validContracts
         );
-        expect(serviceOutcome.errors).toContain("game-error-attackmissmatch");
+        expect(serviceOutcome.errors).toContain("game.error.attackmissmatch");
       });
     });
   });
@@ -252,7 +252,7 @@ describe("TEST OF SERVICE : serviceGameSaveCheck", () => {
           invalidDefenseGame,
           validContracts
         );
-        expect(serviceOutcome.errors).toContain("game-error-defensemissmatch");
+        expect(serviceOutcome.errors).toContain("game.error.defensemissmatch");
       });
     });
   });
@@ -301,7 +301,7 @@ describe("TEST OF SERVICE : serviceGameSaveCheck", () => {
           invalidOutcomeGame,
           validContracts
         );
-        expect(serviceOutcome.errors).toContain("game-error-outcomemissmatch");
+        expect(serviceOutcome.errors).toContain("game.error.outcomemissmatch");
       });
     });
   });

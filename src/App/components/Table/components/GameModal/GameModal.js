@@ -74,7 +74,7 @@ class GameModal extends React.Component {
           onClose={this.handleClose}
           fullWidth={true}
         >
-          <DialogTitle>{t("game-title")}</DialogTitle>
+          <DialogTitle>{t("game.label.title")}</DialogTitle>
           <DialogContent
             sx={{
               height: this.state.componentHeight,
@@ -88,7 +88,7 @@ class GameModal extends React.Component {
               }}
             >
               <FormControl variant="standard">
-                <InputLabel>{t("game-input-contract")}</InputLabel>
+                <InputLabel>{t("game.input.contract")}</InputLabel>
                 <Select
                   name="contract"
                   value={this.state.game.contract}
@@ -97,7 +97,7 @@ class GameModal extends React.Component {
                 >
                   {this.props.contracts.map((contract) => (
                     <MenuItem key={contract.key} value={contract.key}>
-                      {t("game-label-" + contract.key)}
+                      {t("game.label.contract." + contract.key)}
                     </MenuItem>
                   ))}
                 </Select>
@@ -114,7 +114,7 @@ class GameModal extends React.Component {
                       {...params}
                       variant="standard"
                       label={
-                        t("game-input-attack") +
+                        t("game.input.attack") +
                         " " +
                         this.state.attackRequirement
                       }
@@ -172,7 +172,7 @@ class GameModal extends React.Component {
                       {...params}
                       variant="standard"
                       label={
-                        t("game-input-defense") +
+                        t("game.input.defense") +
                         " " +
                         this.state.defenseRequirement
                       }
@@ -220,7 +220,7 @@ class GameModal extends React.Component {
               </FormControl>
 
               <Typography variant="caption" gutterBottom>
-                {t("game-input-outcome")}
+                {t("game.input.outcome")}
               </Typography>
               <Slider
                 name="outcome"
@@ -240,7 +240,7 @@ class GameModal extends React.Component {
 
           <DialogActions>
             <Button onClick={this.handleClose}>
-              {t("generic-button-close")}
+              {t("generic.button.close")}
             </Button>
             <LoadingButton
               variant="contained"
@@ -248,7 +248,7 @@ class GameModal extends React.Component {
               disabled={this.state.disabled}
               loading={this.state.loading}
             >
-              {t("generic-button-save")}
+              {t("generic.button.save")}
             </LoadingButton>
           </DialogActions>
         </Dialog>
@@ -408,7 +408,7 @@ class GameModal extends React.Component {
           openSnack: true,
           snack: {
             uid: random_id(),
-            id: "generic-snack-error",
+            id: "generic.snack.error.withdetails",
             details: proceedCheckOutcome.errors,
           },
         }));

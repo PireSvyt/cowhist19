@@ -81,12 +81,12 @@ class Table extends React.Component {
             variant="fullWidth"
           >
             <Tab
-              label={t("table-label-tablestats")}
+              label={t("table.label.stats")}
               id="tab-0"
               aria-controls="tabpanel-0"
             />
             <Tab
-              label={t("table-label-tablehistory")}
+              label={t("table.label.history")}
               id="tab-1"
               aria-controls="tabpanel-1"
             />
@@ -118,7 +118,7 @@ class Table extends React.Component {
           sx={{ position: "fixed", bottom: 20, right: 20 }}
           onClick={this.handleOpenGameModal}
         >
-          {t("table-button-newgame")}
+          {t("table.button.newgame")}
         </Fab>
         <TableModal
           open={this.state.openTableModal}

@@ -73,15 +73,15 @@ class TableHistory extends React.Component {
       case "delete":
         this.setState({
           openConfirmModal: true,
-          confirmModalTitle: "game-confirm-title-delete",
-          confirmModalContent: "game-confirm-content-delete",
+          confirmModalTitle: "game.confirm.delete.title",
+          confirmModalContent: "game.confirm.delete.content",
           confirmModalCTA: [
             {
-              label: "generic-button-cancel",
+              label: "generic.button.cancel",
               callback: () => this.handleConfirmModalCallback("close"),
             },
             {
-              label: "generic-button-proceed",
+              label: "generic.button.proceed",
               callback: () =>
                 this.handleConfirmModalCallback("delete", details),
               variant: "contained",
@@ -117,22 +117,18 @@ class TableHistory extends React.Component {
         }));
         // API call
         apiGameDelete(this.props.token, details).then((res) => {
-          /*if (process.env.REACT_APP_DEBUG === "TRUE") {
-            console.log("res ");
-            console.log(res);
-          }*/
           switch (res.status) {
             case 200:
               this.setState((prevState, props) => ({
                 openSnack: true,
-                snack: { uid: random_id(), id: "game-snack-deleted" },
+                snack: { uid: random_id(), id: "game.snack.deleted" },
               }));
               this.props.callback("refresh");
               break;
             default:
               this.setState((prevState, props) => ({
                 openSnack: true,
-                snack: { uid: random_id(), id: "generic-snack-errorunknown" },
+                snack: { uid: random_id(), id: "generic.snack.errorunknown" },
               }));
           }
         });

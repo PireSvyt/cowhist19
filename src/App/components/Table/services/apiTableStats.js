@@ -11,14 +11,7 @@ async function apiTableStats(token, id, parameters) {
     );
     return res.data;
   } catch (err) {
-    const res = {
-      status: err.response.status,
-      message: "error on apiTableStats " + id,
-      game: {},
-      error: err,
-    };
-    console.error(res);
-    return res;
+    return err.response.status;
   }
 }
 

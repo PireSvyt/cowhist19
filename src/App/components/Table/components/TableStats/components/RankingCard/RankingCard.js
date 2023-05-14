@@ -31,11 +31,24 @@ class RankingCard extends React.Component {
           <Typography sx={{ fontWeight: "bold" }} gutterBottom>
             {this.stringifyPlayer()}
           </Typography>
-          <Typography sx={{ fontWeight: "bold" }}>
-            {t("table.label.score") +
-              " " +
-              parseFloat(this.props.player.scorev0).toFixed(1)}
-          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <Typography sx={{ fontWeight: "bold" }}>
+              {t("table.label.score") +
+                " " +
+                parseFloat(this.props.player.scorev0).toFixed(1)}
+            </Typography>
+            <Typography sx={{ pl: 1 }}>
+              {"(av.pts " +
+                parseFloat(this.props.player.averagepoints).toFixed(1) +
+                ")"}
+            </Typography>
+          </Box>
         </Box>
         <Box
           sx={{

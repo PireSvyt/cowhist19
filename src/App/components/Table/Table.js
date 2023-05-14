@@ -8,7 +8,7 @@ import TableHistory from "./components/TableHistory/TableHistory.js";
 import GameModal from "./components/GameModal/GameModal.js";
 
 // Services
-import apiTableStats from "./services/apiTableStats.js";
+import serviceTableStats from "./services/serviceTableStats.js";
 import apiTableHistory from "./services/apiTableHistory.js";
 
 // Shared
@@ -210,19 +210,27 @@ class Table extends React.Component {
     };
     if (this.props.token !== undefined && this.state.table.players !== []) {
       let tableid = window.location.href.split("/table/")[1];
-      apiTableStats(this.props.token, tableid, parameters).then((data) => {
-        let stats = data.stats;
-        let playerids = this.state.table.players.map((p) => p._id);
-        // Filter by current players
-        stats.ranking = stats.ranking.filter((rank) =>
-          playerids.includes(rank._id)
-        );
 
-        // Store
-        this.setState((prevState, props) => ({
-          tableStats: stats,
-          tableStatsLoaded: true,
-        }));
+      serviceTableStats(
+        this.props.token,
+        tableid,
+        parameters,
+        this.state.table.players
+      ).then((proceedOutcome) => {
+        if (proceedOutcome.errors.length > 0) {
+          if (process.env.REACT_APP_DEBUG === "TRUE") {
+            console.log("proceedOutcome errors");
+            console.log(proceedOutcome.errors);
+          }
+        }
+        this.setState((prevState, props) => proceedOutcome.stateChanges);
+        proceedOutcome.callbacks.forEach((callback) => {
+          if (callback.option === undefined) {
+            this.props.callback(callback.key);
+          } else {
+            this.props.callback(callback.key, callback.option);
+          }
+        });
       });
     }
   }

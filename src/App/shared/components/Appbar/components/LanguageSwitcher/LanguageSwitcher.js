@@ -43,12 +43,8 @@ class LanguageSwitcher extends React.Component {
 
     return (
       <Box hidden={!this.props.show}>
-        <IconButton
-          onClick={this.handleOpen}
-          size="small"
-          sx={{ ml: 2, color: "white" }}
-        >
-          <LanguageIcon />
+        <IconButton onClick={this.handleOpen} size="small" sx={{ ml: 2 }}>
+          <LanguageIcon sx={{ color: "white" }} />
         </IconButton>
         <Menu
           open={this.state.open}
@@ -111,13 +107,15 @@ class LanguageSwitcher extends React.Component {
     // https://medium.com/how-to-react/how-to-use-js-cookie-to-store-data-in-cookies-in-react-js-aab47f8a45c3
     Cookies.set("cowhist19_language", language);
     // Notify user to refresh
-    this.setState((prevState, props) => ({
+    /*this.setState((prevState, props) => ({
       openSnack: true,
       snack: {
         uid: random_id(),
         id: "generic.snack.feedback.languagechange",
       },
-    }));
+    }));*/
+    // Reload page
+    window.location.reload(false);
   }
   handleSnack(action) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {

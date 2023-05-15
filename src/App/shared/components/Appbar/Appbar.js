@@ -40,9 +40,6 @@ class Appbar extends React.Component {
     // Handles
     this.handleOpenMenu = this.handleOpenMenu.bind(this);
     this.handleCloseMenu = this.handleCloseMenu.bind(this);
-    this.handleSignout = this.handleSignout.bind(this);
-    this.handleToHome = this.handleToHome.bind(this);
-    this.handleToAccount = this.handleToAccount.bind(this);
   }
   render() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -96,18 +93,13 @@ class Appbar extends React.Component {
             >
               <LanguageSwitcher show={this.state.showLanguageSwitcher} />
 
-              <Box
-                hidden={
-                  !this.props.signedin || this.state.menuItems.length === 0
-                }
-              >
+              <Box hidden={this.state.menuItems.length > 0}>
                 <IconButton
                   size="large"
-                  color="inherit"
                   onClick={this.handleOpenMenu}
                   disabled={!this.props.signedin}
                 >
-                  <MenuIcon />
+                  <MenuIcon sx={{ color: "white" }} />
                 </IconButton>
               </Box>
               <Menu
@@ -121,14 +113,23 @@ class Appbar extends React.Component {
               >
                 {this.state.menuItems.map((item) => {
                   return (
-                    <MenuItem key={random_id()} onClick={item.onclick}>
+                    <MenuItem
+                      hidden={!(item.signed && this.props.signedin)}
+                      key={random_id()}
+                      onClick={item.onclick}
+                    >
                       {t(item.label)}
                     </MenuItem>
                   );
                 })}
               </Menu>
 
-              <Box hidden={!(this.props.route === "account")}>
+              <Box
+                hidden={
+                  !(this.props.route === "account") &&
+                  !(this.props.route === "help")
+                }
+              >
                 <IconButton
                   size="large"
                   color="inherit"
@@ -148,64 +149,96 @@ class Appbar extends React.Component {
       console.log("Appbar.componentDidMount");
     }
 
+    // Helpers
+    const insideCallback = this.props.callback;
+    function toHome() {
+      //this.handleCloseMenu();
+      window.location = "/";
+    }
+    function toHelp() {
+      //this.handleCloseMenu();
+      window.location = "/help";
+    }
+    function toAccount() {
+      //this.handleCloseMenu();
+      window.location = "/account";
+    }
+    function signOut() {
+      // Destroy token
+      // https://medium.com/how-to-react/how-to-use-js-cookie-to-store-data-in-cookies-in-react-js-aab47f8a45c3
+      Cookies.remove("cowhist19-token");
+      //this.handleCloseMenu();
+      insideCallback("signedout");
+      window.location = "/";
+    }
+
+    // MenuItems
+    let existingMenuItems = {
+      signOut: {
+        item: "signout",
+        label: "generic.menu.signout",
+        onclick: signOut,
+        signed: true,
+      },
+      toAccount: {
+        item: "account",
+        label: "generic.menu.account",
+        onclick: toAccount,
+        signed: true,
+      },
+      toHome: {
+        item: "home",
+        label: "generic.menu.home",
+        onclick: toHome,
+        signed: true,
+      },
+      toHelp: {
+        item: "help",
+        label: "generic.menu.help",
+        onclick: toHelp,
+        signed: false,
+      },
+    };
+
+    // Initialize
+    const menuItems = [];
+
     // Update menu
     switch (this.props.route) {
       case "home":
+        menuItems.push(existingMenuItems.toAccount);
+        menuItems.push(existingMenuItems.toHelp);
+        menuItems.push(existingMenuItems.signOut);
         this.setState((prevState, props) => ({
           showLanguageSwitcher: true,
-          menuItems: [
-            {
-              item: "account",
-              label: "generic.menu.account",
-              onclick: this.handleToAccount,
-            },
-            {
-              item: "signout",
-              label: "generic.menu.signout",
-              onclick: this.handleSignout,
-            },
-          ],
+          menuItems: menuItems,
         }));
         break;
       case "activation":
         this.setState((prevState, props) => ({
           showLanguageSwitcher: true,
-          menuItems: [],
+          menuItems: menuItems,
         }));
         break;
       case "account":
         this.setState((prevState, props) => ({
           showLanguageSwitcher: true,
-          menuItems: [],
+          menuItems: menuItems,
         }));
         break;
       case "table":
+        menuItems.push(existingMenuItems.toHome);
+        menuItems.push(existingMenuItems.toAccount);
+        menuItems.push(existingMenuItems.toHelp);
+        menuItems.push(existingMenuItems.signOut);
         this.setState((prevState, props) => ({
           showLanguageSwitcher: false,
-          menuItems: [
-            {
-              item: "home",
-              label: "generic.menu.home",
-              onclick: this.handleToHome,
-            },
-            {
-              item: "account",
-              label: "generic.menu.account",
-              onclick: this.handleToAccount,
-            },
-            {
-              item: "signout",
-              label: "generic.menu.signout",
-              onclick: this.handleSignout,
-            },
-          ],
+          menuItems: menuItems,
         }));
         break;
       default:
     }
   }
-
-  // Helpers
 
   // Handles
   handleOpenMenu() {
@@ -225,31 +258,6 @@ class Appbar extends React.Component {
       openMenu: false,
       menuAnchorEl: null,
     }));
-  }
-  handleSignout() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Appbar.handleSignout");
-    }
-    // Destroy token
-    // https://medium.com/how-to-react/how-to-use-js-cookie-to-store-data-in-cookies-in-react-js-aab47f8a45c3
-    Cookies.remove("cowhist19-token");
-    this.handleCloseMenu();
-    this.props.callback("signedout");
-    window.location = "/";
-  }
-  handleToHome() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Appbar.handleToHome");
-    }
-    this.handleCloseMenu();
-    window.location = "/";
-  }
-  handleToAccount() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Appbar.handleToAccount");
-    }
-    this.handleCloseMenu();
-    window.location = "/account";
   }
 }
 

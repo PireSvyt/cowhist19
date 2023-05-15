@@ -11,6 +11,7 @@ import Home from "./components/Home/Home.js";
 import Activation from "./components/Activation/Activation.js";
 import Table from "./components/Table/Table.js";
 import Account from "./components/Account/Account.js";
+import Help from "./components/Help/Help.js";
 
 // Services
 import apiAuthAssessV0 from "./services/apiAuthAssessV0.js";
@@ -93,6 +94,7 @@ class App extends React.Component {
               />
             }
           />
+          <Route path="/help" element={<Help />} />
         </Routes>
       </Router>
     );

@@ -67,13 +67,7 @@ class App extends React.Component {
           />
           <Route
             path="/table/:id"
-            element={
-              <Table
-                callback={this.handleTableCallback}
-                signedin={this.state.signedin}
-                token={this.state.token}
-              />
-            }
+            element={<Table callback={this.handleTableCallback} />}
           />
           <Route
             path="/help"

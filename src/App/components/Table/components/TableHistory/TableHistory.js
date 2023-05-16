@@ -116,7 +116,7 @@ class TableHistory extends React.Component {
           confirmModalCTA: [],
         }));
         // API call
-        apiGameDelete(this.props.token, details).then((res) => {
+        apiGameDelete( details).then((res) => {
           switch (res.status) {
             case 200:
               this.setState((prevState, props) => ({

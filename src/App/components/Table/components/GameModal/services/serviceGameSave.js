@@ -5,7 +5,7 @@ import emptyGame from "../resources/emptyGame.js";
 // Shared
 import { random_id } from "../../../../../shared/services/toolkit.js";
 
-async function serviceGameSave(token, game) {
+async function serviceGameSave(game) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("serviceGameSave");
   }
@@ -18,7 +18,7 @@ async function serviceGameSave(token, game) {
     // Prep
 
     // API call
-    const data = await apiGameSave(token, game);
+    const data = await apiGameSave(game);
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("data.type : " + data.type);
     }

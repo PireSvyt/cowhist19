@@ -32,6 +32,9 @@ import serviceModalChange from "../../../../shared/services/serviceModalChange.j
 import Snack from "../../../../shared/components/Snack/Snack.js";
 import { random_id } from "../../../../shared/services/toolkit.js";
 
+// Reducers
+import reduxStore from "../../../../store/reduxStore.js";
+
 class GameModal extends React.Component {
   constructor(props) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -257,7 +260,6 @@ class GameModal extends React.Component {
           open={this.state.openSnack}
           snack={this.state.snack}
           callback={this.handleSnack}
-          language={this.props.language}
         />
       </div>
     );
@@ -281,9 +283,9 @@ class GameModal extends React.Component {
       // i18n
       const { t } = this.props;
 
-      if (this.props.gameid !== "") {
+      if (reduxStore.getState().user.token !== "" && this.props.gameid !== "") {
         // Load
-        apiGameDetails(this.props.token, this.props.game).then((res) => {
+        apiGameDetails(this.props.game).then((res) => {
           switch (res.status) {
             case 200:
               console.log("loaded game");
@@ -383,24 +385,22 @@ class GameModal extends React.Component {
         loading: true,
       }));
 
-      serviceGameSave(this.props.token, { ...this.state.game }).then(
-        (proceedOutcome) => {
-          if (proceedOutcome.errors.length > 0) {
-            if (process.env.REACT_APP_DEBUG === "TRUE") {
-              console.log("proceedOutcome errors");
-              console.log(proceedOutcome.errors);
-            }
+      serviceGameSave({ ...this.state.game }).then((proceedOutcome) => {
+        if (proceedOutcome.errors.length > 0) {
+          if (process.env.REACT_APP_DEBUG === "TRUE") {
+            console.log("proceedOutcome errors");
+            console.log(proceedOutcome.errors);
           }
-          this.setState((prevState, props) => proceedOutcome.stateChanges);
-          proceedOutcome.callbacks.forEach((callback) => {
-            if (callback.option === undefined) {
-              this.props.callback(callback.key);
-            } else {
-              this.props.callback(callback.key, callback.option);
-            }
-          });
         }
-      );
+        this.setState((prevState, props) => proceedOutcome.stateChanges);
+        proceedOutcome.callbacks.forEach((callback) => {
+          if (callback.option === undefined) {
+            this.props.callback(callback.key);
+          } else {
+            this.props.callback(callback.key, callback.option);
+          }
+        });
+      });
     } else {
       // Snack
       if (proceedCheckOutcome.errors.length > 0) {

@@ -5,7 +5,7 @@ import apiUserInvite from "./apiUserInvite.js";
 // Shared
 import { random_id } from "../../../../../services/toolkit.js";
 
-async function serviceInvite(token, user) {
+async function serviceInvite( user) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("serviceInvite");
   }
@@ -20,7 +20,7 @@ async function serviceInvite(token, user) {
     delete user.repeatpassword;
 
     // API call
-    let res = await apiUserInvite(token, user);
+    let res = await apiUserInvite( user);
     switch (res.status) {
       case 201:
         // User creation

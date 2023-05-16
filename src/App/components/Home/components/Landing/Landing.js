@@ -6,6 +6,9 @@ import { ButtonGroup, Button, Box } from "@mui/material";
 import SignUpModal from "./components/SignUpModal/SignUpModal.js";
 import SignInModal from "./components/SignInModal/SignInModal.js";
 
+// Reducers
+import reduxStore from "../../../../store/reduxStore.js";
+
 class Landing extends React.Component {
   constructor(props) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -31,7 +34,7 @@ class Landing extends React.Component {
     const { t } = this.props;
 
     return (
-      <Box hidden={this.props.open === undefined || this.props.open === false}>
+      <Box hidden={reduxStore.getState().user.signedin === true}>
         <Box
           textAlign="center"
           sx={{

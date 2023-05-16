@@ -16,6 +16,9 @@ import AddIcon from "@mui/icons-material/Add.js";
 import Snack from "../../../../shared/components/Snack/Snack.js";
 import TableModal from "../../../../shared/components/TableModal/TableModal.js";
 
+// Reducers
+import reduxStore from "../../../../store/reduxStore.js";
+
 class MyTables extends React.Component {
   constructor(props) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -41,7 +44,7 @@ class MyTables extends React.Component {
     const { t } = this.props;
 
     return (
-      <Box hidden={this.props.signedin !== true}>
+      <Box hidden={reduxStore.getState().user.signedin === false}>
         <Stack direction="row" justifyContent="space-between">
           <Typography sx={{ p: 2 }} variant="h6" component="span">
             {t("home.label.mytables")}
@@ -52,7 +55,7 @@ class MyTables extends React.Component {
         </Stack>
 
         <List dense={true}>
-          {this.props.tables.map((table) => (
+          {reduxStore.getState().user.tables.map((table) => (
             <ListItem key={"table-" + table._id}>
               <TableCard table={table} />
             </ListItem>
@@ -62,7 +65,6 @@ class MyTables extends React.Component {
         <TableModal
           open={this.state.openTableModal}
           callback={this.handleTableModalCallback}
-          token={this.props.token}
           tableid={this.state.tableid}
         />
         <Snack

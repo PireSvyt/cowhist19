@@ -1,7 +1,7 @@
 // Services
 import apiTableStats from "./apiTableStats.js";
 
-async function serviceTableStats(token, table, parameters, players) {
+async function serviceTableStats(table, parameters, players) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("serviceTableStats");
   }
@@ -12,7 +12,7 @@ async function serviceTableStats(token, table, parameters, players) {
     let stateChanges = {};
 
     // API call
-    const data = await apiTableStats(token, table, parameters);
+    const data = await apiTableStats(table, parameters);
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("data.type : " + data.type);
     }

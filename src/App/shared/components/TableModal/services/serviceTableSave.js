@@ -3,7 +3,7 @@ import apiTableSave from "./apiTableSave.js";
 // Shared
 import { random_id } from "../../../services/toolkit.js";
 
-async function serviceTableSave(token, table) {
+async function serviceTableSave( table) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("serviceTableSave");
   }
@@ -18,7 +18,7 @@ async function serviceTableSave(token, table) {
     tableToSave.users = table.players;
 
     // API call
-    const data = await apiTableSave(token, tableToSave);
+    const data = await apiTableSave( tableToSave);
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("data.type : " + data.type);
     }

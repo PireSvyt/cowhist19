@@ -18,7 +18,9 @@ import apiAuthAssessV0 from "./services/apiAuthAssessV0.js";
 //import serviceAssessCookie from "./services/serviceAssessCookie.js";
 import apiUserDetails from "./services/apiUserDetails.js";
 import apiUserTables from "./services/apiUserTables.js";
-//import setLanguage from "./shared/services/setLanguage.js";
+
+// Reducers
+import reduxStore from "./store/reduxStore.js";
 
 class App extends React.Component {
   constructor(props) {
@@ -43,6 +45,7 @@ class App extends React.Component {
     this.handleHomeCallback = this.handleHomeCallback.bind(this);
     this.handleAssessLoginCallback = this.handleAssessLoginCallback.bind(this);
     this.handleAccountCallback = this.handleAccountCallback.bind(this);
+    this.handleHelpCallback = this.handleHelpCallback.bind(this);
     this.handleTableCallback = this.handleTableCallback.bind(this);
   }
   render() {
@@ -55,34 +58,12 @@ class App extends React.Component {
           <Route
             exact
             path="/"
-            element={
-              <Home
-                callback={this.handleHomeCallback}
-                signedin={this.state.signedin}
-                token={this.state.token}
-                user={this.state.user}
-              />
-            }
+            element={<Home callback={this.handleHomeCallback} />}
           />
-          <Route
-            path="/activation/:id"
-            element={
-              <Activation
-                signedin={this.state.signedin}
-                token={this.state.token}
-              />
-            }
-          />
+          <Route path="/activation/:id" element={<Activation />} />
           <Route
             path="/account"
-            element={
-              <Account
-                callback={this.handleAccountCallback}
-                signedin={this.state.signedin}
-                token={this.state.token}
-                user={this.state.user}
-              />
-            }
+            element={<Account callback={this.handleAccountCallback} />}
           />
           <Route
             path="/table/:id"
@@ -94,7 +75,10 @@ class App extends React.Component {
               />
             }
           />
-          <Route path="/help" element={<Help />} />
+          <Route
+            path="/help"
+            element={<Help callback={this.handleHelpCallback} />}
+          />
         </Routes>
       </Router>
     );
@@ -145,11 +129,20 @@ class App extends React.Component {
       decodedtoken.status === "signedup"
     ) {
       // Then update variables to signed in
+      // STORE IN STATE
       this.setState((prevState, props) => ({
         signedin: true,
         token: token,
         userid: decodedtoken.id,
       }));
+      // STORE IN REDUX STORE
+      reduxStore.dispatch({
+        type: "user/signin",
+        payload: {
+          token: token,
+          decodedtoken: decodedtoken,
+        },
+      });
       // Get user details
       this.getUserDetails(token);
     } else {
@@ -170,7 +163,6 @@ class App extends React.Component {
       window.location.href.includes("account")
     ) {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
-        Cookies.remove("cowhist19_token");
         console.log("App.signOut ");
       }
       window.location = "/";
@@ -183,6 +175,10 @@ class App extends React.Component {
       userid: undefined,
       user: undefined,
     }));
+    // STORE IN REDUX STORE
+    reduxStore.dispatch({
+      type: "user/signout",
+    });
   }
   getUserDetails(token) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -193,6 +189,11 @@ class App extends React.Component {
         this.setState((prevState, props) => ({
           user: data.user,
         }));
+        // STORE IN REDUX STORE
+        reduxStore.dispatch({
+          type: "user/update",
+          payload: data.user,
+        });
       });
     }
   }
@@ -251,6 +252,17 @@ class App extends React.Component {
   handleTableCallback(action, details) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("App.handleTableCallback " + action);
+    }
+    switch (action) {
+      case "signedout":
+        this.signOut();
+        break;
+      default:
+    }
+  }
+  handleHelpCallback(action, details) {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("App.handleHelpCallback " + action);
     }
     switch (action) {
       case "signedout":

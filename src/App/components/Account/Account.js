@@ -6,6 +6,9 @@ import { Paper, Button, Typography, Box } from "@mui/material";
 import Appbar from "../../shared/components/Appbar/Appbar.js";
 import ToComeModal from "../../shared/components/ToComeModal/ToComeModal.js";
 
+// Reducers
+import reduxStore from "../../store/reduxStore.js";
+
 class Account extends React.Component {
   constructor(props) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -31,8 +34,7 @@ class Account extends React.Component {
     return (
       <div>
         <Appbar
-          signedin={this.props.signedin}
-          token={this.props.token}
+          signedin={reduxStore.getState().user.signedin}
           callback={this.handleAppbarCallback}
           route="account"
           title={t("generic.menu.account")}
@@ -61,9 +63,7 @@ class Account extends React.Component {
               </Typography>
               <Box textAlign="center">
                 <Typography variant="body1" gutterBottom>
-                  {this.props.user !== undefined
-                    ? this.props.user.pseudo
-                    : "pseudo place holder"}
+                  {reduxStore.getState().user.pseudo}
                 </Typography>
                 <Button
                   variant="outlined"
@@ -87,9 +87,7 @@ class Account extends React.Component {
               </Typography>
               <Box textAlign="center">
                 <Typography variant="body1" gutterBottom>
-                  {this.props.user !== undefined
-                    ? this.props.user.login
-                    : "email place holder"}
+                  {reduxStore.getState().user.login}
                 </Typography>
                 <Button
                   variant="outlined"

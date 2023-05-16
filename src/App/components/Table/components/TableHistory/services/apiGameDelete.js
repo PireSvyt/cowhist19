@@ -1,11 +1,16 @@
 import axios from "axios";
 
-async function apiGameDelete(token, id) {
+// Reducers
+import reduxStore from "../../../../../store/reduxStore.js";
+
+async function apiGameDelete(id) {
   try {
     const res = await axios.delete(
       process.env.REACT_APP_SERVER_URL + "/game/" + id,
       {
-        headers: { Authorization: "Bearer " + token },
+        headers: {
+          Authorization: "Bearer " + reduxStore.getState().user.token,
+        },
       }
     );
     return res.data;

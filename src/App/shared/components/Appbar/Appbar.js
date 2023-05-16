@@ -21,6 +21,9 @@ import LanguageSwitcher from "./components/LanguageSwitcher/LanguageSwitcher.js"
 // Services
 import { random_id } from "../../services/toolkit.js";
 
+// Reducers
+import reduxStore from "../../../store/reduxStore.js";
+
 class Appbar extends React.Component {
   constructor(props) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -93,11 +96,11 @@ class Appbar extends React.Component {
             >
               <LanguageSwitcher show={this.state.showLanguageSwitcher} />
 
-              <Box hidden={this.state.menuItems.length > 0}>
+              <Box hidden={this.state.menuItems.length === 0}>
                 <IconButton
                   size="large"
                   onClick={this.handleOpenMenu}
-                  disabled={!this.props.signedin}
+                  disabled={!reduxStore.getState().user.signedin}
                 >
                   <MenuIcon sx={{ color: "white" }} />
                 </IconButton>
@@ -114,7 +117,9 @@ class Appbar extends React.Component {
                 {this.state.menuItems.map((item) => {
                   return (
                     <MenuItem
-                      hidden={!(item.signed && this.props.signedin)}
+                      hidden={
+                        !(item.signed && reduxStore.getState().user.signedin)
+                      }
                       key={random_id()}
                       onClick={item.onclick}
                     >

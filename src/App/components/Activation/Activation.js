@@ -35,9 +35,7 @@ class Activation extends React.Component {
     return (
       <Box>
         <Appbar
-          signedin={this.props.signedin}
           callback={this.handleAppbarCallback}
-          token={this.props.token}
           route="activation"
           title={t("generic.label.title")}
         />

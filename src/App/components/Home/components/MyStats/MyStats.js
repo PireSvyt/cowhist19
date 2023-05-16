@@ -5,6 +5,9 @@ import { Typography, Box, Button } from "@mui/material";
 // Shared
 import ToComeModal from "../../../../shared/components/ToComeModal/ToComeModal.js";
 
+// Reducers
+import reduxStore from "../../../../store/reduxStore.js";
+
 class MyStats extends React.Component {
   constructor(props) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -26,7 +29,7 @@ class MyStats extends React.Component {
     const { t } = this.props;
 
     return (
-      <Box hidden={this.props.signedin !== true} sx={{ m: 2 }}>
+      <Box hidden={reduxStore.getState().user.signedin !== true} sx={{ m: 2 }}>
         <Typography variant="h6" component="span">
           {t("home.label.mystats")}
         </Typography>

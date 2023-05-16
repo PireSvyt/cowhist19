@@ -132,7 +132,6 @@ class InviteModal extends React.Component {
           open={this.state.openSnack}
           snack={this.state.snack}
           callback={this.handleSnack}
-          language={this.props.language}
         />
       </Box>
     );
@@ -209,7 +208,7 @@ class InviteModal extends React.Component {
         loading: true,
       }));
 
-      serviceInvite(this.props.token, this.state.user).then(
+      serviceInvite( this.state.user).then(
         (proceedOutcome) => {
           if (proceedOutcome.errors.length !== 0) {
             if (process.env.REACT_APP_DEBUG === "TRUE") {

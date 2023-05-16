@@ -16,6 +16,9 @@ import Appbar from "../../shared/components/Appbar/Appbar.js";
 import TableModal from "../../shared/components/TableModal/TableModal.js";
 import apiTableDetails from "../../shared/services/apiTableDetails.js";
 
+// Reducers
+import reduxStore from "../../store/reduxStore.js";
+
 class Table extends React.Component {
   constructor(props) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -66,9 +69,7 @@ class Table extends React.Component {
     return (
       <Box>
         <Appbar
-          signedin={this.props.signedin}
           callback={this.handleAppbarCallback}
-          token={this.props.token}
           route="table"
           title={this.state.table.name}
           edittable={this.handleOpenTableModal}
@@ -94,7 +95,6 @@ class Table extends React.Component {
         </Box>
         <TabPanel value={this.state.selectedTab} index={0}>
           <TableStats
-            token={this.props.token}
             callback={this.handleTableStatsCallback}
             stats={this.state.tableStats}
             players={
@@ -104,7 +104,6 @@ class Table extends React.Component {
         </TabPanel>
         <TabPanel value={this.state.selectedTab} index={1}>
           <TableHistory
-            token={this.props.token}
             callback={this.handleTableHistoryCallback}
             history={this.state.tableHistory}
             players={
@@ -123,13 +122,11 @@ class Table extends React.Component {
         <TableModal
           open={this.state.openTableModal}
           callback={this.handleTableModalCallback}
-          token={this.props.token}
           tableid={this.state.table === undefined ? "" : this.state.table._id}
         />
         <GameModal
           open={this.state.openGameModal}
           callback={this.handleGameModalCallback}
-          token={this.props.token}
           gameid={this.state.gameid}
           players={this.state.table.players}
           tableid={this.state.table._id}
@@ -144,7 +141,10 @@ class Table extends React.Component {
       console.log("Table.componentDidMount");
     }
     // Load
-    if (this.state.table._id === "") {
+    if (
+      reduxStore.getState().user.token !== "" &&
+      this.state.table._id === ""
+    ) {
       if (this.state.tableDetailsLoaded === false) {
         this.getTableDetails();
       }
@@ -155,11 +155,17 @@ class Table extends React.Component {
       console.log("Table.componentDidUpdate");
     }
     // Load
-    if (this.state.table._id === "") {
+    if (
+      reduxStore.getState().user.token !== "" &&
+      this.state.table._id === ""
+    ) {
       if (this.state.tableDetailsLoaded === false) {
         this.getTableDetails();
       }
-      if (this.state.tableStatsLoaded === false) {
+      if (
+        reduxStore.getState().user.token !== "" &&
+        this.state.tableStatsLoaded === false
+      ) {
         this.getTableStats();
       }
     }
@@ -170,36 +176,32 @@ class Table extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("Table.getTableDetails ");
     }
-    if (this.props.token !== undefined) {
-      let tableid = window.location.href.split("/table/")[1];
-      apiTableDetails(this.props.token, tableid).then((data) => {
-        this.setState((prevState, props) => ({
-          table: data.table,
-          tableDetailsLoaded: true,
-        }));
-      });
-    }
+    let tableid = window.location.href.split("/table/")[1];
+    apiTableDetails(tableid).then((data) => {
+      this.setState((prevState, props) => ({
+        table: data.table,
+        tableDetailsLoaded: true,
+      }));
+    });
   }
   getTableHistory() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("Table.getTableHistory ");
     }
-    if (this.props.token !== undefined) {
-      let tableid = window.location.href.split("/table/")[1];
-      let parameters = {
-        need: "list",
-        games: {
-          index: 0,
-          number: 20,
-        },
-      };
-      apiTableHistory(this.props.token, tableid, parameters).then((data) => {
-        this.setState((prevState, props) => ({
-          tableHistory: data.games,
-          tableHistoryLoaded: true,
-        }));
-      });
-    }
+    let tableid = window.location.href.split("/table/")[1];
+    let parameters = {
+      need: "list",
+      games: {
+        index: 0,
+        number: 20,
+      },
+    };
+    apiTableHistory(tableid, parameters).then((data) => {
+      this.setState((prevState, props) => ({
+        tableHistory: data.games,
+        tableHistoryLoaded: true,
+      }));
+    });
   }
   getTableStats() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -208,30 +210,27 @@ class Table extends React.Component {
     let parameters = {
       need: "ranking",
     };
-    if (this.props.token !== undefined && this.state.table.players !== []) {
+    if (this.state.table.players !== []) {
       let tableid = window.location.href.split("/table/")[1];
 
-      serviceTableStats(
-        this.props.token,
-        tableid,
-        parameters,
-        this.state.table.players
-      ).then((proceedOutcome) => {
-        if (proceedOutcome.errors.length > 0) {
-          if (process.env.REACT_APP_DEBUG === "TRUE") {
-            console.log("proceedOutcome errors");
-            console.log(proceedOutcome.errors);
+      serviceTableStats(tableid, parameters, this.state.table.players).then(
+        (proceedOutcome) => {
+          if (proceedOutcome.errors.length > 0) {
+            if (process.env.REACT_APP_DEBUG === "TRUE") {
+              console.log("proceedOutcome errors");
+              console.log(proceedOutcome.errors);
+            }
           }
+          this.setState((prevState, props) => proceedOutcome.stateChanges);
+          proceedOutcome.callbacks.forEach((callback) => {
+            if (callback.option === undefined) {
+              this.props.callback(callback.key);
+            } else {
+              this.props.callback(callback.key, callback.option);
+            }
+          });
         }
-        this.setState((prevState, props) => proceedOutcome.stateChanges);
-        proceedOutcome.callbacks.forEach((callback) => {
-          if (callback.option === undefined) {
-            this.props.callback(callback.key);
-          } else {
-            this.props.callback(callback.key, callback.option);
-          }
-        });
-      });
+      );
     }
   }
 

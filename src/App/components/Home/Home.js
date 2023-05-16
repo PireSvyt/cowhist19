@@ -33,24 +33,14 @@ class Home extends React.Component {
     return (
       <div>
         <Appbar
-          signedin={this.props.signedin}
           callback={this.handleAppbarCallback}
-          token={this.props.token}
           route="home"
           title={t("generic.label.product")}
         />
         <Box sx={{ height: 48 }} />
-        <Landing
-          open={this.props.signedin === false}
-          callback={this.handleLandingCallback}
-        />
-        <MyStats open={this.props.signedin === true} token={this.props.token} />
-        <MyTables
-          signedin={this.props.signedin}
-          callback={this.handleMyTablesCallback}
-          token={this.props.token}
-          tables={this.props.user === undefined ? [] : this.props.user.tables}
-        />
+        <Landing callback={this.handleLandingCallback} />
+        <MyStats />
+        <MyTables callback={this.handleMyTablesCallback} />
       </div>
     );
   }

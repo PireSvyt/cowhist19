@@ -38,6 +38,9 @@ import Snack from "../Snack/Snack.js";
 import { random_id } from "../../services/toolkit.js";
 import apiTableDetails from "../../services/apiTableDetails.js";
 
+// Reducers
+import reduxStore from "../../../store/reduxStore.js";
+
 class TableModal extends React.Component {
   constructor(props) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -164,7 +167,6 @@ class TableModal extends React.Component {
         <InviteModal
           open={this.state.openInviteModal}
           callback={this.handleInviteModalCallback}
-          token={this.props.token}
         />
 
         <ConfirmModal
@@ -179,7 +181,6 @@ class TableModal extends React.Component {
           open={this.state.openSnack}
           snack={this.state.snack}
           callback={this.handleSnack}
-          language={this.props.language}
         />
       </Box>
     );
@@ -224,34 +225,31 @@ class TableModal extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("TableModal.getTableDetails ");
     }
-    if (this.props.token !== undefined) {
-      apiTableDetails(this.props.token, this.props.tableid).then((data) => {
-        this.setState((prevState, props) => ({
-          table: data.table,
-          disabled: false,
-          loaded: true,
-        }));
-      });
-    }
+    apiTableDetails(this.props.tableid).then((data) => {
+      this.setState((prevState, props) => ({
+        table: data.table,
+        disabled: false,
+        loaded: true,
+      }));
+    });
   }
   addUserToPlayers() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("TableModal.addUserToPlayers ");
     }
     let tableToSave = this.state.table;
-    const decodedToken = jwt_decode(this.props.token);
 
     let addCreator = true;
     tableToSave.players.forEach((player) => {
-      if (player._id === decodedToken.id) {
+      if (player._id === reduxStore.getState().user.id) {
         addCreator = false;
       }
     });
     if (addCreator) {
       tableToSave.players.push({
-        _id: decodedToken.id,
-        pseudo: decodedToken.pseudo,
-        login: decodedToken.login,
+        _id: reduxStore.getState().user.id,
+        pseudo: reduxStore.getState().user.pseudo,
+        login: reduxStore.getState().user.login,
       });
       this.setState((prevState, props) => ({
         table: tableToSave,
@@ -321,11 +319,7 @@ class TableModal extends React.Component {
         break;
       case "delete":
         // API call
-        apiTableDelete(this.props.token, this.state.table._id).then((res) => {
-          /*if (process.env.REACT_APP_DEBUG === "TRUE") {
-            console.log("res ");
-            console.log(res);
-          }*/
+        apiTableDelete(this.state.table._id).then((res) => {
           switch (res.status) {
             case 200:
               // Table deleted
@@ -464,24 +458,22 @@ class TableModal extends React.Component {
         loading: true,
       }));
 
-      serviceTableSave(this.props.token, { ...this.state.table }).then(
-        (proceedOutcome) => {
-          if (proceedOutcome.errors.length > 0) {
-            if (process.env.REACT_APP_DEBUG === "TRUE") {
-              console.log("proceedOutcome errors");
-              console.log(proceedOutcome.errors);
-            }
+      serviceTableSave({ ...this.state.table }).then((proceedOutcome) => {
+        if (proceedOutcome.errors.length > 0) {
+          if (process.env.REACT_APP_DEBUG === "TRUE") {
+            console.log("proceedOutcome errors");
+            console.log(proceedOutcome.errors);
           }
-          this.setState((prevState, props) => proceedOutcome.stateChanges);
-          proceedOutcome.callbacks.forEach((callback) => {
-            if (callback.option === undefined) {
-              this.props.callback(callback.key);
-            } else {
-              this.props.callback(callback.key, callback.option);
-            }
-          });
         }
-      );
+        this.setState((prevState, props) => proceedOutcome.stateChanges);
+        proceedOutcome.callbacks.forEach((callback) => {
+          if (callback.option === undefined) {
+            this.props.callback(callback.key);
+          } else {
+            this.props.callback(callback.key, callback.option);
+          }
+        });
+      });
     } else {
       // Snack
       if (proceedCheckOutcome.errors.length > 0) {

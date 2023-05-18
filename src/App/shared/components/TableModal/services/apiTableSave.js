@@ -3,14 +3,14 @@ import axios from "axios";
 // Reducers
 import reduxStore from "../../../../store/reduxStore.js";
 
-async function apiTableSave( table) {
+async function apiTableSave(table) {
   try {
     const res = await axios.post(
       process.env.REACT_APP_SERVER_URL + "/table/v1/save",
       table,
       {
         headers: {
-          Authorization: "Bearer " + reduxStore.getState().user.token,
+          Authorization: "Bearer " + reduxStore.getState().userDetails.token,
         },
       }
     );

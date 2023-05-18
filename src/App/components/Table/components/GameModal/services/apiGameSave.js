@@ -10,7 +10,7 @@ async function apiGameSave(game) {
       game,
       {
         headers: {
-          Authorization: "Bearer " + reduxStore.getState().user.token,
+          Authorization: "Bearer " + reduxStore.getState().userDetails.token,
         },
       }
     );

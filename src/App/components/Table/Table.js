@@ -8,6 +8,7 @@ import TableHistory from "./components/TableHistory/TableHistory.js";
 import GameModal from "./components/GameModal/GameModal.js";
 
 // Services
+import serviceTableDetails from "./services/serviceTableDetails.js";
 import serviceTableStats from "./services/serviceTableStats.js";
 import apiTableHistory from "./services/apiTableHistory.js";
 
@@ -44,9 +45,7 @@ class Table extends React.Component {
     };
 
     // Helpers
-    this.getTableDetails = this.getTableDetails.bind(this);
     this.getTableHistory = this.getTableHistory.bind(this);
-    this.getTableStats = this.getTableStats.bind(this);
 
     // Handles
     this.handleAppbarCallback = this.handleAppbarCallback.bind(this);
@@ -142,11 +141,27 @@ class Table extends React.Component {
     }
     // Load
     if (
-      reduxStore.getState().user.token !== "" &&
+      reduxStore.getState().userDetails.token !== "" &&
       this.state.table._id === ""
     ) {
       if (this.state.tableDetailsLoaded === false) {
-        this.getTableDetails();
+        // Get tableDetails
+        serviceTableDetails().then((proceedOutcome) => {
+          if (proceedOutcome.errors.length > 0) {
+            if (process.env.REACT_APP_DEBUG === "TRUE") {
+              console.log("proceedOutcome errors");
+              console.log(proceedOutcome.errors);
+            }
+          }
+          this.setState((prevState, props) => proceedOutcome.stateChanges);
+          proceedOutcome.callbacks.forEach((callback) => {
+            if (callback.option === undefined) {
+              this.props.callback(callback.key);
+            } else {
+              this.props.callback(callback.key, callback.option);
+            }
+          });
+        });
       }
     }
   }
@@ -156,34 +171,54 @@ class Table extends React.Component {
     }
     // Load
     if (
-      reduxStore.getState().user.token !== "" &&
+      reduxStore.getState().userDetails.token !== "" &&
       this.state.table._id === ""
     ) {
       if (this.state.tableDetailsLoaded === false) {
-        this.getTableDetails();
+        // Get tableDetails
+        serviceTableDetails().then((proceedOutcome) => {
+          if (proceedOutcome.errors.length > 0) {
+            if (process.env.REACT_APP_DEBUG === "TRUE") {
+              console.log("proceedOutcome errors");
+              console.log(proceedOutcome.errors);
+            }
+          }
+          this.setState((prevState, props) => proceedOutcome.stateChanges);
+          proceedOutcome.callbacks.forEach((callback) => {
+            if (callback.option === undefined) {
+              this.props.callback(callback.key);
+            } else {
+              this.props.callback(callback.key, callback.option);
+            }
+          });
+        });
       }
       if (
-        reduxStore.getState().user.token !== "" &&
+        reduxStore.getState().userDetails.token !== "" &&
         this.state.tableStatsLoaded === false
       ) {
-        this.getTableStats();
+        // Get table stats
+        serviceTableStats({ need: "ranking" }).then((proceedOutcome) => {
+          if (proceedOutcome.errors.length > 0) {
+            if (process.env.REACT_APP_DEBUG === "TRUE") {
+              console.log("proceedOutcome errors");
+              console.log(proceedOutcome.errors);
+            }
+          }
+          this.setState((prevState, props) => proceedOutcome.stateChanges);
+          proceedOutcome.callbacks.forEach((callback) => {
+            if (callback.option === undefined) {
+              this.props.callback(callback.key);
+            } else {
+              this.props.callback(callback.key, callback.option);
+            }
+          });
+        });
       }
     }
   }
 
   // Helpers
-  getTableDetails() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Table.getTableDetails ");
-    }
-    let tableid = window.location.href.split("/table/")[1];
-    apiTableDetails(tableid).then((data) => {
-      this.setState((prevState, props) => ({
-        table: data.table,
-        tableDetailsLoaded: true,
-      }));
-    });
-  }
   getTableHistory() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("Table.getTableHistory ");
@@ -202,36 +237,6 @@ class Table extends React.Component {
         tableHistoryLoaded: true,
       }));
     });
-  }
-  getTableStats() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Table.getTableStats ");
-    }
-    let parameters = {
-      need: "ranking",
-    };
-    if (this.state.table.players !== []) {
-      let tableid = window.location.href.split("/table/")[1];
-
-      serviceTableStats(tableid, parameters, this.state.table.players).then(
-        (proceedOutcome) => {
-          if (proceedOutcome.errors.length > 0) {
-            if (process.env.REACT_APP_DEBUG === "TRUE") {
-              console.log("proceedOutcome errors");
-              console.log(proceedOutcome.errors);
-            }
-          }
-          this.setState((prevState, props) => proceedOutcome.stateChanges);
-          proceedOutcome.callbacks.forEach((callback) => {
-            if (callback.option === undefined) {
-              this.props.callback(callback.key);
-            } else {
-              this.props.callback(callback.key, callback.option);
-            }
-          });
-        }
-      );
-    }
   }
 
   // Handles
@@ -252,7 +257,23 @@ class Table extends React.Component {
     }
     switch (newTabIndex) {
       case 0:
-        this.getTableStats();
+        // Get table stats
+        serviceTableStats({ need: "ranking" }).then((proceedOutcome) => {
+          if (proceedOutcome.errors.length > 0) {
+            if (process.env.REACT_APP_DEBUG === "TRUE") {
+              console.log("proceedOutcome errors");
+              console.log(proceedOutcome.errors);
+            }
+          }
+          this.setState((prevState, props) => proceedOutcome.stateChanges);
+          proceedOutcome.callbacks.forEach((callback) => {
+            if (callback.option === undefined) {
+              this.props.callback(callback.key);
+            } else {
+              this.props.callback(callback.key, callback.option);
+            }
+          });
+        });
         this.setState({
           selectedTab: newTabIndex,
         });
@@ -313,15 +334,45 @@ class Table extends React.Component {
         }));
         break;
       case "totable":
-        // Reload table
-        this.getTableDetails();
+        // Get tableDetails
+        serviceTableDetails().then((proceedOutcome) => {
+          if (proceedOutcome.errors.length > 0) {
+            if (process.env.REACT_APP_DEBUG === "TRUE") {
+              console.log("proceedOutcome errors");
+              console.log(proceedOutcome.errors);
+            }
+          }
+          this.setState((prevState, props) => proceedOutcome.stateChanges);
+          proceedOutcome.callbacks.forEach((callback) => {
+            if (callback.option === undefined) {
+              this.props.callback(callback.key);
+            } else {
+              this.props.callback(callback.key, callback.option);
+            }
+          });
+        });
         this.setState((prevState, props) => ({
           openTableModal: false,
         }));
         break;
       case "updatetable":
-        // Reload table
-        this.getTableDetails();
+        // Get tableDetails
+        serviceTableDetails().then((proceedOutcome) => {
+          if (proceedOutcome.errors.length > 0) {
+            if (process.env.REACT_APP_DEBUG === "TRUE") {
+              console.log("proceedOutcome errors");
+              console.log(proceedOutcome.errors);
+            }
+          }
+          this.setState((prevState, props) => proceedOutcome.stateChanges);
+          proceedOutcome.callbacks.forEach((callback) => {
+            if (callback.option === undefined) {
+              this.props.callback(callback.key);
+            } else {
+              this.props.callback(callback.key, callback.option);
+            }
+          });
+        });
         // Reload history
         this.getTableHistory();
         this.setState((prevState, props) => ({
@@ -356,7 +407,24 @@ class Table extends React.Component {
         }));
         switch (this.state.selectedTab) {
           case 0:
-            this.getTableStats();
+            // Get table stats
+            serviceTableStats({ need: "ranking" }).then((proceedOutcome) => {
+              if (proceedOutcome.errors.length > 0) {
+                if (process.env.REACT_APP_DEBUG === "TRUE") {
+                  console.log("proceedOutcome errors");
+                  console.log(proceedOutcome.errors);
+                }
+              }
+              this.setState((prevState, props) => proceedOutcome.stateChanges);
+              proceedOutcome.callbacks.forEach((callback) => {
+                if (callback.option === undefined) {
+                  this.props.callback(callback.key);
+                } else {
+                  this.props.callback(callback.key, callback.option);
+                }
+              });
+            });
+
             break;
           case 1:
             this.getTableHistory();

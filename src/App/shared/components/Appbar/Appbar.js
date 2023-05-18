@@ -96,12 +96,13 @@ class Appbar extends React.Component {
             >
               <LanguageSwitcher show={this.state.showLanguageSwitcher} />
 
-              <Box hidden={this.state.menuItems.length === 0}>
-                <IconButton
-                  size="large"
-                  onClick={this.handleOpenMenu}
-                  disabled={!reduxStore.getState().user.signedin}
-                >
+              <Box
+                hidden={
+                  this.state.menuItems.length === 0 ||
+                  !reduxStore.getState().userDetails.signedin
+                }
+              >
+                <IconButton size="large" onClick={this.handleOpenMenu}>
                   <MenuIcon sx={{ color: "white" }} />
                 </IconButton>
               </Box>
@@ -118,7 +119,10 @@ class Appbar extends React.Component {
                   return (
                     <MenuItem
                       hidden={
-                        !(item.signed && reduxStore.getState().user.signedin)
+                        !(
+                          item.signed &&
+                          reduxStore.getState().userDetails.signedin
+                        )
                       }
                       key={random_id()}
                       onClick={item.onclick}

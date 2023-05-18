@@ -1,4 +1,5 @@
 import Cookies from "js-cookie";
+import { AES } from "crypto-js";
 // Services
 import apiSignIn from "./apiSignIn.js";
 // Resources
@@ -17,6 +18,12 @@ async function serviceSignIn(user) {
     let stateChanges = {};
 
     // Prep
+    // Password encryption
+    let encryptedPAssword = AES.encrypt(
+      user.password,
+      process.env.REACT_APP_ENCRYPTION_KEY
+    );
+    user.password = encryptedPAssword.toString();
 
     // API call
     const data = await apiSignIn(user);

@@ -6,7 +6,7 @@ import reduxStore from "../store/reduxStore.js";
 async function apiUserDetails() {
   try {
     const res = await axios.get(process.env.REACT_APP_SERVER_URL + "/user/", {
-      headers: { Authorization: "Bearer " + reduxStore.getState().user.token },
+      headers: { Authorization: "Bearer " + reduxStore.getState().userDetails.token },
     });
     return res.data;
   } catch (err) {

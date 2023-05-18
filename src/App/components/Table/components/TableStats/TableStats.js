@@ -21,9 +21,9 @@ class TableStats extends React.Component {
 
     return (
       <Box>
-        {this.props.stats.ranking !== undefined ? (
+        {reduxStore.getState().tableStats.stats.ranking !== undefined ? (
           <List dense={true}>
-            {this.props.stats.ranking.map((player) => (
+            {reduxStore.getState().tableStats.stats.ranking.map((player) => (
               <ListItem key={"ranking-" + player._id}>
                 <RankingCard player={player} players={this.props.players} />
               </ListItem>

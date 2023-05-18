@@ -29,7 +29,7 @@ class MyStats extends React.Component {
     const { t } = this.props;
 
     return (
-      <Box hidden={reduxStore.getState().user.signedin !== true} sx={{ m: 2 }}>
+      <Box hidden={reduxStore.getState().userDetails.signedin !== true} sx={{ m: 2 }}>
         <Typography variant="h6" component="span">
           {t("home.label.mystats")}
         </Typography>

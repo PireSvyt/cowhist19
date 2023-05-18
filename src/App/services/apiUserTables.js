@@ -9,7 +9,7 @@ async function apiUserTables() {
       process.env.REACT_APP_SERVER_URL + "/user/tables",
       {
         headers: {
-          Authorization: "Bearer " + reduxStore.getState().user.token,
+          Authorization: "Bearer " + reduxStore.getState().userDetails.token,
         },
       }
     );

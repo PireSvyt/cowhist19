@@ -1,7 +1,7 @@
 import { createSlice, configureStore } from "@reduxjs/toolkit";
 
-const sliceUser = createSlice({
-  name: "user",
+const sliceUserDetails = createSlice({
+  name: "userDetails",
   initialState: {
     signedin: false,
     token: "",
@@ -15,7 +15,7 @@ const sliceUser = createSlice({
   reducers: {
     signin: (state, action) => {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("sliceUser.signin");
+        console.log("sliceUserDetails.signin");
         //console.log(action.payload);
       }
       state.signedin = true;
@@ -27,7 +27,7 @@ const sliceUser = createSlice({
     },
     update: (state, action) => {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("sliceUser.update");
+        console.log("sliceUserDetails.update");
         //console.log(action.payload);
       }
       state.login = action.payload.login;
@@ -37,7 +37,7 @@ const sliceUser = createSlice({
     },
     signout: (state) => {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("sliceUser.signout");
+        console.log("sliceUserDetails.signout");
       }
       state.signedin = false;
       state.token = "";
@@ -51,6 +51,4 @@ const sliceUser = createSlice({
   },
 });
 
-//export const { signin } = sliceUser.actions;
-
-export default sliceUser.reducer;
+export default sliceUserDetails.reducer;

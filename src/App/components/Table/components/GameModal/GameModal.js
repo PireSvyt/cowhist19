@@ -283,7 +283,7 @@ class GameModal extends React.Component {
       // i18n
       const { t } = this.props;
 
-      if (reduxStore.getState().user.token !== "" && this.props.gameid !== "") {
+      if (reduxStore.getState().userDetails.token !== "" && this.props.gameid !== "") {
         // Load
         apiGameDetails(this.props.game).then((res) => {
           switch (res.status) {

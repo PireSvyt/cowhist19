@@ -44,7 +44,7 @@ class MyTables extends React.Component {
     const { t } = this.props;
 
     return (
-      <Box hidden={reduxStore.getState().user.signedin === false}>
+      <Box hidden={reduxStore.getState().userDetails.signedin === false}>
         <Stack direction="row" justifyContent="space-between">
           <Typography sx={{ p: 2 }} variant="h6" component="span">
             {t("home.label.mytables")}
@@ -55,7 +55,7 @@ class MyTables extends React.Component {
         </Stack>
 
         <List dense={true}>
-          {reduxStore.getState().user.tables.map((table) => (
+          {reduxStore.getState().userDetails.tables.map((table) => (
             <ListItem key={"table-" + table._id}>
               <TableCard table={table} />
             </ListItem>

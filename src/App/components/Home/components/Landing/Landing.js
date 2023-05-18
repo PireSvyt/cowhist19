@@ -34,7 +34,7 @@ class Landing extends React.Component {
     const { t } = this.props;
 
     return (
-      <Box hidden={reduxStore.getState().user.signedin === true}>
+      <Box hidden={reduxStore.getState().userDetails.signedin === true}>
         <Box
           textAlign="center"
           sx={{

@@ -241,15 +241,15 @@ class TableModal extends React.Component {
 
     let addCreator = true;
     tableToSave.players.forEach((player) => {
-      if (player._id === reduxStore.getState().user.id) {
+      if (player._id === reduxStore.getState().userDetails.id) {
         addCreator = false;
       }
     });
     if (addCreator) {
       tableToSave.players.push({
-        _id: reduxStore.getState().user.id,
-        pseudo: reduxStore.getState().user.pseudo,
-        login: reduxStore.getState().user.login,
+        _id: reduxStore.getState().userDetails.id,
+        pseudo: reduxStore.getState().userDetails.pseudo,
+        login: reduxStore.getState().userDetails.login,
       });
       this.setState((prevState, props) => ({
         table: tableToSave,

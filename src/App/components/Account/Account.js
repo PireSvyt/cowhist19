@@ -34,7 +34,7 @@ class Account extends React.Component {
     return (
       <div>
         <Appbar
-          signedin={reduxStore.getState().user.signedin}
+          signedin={reduxStore.getState().userDetails.signedin}
           callback={this.handleAppbarCallback}
           route="account"
           title={t("generic.menu.account")}
@@ -63,7 +63,7 @@ class Account extends React.Component {
               </Typography>
               <Box textAlign="center">
                 <Typography variant="body1" gutterBottom>
-                  {reduxStore.getState().user.pseudo}
+                  {reduxStore.getState().userDetails.pseudo}
                 </Typography>
                 <Button
                   variant="outlined"
@@ -87,7 +87,7 @@ class Account extends React.Component {
               </Typography>
               <Box textAlign="center">
                 <Typography variant="body1" gutterBottom>
-                  {reduxStore.getState().user.login}
+                  {reduxStore.getState().userDetails.login}
                 </Typography>
                 <Button
                   variant="outlined"

@@ -10,7 +10,7 @@ async function apiTableHistory(id, parameters) {
       parameters,
       {
         headers: {
-          Authorization: "Bearer " + reduxStore.getState().user.token,
+          Authorization: "Bearer " + reduxStore.getState().userDetails.token,
         },
       }
     );

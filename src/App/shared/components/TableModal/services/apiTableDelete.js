@@ -9,7 +9,7 @@ async function apiTableDelete( id) {
       process.env.REACT_APP_SERVER_URL + "/table/" + id,
       {
         headers: {
-          Authorization: "Bearer " + reduxStore.getState().user.token,
+          Authorization: "Bearer " + reduxStore.getState().userDetails.token,
         },
       }
     );

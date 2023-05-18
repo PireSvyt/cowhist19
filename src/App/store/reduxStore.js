@@ -1,10 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
-import sliceUser from "./sliceUser.js";
-import sliceTable from "./sliceTable.js";
+import sliceUserDetails from "./sliceUserDetails.js";
+import sliceTableDetails from "./sliceTableDetails.js";
+import sliceTableHistory from "./sliceTableHistory.js";
+import sliceTableStats from "./sliceTableStats.js";
 
 export default configureStore({
   reducer: {
-    user: sliceUser,
-    table: sliceTable,
+    userDetails: sliceUserDetails,
+    tableDetails: sliceTableDetails,
+    tableHistory: sliceTableHistory,
+    tableStats: sliceTableStats,
   },
 });

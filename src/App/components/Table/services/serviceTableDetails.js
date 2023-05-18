@@ -1,12 +1,12 @@
 // Services
-import apiTableStats from "./apiTableStats.js";
+import apiTableDetails from "../../../shared/services/apiTableDetails.js";
 
 // Reducers
 import reduxStore from "../../../store/reduxStore.js";
 
-async function serviceTableStats(parameters) {
+async function serviceTableDetails() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("serviceTableStats");
+    console.log("serviceTableDetails");
   }
 
   try {
@@ -18,29 +18,27 @@ async function serviceTableStats(parameters) {
     let id = window.location.href.split("/table/")[1];
 
     // API call
-    const data = await apiTableStats(table, parameters);
+    const data = await serviceTableDetails(id);
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("data.type : " + data.type);
     }
 
     // Response management
     switch (data.type) {
-      case "table.stats.success":
-        let stats = data.data.stats;
-        let playerids = reduxStore
-          .getState()
-          .tableDetails.players.map((p) => p._id);
-        stats.ranking = stats.ranking.filter((rank) =>
-          playerids.includes(rank._id)
-        );
-        // Outcome
+      case "table.details.success":
         reduxStore.dispatch({
-          type: "tableStats/set",
-          payload: stats,
+          type: "tableDetails/set",
+          payload: data.data.table,
         });
-        stateChanges.tableStatsLoaded = true;
         break;
-      case "table.stats.error":
+      case "table.details.error.onaggregate":
+        stateChanges.openSnack = true;
+        stateChanges.snack = {
+          uid: random_id(),
+          id: "generic.snack.error",
+        };
+        break;
+      case "table.details.error.onfind":
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
@@ -82,4 +80,4 @@ async function serviceTableStats(parameters) {
   }
 }
 
-export default serviceTableStats;
+export default serviceTableDetails;

@@ -21,6 +21,9 @@ import LanguageSwitcher from "./components/LanguageSwitcher/LanguageSwitcher.js"
 // Services
 import { random_id } from "../../services/toolkit.js";
 
+// Shared
+import serviceSliceSignOut from "../../services/serviceSliceSignOut.js";
+
 // Reducers
 import reduxStore from "../../../store/reduxStore.js";
 
@@ -159,7 +162,6 @@ class Appbar extends React.Component {
     }
 
     // Helpers
-    const insideCallback = this.props.callback;
     function toHome() {
       //this.handleCloseMenu();
       window.location = "/";
@@ -173,12 +175,7 @@ class Appbar extends React.Component {
       window.location = "/account";
     }
     function signOut() {
-      // Destroy token
-      // https://medium.com/how-to-react/how-to-use-js-cookie-to-store-data-in-cookies-in-react-js-aab47f8a45c3
-      Cookies.remove("cowhist19-token");
-      //this.handleCloseMenu();
-      insideCallback("signedout");
-      window.location = "/";
+      serviceSliceSignOut();
     }
 
     // MenuItems

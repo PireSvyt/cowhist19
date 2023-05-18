@@ -109,9 +109,6 @@ class Landing extends React.Component {
           showSignin: false,
         }));
         break;
-      case "signedin":
-        this.props.callback("signedin", details);
-        break;
       default:
     }
   }

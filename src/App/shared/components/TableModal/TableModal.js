@@ -23,21 +23,17 @@ import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline.js"
 
 // Components
 import InviteModal from "./components/InviteModal/InviteModal.js";
-
 // Services
 import serviceTableSaveCheck from "./services/serviceTableSaveCheck.js";
 import serviceTableSave from "./services/serviceTableSave.js";
 import apiTableDelete from "./services/apiTableDelete.js";
-
 // Resources
 import emptyTable from "./resources/emptyTable";
-
 // Shared
 import ConfirmModal from "../ConfirmModal/ConfirmModal.js";
 import Snack from "../Snack/Snack.js";
 import { random_id } from "../../services/toolkit.js";
 import apiTableDetails from "../../services/apiTableDetails.js";
-
 // Reducers
 import reduxStore from "../../../store/reduxStore.js";
 
@@ -397,11 +393,6 @@ class TableModal extends React.Component {
     }
 
     const target = event.target;
-    /*if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("target.name : " + target.name);
-      console.log("target.value : " + target.value);
-      console.log("newValue : " + newValue);
-    }*/
     var previousTable = this.state.table;
     switch (target.name) {
       case "name":
@@ -418,11 +409,6 @@ class TableModal extends React.Component {
           console.log("/!\\ no match : " + target.name);
         }
     }
-    // Update
-    /*if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("TableModal.table");
-      console.log(this.state.table);
-    }*/
     // Check inputs
     this.setState((prevState, props) => ({
       table: previousTable,
@@ -431,8 +417,6 @@ class TableModal extends React.Component {
   handleSave() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("TableModal.handleSave");
-      //console.log("this.state.table");
-      //console.log(this.state.table);
     }
 
     // Check inputs

@@ -20,7 +20,6 @@ class Account extends React.Component {
     };
 
     // Handles
-    this.handleAppbarCallback = this.handleAppbarCallback.bind(this);
     this.handleOpenToComeModal = this.handleOpenToComeModal.bind(this);
     this.handleToComeModalCallback = this.handleToComeModalCallback.bind(this);
   }
@@ -33,12 +32,7 @@ class Account extends React.Component {
 
     return (
       <div>
-        <Appbar
-          signedin={reduxStore.getState().userDetails.signedin}
-          callback={this.handleAppbarCallback}
-          route="account"
-          title={t("generic.menu.account")}
-        />
+        <Appbar route="account" title={t("generic.menu.account")} />
         <Box sx={{ height: 48 }} />
         <Box component="span">
           <Paper
@@ -221,20 +215,6 @@ class Account extends React.Component {
   }
 
   // Handles
-  handleAppbarCallback(action, details) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Account.handleAppbarCallback " + action);
-    }
-    switch (action) {
-      case "signedout":
-        this.props.callback("signedout");
-        break;
-      case "signedin":
-        this.props.callback("signedin", details);
-        break;
-      default:
-    }
-  }
   handleOpenToComeModal() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("Account.handleOpenToComeModal");

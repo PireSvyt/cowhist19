@@ -47,7 +47,7 @@
       },
       "feedback": {
         "wip": "Work in progress...",
-        "languagechange" : "Refresh the page to enjoy this language..."
+        "languagechange": "Refresh the page to enjoy this language..."
       }
     },
     "language": {
@@ -94,6 +94,9 @@
       "signin": "Sign in"
     },
     "error": {
+      "emptytoken": "empty token",
+      "invalidtoken": "invalid token",
+      "invalidstatus": "invalid status",
       "missinglogin": "missing email",
       "invalidlogin": "invalid email",
       "missingpassword": "missing password"

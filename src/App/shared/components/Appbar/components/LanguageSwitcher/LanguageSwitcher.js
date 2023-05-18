@@ -72,7 +72,6 @@ class LanguageSwitcher extends React.Component {
           open={this.state.openSnack}
           snack={this.state.snack}
           callback={this.handleSnack}
-          language={this.props.language}
         />
       </Box>
     );

@@ -4,6 +4,9 @@ import { Typography, Card, Box, IconButton } from "@mui/material";
 
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline.js";
 
+// Reducers
+import reduxStore from "../../../../../../store/reduxStore.js";
+
 class GameCard extends React.Component {
   constructor(props) {
     super(props);
@@ -64,9 +67,11 @@ class GameCard extends React.Component {
     // Attack
     this.props.game.players.forEach((actualPlayer) => {
       if (actualPlayer.role === "attack") {
-        let pseudoPlayer = this.props.players.filter((player) => {
-          return player._id === actualPlayer._id;
-        });
+        let pseudoPlayer = reduxStore
+          .getState()
+          .tableDetails.players.filter((player) => {
+            return player._id === actualPlayer._id;
+          });
         if (pseudoPlayer.length > 0) {
           res = res + pseudoPlayer[0].pseudo + ", ";
         } else {
@@ -78,9 +83,11 @@ class GameCard extends React.Component {
     // Defense
     this.props.game.players.forEach((actualPlayer) => {
       if (actualPlayer.role === "defense") {
-        let pseudoPlayer = this.props.players.filter((player) => {
-          return player._id === actualPlayer._id;
-        });
+        let pseudoPlayer = reduxStore
+          .getState()
+          .tableDetails.players.filter((player) => {
+            return player._id === actualPlayer._id;
+          });
         if (pseudoPlayer.length > 0) {
           res = res + pseudoPlayer[0].pseudo + ", ";
         } else {

@@ -19,9 +19,6 @@ class Home extends React.Component {
     this.state = {};
 
     // Handles
-    this.handleAppbarCallback = this.handleAppbarCallback.bind(this);
-    this.handleLandingCallback = this.handleLandingCallback.bind(this);
-    this.handleMyTablesCallback = this.handleMyTablesCallback.bind(this);
   }
   render() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -32,50 +29,16 @@ class Home extends React.Component {
 
     return (
       <div>
-        <Appbar
-          callback={this.handleAppbarCallback}
-          route="home"
-          title={t("generic.label.product")}
-        />
+        <Appbar route="home" title={t("generic.label.product")} />
         <Box sx={{ height: 48 }} />
-        <Landing callback={this.handleLandingCallback} />
+        <Landing />
         <MyStats />
-        <MyTables callback={this.handleMyTablesCallback} />
+        <MyTables />
       </div>
     );
   }
 
   // Handles
-  handleAppbarCallback(action, details) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Home.handleLandingCallback " + action);
-    }
-    switch (action) {
-      case "signedout":
-        this.props.callback("signedout");
-        break;
-      default:
-    }
-  }
-  handleLandingCallback(action, details) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Home.handleLandingCallback " + action);
-    }
-    switch (action) {
-      case "signedin":
-        this.props.callback("signedin", details);
-        break;
-      default:
-    }
-  }
-  handleMyTablesCallback(action, details) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Home.handleMyTablesCallback " + action);
-    }
-    switch (action) {
-      default:
-    }
-  }
 }
 
 export default withTranslation()(Home);

@@ -23,7 +23,6 @@ class Activation extends React.Component {
     };
 
     // Handles
-    this.handleAppbarCallback = this.handleAppbarCallback.bind(this);
   }
   render() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -34,11 +33,7 @@ class Activation extends React.Component {
 
     return (
       <Box>
-        <Appbar
-          callback={this.handleAppbarCallback}
-          route="activation"
-          title={t("generic.label.title")}
-        />
+        <Appbar route="activation" title={t("generic.label.title")} />
         <Box sx={{ height: 48 }} />
 
         <Box hidden={this.state.outcome !== "inprogress"}>

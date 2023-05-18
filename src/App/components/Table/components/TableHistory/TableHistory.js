@@ -4,13 +4,13 @@ import { Box, List, ListItem } from "@mui/material";
 
 // Components
 import GameCard from "./components/GameCard/GameCard.js";
-
 // Services
 import apiGameDelete from "./services/apiGameDelete.js";
-
 // Shared
 import ConfirmModal from "../../../../shared/components/ConfirmModal/ConfirmModal.js";
 import { random_id } from "../../../../shared/services/toolkit.js";
+// Reducers
+import reduxStore from "../../../../store/reduxStore.js";
 
 class TableHistory extends React.Component {
   constructor(props) {
@@ -38,12 +38,11 @@ class TableHistory extends React.Component {
     return (
       <Box>
         <List dense={true}>
-          {this.props.players !== [] ? (
-            this.props.history.map((game) => (
+          {reduxStore.getState().tableDetails.players !== [] ? (
+            reduxStore.getState().tablehistory.games.map((game) => (
               <ListItem key={"game-" + game._id}>
                 <GameCard
                   game={game}
-                  players={this.props.players}
                   callback={this.handleGameCardCallback}
                 />
               </ListItem>

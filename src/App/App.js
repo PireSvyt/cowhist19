@@ -15,9 +15,13 @@ import Help from "./components/Help/Help.js";
 
 // Services
 import apiAuthAssessV0 from "./services/apiAuthAssessV0.js";
-//import serviceAssessCookie from "./services/serviceAssessCookie.js";
 import apiUserDetails from "./services/apiUserDetails.js";
 import apiUserTables from "./services/apiUserTables.js";
+import serviceAssessCookie from "./services/serviceAssessCookie.js";
+
+// Shared
+import serviceSliceSignIn from "./shared/services/serviceSliceSignIn.js";
+import serviceSliceSignOut from "./shared/services/serviceSliceSignOut.js";
 
 // Reducers
 import reduxStore from "./store/reduxStore.js";
@@ -28,25 +32,13 @@ class App extends React.Component {
       console.log("App.constructor");
     }
     super(props);
-    this.state = {
-      signedin: undefined,
-      token: undefined,
-      userid: undefined,
-      user: undefined,
-    };
+    this.state = {};
 
     // Helpers
-    this.signIn = this.signIn.bind(this);
-    this.signOut = this.signOut.bind(this);
     this.getUserDetails = this.getUserDetails.bind(this);
     this.getUserTables = this.getUserTables.bind(this);
 
     // Handles
-    this.handleHomeCallback = this.handleHomeCallback.bind(this);
-    this.handleAssessLoginCallback = this.handleAssessLoginCallback.bind(this);
-    this.handleAccountCallback = this.handleAccountCallback.bind(this);
-    this.handleHelpCallback = this.handleHelpCallback.bind(this);
-    this.handleTableCallback = this.handleTableCallback.bind(this);
   }
   render() {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -55,24 +47,11 @@ class App extends React.Component {
     return (
       <Router>
         <Routes>
-          <Route
-            exact
-            path="/"
-            element={<Home callback={this.handleHomeCallback} />}
-          />
+          <Route exact path="/" element={<Home />} />
           <Route path="/activation/:id" element={<Activation />} />
-          <Route
-            path="/account"
-            element={<Account callback={this.handleAccountCallback} />}
-          />
-          <Route
-            path="/table/:id"
-            element={<Table callback={this.handleTableCallback} />}
-          />
-          <Route
-            path="/help"
-            element={<Help callback={this.handleHelpCallback} />}
-          />
+          <Route path="/account" element={<Account />} />
+          <Route path="/table/:id" element={<Table />} />
+          <Route path="/help" element={<Help />} />
         </Routes>
       </Router>
     );
@@ -81,99 +60,11 @@ class App extends React.Component {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("App.componentDidMount");
     }
-
-    // Check token from cookies
-    // https://medium.com/how-to-react/how-to-use-js-cookie-to-store-data-in-cookies-in-react-js-aab47f8a45c3
-    let token = Cookies.get("cowhist19_token");
-    if (token !== undefined) {
-      if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("App.componentDidMount assessing token from cookies");
-      }
-      apiAuthAssessV0(token).then((assessment) => {
-        if (assessment.status === 200) {
-          if (process.env.REACT_APP_DEBUG === "TRUE") {
-            console.log("App.componentDidMount token valid");
-          }
-          this.signIn(token);
-        }
-        if (assessment.status === 404) {
-          if (process.env.REACT_APP_DEBUG === "TRUE") {
-            console.log("App.componentDidMount token invalid");
-          }
-          this.signOut();
-        }
-      });
-    } else {
-      if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("App.componentDidMount token missing from cookies");
-      }
-      this.signOut();
-    }
+    // Check token from Cookies
+    serviceAssessCookie();
   }
 
   // Helpers
-  signIn(token) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("App.signIn ");
-    }
-    let decodedtoken = jwt_decode(token);
-    // User status tollgate
-    if (
-      decodedtoken.status === "registered" ||
-      decodedtoken.status === "signedup"
-    ) {
-      // Then update variables to signed in
-      // STORE IN STATE
-      this.setState((prevState, props) => ({
-        signedin: true,
-        token: token,
-        userid: decodedtoken.id,
-      }));
-      // STORE IN REDUX STORE
-      reduxStore.dispatch({
-        type: "user/signin",
-        payload: {
-          token: token,
-          decodedtoken: decodedtoken,
-        },
-      });
-      // Get user details
-      this.getUserDetails(token);
-    } else {
-      this.signOut();
-    }
-  }
-  signOut() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("App.signOut ");
-    }
-
-    // Remove cookies
-    Cookies.remove("cowhist19_token");
-
-    // Check url
-    if (
-      window.location.href.includes("table") ||
-      window.location.href.includes("account")
-    ) {
-      if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("App.signOut ");
-      }
-      window.location = "/";
-    }
-
-    // Reset state if on home
-    this.setState((prevState, props) => ({
-      signedin: false,
-      token: null,
-      userid: undefined,
-      user: undefined,
-    }));
-    // STORE IN REDUX STORE
-    reduxStore.dispatch({
-      type: "user/signout",
-    });
-  }
   getUserDetails(token) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("App.getUserDetails ");
@@ -207,64 +98,6 @@ class App extends React.Component {
   }
 
   // Handles
-  handleHomeCallback(action, details) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("App.handleHomeCallback " + action);
-    }
-    switch (action) {
-      case "signedin":
-        this.signIn(details);
-        break;
-      case "signedout":
-        this.signOut();
-        break;
-      default:
-    }
-  }
-  handleAssessLoginCallback(action, details) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("App.handleAssessLoginCallback " + action);
-    }
-    switch (action) {
-      case "assessed":
-        this.signIn(details);
-        break;
-      default:
-    }
-  }
-  handleAccountCallback(action, details) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("App.handleAccountCallback " + action);
-    }
-    switch (action) {
-      case "signedout":
-        this.signOut();
-        break;
-      default:
-    }
-  }
-  handleTableCallback(action, details) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("App.handleTableCallback " + action);
-    }
-    switch (action) {
-      case "signedout":
-        this.signOut();
-        break;
-      default:
-    }
-  }
-  handleHelpCallback(action, details) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("App.handleHelpCallback " + action);
-    }
-    switch (action) {
-      case "signedout":
-        this.signOut();
-        break;
-      default:
-    }
-  }
 }
 
 export default withTranslation()(App);

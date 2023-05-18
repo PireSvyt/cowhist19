@@ -23,15 +23,12 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import serviceGameSaveCheck from "./services/serviceGameSaveCheck.js";
 import serviceGameSave from "./services/serviceGameSave.js";
 import apiGameDetails from "./services/apiGameDetails.js";
-
 // Resources
 import emptyGame from "./resources/emptyGame.js";
-
 // Shared
 import serviceModalChange from "../../../../shared/services/serviceModalChange.js";
 import Snack from "../../../../shared/components/Snack/Snack.js";
 import { random_id } from "../../../../shared/services/toolkit.js";
-
 // Reducers
 import reduxStore from "../../../../store/reduxStore.js";
 
@@ -124,7 +121,7 @@ class GameModal extends React.Component {
                       error={this.state.attackError}
                     />
                   )}
-                  options={this.props.players.filter(
+                  options={reduxStore.getState().tableDetails.players.filter(
                     (player) =>
                       !this.state.game.players.find(
                         (actualPlayer) => actualPlayer._id === player._id
@@ -156,7 +153,7 @@ class GameModal extends React.Component {
                     this.handleChange(event, newValue);
                   }}
                 >
-                  {this.props.players.map((player) => (
+                  {reduxStore.getState().tableDetails.players.map((player) => (
                     <MenuItem key={player._id} value={player._id}>
                       {player.pseudo}
                     </MenuItem>
@@ -182,7 +179,7 @@ class GameModal extends React.Component {
                       error={this.state.defenseError}
                     />
                   )}
-                  options={this.props.players.filter(
+                  options={reduxStore.getState().tableDetails.players.filter(
                     (player) =>
                       !this.state.game.players.find(
                         (actualPlayer) => actualPlayer._id === player._id
@@ -214,7 +211,7 @@ class GameModal extends React.Component {
                     this.handleChange(event, newValue);
                   }}
                 >
-                  {this.props.players.map((player) => (
+                  {reduxStore.getState().tableDetails.players.map((player) => (
                     <MenuItem key={player._id} value={player._id}>
                       {player.pseudo}
                     </MenuItem>

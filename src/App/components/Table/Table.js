@@ -48,7 +48,6 @@ class Table extends React.Component {
     this.getTableHistory = this.getTableHistory.bind(this);
 
     // Handles
-    this.handleAppbarCallback = this.handleAppbarCallback.bind(this);
     this.handleTableChangeTab = this.handleTableChangeTab.bind(this);
     this.handleTableStatsCallback = this.handleTableStatsCallback.bind(this);
     this.handleTableHistoryCallback =
@@ -68,7 +67,6 @@ class Table extends React.Component {
     return (
       <Box>
         <Appbar
-          callback={this.handleAppbarCallback}
           route="table"
           title={this.state.table.name}
           edittable={this.handleOpenTableModal}
@@ -93,22 +91,10 @@ class Table extends React.Component {
           </Tabs>
         </Box>
         <TabPanel value={this.state.selectedTab} index={0}>
-          <TableStats
-            callback={this.handleTableStatsCallback}
-            stats={this.state.tableStats}
-            players={
-              this.state.table === undefined ? [] : this.state.table.players
-            }
-          />
+          <TableStats />
         </TabPanel>
         <TabPanel value={this.state.selectedTab} index={1}>
-          <TableHistory
-            callback={this.handleTableHistoryCallback}
-            history={this.state.tableHistory}
-            players={
-              this.state.table === undefined ? [] : this.state.table.players
-            }
-          />
+          <TableHistory />
         </TabPanel>
         <Fab
           variant="extended"
@@ -154,13 +140,6 @@ class Table extends React.Component {
             }
           }
           this.setState((prevState, props) => proceedOutcome.stateChanges);
-          proceedOutcome.callbacks.forEach((callback) => {
-            if (callback.option === undefined) {
-              this.props.callback(callback.key);
-            } else {
-              this.props.callback(callback.key, callback.option);
-            }
-          });
         });
       }
     }
@@ -184,13 +163,6 @@ class Table extends React.Component {
             }
           }
           this.setState((prevState, props) => proceedOutcome.stateChanges);
-          proceedOutcome.callbacks.forEach((callback) => {
-            if (callback.option === undefined) {
-              this.props.callback(callback.key);
-            } else {
-              this.props.callback(callback.key, callback.option);
-            }
-          });
         });
       }
       if (
@@ -206,13 +178,6 @@ class Table extends React.Component {
             }
           }
           this.setState((prevState, props) => proceedOutcome.stateChanges);
-          proceedOutcome.callbacks.forEach((callback) => {
-            if (callback.option === undefined) {
-              this.props.callback(callback.key);
-            } else {
-              this.props.callback(callback.key, callback.option);
-            }
-          });
         });
       }
     }
@@ -240,17 +205,6 @@ class Table extends React.Component {
   }
 
   // Handles
-  handleAppbarCallback(action, details) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Table.handleTableCallback " + action);
-    }
-    switch (action) {
-      case "signedout":
-        this.props.callback("signedout");
-        break;
-      default:
-    }
-  }
   handleTableChangeTab(event, newTabIndex) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("Table.handleTableChangeTab " + newTabIndex);
@@ -266,13 +220,6 @@ class Table extends React.Component {
             }
           }
           this.setState((prevState, props) => proceedOutcome.stateChanges);
-          proceedOutcome.callbacks.forEach((callback) => {
-            if (callback.option === undefined) {
-              this.props.callback(callback.key);
-            } else {
-              this.props.callback(callback.key, callback.option);
-            }
-          });
         });
         this.setState({
           selectedTab: newTabIndex,
@@ -343,13 +290,6 @@ class Table extends React.Component {
             }
           }
           this.setState((prevState, props) => proceedOutcome.stateChanges);
-          proceedOutcome.callbacks.forEach((callback) => {
-            if (callback.option === undefined) {
-              this.props.callback(callback.key);
-            } else {
-              this.props.callback(callback.key, callback.option);
-            }
-          });
         });
         this.setState((prevState, props) => ({
           openTableModal: false,
@@ -365,13 +305,6 @@ class Table extends React.Component {
             }
           }
           this.setState((prevState, props) => proceedOutcome.stateChanges);
-          proceedOutcome.callbacks.forEach((callback) => {
-            if (callback.option === undefined) {
-              this.props.callback(callback.key);
-            } else {
-              this.props.callback(callback.key, callback.option);
-            }
-          });
         });
         // Reload history
         this.getTableHistory();
@@ -416,15 +349,7 @@ class Table extends React.Component {
                 }
               }
               this.setState((prevState, props) => proceedOutcome.stateChanges);
-              proceedOutcome.callbacks.forEach((callback) => {
-                if (callback.option === undefined) {
-                  this.props.callback(callback.key);
-                } else {
-                  this.props.callback(callback.key, callback.option);
-                }
-              });
             });
-
             break;
           case 1:
             this.getTableHistory();

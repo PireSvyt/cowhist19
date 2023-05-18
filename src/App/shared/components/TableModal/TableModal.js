@@ -195,7 +195,9 @@ class TableModal extends React.Component {
     }
     // Load
     if (this.state.loaded === false) {
-      console.log("TableModal loaded = false");
+      if (process.env.REACT_APP_DEBUG === "TRUE") {
+        console.log("TableModal loaded = false");
+      }
       // Load
       if (
         this.props.tableid !== "" &&

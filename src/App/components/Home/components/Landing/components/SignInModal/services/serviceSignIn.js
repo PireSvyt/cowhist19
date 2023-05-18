@@ -19,11 +19,15 @@ async function serviceSignIn(user) {
 
     // Prep
     // Password encryption
-    let encryptedPAssword = AES.encrypt(
-      user.password,
-      process.env.REACT_APP_ENCRYPTION_KEY
-    );
-    user.password = encryptedPAssword.toString();
+    /*
+    let encryptedPassword = AES.encrypt(
+      user.password.toString(),
+      process.env.REACT_APP_ENCRYPTION_KEY.toString()
+    ).toString();
+    console.log(encryptedPassword);
+    user.password = encryptedPassword;
+    */
+    user.encryption = false;
 
     // API call
     const data = await apiSignIn(user);

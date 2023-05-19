@@ -1,5 +1,6 @@
 import * as React from "react";
 import { withTranslation } from "react-i18next";
+import { useSelector, useDispatch } from "react-redux";
 import {
   Button,
   TextField,
@@ -15,15 +16,16 @@ import { LoadingButton } from "@mui/lab";
 
 // Resources
 import emptySignin from "../../../../../../shared/resources/emptySignIn";
-
 // Services
 import serviceSignInCheck from "./services/serviceSignInCheck.js";
 import serviceSignIn from "./services/serviceSignIn.js";
-
 // Shared
 import serviceModalChange from "../../../../../../shared/services/serviceModalChange.js";
 import Snack from "../../../../../../shared/components/Snack/Snack.js";
 import { random_id } from "../../../../../../shared/services/toolkit.js";
+// Reducers
+import storeSignIn from "./store/storeSignIn.js";
+import { selectSignInOpen, actionSignInClose } from "./store/sliceSignIn.js";
 
 class SignInModal extends React.Component {
   constructor(props) {
@@ -32,18 +34,12 @@ class SignInModal extends React.Component {
     }
     super(props);
     this.state = {
-      signin: { ...emptySignin },
-      loginError: false,
-      passwordError: false,
-      disabled: false,
-      loading: false,
       componentHeight: undefined,
       openSnack: false,
       snack: { id: undefined },
     };
 
     // Handles
-    this.handleClose = this.handleClose.bind(this);
     this.handleProceed = this.handleProceed.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSnack = this.handleSnack.bind(this);
@@ -59,8 +55,12 @@ class SignInModal extends React.Component {
       <Box>
         <Dialog
           id="dialog_signin"
-          open={this.props.open}
-          onClose={this.handleClose}
+          open={useSelector(selectSignInOpen)}
+          onClose={() => {
+            storeSignIn.dispatch({
+              type: "signIn/close",
+            });
+          }}
           fullWidth={true}
         >
           <DialogTitle>{t("signin.label.title")}</DialogTitle>
@@ -83,36 +83,42 @@ class SignInModal extends React.Component {
                   required
                   label={t("generic.input.email")}
                   variant="standard"
-                  value={this.state.signin.login || ""}
+                  value={storeSignIn.getState().signIn.inputs.login || ""}
                   onChange={this.handleChange}
                   autoComplete="off"
                   type="email"
-                  error={this.state.loginError}
+                  error={storeSignIn.getState().signIn.loginError}
                 />
                 <TextField
                   name="password"
                   required
                   label={t("generic.input.password")}
                   variant="standard"
-                  value={this.state.signin.password || ""}
+                  value={storeSignIn.getState().signIn.inputs.password || ""}
                   onChange={this.handleChange}
                   autoComplete="off"
                   type="password"
-                  error={this.state.passwordError}
+                  error={storeSignIn.getState().signIn.passwordError}
                 />
               </FormControl>
             </Box>
           </DialogContent>
 
           <DialogActions>
-            <Button onClick={this.handleClose}>
+            <Button
+              onClick={() => {
+                storeSignIn.dispatch({
+                  type: "signIn/close",
+                });
+              }}
+            >
               {t("generic.button.cancel")}
             </Button>
             <LoadingButton
               variant="contained"
               onClick={this.handleProceed}
-              disabled={this.state.disabled}
-              loading={this.state.loading}
+              disabled={storeSignIn.getState().signIn.disabled}
+              loading={storeSignIn.getState().signIn.loading}
             >
               {t("generic.button.proceed")}
             </LoadingButton>
@@ -137,33 +143,22 @@ class SignInModal extends React.Component {
   }
 
   // Handles
-  handleClose() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignInModal.handleClose");
-    }
-
-    this.setState((prevState, props) => ({
-      signin: { ...emptySignin },
-      loginError: false,
-      passwordError: false,
-    }));
-
-    this.props.callback("close");
-  }
   handleChange(event, newValue) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("SignInModal.handleChange");
     }
     let serviceChangeOutcome = serviceModalChange(
       event.target,
-      this.state.signin
+      storeSignIn.getState().signIn.inputs
     );
     if (serviceChangeOutcome.errors.length > 0) {
       console.log("serviceModalChange errors");
       console.log(serviceChangeOutcome.errors);
     } else {
-      serviceChangeOutcome.stateChanges.signin = serviceChangeOutcome.newValue;
-      this.setState((prevState, props) => serviceChangeOutcome.stateChanges);
+      storeSignIn.dispatch({
+        type: "signIn/change",
+        payload: serviceChangeOutcome.payload,
+      });
     }
   }
   handleProceed() {
@@ -172,13 +167,16 @@ class SignInModal extends React.Component {
     }
 
     // Check inputs
-    let proceedCheckOutcome = serviceSignInCheck(this.state.signin);
+    let proceedCheckOutcome = serviceSignInCheck(
+      storeSignIn.getState().signIn.inputs
+    );
     if (proceedCheckOutcome.errors.length > 0) {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
         console.log("proceedCheckOutcome errors");
         console.log(proceedCheckOutcome.errors);
       }
     }
+
     this.setState((prevState, props) => proceedCheckOutcome.stateChanges);
 
     // Post or publish
@@ -188,22 +186,24 @@ class SignInModal extends React.Component {
         loading: true,
       }));
 
-      serviceSignIn({ ...this.state.signin }).then((proceedOutcome) => {
-        if (proceedOutcome.errors.length !== 0) {
-          if (process.env.REACT_APP_DEBUG === "TRUE") {
-            console.log("proceedOutcome errors");
-            console.log(proceedOutcome.errors);
+      serviceSignIn({ ...storeSignIn.getState().signIn.inputs }).then(
+        (proceedOutcome) => {
+          if (proceedOutcome.errors.length !== 0) {
+            if (process.env.REACT_APP_DEBUG === "TRUE") {
+              console.log("proceedOutcome errors");
+              console.log(proceedOutcome.errors);
+            }
           }
+          this.setState((prevState, props) => proceedOutcome.stateChanges);
+          proceedOutcome.callbacks.forEach((callback) => {
+            if (callback.option === undefined) {
+              this.props.callback(callback.key);
+            } else {
+              this.props.callback(callback.key, callback.option);
+            }
+          });
         }
-        this.setState((prevState, props) => proceedOutcome.stateChanges);
-        proceedOutcome.callbacks.forEach((callback) => {
-          if (callback.option === undefined) {
-            this.props.callback(callback.key);
-          } else {
-            this.props.callback(callback.key, callback.option);
-          }
-        });
-      });
+      );
     } else {
       // Snack
       if (proceedCheckOutcome.errors.length > 0) {

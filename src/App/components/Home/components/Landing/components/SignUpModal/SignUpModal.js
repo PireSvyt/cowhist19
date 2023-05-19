@@ -14,15 +14,15 @@ import { LoadingButton } from "@mui/lab";
 
 // Resources
 import emptySignup from "../../../../../../shared/resources/emptySignUp.js";
-
 // Services
 import serviceSignUpCheck from "./services/serviceSignUpCheck.js";
 import serviceSignUp from "./services/serviceSignUp.js";
-
 // Shared
 import serviceModalChange from "../../../../../../shared/services/serviceModalChange.js";
 import Snack from "../../../../../../shared/components/Snack/Snack.js";
 import { random_id } from "../../../../../../shared/services/toolkit.js";
+// Reducers
+import reduxStore from "../../../../../../store/reduxStore.js";
 
 class SignUpModal extends React.Component {
   constructor(props) {

@@ -10,7 +10,7 @@ const sliceTableDetails = createSlice({
   reducers: {
     set: (state, action) => {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("sliceTableDetails.details");
+        console.log("sliceTableDetails.set");
         //console.log(action.payload);
       }
       state.id = action.payload.id;

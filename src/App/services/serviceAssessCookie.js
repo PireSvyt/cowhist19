@@ -2,11 +2,10 @@ import Cookies from "js-cookie";
 
 // Services
 import apiAuthAssess from "./apiAuthAssess.js";
-import serviceSliceSignIn from "../shared/services/serviceSliceSignIn.js";
-import serviceSliceSignOut from "../shared/services/serviceSliceSignOut.js";
-
+import serviceGrantAccess from "../shared/services/serviceGrantAccess.js";
+import serviceDenyAccess from "../shared/services/serviceDenyAccess.js";
 // Reducers
-import reduxStore from "../store/reduxStore.js";
+import appStore from "../store/appStore.js";
 
 async function serviceAssessCookie() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -28,7 +27,7 @@ async function serviceAssessCookie() {
       switch (data.type) {
         case "auth.assess.success.validtoken":
           // Sign in token
-          serviceSliceSignIn(token).then((proceedOutcome) => {
+          serviceGrantAccess(token).then((proceedOutcome) => {
             if (proceedOutcome.errors.length !== 0) {
               if (process.env.REACT_APP_DEBUG === "TRUE") {
                 console.log("proceedOutcome errors");
@@ -38,7 +37,7 @@ async function serviceAssessCookie() {
           });
           break;
         default:
-          serviceSliceSignOut();
+          serviceDenyAccess();
           break;
       }
     }

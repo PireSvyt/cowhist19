@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Reducers
-import reduxStore from "../../../../../store/reduxStore.js";
+import appStore from "../../../../../store/appStore.js";
 
 async function apiGameSave(game) {
   try {
@@ -10,7 +10,7 @@ async function apiGameSave(game) {
       game,
       {
         headers: {
-          Authorization: "Bearer " + reduxStore.getState().userDetails.token,
+          Authorization: "Bearer " + appStore.getState().userDetails.token,
         },
       }
     );

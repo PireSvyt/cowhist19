@@ -5,9 +5,8 @@ import { Paper, Button, Typography, Box } from "@mui/material";
 // Shared
 import Appbar from "../../shared/components/Appbar/Appbar.js";
 import ToComeModal from "../../shared/components/ToComeModal/ToComeModal.js";
-
 // Reducers
-import reduxStore from "../../store/reduxStore.js";
+import appStore from "../../store/appStore.js";
 
 class Account extends React.Component {
   constructor(props) {
@@ -57,7 +56,7 @@ class Account extends React.Component {
               </Typography>
               <Box textAlign="center">
                 <Typography variant="body1" gutterBottom>
-                  {reduxStore.getState().userDetails.pseudo}
+                  {appStore.getState().userDetails.pseudo}
                 </Typography>
                 <Button
                   variant="outlined"
@@ -81,7 +80,7 @@ class Account extends React.Component {
               </Typography>
               <Box textAlign="center">
                 <Typography variant="body1" gutterBottom>
-                  {reduxStore.getState().userDetails.login}
+                  {appStore.getState().userDetails.login}
                 </Typography>
                 <Button
                   variant="outlined"

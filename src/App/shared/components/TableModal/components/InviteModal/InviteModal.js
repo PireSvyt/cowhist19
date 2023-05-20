@@ -16,7 +16,6 @@ import LoadingButton from "@mui/lab/LoadingButton";
 // Services
 import serviceInviteCheck from "./services/serviceInviteCheck.js";
 import serviceInvite from "./services/serviceInvite.js";
-
 // Shared
 import Snack from "../../../Snack/Snack.js";
 import { random_id } from "../../../../services/toolkit.js";

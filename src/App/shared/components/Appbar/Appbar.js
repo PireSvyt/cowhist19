@@ -17,15 +17,12 @@ import EditIcon from "@mui/icons-material/Edit.js";
 
 // Components
 import LanguageSwitcher from "./components/LanguageSwitcher/LanguageSwitcher.js";
-
 // Services
 import { random_id } from "../../services/toolkit.js";
-
 // Shared
-import serviceSliceSignOut from "../../services/serviceSliceSignOut.js";
-
+import serviceDenyAccess from "../../services/serviceDenyAccess.js";
 // Reducers
-import reduxStore from "../../../store/reduxStore.js";
+import appStore from "../../../store/appStore.js";
 
 class Appbar extends React.Component {
   constructor(props) {
@@ -102,7 +99,7 @@ class Appbar extends React.Component {
               <Box
                 hidden={
                   this.state.menuItems.length === 0 ||
-                  !reduxStore.getState().userDetails.signedin
+                  !appStore.getState().sliceUser.signedin
                 }
               >
                 <IconButton size="large" onClick={this.handleOpenMenu}>
@@ -122,10 +119,7 @@ class Appbar extends React.Component {
                   return (
                     <MenuItem
                       hidden={
-                        !(
-                          item.signed &&
-                          reduxStore.getState().userDetails.signedin
-                        )
+                        !(item.signed && appStore.getState().sliceUser.signedin)
                       }
                       key={random_id()}
                       onClick={item.onclick}
@@ -175,7 +169,7 @@ class Appbar extends React.Component {
       window.location = "/account";
     }
     function signOut() {
-      serviceSliceSignOut();
+      serviceDenyAccess();
     }
 
     // MenuItems
@@ -183,7 +177,10 @@ class Appbar extends React.Component {
       signOut: {
         item: "signout",
         label: "generic.menu.signout",
-        onclick: signOut,
+        onclick: () => {
+          signOut();
+          this.handleCloseMenu();
+        },
         signed: true,
       },
       toAccount: {

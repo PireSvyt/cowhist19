@@ -1,13 +1,15 @@
 // Share
 import { validateEmail } from "../../../../../../../shared/services/toolkit.js";
 
-function serviceSignUpCheck(signup) {
+function serviceProceedCheck(signup) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("serviceSignUpCheck");
+    console.log("serviceProceedCheck");
   }
   let proceed = true;
   let errors = [];
-  let stateChanges = {};
+  let stateChanges = {
+    errors: {},
+  };
 
   // Checks
 
@@ -15,20 +17,20 @@ function serviceSignUpCheck(signup) {
   if (signup.pseudo === null || signup.pseudo === "") {
     proceed = false;
     errors.push("signup.error.missingpseudo");
-    stateChanges.pseudoError = true;
+    stateChanges.errors.pseudo = true;
   }
 
   // Login is empty?
   if (signup.login === null || signup.login === "") {
     proceed = false;
     errors.push("signup.error.missinglogin");
-    stateChanges.loginError = true;
+    stateChanges.errors.login = true;
   } else {
     // Login is an email?
     if (!validateEmail(signup.login)) {
       proceed = false;
       errors.push("signup.error.invalidlogin");
-      stateChanges.loginError = true;
+      stateChanges.errors.login = true;
     }
   }
 
@@ -36,20 +38,20 @@ function serviceSignUpCheck(signup) {
   if (signup.password === null || signup.password === "") {
     proceed = false;
     errors.push("signup.error.missingpassword");
-    stateChanges.passwordError = true;
+    stateChanges.errors.password = true;
   }
 
   // Repeated password is empty?
   if (signup.repeatpassword === null || signup.repeatpassword === "") {
     proceed = false;
     errors.push("signup.error.missingrepeatpassword");
-    stateChanges.repeatpasswordError = true;
+    stateChanges.errors.repeatpassword = true;
   } else {
     // Password match?
     if (signup.password !== signup.repeatpassword) {
       proceed = false;
       errors.push("signup.error.passwordmissmatch");
-      stateChanges.repeatpasswordError = true;
+      stateChanges.errors.repeatpassword = true;
     }
   }
 
@@ -61,4 +63,4 @@ function serviceSignUpCheck(signup) {
   };
 }
 
-export default serviceSignUpCheck;
+export default serviceProceedCheck;

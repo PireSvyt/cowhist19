@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Reducers
-import reduxStore from "../store/reduxStore.js";
+import appStore from "../store/appStore.js";
 
 async function apiUserTables() {
   try {
@@ -9,7 +9,7 @@ async function apiUserTables() {
       process.env.REACT_APP_SERVER_URL + "/user/tables",
       {
         headers: {
-          Authorization: "Bearer " + reduxStore.getState().userDetails.token,
+          Authorization: "Bearer " + appStore.getState().userDetails.token,
         },
       }
     );

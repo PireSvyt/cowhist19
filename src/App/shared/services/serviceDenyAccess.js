@@ -1,19 +1,19 @@
 import Cookies from "js-cookie";
 
 // Reducers
-import reduxStore from "../../store/reduxStore.js";
+import appStore from "../../store/appStore.js";
 
-function serviceSliceSignOut() {
+function serviceDenyAccess() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("serviceSliceSignOut");
+    console.log("serviceDenyAccess");
   }
   let callbacks = [];
   let errors = [];
   let stateChanges = {};
 
   // State management
-  reduxStore.dispatch({
-    type: "user/signout",
+  appStore.dispatch({
+    type: "sliceUser/signout",
   });
 
   // Remove cookies
@@ -26,4 +26,4 @@ function serviceSliceSignOut() {
   };
 }
 
-export default serviceSliceSignOut;
+export default serviceDenyAccess;

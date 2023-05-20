@@ -6,19 +6,16 @@ import { Box, Tabs, Tab, Fab } from "@mui/material";
 import TableStats from "./components/TableStats/TableStats.js";
 import TableHistory from "./components/TableHistory/TableHistory.js";
 import GameModal from "./components/GameModal/GameModal.js";
-
 // Services
 import serviceTableDetails from "./services/serviceTableDetails.js";
 import serviceTableStats from "./services/serviceTableStats.js";
 import apiTableHistory from "./services/apiTableHistory.js";
-
 // Shared
 import Appbar from "../../shared/components/Appbar/Appbar.js";
 import TableModal from "../../shared/components/TableModal/TableModal.js";
 import apiTableDetails from "../../shared/services/apiTableDetails.js";
-
 // Reducers
-import reduxStore from "../../store/reduxStore.js";
+import appStore from "../../store/appStore.js";
 
 class Table extends React.Component {
   constructor(props) {
@@ -127,7 +124,7 @@ class Table extends React.Component {
     }
     // Load
     if (
-      reduxStore.getState().userDetails.token !== "" &&
+      appStore.getState().userDetails.token !== "" &&
       this.state.table._id === ""
     ) {
       if (this.state.tableDetailsLoaded === false) {
@@ -150,7 +147,7 @@ class Table extends React.Component {
     }
     // Load
     if (
-      reduxStore.getState().userDetails.token !== "" &&
+      appStore.getState().userDetails.token !== "" &&
       this.state.table._id === ""
     ) {
       if (this.state.tableDetailsLoaded === false) {
@@ -166,7 +163,7 @@ class Table extends React.Component {
         });
       }
       if (
-        reduxStore.getState().userDetails.token !== "" &&
+        appStore.getState().userDetails.token !== "" &&
         this.state.tableStatsLoaded === false
       ) {
         // Get table stats

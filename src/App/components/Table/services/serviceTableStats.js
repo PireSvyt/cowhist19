@@ -2,7 +2,7 @@
 import apiTableStats from "./apiTableStats.js";
 
 // Reducers
-import reduxStore from "../../../store/reduxStore.js";
+import appStore from "../../../store/appStore.js";
 
 async function serviceTableStats(parameters) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -27,14 +27,14 @@ async function serviceTableStats(parameters) {
     switch (data.type) {
       case "table.stats.success":
         let stats = data.data.stats;
-        let playerids = reduxStore
+        let playerids = appStore
           .getState()
           .tableDetails.players.map((p) => p._id);
         stats.ranking = stats.ranking.filter((rank) =>
           playerids.includes(rank._id)
         );
         // Outcome
-        reduxStore.dispatch({
+        appStore.dispatch({
           type: "tableStats/set",
           payload: stats,
         });

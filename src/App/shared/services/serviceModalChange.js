@@ -27,6 +27,7 @@ function serviceModalChange(target, previousValue, complement) {
       }
       stateChanges.loginError = false;
       stateChanges.login = target.value;
+      stateChanges.errors.login = false;
       newValue.login = target.value;
       break;
     case "password":

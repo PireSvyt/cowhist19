@@ -8,7 +8,6 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline.js";
 
 // Services
 import serviceActivate from "./services/serviceActivate.js";
-
 // Shared
 import Appbar from "../../shared/components/Appbar/Appbar.js";
 

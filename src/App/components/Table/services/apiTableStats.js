@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Reducers
-import reduxStore from "../../../store/reduxStore.js";
+import appStore from "../../../store/appStore.js";
 
 async function apiTableStats(id, parameters) {
   try {
@@ -10,7 +10,7 @@ async function apiTableStats(id, parameters) {
       parameters,
       {
         headers: {
-          Authorization: "Bearer " + reduxStore.getState().userDetails.token,
+          Authorization: "Bearer " + appStore.getState().userDetails.token,
         },
       }
     );

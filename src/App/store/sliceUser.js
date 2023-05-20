@@ -1,7 +1,7 @@
 import { createSlice, configureStore } from "@reduxjs/toolkit";
 
-const sliceUserDetails = createSlice({
-  name: "userDetails",
+const sliceUser = createSlice({
+  name: "sliceUser",
   initialState: {
     signedin: false,
     token: "",
@@ -15,8 +15,8 @@ const sliceUserDetails = createSlice({
   reducers: {
     signin: (state, action) => {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("sliceUserDetails.signin");
-        //console.log(action.payload);
+        console.log("sliceUser.signin");
+        console.log(action.payload);
       }
       state.signedin = true;
       state.token = action.payload.token;
@@ -24,20 +24,31 @@ const sliceUserDetails = createSlice({
       state.login = action.payload.decodedtoken.login;
       state.pseudo = action.payload.decodedtoken.pseudo;
       state.status = action.payload.decodedtoken.status;
+      if (action.payload.priviledges !== undefined) {
+        state.priviledges = action.payload.priviledges;
+      }
+      if (action.payload.tables !== undefined) {
+        state.tables = action.payload.tables;
+      }
     },
     update: (state, action) => {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("sliceUserDetails.update");
+        console.log("sliceUser.update");
         //console.log(action.payload);
       }
       state.login = action.payload.login;
       state.pseudo = action.payload.pseudo;
       state.status = action.payload.status;
-      state.tables = action.payload.tables;
+      if (action.payload.priviledges !== undefined) {
+        state.priviledges = action.payload.priviledges;
+      }
+      if (action.payload.tables !== undefined) {
+        state.tables = action.payload.tables;
+      }
     },
     signout: (state) => {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("sliceUserDetails.signout");
+        console.log("sliceUser.signout");
       }
       state.signedin = false;
       state.token = "";
@@ -51,4 +62,4 @@ const sliceUserDetails = createSlice({
   },
 });
 
-export default sliceUserDetails.reducer;
+export default sliceUser.reducer;

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Reducers
-import reduxStore from "../../../../store/reduxStore.js";
+import appStore from "../../../../store/appStore.js";
 
 async function apiTableDelete( id) {
   try {
@@ -9,7 +9,7 @@ async function apiTableDelete( id) {
       process.env.REACT_APP_SERVER_URL + "/table/" + id,
       {
         headers: {
-          Authorization: "Bearer " + reduxStore.getState().userDetails.token,
+          Authorization: "Bearer " + appStore.getState().userDetails.token,
         },
       }
     );

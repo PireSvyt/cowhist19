@@ -10,7 +10,7 @@ import apiGameDelete from "./services/apiGameDelete.js";
 import ConfirmModal from "../../../../shared/components/ConfirmModal/ConfirmModal.js";
 import { random_id } from "../../../../shared/services/toolkit.js";
 // Reducers
-import reduxStore from "../../../../store/reduxStore.js";
+import appStore from "../../../../store/appStore.js";
 
 class TableHistory extends React.Component {
   constructor(props) {
@@ -38,8 +38,8 @@ class TableHistory extends React.Component {
     return (
       <Box>
         <List dense={true}>
-          {reduxStore.getState().tableDetails.players !== [] ? (
-            reduxStore.getState().tablehistory.games.map((game) => (
+          {appStore.getState().tableDetails.players !== [] ? (
+            appStore.getState().tablehistory.games.map((game) => (
               <ListItem key={"game-" + game._id}>
                 <GameCard
                   game={game}

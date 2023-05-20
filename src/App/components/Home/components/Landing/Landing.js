@@ -1,72 +1,57 @@
 import React from "react";
-import { withTranslation } from "react-i18next";
-import { Provider, useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { ButtonGroup, Button, Box } from "@mui/material";
 
 // Components
 import SignUpModal from "./components/SignUpModal/SignUpModal.js";
 import SignInModal from "./components/SignInModal/SignInModal.js";
 // Reducers
-import reduxStore from "../../../../store/reduxStore.js";
-import storeSignIn from "./components/SignInModal/store/storeSignIn.js";
+import appStore from "../../../../store/appStore.js";
 
-class Landing extends React.Component {
-  constructor(props) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Landing.constructor");
-    }
-    super(props);
-    this.state = {};
-
-    // Handles
+export default function Landing() {
+  if (process.env.REACT_APP_DEBUG === "TRUE") {
+    console.log("Landing");
   }
-  render() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Landing.render");
-    }
-    // i18n
-    const { t } = this.props;
+  // i18n
+  const { t } = useTranslation();
 
-    return (
-      <Box hidden={reduxStore.getState().userDetails.signedin === true}>
-        <Box
-          textAlign="center"
-          sx={{
-            p: 4,
-          }}
-        >
-          <ButtonGroup variant="contained" size="large">
-            <Button
-              onClick={() => {
-                reduxStore.dispatch({
-                  type: "signUpModal/open",
-                });
-              }}
-              size="large"
-            >
-              {t("signup.button.signup")}
-            </Button>
-            <Button
-              onClick={() => {
-                storeSignIn.dispatch({ type: "sliceSignIn/actionSignInOpen" });
-              }}
-              size="large"
-            >
-              {t("signin.button.signin")}
-            </Button>
-          </ButtonGroup>
-        </Box>
+  // Selects
+  const select = {
+    signedin: useSelector((state) => state.sliceUser.signedin),
+  };
 
-        <SignUpModal />
-
-        <Provider store={storeSignIn}>
-          <SignInModal />
-        </Provider>
+  // Render
+  return (
+    <Box hidden={select.signedin === true}>
+      <Box
+        textAlign="center"
+        sx={{
+          p: 4,
+        }}
+      >
+        <ButtonGroup variant="contained" size="large">
+          <Button
+            onClick={() => {
+              appStore.dispatch({ type: "sliceSignUp/open" });
+            }}
+            size="large"
+          >
+            {t("signup.button.signup")}
+          </Button>
+          <Button
+            onClick={() => {
+              appStore.dispatch({ type: "sliceSignIn/open" });
+            }}
+            size="large"
+          >
+            {t("signin.button.signin")}
+          </Button>
+        </ButtonGroup>
       </Box>
-    );
-  }
 
-  // Handles
+      <SignUpModal />
+      <SignInModal />
+    </Box>
+  );
 }
-
-export default withTranslation()(Landing);

@@ -22,7 +22,7 @@ success
 
 export default function Snack(props) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("Snack2.0");
+    console.log("Snack 2.0");
   }
   // i18n
   const { t } = useTranslation();
@@ -43,43 +43,45 @@ export default function Snack(props) {
 
   // Effects
   React.useEffect(() => {
-    if (props.data.uid !== uid && props.data.uid !== undefined) {
-      // Add optional inputs
-      var newSnack = { ...snacks[props.data.id] };
-      if (newSnack === undefined) {
-        newSnack = {
-          severity: "error",
-          message: "Inexisting snack : " + props.data.id,
-          duration: 10000,
-        };
-      } else {
-        newSnack.id = props.data.id;
-        newSnack.uid = props.data.uid;
-        if (newSnack.duration === undefined) {
-          newSnack.duration = 3000;
+    if (props.data !== undefined) {
+      if (props.data.uid !== uid && props.data.uid !== undefined) {
+        // Add optional inputs
+        var newSnack = { ...snacks[props.data.id] };
+        if (newSnack === undefined) {
+          newSnack = {
+            severity: "error",
+            message: "Inexisting snack : " + props.data.id,
+            duration: 10000,
+          };
+        } else {
+          newSnack.id = props.data.id;
+          newSnack.uid = props.data.uid;
+          if (newSnack.duration === undefined) {
+            newSnack.duration = 3000;
+          }
+          if (newSnack.severity === undefined) {
+            newSnack.severity = "info";
+          }
+          if (newSnack.message === undefined) {
+            newSnack.message = t(props.data.id);
+          }
+          if (props.data.details !== undefined && props.data.details !== []) {
+            let detailedErrors = "";
+            props.data.details.forEach((detail) => {
+              detailedErrors = detailedErrors + t(detail) + ", ";
+            });
+            newSnack.message =
+              newSnack.message +
+              " " +
+              detailedErrors.slice(0, detailedErrors.length - 2);
+          }
+          // Set state
+          setUid(newSnack.uid);
+          setDuration(newSnack.duration);
+          setSeverity(newSnack.severity);
+          setMessage(newSnack.message);
+          setOpen(true);
         }
-        if (newSnack.severity === undefined) {
-          newSnack.severity = "info";
-        }
-        if (newSnack.message === undefined) {
-          newSnack.message = t(props.data.id);
-        }
-        if (props.data.details !== undefined && props.data.details !== []) {
-          let detailedErrors = "";
-          props.data.details.forEach((detail) => {
-            detailedErrors = detailedErrors + t(detail) + ", ";
-          });
-          newSnack.message =
-            newSnack.message +
-            " " +
-            detailedErrors.slice(0, detailedErrors.length - 2);
-        }
-        // Set state
-        setUid(newSnack.uid);
-        setDuration(newSnack.duration);
-        setSeverity(newSnack.severity);
-        setMessage(newSnack.message);
-        setOpen(true);
       }
     }
   }, [props]);

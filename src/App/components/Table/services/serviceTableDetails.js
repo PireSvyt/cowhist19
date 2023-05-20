@@ -2,7 +2,7 @@
 import apiTableDetails from "../../../shared/services/apiTableDetails.js";
 
 // Reducers
-import reduxStore from "../../../store/reduxStore.js";
+import appStore from "../../../store/appStore.js";
 
 async function serviceTableDetails() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -26,7 +26,7 @@ async function serviceTableDetails() {
     // Response management
     switch (data.type) {
       case "table.details.success":
-        reduxStore.dispatch({
+        appStore.dispatch({
           type: "tableDetails/set",
           payload: data.data.table,
         });

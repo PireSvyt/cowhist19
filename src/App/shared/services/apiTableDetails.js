@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Reducers
-import reduxStore from "../../store/reduxStore.js";
+import appStore from "../../store/appStore.js";
 
 async function apiTableDetails(id) {
   try {
@@ -9,7 +9,7 @@ async function apiTableDetails(id) {
       process.env.REACT_APP_SERVER_URL + "/table/" + id,
       {
         headers: {
-          Authorization: "Bearer " + reduxStore.getState().user.token,
+          Authorization: "Bearer " + appStore.getState().user.token,
         },
       }
     );

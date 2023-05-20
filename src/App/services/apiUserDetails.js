@@ -1,12 +1,12 @@
 import axios from "axios";
 
 // Reducers
-import reduxStore from "../store/reduxStore.js";
+import appStore from "../store/appStore.js";
 
 async function apiUserDetails() {
   try {
     const res = await axios.get(process.env.REACT_APP_SERVER_URL + "/user/", {
-      headers: { Authorization: "Bearer " + reduxStore.getState().userDetails.token },
+      headers: { Authorization: "Bearer " + appStore.getState().userDetails.token },
     });
     return res.data;
   } catch (err) {

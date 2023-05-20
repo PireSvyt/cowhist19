@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Reducers
-import reduxStore from "../../../../../../store/reduxStore.js";
+import appStore from "../../../../../../store/appStore.js";
 
 async function apiUserInvite(user) {
   try {
@@ -10,7 +10,7 @@ async function apiUserInvite(user) {
       user,
       {
         headers: {
-          Authorization: "Bearer " + reduxStore.getState().user.token,
+          Authorization: "Bearer " + appStore.getState().user.token,
         },
       }
     );

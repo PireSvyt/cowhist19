@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
 import { withTranslation } from "react-i18next";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Provider, useDispatch } from "react-redux";
 
 // https://www.geeksforgeeks.org/how-to-create-a-multi-page-website-using-react-js/
 
@@ -12,19 +13,12 @@ import Activation from "./components/Activation/Activation.js";
 import Table from "./components/Table/Table.js";
 import Account from "./components/Account/Account.js";
 import Help from "./components/Help/Help.js";
-
 // Services
-import apiAuthAssessV0 from "./services/apiAuthAssessV0.js";
 import apiUserDetails from "./services/apiUserDetails.js";
 import apiUserTables from "./services/apiUserTables.js";
 import serviceAssessCookie from "./services/serviceAssessCookie.js";
-
-// Shared
-import serviceSliceSignIn from "./shared/services/serviceSliceSignIn.js";
-import serviceSliceSignOut from "./shared/services/serviceSliceSignOut.js";
-
 // Reducers
-import reduxStore from "./store/reduxStore.js";
+import appStore from "./store/appStore.js";
 
 class App extends React.Component {
   constructor(props) {
@@ -75,7 +69,7 @@ class App extends React.Component {
           user: data.user,
         }));
         // STORE IN REDUX STORE
-        reduxStore.dispatch({
+        appStore.dispatch({
           type: "user/update",
           payload: data.user,
         });

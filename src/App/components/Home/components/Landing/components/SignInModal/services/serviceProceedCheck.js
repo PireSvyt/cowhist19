@@ -1,14 +1,16 @@
 // Share
 import { validateEmail } from "../../../../../../../shared/services/toolkit.js";
 
-function serviceSignInCheck(signin) {
+function serviceProceedCheck(signin) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("serviceSignInCheck");
+    console.log("serviceProceedCheck");
   }
 
   let proceed = true;
   let errors = [];
-  let stateChanges = {};
+  let stateChanges = {
+    errors: {},
+  };
 
   // Checks
 
@@ -16,13 +18,13 @@ function serviceSignInCheck(signin) {
   if (signin.login === "" || signin.login === undefined) {
     proceed = false;
     errors.push("signin.error.missinglogin");
-    stateChanges.loginError = true;
+    stateChanges.errors.login = true;
   } else {
     // Login is an email?
     if (!validateEmail(signin.login)) {
       proceed = false;
       errors.push("signin.error.invalidlogin");
-      stateChanges.loginError = true;
+      stateChanges.errors.login = true;
     }
   }
 
@@ -30,7 +32,7 @@ function serviceSignInCheck(signin) {
   if (signin.password === "" || signin.password === undefined) {
     proceed = false;
     errors.push("signin.error.missingpassword");
-    stateChanges.passwordError = true;
+    stateChanges.errors.password = true;
   }
 
   // Outcome
@@ -41,4 +43,4 @@ function serviceSignInCheck(signin) {
   };
 }
 
-export default serviceSignInCheck;
+export default serviceProceedCheck;

@@ -1,13 +1,13 @@
 import jwt_decode from "jwt-decode";
 
 // Services
-import serviceSliceSignOut from "./serviceSliceSignOut.js";
+import serviceDenyAccess from "./serviceDenyAccess.js";
 // Reducers
-import reduxStore from "../../store/reduxStore.js";
+import appStore from "../../store/appStore.js";
 
-function serviceSliceSignIn(token) {
+async function serviceGrantAccess(token) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("serviceSliceSignIn");
+    console.log("serviceGrantAccess");
   }
   let callbacks = [];
   let errors = [];
@@ -18,7 +18,7 @@ function serviceSliceSignIn(token) {
       console.log("empty token");
     }
     errors.push("generic.error.emptytoken");
-    serviceSliceSignOut();
+    serviceDenyAccess();
   } else {
     let decodedtoken = jwt_decode(token);
     // User status tollgate
@@ -27,8 +27,8 @@ function serviceSliceSignIn(token) {
       decodedtoken.status === "signedup"
     ) {
       // Then update variables to signed in
-      reduxStore.dispatch({
-        type: "userDetails/signin",
+      appStore.dispatch({
+        type: "sliceUser/signin",
         payload: {
           token: token,
           decodedtoken: decodedtoken,
@@ -39,7 +39,7 @@ function serviceSliceSignIn(token) {
         console.log("invalid status");
       }
       errors.push("generic.error.invalidstatus");
-      serviceSliceSignOut();
+      serviceDenyAccess();
     }
   }
 
@@ -50,4 +50,4 @@ function serviceSliceSignIn(token) {
   };
 }
 
-export default serviceSliceSignIn;
+export default serviceGrantAccess;

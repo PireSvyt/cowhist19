@@ -5,7 +5,7 @@ import { Box, List, ListItem, Card } from "@mui/material";
 // Components
 import RankingCard from "./components/RankingCard/RankingCard.js";
 // Reducers
-import reduxStore from "../../../../store/reduxStore.js";
+import appStore from "../../../../store/appStore.js";
 
 class TableStats extends React.Component {
   constructor(props) {
@@ -23,13 +23,13 @@ class TableStats extends React.Component {
 
     return (
       <Box>
-        {reduxStore.getState().tableStats.stats.ranking !== undefined ? (
+        {appStore.getState().tableStats.stats.ranking !== undefined ? (
           <List dense={true}>
-            {reduxStore.getState().tableStats.stats.ranking.map((player) => (
+            {appStore.getState().tableStats.stats.ranking.map((player) => (
               <ListItem key={"ranking-" + player._id}>
                 <RankingCard
                   player={player}
-                  players={reduxStore.getState().tableDetails.players}
+                  players={appStore.getState().tableDetails.players}
                 />
               </ListItem>
             ))}

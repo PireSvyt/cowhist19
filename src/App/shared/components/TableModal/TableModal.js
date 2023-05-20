@@ -35,7 +35,7 @@ import Snack from "../Snack/Snack.js";
 import { random_id } from "../../services/toolkit.js";
 import apiTableDetails from "../../services/apiTableDetails.js";
 // Reducers
-import reduxStore from "../../../store/reduxStore.js";
+import appStore from "../../../store/appStore.js";
 
 class TableModal extends React.Component {
   constructor(props) {
@@ -196,7 +196,7 @@ class TableModal extends React.Component {
     // Load
     if (this.state.loaded === false) {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("TableModal loaded = false");
+        //console.log("TableModal loaded = false");
       }
       // Load
       if (
@@ -239,15 +239,15 @@ class TableModal extends React.Component {
 
     let addCreator = true;
     tableToSave.players.forEach((player) => {
-      if (player._id === reduxStore.getState().userDetails.id) {
+      if (player._id === appStore.getState().userDetails.id) {
         addCreator = false;
       }
     });
     if (addCreator) {
       tableToSave.players.push({
-        _id: reduxStore.getState().userDetails.id,
-        pseudo: reduxStore.getState().userDetails.pseudo,
-        login: reduxStore.getState().userDetails.login,
+        _id: appStore.getState().userDetails.id,
+        pseudo: appStore.getState().userDetails.pseudo,
+        login: appStore.getState().userDetails.login,
       });
       this.setState((prevState, props) => ({
         table: tableToSave,

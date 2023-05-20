@@ -30,7 +30,7 @@ import serviceModalChange from "../../../../shared/services/serviceModalChange.j
 import Snack from "../../../../shared/components/Snack/Snack.js";
 import { random_id } from "../../../../shared/services/toolkit.js";
 // Reducers
-import reduxStore from "../../../../store/reduxStore.js";
+import appStore from "../../../../store/appStore.js";
 
 class GameModal extends React.Component {
   constructor(props) {
@@ -121,7 +121,7 @@ class GameModal extends React.Component {
                       error={this.state.attackError}
                     />
                   )}
-                  options={reduxStore.getState().tableDetails.players.filter(
+                  options={appStore.getState().tableDetails.players.filter(
                     (player) =>
                       !this.state.game.players.find(
                         (actualPlayer) => actualPlayer._id === player._id
@@ -153,7 +153,7 @@ class GameModal extends React.Component {
                     this.handleChange(event, newValue);
                   }}
                 >
-                  {reduxStore.getState().tableDetails.players.map((player) => (
+                  {appStore.getState().tableDetails.players.map((player) => (
                     <MenuItem key={player._id} value={player._id}>
                       {player.pseudo}
                     </MenuItem>
@@ -179,7 +179,7 @@ class GameModal extends React.Component {
                       error={this.state.defenseError}
                     />
                   )}
-                  options={reduxStore.getState().tableDetails.players.filter(
+                  options={appStore.getState().tableDetails.players.filter(
                     (player) =>
                       !this.state.game.players.find(
                         (actualPlayer) => actualPlayer._id === player._id
@@ -211,7 +211,7 @@ class GameModal extends React.Component {
                     this.handleChange(event, newValue);
                   }}
                 >
-                  {reduxStore.getState().tableDetails.players.map((player) => (
+                  {appStore.getState().tableDetails.players.map((player) => (
                     <MenuItem key={player._id} value={player._id}>
                       {player.pseudo}
                     </MenuItem>
@@ -280,7 +280,7 @@ class GameModal extends React.Component {
       // i18n
       const { t } = this.props;
 
-      if (reduxStore.getState().userDetails.token !== "" && this.props.gameid !== "") {
+      if (appStore.getState().userDetails.token !== "" && this.props.gameid !== "") {
         // Load
         apiGameDetails(this.props.game).then((res) => {
           switch (res.status) {

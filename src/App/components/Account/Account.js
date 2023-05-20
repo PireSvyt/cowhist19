@@ -16,22 +16,12 @@ export default function Account() {
   // i18n
   const { t } = useTranslation();
 
-  // States
-  const [tocome, setTocome] = useState(false);
-
   // Selects
   const select = {
     login: useSelector((state) => state.sliceUser.login),
     pseudo: useSelector((state) => state.sliceUser.pseudo),
+    tocomeData: useSelector((state) => state.sliceToComeModal.tocomeData),
   };
-
-  // Handles
-  function openTocome() {
-    setTocome(true);
-  }
-  function closeTocome() {
-    setTocome(false);
-  }
 
   return (
     <div>
@@ -68,7 +58,9 @@ export default function Account() {
                   width: "80%",
                   m: 1,
                 }}
-                onClick={openTocome}
+                onClick={() => {
+                  appStore.dispatch({ type: "sliceToComeModal/open" });
+                }}
               >
                 {t("account.button.changepseudo")}
               </Button>
@@ -92,7 +84,9 @@ export default function Account() {
                   width: "80%",
                   m: 1,
                 }}
-                onClick={openTocome}
+                onClick={() => {
+                  appStore.dispatch({ type: "sliceToComeModal/open" });
+                }}
               >
                 {t("account.button.changeemail")}
               </Button>
@@ -113,7 +107,9 @@ export default function Account() {
                   width: "80%",
                   m: 1,
                 }}
-                onClick={openTocome}
+                onClick={() => {
+                  appStore.dispatch({ type: "sliceToComeModal/open" });
+                }}
               >
                 {t("account.button.changepassword")}
               </Button>
@@ -151,7 +147,9 @@ export default function Account() {
                   width: "80%",
                   m: 1,
                 }}
-                onClick={openTocome}
+                onClick={() => {
+                  appStore.dispatch({ type: "sliceToComeModal/open" });
+                }}
               >
                 {t("account.button.merge")}
               </Button>
@@ -176,7 +174,9 @@ export default function Account() {
                   width: "80%",
                   m: 1,
                 }}
-                onClick={openTocome}
+                onClick={() => {
+                  appStore.dispatch({ type: "sliceToComeModal/open" });
+                }}
               >
                 {t("account.button.anonymize")}
               </Button>
@@ -201,14 +201,16 @@ export default function Account() {
                   width: "80%",
                   m: 1,
                 }}
-                onClick={openTocome}
+                onClick={() => {
+                  appStore.dispatch({ type: "sliceToComeModal/open" });
+                }}
               >
                 {t("account.button.close")}
               </Button>
             </Box>
           </Box>
         </Paper>
-        <ToComeModal open={tocome} callback={closeTocome} />
+        <ToComeModal data={select.tocomeData} />
       </Box>
     </div>
   );

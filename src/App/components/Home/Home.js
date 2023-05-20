@@ -10,6 +10,7 @@ import MyTables from "./components/MyTables/MyTables.js";
 // Shared
 import Appbar from "../../shared/components/Appbar/Appbar.js";
 import Snack from "../../shared/components/Snack/Snack2.js";
+import ToComeModal from "../../shared/components/ToComeModal/ToComeModal.js";
 
 export default function Home() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -21,6 +22,7 @@ export default function Home() {
   // Selects
   const select = {
     snackData: useSelector((state) => state.sliceSnack.snackData),
+    tocomeData: useSelector((state) => state.sliceToComeModal.tocomeData),
   };
 
   return (
@@ -31,6 +33,7 @@ export default function Home() {
       <MyStats />
       <MyTables />
       <Snack data-testid="componentSnack" data={select.snackData} />
+      <ToComeModal data={select.tocomeData} />
     </Box>
   );
 }

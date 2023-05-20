@@ -27,6 +27,11 @@ export default function Help() {
     setTocome(false);
   }
 
+  // Selects
+  const select = {
+    tocomeData: useSelector((state) => state.sliceToComeModal.tocomeData),
+  };
+
   return (
     <Box>
       <Appbar route="help" title={t("generic.label.help")} />
@@ -45,7 +50,7 @@ export default function Help() {
           {t("generic.button.tocome")}
         </Button>
       </Box>
-      <ToComeModal open={tocome} callback={closeTocome} />
+      <ToComeModal data={select.tocomeData} />
     </Box>
   );
 }

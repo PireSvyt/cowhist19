@@ -55,7 +55,7 @@ export default function MyTables() {
         <IconButton
           sx={{ p: 2 }}
           onClick={() => {
-            appStore.dispatch({ type: "sliceTable/new" });
+            appStore.dispatch({ type: "sliceTableModal/new" });
           }}
         >
           <AddIcon />
@@ -69,8 +69,8 @@ export default function MyTables() {
           </ListItem>
         ))}
       </List>
-
-      <TableModal />
     </Box>
   );
 }
+
+// <TableModal />

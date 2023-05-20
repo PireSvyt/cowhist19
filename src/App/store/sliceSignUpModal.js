@@ -18,7 +18,6 @@ const sliceSignUpModal = createSlice({
     },
     disabled: false,
     loading: false,
-    snackData: { id: undefined },
   },
   reducers: {
     open: (state) => {
@@ -105,13 +104,6 @@ const sliceSignUpModal = createSlice({
       }
       if (action.payload.loading !== undefined) {
         state.loading = action.payload.loading;
-      }
-      // Snack
-      if (action.payload.snackOpen !== undefined) {
-        state.snackOpen = action.payload.snackOpen;
-      }
-      if (action.payload.snackData !== undefined) {
-        state.snackData = action.payload.snackData;
       }
     },
     lock: (state, action) => {

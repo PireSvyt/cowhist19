@@ -3,10 +3,10 @@ import axios from "axios";
 // Reducers
 import appStore from "../../../../../store/appStore.js";
 
-async function apiGameDelete(id) {
+async function apiGameDelete(gamieid) {
   try {
     const res = await axios.delete(
-      process.env.REACT_APP_SERVER_URL + "/game/" + id,
+      process.env.REACT_APP_SERVER_URL + "/v1/game/" + gamieid,
       {
         headers: {
           Authorization: "Bearer " + appStore.getState().userDetails.token,
@@ -15,13 +15,7 @@ async function apiGameDelete(id) {
     );
     return res.data;
   } catch (err) {
-    const res = {
-      status: err.response.status,
-      message: "error on apiGameDelete",
-      error: err,
-    };
-    console.error(res);
-    return res;
+    return err.response.data;
   }
 }
 

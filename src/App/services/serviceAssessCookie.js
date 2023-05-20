@@ -2,8 +2,8 @@ import Cookies from "js-cookie";
 
 // Services
 import apiAuthAssess from "./apiAuthAssess.js";
-import serviceGrantAccess from "../shared/services/serviceGrantAccess.js";
-import serviceDenyAccess from "../shared/services/serviceDenyAccess.js";
+import serviceAccessGrant from "../shared/services/serviceAccessGrant.js";
+import serviceAccessDeny from "../shared/services/serviceAccessDeny.js";
 
 async function serviceAssessCookie() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -25,7 +25,7 @@ async function serviceAssessCookie() {
       switch (data.type) {
         case "auth.assess.success.validtoken":
           // Sign in token
-          serviceGrantAccess(token).then((proceedOutcome) => {
+          serviceAccessGrant(token).then((proceedOutcome) => {
             if (proceedOutcome.errors.length !== 0) {
               if (process.env.REACT_APP_DEBUG === "TRUE") {
                 console.log("proceedOutcome errors");
@@ -35,7 +35,7 @@ async function serviceAssessCookie() {
           });
           break;
         default:
-          serviceDenyAccess();
+          serviceAccessDeny();
           break;
       }
     }

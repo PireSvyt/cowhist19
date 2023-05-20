@@ -21,7 +21,7 @@ import LanguageSwitcher from "./components/LanguageSwitcher/LanguageSwitcher.js"
 // Services
 import { random_id } from "../../services/toolkit.js";
 // Shared
-import serviceDenyAccess from "../../services/serviceDenyAccess.js";
+import serviceAccessDeny from "../../services/serviceAccessDeny.js";
 // Reducers
 import appStore from "../../../store/appStore.js";
 
@@ -59,7 +59,7 @@ export default function Appbar(props) {
     window.location = "/account";
   }
   function signOut() {
-    serviceDenyAccess();
+    serviceAccessDeny();
   }
 
   // MenuItems

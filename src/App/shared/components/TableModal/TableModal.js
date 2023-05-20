@@ -1,5 +1,6 @@
 import * as React from "react";
-import { withTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import jwt_decode from "jwt-decode";
 import {
   Button,
@@ -24,25 +25,178 @@ import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline.js"
 // Components
 import InviteModal from "./components/InviteModal/InviteModal.js";
 // Services
-import serviceTableSaveCheck from "./services/serviceTableSaveCheck.js";
-import serviceTableSave from "./services/serviceTableSave.js";
+import serviceProceed from "./services/serviceProceed.js";
 import apiTableDelete from "./services/apiTableDelete.js";
-// Resources
-import emptyTable from "./resources/emptyTable";
-// Shared
-import ConfirmModal from "../ConfirmModal/ConfirmModal.js";
-import Snack from "../Snack/Snack.js";
-import { random_id } from "../../services/toolkit.js";
-import apiTableDetails from "../../services/apiTableDetails.js";
 // Reducers
 import appStore from "../../../store/appStore.js";
 
-class TableModal extends React.Component {
-  constructor(props) {
+export default function TableModal() {
+  if (process.env.REACT_APP_DEBUG === "TRUE") {
+    console.log("TableModal");
+  }
+  // i18n
+  const { t } = useTranslation();
+
+  // Selects
+  const select = {
+    open: useSelector((state) => state.sliceTableModal.open),
+    id: useSelector((state) => state.sliceTableModal.id),
+    inputs: useSelector((state) => state.sliceTableModal.inputs),
+    errors: useSelector((state) => state.sliceTableModal.errors),
+    disabled: useSelector((state) => state.sliceTableModal.disabled),
+    loading: useSelector((state) => state.sliceTableModal.loading),
+  };
+
+  // Changes
+  const changes = {
+    name: (e) => {
+      appStore.dispatch({
+        type: "sliceTableModal/change",
+        payload: {
+          inputs: { name: e.target.value },
+          errors: { name: false },
+        },
+      });
+    },
+    players: (e) => {
+      appStore.dispatch({
+        type: "sliceTableModal/change",
+        payload: {
+          inputs: { players: e.target.value },
+          errors: { players: false },
+        },
+      });
+    },
+  };
+
+  // Constants
+  const componentHeight = window.innerHeight - 115;
+
+  // Player card
+  function PlayerCard(props) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("TableModal.constructor");
+      console.log("PlayerCard " + props.player._id);
     }
-    super(props);
+    // i18n
+    const { t } = useTranslation();
+
+    // Handles
+    function removeUser() {
+      appStore.dispatch({
+        type: "sliceTableModal/removeuser",
+        payload: props.player._id,
+      });
+    }
+
+    return (
+      <Card sx={{ width: "100%", p: 1 }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Typography>{props.player.pseudo}</Typography>
+          <IconButton onClick={removeUser}>
+            <RemoveCircleOutlineIcon />
+          </IconButton>
+        </Box>
+      </Card>
+    );
+  }
+
+  return (
+    <Box>
+      <Dialog
+        id="dialog_table"
+        open={open}
+        onClose={() => {
+          appStore.dispatch({ type: "sliceTableModal/close" });
+        }}
+        fullWidth={true}
+      >
+        <DialogTitle>{t("table.label.title")}</DialogTitle>
+        <DialogContent
+          sx={{
+            height: componentHeight,
+          }}
+        >
+          <Box
+            component="form"
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-evenly",
+            }}
+          >
+            <TextField
+              name="name"
+              label={t("generic.input.name")}
+              variant="standard"
+              value={select.inputs.name}
+              onChange={changes.name}
+              autoComplete="off"
+              sx={{ mb: 1 }}
+              error={select.errors.name}
+            />
+
+            <Stack direction="row" justifyContent="space-between">
+              <Typography
+                variant="body1"
+                sx={{
+                  pt: 2,
+                  pb: 2,
+                }}
+              >
+                {t("table.label.players")}
+              </Typography>
+              <IconButton
+                sx={{ p: 2 }}
+                onClick={() => {
+                  appStore.dispatch({ type: "sliceInviteModal/open" });
+                }}
+              >
+                <AddIcon />
+              </IconButton>
+            </Stack>
+
+            <List dense={true}>
+              {select.inputs.players.map((player) => (
+                <ListItem key={"player-" + player._id}>
+                  <PlayerCard player={player} />
+                </ListItem>
+              ))}
+            </List>
+          </Box>
+        </DialogContent>
+
+        <DialogActions>
+          <Button
+            onClick={() => {
+              appStore.dispatch({ type: "sliceTableModal/close" });
+            }}
+          >
+            {t("generic.button.cancel")}
+          </Button>
+          <LoadingButton
+            variant="contained"
+            onClick={serviceProceed}
+            disabled={select.disabled}
+            loading={select.loading}
+          >
+            {t("generic.button.save")}
+          </LoadingButton>
+        </DialogActions>
+      </Dialog>
+
+      <InviteModal />
+    </Box>
+  );
+}
+
+/*
     this.state = {
       table: { ...emptyTable },
       loaded: false,
@@ -58,136 +212,7 @@ class TableModal extends React.Component {
       openSnack: false,
       snack: { id: undefined },
     };
-    // Updates
-    this.getTableDetails = this.getTableDetails.bind(this);
-    this.addUserToPlayers = this.addUserToPlayers.bind(this);
 
-    // Handles
-    this.handlePlayerCardCallback = this.handlePlayerCardCallback.bind(this);
-    this.handleOpenInviteModal = this.handleOpenInviteModal.bind(this);
-    this.handleInviteModalCallback = this.handleInviteModalCallback.bind(this);
-    this.handleConfirmModalCallback =
-      this.handleConfirmModalCallback.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-    this.handleSave = this.handleSave.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSnack = this.handleSnack.bind(this);
-  }
-  render() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("TableModal.render");
-    }
-    // i18n
-    const { t } = this.props;
-
-    return (
-      <Box>
-        <Dialog
-          id="dialog_table"
-          open={this.props.open}
-          onClose={this.handleClose}
-          fullWidth={true}
-        >
-          <DialogTitle>{t("table.label.title")}</DialogTitle>
-          <DialogContent
-            sx={{
-              height: this.state.componentHeight,
-            }}
-          >
-            <Box
-              component="form"
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-evenly",
-              }}
-            >
-              <TextField
-                name="name"
-                label={t("generic.input.name")}
-                variant="standard"
-                value={this.state.table.name || ""}
-                onChange={this.handleChange}
-                autoComplete="off"
-                sx={{ mb: 1 }}
-                error={this.state.nameError}
-              />
-
-              <Stack direction="row" justifyContent="space-between">
-                <Typography
-                  variant="body1"
-                  sx={{
-                    pt: 2,
-                    pb: 2,
-                  }}
-                >
-                  {t("table.label.players")}
-                </Typography>
-                <IconButton sx={{ p: 2 }} onClick={this.handleOpenInviteModal}>
-                  <AddIcon />
-                </IconButton>
-              </Stack>
-
-              {this.state.table === undefined ? (
-                <div />
-              ) : (
-                <List dense={true}>
-                  {this.state.table.players.map((player) => (
-                    <ListItem key={"player-" + player._id}>
-                      <PlayerCard
-                        player={player}
-                        callback={this.handlePlayerCardCallback}
-                      />
-                    </ListItem>
-                  ))}
-                </List>
-              )}
-            </Box>
-          </DialogContent>
-
-          <DialogActions>
-            <Button onClick={this.handleClose}>
-              {t("generic.button.cancel")}
-            </Button>
-            <LoadingButton
-              variant="contained"
-              onClick={this.handleSave}
-              disabled={this.state.disabled}
-              loading={this.state.loading}
-            >
-              {t("generic.button.save")}
-            </LoadingButton>
-          </DialogActions>
-        </Dialog>
-
-        <InviteModal
-          open={this.state.openInviteModal}
-          callback={this.handleInviteModalCallback}
-        />
-
-        <ConfirmModal
-          open={this.state.openConfirmModal}
-          title={this.state.confirmModalTitle}
-          content={this.state.confirmModalContent}
-          callToActions={this.state.confirmModalCTA}
-          callback={this.handleConfirmModalCallback}
-        />
-
-        <Snack
-          open={this.state.openSnack}
-          snack={this.state.snack}
-          callback={this.handleSnack}
-        />
-      </Box>
-    );
-  }
-  componentDidMount() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      //console.log("TableModal.componentDidMount");
-    }
-    this.setState({
-      componentHeight: window.innerHeight - 115,
-    });
   }
   componentDidUpdate(prevState, prevProps) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -425,7 +450,7 @@ class TableModal extends React.Component {
     function callbackConfirmDelete(action, details) {
       this.handleConfirmModalCallback(action, details);
     }
-    let proceedCheckOutcome = serviceTableSaveCheck(
+    let proceedCheckOutcome = serviceProceedCheck(
       this.state.table,
       this.handleConfirmModalCallback
     );
@@ -444,7 +469,7 @@ class TableModal extends React.Component {
         loading: true,
       }));
 
-      serviceTableSave({ ...this.state.table }).then((proceedOutcome) => {
+      serviceProceed({ ...this.state.table }).then((proceedOutcome) => {
         if (proceedOutcome.errors.length > 0) {
           if (process.env.REACT_APP_DEBUG === "TRUE") {
             console.log("proceedOutcome errors");
@@ -529,5 +554,4 @@ class PlayerCard extends React.Component {
     this.props.callback("userremove", this.props.player._id);
   }
 }
-
-export default withTranslation()(TableModal);
+*/

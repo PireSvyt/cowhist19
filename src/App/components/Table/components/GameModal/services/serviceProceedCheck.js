@@ -1,6 +1,6 @@
-function serviceGameSaveCheck(game, contracts) {
+function serviceProceedCheck(game, contracts) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("serviceGameSaveCheck");
+    console.log("serviceProceedCheck");
   }
   let proceed = true;
   let errors = [];
@@ -62,4 +62,4 @@ function serviceGameSaveCheck(game, contracts) {
   };
 }
 
-export default serviceGameSaveCheck;
+export default serviceProceedCheck;

@@ -1,5 +1,6 @@
 import * as React from "react";
-import { withTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import {
   Button,
   TextField,
@@ -14,135 +15,144 @@ import {
 import LoadingButton from "@mui/lab/LoadingButton";
 
 // Services
-import serviceInviteCheck from "./services/serviceInviteCheck.js";
-import serviceInvite from "./services/serviceInvite.js";
-// Shared
-import Snack from "../../../Snack/Snack.js";
-import { random_id } from "../../../../services/toolkit.js";
-import emptyUser from "../../../../resources/emptyUser.js";
-import serviceModalChange from "../../../../services/serviceModalChange.js";
+import serviceProceed from "./services/serviceProceed.js";
+// Reducers
+import appStore from "../../../../../store/appStore.js";
 
-class InviteModal extends React.Component {
-  constructor(props) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("InviteModal.constructor");
-    }
-    super(props);
-    this.state = {
-      user: { ...emptyUser },
-      pseudoError: false,
-      loginError: false,
-      acknowledgementError: false,
-      disabled: false,
-      loading: false,
-      componentHeight: undefined,
-      openSnack: false,
-      snack: { id: undefined },
-    };
-
-    // Handles
-    this.handleClose = this.handleClose.bind(this);
-    this.handleProceed = this.handleProceed.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSnack = this.handleSnack.bind(this);
+export default function InviteModal() {
+  if (process.env.REACT_APP_DEBUG === "TRUE") {
+    console.log("InviteModal");
   }
-  render() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("InviteModal.render");
-    }
-    // i18n
-    const { t } = this.props;
+  // i18n
+  const { t } = useTranslation();
 
-    return (
-      <Box>
-        <Dialog
-          id="dialog_invite"
-          open={this.props.open}
-          onClose={this.handleClose}
-          fullWidth={true}
+  // Selects
+  const select = {
+    open: useSelector((state) => state.sliceInviteModal.open),
+    inputs: useSelector((state) => state.sliceInviteModal.inputs),
+    errors: useSelector((state) => state.sliceInviteModal.errors),
+    disabled: useSelector((state) => state.sliceInviteModal.disabled),
+    loading: useSelector((state) => state.sliceInviteModal.loading),
+  };
+
+  // Changes
+  const changes = {
+    pseudo: (e) => {
+      appStore.dispatch({
+        type: "sliceInviteModal/change",
+        payload: {
+          inputs: { pseudo: e.target.value },
+          errors: { pseudo: false },
+        },
+      });
+    },
+    login: (e) => {
+      appStore.dispatch({
+        type: "sliceInviteModal/change",
+        payload: {
+          inputs: { login: e.target.value },
+          errors: { login: false },
+        },
+      });
+    },
+    acknowledgement: (e) => {
+      appStore.dispatch({
+        type: "sliceInviteModal/change",
+        payload: {
+          inputs: { acknowledgement: e.target.checked },
+          errors: { acknowledgement: false },
+        },
+      });
+    },
+  };
+
+  // Constants
+  const componentHeight = window.innerHeight - 115;
+
+  return (
+    <Box>
+      <Dialog
+        id="dialog_invite"
+        open={open}
+        onClose={() => {
+          appStore.dispatch({ type: "sliceInviteModal/close" });
+        }}
+        fullWidth={true}
+      >
+        <DialogTitle>{t("invite.label.title")}</DialogTitle>
+        <DialogContent
+          sx={{
+            height: componentHeight,
+          }}
         >
-          <DialogTitle>{t("invite.label.title")}</DialogTitle>
-          <DialogContent
+          <Box
+            component="form"
             sx={{
-              height: this.state.componentHeight,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-evenly",
             }}
           >
-            <Box
-              component="form"
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-evenly",
-              }}
-            >
-              <TextField
-                name="pseudo"
-                label={t("generic.input.pseudo")}
-                variant="standard"
-                value={this.state.user.pseudo || ""}
-                onChange={this.handleChange}
-                autoComplete="off"
-                sx={{ mb: 1 }}
-                required
-                error={this.state.pseudoError}
-              />
-              <TextField
-                name="login"
-                label={t("generic.input.email")}
-                variant="standard"
-                value={this.state.user.login || ""}
-                onChange={this.handleChange}
-                autoComplete="off"
-                sx={{ mb: 1 }}
-                required
-                error={this.state.loginError}
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    name="acknowledgement"
-                    checked={this.state.user.acknowledgement}
-                    onChange={this.handleChange}
-                    required
-                  />
-                }
-                label={t("invite.input.acknowledgement")}
-                error={this.state.acknowledgementError ? "dummy" : null}
-              />
-            </Box>
-          </DialogContent>
+            <TextField
+              name="pseudo"
+              label={t("generic.input.pseudo")}
+              variant="standard"
+              value={select.inputs.pseudo || ""}
+              onChange={changes.pseudo}
+              autoComplete="off"
+              sx={{ mb: 1 }}
+              required
+              error={select.errors.pseudo}
+            />
+            <TextField
+              name="login"
+              label={t("generic.input.email")}
+              variant="standard"
+              value={select.inputs.login || ""}
+              onChange={changes.login}
+              autoComplete="off"
+              sx={{ mb: 1 }}
+              required
+              error={select.errors.login}
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  name="acknowledgement"
+                  checked={select.inputs.acknowledgement}
+                  onChange={changes.acknowledgement}
+                  required
+                />
+              }
+              label={t("invite.input.acknowledgement")}
+              error={select.errors.acknowledgement}
+            />
+          </Box>
+        </DialogContent>
 
-          <DialogActions>
-            <Button onClick={this.handleClose}>
-              {t("generic.button.cancel")}
-            </Button>
-            <LoadingButton
-              variant="contained"
-              onClick={this.handleProceed}
-              disabled={this.state.disabled}
-              loading={this.state.loading}
-            >
-              {t("invite.button.invite")}
-            </LoadingButton>
-          </DialogActions>
-        </Dialog>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              appStore.dispatch({ type: "sliceInviteModal/close" });
+            }}
+          >
+            {t("generic.button.cancel")}
+          </Button>
+          <LoadingButton
+            variant="contained"
+            onClick={serviceProceed}
+            disabled={select.disabled}
+            loading={select.loading}
+          >
+            {t("invite.button.invite")}
+          </LoadingButton>
+        </DialogActions>
+      </Dialog>
+    </Box>
+  );
+}
 
-        <Snack
-          open={this.state.openSnack}
-          snack={this.state.snack}
-          callback={this.handleSnack}
-        />
-      </Box>
-    );
-  }
-  componentDidMount() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      //console.log("InviteModal.componentDidMount");
-    }
-    this.setState({
-      componentHeight: window.innerHeight - 115,
-    });
-  }
+/*
   componentDidUpdate(prevState) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("InviteModal.componentDidUpdate");
@@ -191,7 +201,7 @@ class InviteModal extends React.Component {
     }
 
     // Check inputs
-    let proceedCheckOutcome = serviceInviteCheck(this.state.user);
+    let proceedCheckOutcome = serviceProceedCheck(this.state.user);
     if (proceedCheckOutcome.errors.length !== 0) {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
         console.log("proceedCheckOutcome errors");
@@ -207,24 +217,22 @@ class InviteModal extends React.Component {
         loading: true,
       }));
 
-      serviceInvite( this.state.user).then(
-        (proceedOutcome) => {
-          if (proceedOutcome.errors.length !== 0) {
-            if (process.env.REACT_APP_DEBUG === "TRUE") {
-              console.log("proceedOutcome errors");
-              console.log(proceedOutcome.errors);
-            }
+      serviceProceed(this.state.user).then((proceedOutcome) => {
+        if (proceedOutcome.errors.length !== 0) {
+          if (process.env.REACT_APP_DEBUG === "TRUE") {
+            console.log("proceedOutcome errors");
+            console.log(proceedOutcome.errors);
           }
-          this.setState((prevState, props) => proceedOutcome.stateChanges);
-          proceedOutcome.callbacks.forEach((callback) => {
-            if (callback.option === undefined) {
-              this.props.callback(callback.key);
-            } else {
-              this.props.callback(callback.key, callback.option);
-            }
-          });
         }
-      );
+        this.setState((prevState, props) => proceedOutcome.stateChanges);
+        proceedOutcome.callbacks.forEach((callback) => {
+          if (callback.option === undefined) {
+            this.props.callback(callback.key);
+          } else {
+            this.props.callback(callback.key, callback.option);
+          }
+        });
+      });
     } else {
       // Snack
       if (proceedCheckOutcome.errors.length > 0) {
@@ -239,19 +247,7 @@ class InviteModal extends React.Component {
       }
     }
   }
-  handleSnack(action) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("InviteModal.handleSnack " + action);
-    }
-    switch (action) {
-      case "close":
-        this.setState((prevState, props) => ({
-          openSnack: false,
-        }));
-        break;
-      default:
-    }
-  }
 }
 
 export default withTranslation()(InviteModal);
+*/

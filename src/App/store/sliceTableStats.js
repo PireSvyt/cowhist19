@@ -1,9 +1,11 @@
 import { createSlice, configureStore } from "@reduxjs/toolkit";
 
 const sliceTableStats = createSlice({
-  name: "tableStats",
+  name: "sliceTableStats",
   initialState: {
-    stats: {},
+    stats: {
+      ranking: [],
+    },
   },
   reducers: {
     set: (state, action) => {

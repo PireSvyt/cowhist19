@@ -1,16 +1,18 @@
 import { createSlice, configureStore } from "@reduxjs/toolkit";
 
-const sliceSignInModal = createSlice({
-  name: "sliceSignInModal",
+const sliceInviteModal = createSlice({
+  name: "sliceInviteModal",
   initialState: {
     open: false,
     inputs: {
+      pseudo: "",
       login: "",
-      password: "",
+      acknowledgement: false,
     },
     errors: {
+      pseudo: false,
       login: false,
-      password: false,
+      acknowledgement: false,
     },
     disabled: false,
     loading: false,
@@ -18,37 +20,39 @@ const sliceSignInModal = createSlice({
   reducers: {
     open: (state) => {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("sliceSignInModal.open");
+        console.log("sliceInviteModal.open");
       }
       state.open = true;
       state.inputs = {
+        pseudp: "",
         login: "",
-        password: "",
+        acknowledgement: false,
       };
       state.errors = {
+        pseudo: false,
         login: false,
-        password: false,
       };
     },
     close: (state) => {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("sliceSignInModal.close");
+        console.log("sliceInviteModal.close");
       }
       state.open = false;
       state.inputs = {
+        pseudo: "",
         login: "",
-        password: "",
+        acknowledgement: false,
       };
       state.errors = {
+        pseudo: false,
         login: false,
-        password: false,
       };
       state.disabled = false;
       state.loading = false;
     },
     change: (state, action) => {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("sliceSignInModal.change");
+        console.log("sliceInviteModal.change");
         //console.log(action.payload);
       }
       if (action.payload.open !== undefined) {
@@ -56,20 +60,26 @@ const sliceSignInModal = createSlice({
       }
       // Inputs
       if (action.payload.inputs !== undefined) {
+        if (action.payload.inputs.pseudo !== undefined) {
+          state.inputs.pseudo = action.payload.inputs.pseudo;
+        }
         if (action.payload.inputs.login !== undefined) {
           state.inputs.login = action.payload.inputs.login;
         }
-        if (action.payload.inputs.password !== undefined) {
-          state.inputs.password = action.payload.inputs.password;
+        if (action.payload.inputs.acknowledgement !== undefined) {
+          state.inputs.acknowledgement = action.payload.inputs.acknowledgement;
         }
       }
       // Errors
       if (action.payload.errors !== undefined) {
+        if (action.payload.errors.pseudo !== undefined) {
+          state.errors.pseudo = action.payload.errors.pseudo;
+        }
         if (action.payload.errors.login !== undefined) {
           state.errors.login = action.payload.errors.login;
         }
-        if (action.payload.errors.password !== undefined) {
-          state.errors.password = action.payload.errors.password;
+        if (action.payload.errors.acknowledgement !== undefined) {
+          state.errors.acknowledgement = action.payload.errors.acknowledgement;
         }
       }
       // Lock
@@ -82,7 +92,7 @@ const sliceSignInModal = createSlice({
     },
     lock: (state, action) => {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("sliceSignInModal.lock");
+        console.log("sliceInviteModal.lock");
         //console.log(action.payload);
       }
       state.disabled = true;
@@ -91,4 +101,4 @@ const sliceSignInModal = createSlice({
   },
 });
 
-export default sliceSignInModal.reducer;
+export default sliceInviteModal.reducer;

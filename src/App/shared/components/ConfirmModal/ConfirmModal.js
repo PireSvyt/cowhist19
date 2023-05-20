@@ -22,16 +22,25 @@ export default function ConfirmModal(props) {
   // i18n
   const { t } = useTranslation();
 
-  // States
+  // State
   const [open, setOpen] = useState(false);
   const [uid, setUid] = useState("");
 
+  // Handles
+  function onClose() {
+    setOpen(false);
+  }
+
   // Effects
   React.useEffect(() => {
-    if (props.uid !== uid && props.uid !== undefined) {
-      // Set state
-      setUid(props.uid);
-      setOpen(true);
+    if (props.data !== undefined) {
+      if (props.data.uid !== uid && props.data.uid !== undefined) {
+        // TODO LEVERAGE FLAGS
+
+        // Set state
+        setUid(props.data.uid);
+        setOpen(true);
+      }
     }
   }, [props]);
 
@@ -40,21 +49,21 @@ export default function ConfirmModal(props) {
       <Dialog
         id="dialog_confirm"
         open={open}
-        onClose={() => setOpen(false)}
+        onClose={onClose}
         fullWidth={true}
       >
-        <DialogTitle>{t(props.title)}</DialogTitle>
+        <DialogTitle>{t(props.data.title)}</DialogTitle>
 
         <DialogContent>
           <DialogContentText>
             <Typography sx={{ whiteSpace: "pre-line" }}>
-              {t(props.content)}
+              {t(props.data.content)}
             </Typography>
           </DialogContentText>
         </DialogContent>
 
         <DialogActions>
-          {props.callToActions.map((cta) => (
+          {props.data.callToActions.map((cta) => (
             <Button
               key={cta.label}
               onClick={cta.callback}

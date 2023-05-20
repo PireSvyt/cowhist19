@@ -1,11 +1,13 @@
 // Services
-import apiTableSave from "./apiTableSave.js";
-// Shared
-import { random_id } from "../../../services/toolkit.js";
+import apiTableDetails from "./apiTableDetails.js";
+import { random_id } from "../../../shared/services/toolkit.js";
 
-async function serviceTableSave( table) {
+// Reducers
+import appStore from "../../../store/appStore.js";
+
+async function serviceTableDetails() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("serviceTableSave");
+    console.log("serviceTableDetails");
   }
 
   try {
@@ -13,38 +15,35 @@ async function serviceTableSave( table) {
     let errors = [];
     let stateChanges = {};
 
-    // Prep
-    let tableToSave = table;
-    tableToSave.users = table.players;
+    // Initialize
+    let id = window.location.href.split("/table/")[1];
 
     // API call
-    const data = await apiTableSave( tableToSave);
+    const data = await serviceTableDetails(id);
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("data.type : " + data.type);
     }
 
     // Response management
     switch (data.type) {
-      case "table.save.success.created":
-        callbacks.push({ key: "totable", option: data.data.id });
+      case "table.details.success":
+        appStore.dispatch({
+          type: "tableDetails/set",
+          payload: data.data.table,
+        });
         break;
-      case "table.save.success.modified":
-        stateChanges.disabled = false;
-        stateChanges.loading = false;
-        callbacks.push({ key: "updatetable" });
+      case "table.details.error.onaggregate":
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
-          id: "table.snack.saved",
+          id: "generic.snack.error",
         };
         break;
-      case "table.save.error.oncreate":
-        stateChanges.disabled = false;
-        stateChanges.loading = false;
+      case "table.details.error.onfind":
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
-          id: "generic.snack.error.wip",
+          id: "generic.snack.error",
         };
         break;
       default:
@@ -52,9 +51,8 @@ async function serviceTableSave( table) {
         stateChanges.snack = {
           uid: random_id(),
           id: "generic.snack.api.unmanagedtype",
+          details: data.type,
         };
-        stateChanges.disabled = false;
-        stateChanges.loading = false;
     }
 
     // Response
@@ -71,8 +69,6 @@ async function serviceTableSave( table) {
     // Error network
     return {
       stateChanges: {
-        disabled: false,
-        loading: false,
         openSnack: true,
         snack: {
           uid: random_id(),
@@ -85,4 +81,4 @@ async function serviceTableSave( table) {
   }
 }
 
-export default serviceTableSave;
+export default serviceTableDetails;

@@ -1,11 +1,12 @@
 import { createSlice, configureStore } from "@reduxjs/toolkit";
 
 const sliceTableDetails = createSlice({
-  name: "tableDetails",
+  name: "sliceTableDetails",
   initialState: {
     id: "",
     name: "",
     players: [],
+    contracts: [],
   },
   reducers: {
     set: (state, action) => {
@@ -16,6 +17,7 @@ const sliceTableDetails = createSlice({
       state.id = action.payload.id;
       state.name = action.payload.name;
       state.players = action.payload.players;
+      state.contracts = action.payload.contracts;
     },
   },
 });

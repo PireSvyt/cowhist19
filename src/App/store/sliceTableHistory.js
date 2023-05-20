@@ -1,7 +1,7 @@
 import { createSlice, configureStore } from "@reduxjs/toolkit";
 
 const sliceTableHistory = createSlice({
-  name: "tableHistory",
+  name: "sliceTableHistory",
   initialState: {
     games: [],
   },

@@ -1,6 +1,6 @@
-function serviceTableSaveCheck(table, callback) {
+function serviceProceedCheck(table, callback) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("serviceTableSaveCheck");
+    console.log("serviceProceedCheck");
   }
   let proceed = true;
   let errors = [];
@@ -48,4 +48,4 @@ function serviceTableSaveCheck(table, callback) {
   };
 }
 
-export default serviceTableSaveCheck;
+export default serviceProceedCheck;

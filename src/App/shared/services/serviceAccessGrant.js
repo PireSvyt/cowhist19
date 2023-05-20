@@ -1,7 +1,7 @@
 import jwt_decode from "jwt-decode";
 
 // Services
-import serviceDenyAccess from "./serviceDenyAccess.js";
+import serviceAccessDeny from "./serviceAccessDeny.js";
 // Shared
 import serviceGetUserDetails from "./serviceGetUserDetails.js";
 // Reducers
@@ -20,7 +20,7 @@ async function serviceGrantAccess(token) {
       console.log("empty token");
     }
     errors.push("generic.error.emptytoken");
-    serviceDenyAccess();
+    serviceAccessDeny();
   } else {
     let decodedtoken = jwt_decode(token);
     // User status tollgate
@@ -43,7 +43,7 @@ async function serviceGrantAccess(token) {
         console.log("invalid status");
       }
       errors.push("generic.error.invalidstatus");
-      serviceDenyAccess();
+      serviceAccessDeny();
     }
   }
 

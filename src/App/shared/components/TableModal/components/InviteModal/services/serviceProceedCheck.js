@@ -1,9 +1,9 @@
 // Shared
 import { validateEmail } from "../../../../../services/toolkit";
 
-function serviceInviteCheck(user) {
+function serviceProceedCheck(user) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("serviceInviteCheckUser");
+    console.log("serviceProceedCheck");
   }
   let proceed = true;
   let errors = [];
@@ -50,4 +50,4 @@ function serviceInviteCheck(user) {
   };
 }
 
-export default serviceInviteCheck;
+export default serviceProceedCheck;

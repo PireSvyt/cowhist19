@@ -10,6 +10,7 @@ import MyTables from "./components/MyTables/MyTables.js";
 // Shared
 import Appbar from "../../shared/components/Appbar/Appbar.js";
 import Snack from "../../shared/components/Snack/Snack2.js";
+import ConfirmModal from "../../shared/components/ConfirmModal/ConfirmModal.js";
 import ToComeModal from "../../shared/components/ToComeModal/ToComeModal.js";
 
 export default function Home() {
@@ -22,6 +23,7 @@ export default function Home() {
   // Selects
   const select = {
     snackData: useSelector((state) => state.sliceSnack.snackData),
+    confirmData: useSelector((state) => state.sliceConfirmModal.confirmData),
     tocomeData: useSelector((state) => state.sliceToComeModal.tocomeData),
   };
 
@@ -33,6 +35,7 @@ export default function Home() {
       <MyStats />
       <MyTables />
       <Snack data-testid="componentSnack" data={select.snackData} />
+      <ConfirmModal data={select.confirmData} />
       <ToComeModal data={select.tocomeData} />
     </Box>
   );

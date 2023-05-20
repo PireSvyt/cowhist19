@@ -1,10 +1,10 @@
 require("@jest/globals");
-import serviceGameSaveCheck from "./serviceGameSaveCheck";
+import serviceProceedCheck from "./serviceProceedCheck";
 
 // Resources
 import emptyGame from "../resources/emptyGame.js";
 
-describe("TEST OF SERVICE : serviceGameSaveCheck", () => {
+describe("TEST OF SERVICE : serviceProceedCheck", () => {
   const validGame = {
     _id: "",
     table: "123",
@@ -120,15 +120,15 @@ describe("TEST OF SERVICE : serviceGameSaveCheck", () => {
     // Emptycase
     describe("When game is empty", () => {
       test("then the proceed field is false", () => {
-        const serviceOutcome = serviceGameSaveCheck(emptyGame, validContracts);
+        const serviceOutcome = serviceProceedCheck(emptyGame, validContracts);
         expect(serviceOutcome.proceed).toBeFalsy();
       });
       test("then state changes are provided", () => {
-        const serviceOutcome = serviceGameSaveCheck(emptyGame, validContracts);
+        const serviceOutcome = serviceProceedCheck(emptyGame, validContracts);
         expect(serviceOutcome.stateChanges.contractError).toBeTruthy();
       });
       test("then errors are provided", () => {
-        const serviceOutcome = serviceGameSaveCheck(emptyGame, validContracts);
+        const serviceOutcome = serviceProceedCheck(emptyGame, validContracts);
         expect(serviceOutcome.errors).toContain("game.error.missingcontract");
       });
     });
@@ -137,15 +137,15 @@ describe("TEST OF SERVICE : serviceGameSaveCheck", () => {
     // Emptycase
     describe("When the contract list is empty", () => {
       test("then the proceed field is false", () => {
-        const serviceOutcome = serviceGameSaveCheck(validGame, emptyContracts);
+        const serviceOutcome = serviceProceedCheck(validGame, emptyContracts);
         expect(serviceOutcome.proceed).toBeFalsy();
       });
       test("then state changes are provided", () => {
-        const serviceOutcome = serviceGameSaveCheck(validGame, emptyContracts);
+        const serviceOutcome = serviceProceedCheck(validGame, emptyContracts);
         expect(serviceOutcome.stateChanges.contractError).toBeTruthy();
       });
       test("then errors are provided", () => {
-        const serviceOutcome = serviceGameSaveCheck(validGame, emptyContracts);
+        const serviceOutcome = serviceProceedCheck(validGame, emptyContracts);
         expect(serviceOutcome.errors).toContain("game.error.missingcontract");
       });
     });
@@ -181,21 +181,21 @@ describe("TEST OF SERVICE : serviceGameSaveCheck", () => {
     };
     describe("When attack is badly formed", () => {
       test("then the proceed field is false", () => {
-        const serviceOutcome = serviceGameSaveCheck(
+        const serviceOutcome = serviceProceedCheck(
           invalidAttackGame,
           validContracts
         );
         expect(serviceOutcome.proceed).toBeFalsy();
       });
       test("then the state changes is provided", () => {
-        const serviceOutcome = serviceGameSaveCheck(
+        const serviceOutcome = serviceProceedCheck(
           invalidAttackGame,
           validContracts
         );
         expect(serviceOutcome.stateChanges.attackError).toBeTruthy();
       });
       test("then the error changes is provided", () => {
-        const serviceOutcome = serviceGameSaveCheck(
+        const serviceOutcome = serviceProceedCheck(
           invalidAttackGame,
           validContracts
         );
@@ -234,21 +234,21 @@ describe("TEST OF SERVICE : serviceGameSaveCheck", () => {
     };
     describe("When defense is badly formed", () => {
       test("then the proceed field is false", () => {
-        const serviceOutcome = serviceGameSaveCheck(
+        const serviceOutcome = serviceProceedCheck(
           invalidDefenseGame,
           validContracts
         );
         expect(serviceOutcome.proceed).toBeFalsy();
       });
       test("then the state changes is provided", () => {
-        const serviceOutcome = serviceGameSaveCheck(
+        const serviceOutcome = serviceProceedCheck(
           invalidDefenseGame,
           validContracts
         );
         expect(serviceOutcome.stateChanges.defenseError).toBeTruthy();
       });
       test("then the error changes is provided", () => {
-        const serviceOutcome = serviceGameSaveCheck(
+        const serviceOutcome = serviceProceedCheck(
           invalidDefenseGame,
           validContracts
         );
@@ -283,21 +283,21 @@ describe("TEST OF SERVICE : serviceGameSaveCheck", () => {
     };
     describe("When outcome is inconsistent", () => {
       test("then the proceed field is false", () => {
-        const serviceOutcome = serviceGameSaveCheck(
+        const serviceOutcome = serviceProceedCheck(
           invalidOutcomeGame,
           validContracts
         );
         expect(serviceOutcome.proceed).toBeFalsy();
       });
       test("then the state changes is provided", () => {
-        const serviceOutcome = serviceGameSaveCheck(
+        const serviceOutcome = serviceProceedCheck(
           invalidOutcomeGame,
           validContracts
         );
         expect(serviceOutcome.stateChanges.outcomeError).toBeTruthy();
       });
       test("then the error changes is provided", () => {
-        const serviceOutcome = serviceGameSaveCheck(
+        const serviceOutcome = serviceProceedCheck(
           invalidOutcomeGame,
           validContracts
         );

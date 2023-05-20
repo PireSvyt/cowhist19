@@ -3,9 +3,9 @@ import Cookies from "js-cookie";
 // Reducers
 import appStore from "../../store/appStore.js";
 
-function serviceDenyAccess() {
+function serviceAccessDeny() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("serviceDenyAccess");
+    console.log("serviceAccessDeny");
   }
   let callbacks = [];
   let errors = [];
@@ -26,4 +26,4 @@ function serviceDenyAccess() {
   };
 }
 
-export default serviceDenyAccess;
+export default serviceAccessDeny;

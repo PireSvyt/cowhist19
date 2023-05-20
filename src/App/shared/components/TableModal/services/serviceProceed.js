@@ -1,13 +1,12 @@
 // Services
-import apiGameSave from "./apiGameSave.js";
-// Resources
-import emptyGame from "../resources/emptyGame.js";
+import apiTableSave from "./apiTableSave.js";
+import serviceProceedCheck from "./serviceProceedCheck.js";
 // Shared
-import { random_id } from "../../../../../shared/services/toolkit.js";
+import { random_id } from "../../../services/toolkit.js";
 
-async function serviceGameSave(game) {
+async function serviceProceed( table) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("serviceGameSave");
+    console.log("serviceProceed");
   }
 
   try {
@@ -16,53 +15,37 @@ async function serviceGameSave(game) {
     let stateChanges = {};
 
     // Prep
+    let tableToSave = table;
+    tableToSave.users = table.players;
 
     // API call
-    const data = await apiGameSave(game);
+    const data = await apiTableSave( tableToSave);
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("data.type : " + data.type);
     }
 
     // Response management
     switch (data.type) {
-      case "game.save.success.created":
-        stateChanges.game = emptyGame;
-        stateChanges.disabled = false;
-        stateChanges.loading = false;
-        stateChanges.openSnack = true;
-        stateChanges.snack = {
-          uid: random_id(),
-          id: "game.snack.saved",
-        };
-        callbacks.push({ key: "updategames" });
+      case "table.save.success.created":
+        callbacks.push({ key: "totable", option: data.data.id });
         break;
-      case "game.save.success.modified":
-        stateChanges.game = emptyGame;
+      case "table.save.success.modified":
         stateChanges.disabled = false;
         stateChanges.loading = false;
+        callbacks.push({ key: "updatetable" });
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
-          id: "game.snack.saved",
-        };
-        callbacks.push({ key: "updategames" });
-        break;
-      case "game.save.error.oncreate":
-        stateChanges.disabled = false;
-        stateChanges.loading = false;
-        stateChanges.openSnack = true;
-        stateChanges.snack = {
-          uid: random_id(),
-          id: "game.snack.error.wip",
+          id: "table.snack.saved",
         };
         break;
-      case "game.save.error.onmodify":
+      case "table.save.error.oncreate":
         stateChanges.disabled = false;
         stateChanges.loading = false;
         stateChanges.openSnack = true;
         stateChanges.snack = {
           uid: random_id(),
-          id: "game.snack.error.wip",
+          id: "generic.snack.error.wip",
         };
         break;
       default:
@@ -70,7 +53,6 @@ async function serviceGameSave(game) {
         stateChanges.snack = {
           uid: random_id(),
           id: "generic.snack.api.unmanagedtype",
-          details: data.type,
         };
         stateChanges.disabled = false;
         stateChanges.loading = false;
@@ -104,4 +86,4 @@ async function serviceGameSave(game) {
   }
 }
 
-export default serviceGameSave;
+export default serviceProceed;

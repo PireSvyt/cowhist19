@@ -6,7 +6,7 @@ import apiSignIn from "./apiSignIn.js";
 import serviceProceedCheck from "./serviceProceedCheck.js";
 // Shared
 import { random_id } from "../../../../../../../shared/services/toolkit.js";
-import serviceGrantAccess from "../../../../../../../shared/services/serviceGrantAccess.js";
+import serviceAccessGrant from "../../../../../../../shared/services/serviceAccessGrant.js";
 // Reducers
 import appStore from "../../../../../../../store/appStore.js";
 

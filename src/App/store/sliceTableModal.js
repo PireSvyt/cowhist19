@@ -15,7 +15,6 @@ const sliceTableModal = createSlice({
     },
     disabled: false,
     loading: false,
-    snackData: { id: undefined },
   },
   reducers: {
     new: (state) => {
@@ -39,6 +38,8 @@ const sliceTableModal = createSlice({
       }
       state.open = true;
       state.id = action.payload.id;
+      state.inputs.name = action.payload.name;
+      state.inputs.players = action.payload.players;
       state.errors = {
         name: false,
         players: false,
@@ -66,20 +67,20 @@ const sliceTableModal = createSlice({
       }
       // Inputs
       if (action.payload.inputs !== undefined) {
-        if (action.payload.inputs.login !== undefined) {
-          state.inputs.login = action.payload.inputs.login;
+        if (action.payload.inputs.name !== undefined) {
+          state.inputs.name = action.payload.inputs.name;
         }
-        if (action.payload.inputs.password !== undefined) {
-          state.inputs.password = action.payload.inputs.password;
+        if (action.payload.inputs.players !== undefined) {
+          state.inputs.players = action.payload.inputs.players;
         }
       }
       // Errors
       if (action.payload.errors !== undefined) {
-        if (action.payload.errors.loginError !== undefined) {
-          state.loginError = action.payload.errors.loginError;
+        if (action.payload.errors.name !== undefined) {
+          state.errors.name = action.payload.errors.name;
         }
-        if (action.payload.errors.passwordError !== undefined) {
-          state.passwordError = action.payload.errors.passwordError;
+        if (action.payload.errors.players !== undefined) {
+          state.errors.players = action.payload.errors.players;
         }
       }
       // Lock
@@ -89,13 +90,15 @@ const sliceTableModal = createSlice({
       if (action.payload.loading !== undefined) {
         state.loading = action.payload.loading;
       }
-      // Snack
-      if (action.payload.snackOpen !== undefined) {
-        state.snackOpen = action.payload.snackOpen;
+    },
+    removeuser: (state, action) => {
+      if (process.env.REACT_APP_DEBUG === "TRUE") {
+        console.log("sliceTableModal.removeuser");
+        //console.log(action.payload);
       }
-      if (action.payload.snackData !== undefined) {
-        state.snackData = action.payload.snackData;
-      }
+      state.inputs.players = state.inputs.players.filter(
+        (player) => player._id !== action.payload
+      );
     },
     lock: (state, action) => {
       if (process.env.REACT_APP_DEBUG === "TRUE") {

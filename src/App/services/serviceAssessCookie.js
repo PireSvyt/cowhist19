@@ -4,8 +4,6 @@ import Cookies from "js-cookie";
 import apiAuthAssess from "./apiAuthAssess.js";
 import serviceGrantAccess from "../shared/services/serviceGrantAccess.js";
 import serviceDenyAccess from "../shared/services/serviceDenyAccess.js";
-// Reducers
-import appStore from "../store/appStore.js";
 
 async function serviceAssessCookie() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -14,7 +12,7 @@ async function serviceAssessCookie() {
 
   try {
     // Load token from cookies
-    let token = Cookies.get("cowhist19-token");
+    let token = Cookies.get("cowhist19_token");
     if (token === undefined) {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
         console.log("serviceAssessCookie no token from cookies");

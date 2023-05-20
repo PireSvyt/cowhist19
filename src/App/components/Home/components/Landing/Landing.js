@@ -33,7 +33,7 @@ export default function Landing() {
         <ButtonGroup variant="contained" size="large">
           <Button
             onClick={() => {
-              appStore.dispatch({ type: "sliceSignUp/open" });
+              appStore.dispatch({ type: "sliceSignUpModal/open" });
             }}
             size="large"
           >
@@ -41,7 +41,7 @@ export default function Landing() {
           </Button>
           <Button
             onClick={() => {
-              appStore.dispatch({ type: "sliceSignIn/open" });
+              appStore.dispatch({ type: "sliceSignInModal/open" });
             }}
             size="large"
           >

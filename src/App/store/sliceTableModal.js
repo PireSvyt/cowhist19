@@ -1,9 +1,10 @@
 import { createSlice, configureStore } from "@reduxjs/toolkit";
 
-const sliceTable = createSlice({
-  name: "sliceTable",
+const sliceTableModal = createSlice({
+  name: "sliceTableModal",
   initialState: {
     open: false,
+    id: "",
     inputs: {
       name: "",
       players: [],
@@ -19,43 +20,45 @@ const sliceTable = createSlice({
   reducers: {
     new: (state) => {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("sliceTable.new");
+        console.log("sliceTableModal.new");
       }
       state.open = true;
+      state.id = "";
       state.inputs = {
         name: "",
         players: [],
       };
       state.errors = {
-        login: false,
-        password: false,
+        name: false,
+        players: false,
       };
     },
-    open: (state) => {
+    open: (state, action) => {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("sliceTable.open");
+        console.log("sliceTableModal.open");
       }
       state.open = true;
+      state.id = action.payload.id;
       state.errors = {
-        login: false,
-        password: false,
+        name: false,
+        players: false,
       };
     },
     close: (state) => {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("sliceTable.close");
+        console.log("sliceTableModal.close");
       }
       state.open = false;
       state.errors = {
-        login: false,
-        password: false,
+        name: false,
+        players: false,
       };
       state.disabled = false;
       state.loading = false;
     },
     change: (state, action) => {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("sliceTable.change");
+        console.log("sliceTableModal.change");
         //console.log(action.payload);
       }
       if (action.payload.open !== undefined) {
@@ -96,7 +99,7 @@ const sliceTable = createSlice({
     },
     lock: (state, action) => {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("sliceTable.lock");
+        console.log("sliceTableModal.lock");
         //console.log(action.payload);
       }
       state.disabled = true;
@@ -105,4 +108,4 @@ const sliceTable = createSlice({
   },
 });
 
-export default sliceTable.reducer;
+export default sliceTableModal.reducer;

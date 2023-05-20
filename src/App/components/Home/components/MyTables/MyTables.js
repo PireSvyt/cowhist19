@@ -37,7 +37,7 @@ export default function MyTables() {
       console.log("TableCard " + props.table._id);
     }
     function onClick() {
-      window.location = "/table/" + this.props.table._id;
+      window.location = "/table/" + props.table._id;
     }
     return (
       <Card sx={{ width: "100%", p: 1 }} onClick={onClick}>

@@ -2,6 +2,8 @@ import jwt_decode from "jwt-decode";
 
 // Services
 import serviceDenyAccess from "./serviceDenyAccess.js";
+// Shared
+import serviceGetUserDetails from "./serviceGetUserDetails.js";
 // Reducers
 import appStore from "../../store/appStore.js";
 
@@ -34,6 +36,8 @@ async function serviceGrantAccess(token) {
           decodedtoken: decodedtoken,
         },
       });
+      //
+      serviceGetUserDetails();
     } else {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
         console.log("invalid status");

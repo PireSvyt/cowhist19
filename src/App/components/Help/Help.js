@@ -1,40 +1,51 @@
-import React from "react";
-import { withTranslation } from "react-i18next";
-import { Box } from "@mui/material";
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Box, Button } from "@mui/material";
 
 // Components
 //import Documentation from "./components/Documentation/Documentation.js";
 //import Howto from "./components/Howto/Howto.js";
-
 // Shared
 import Appbar from "../../shared/components/Appbar/Appbar.js";
+import ToComeModal from "../../shared/components/ToComeModal/ToComeModal.js";
 
-class Help extends React.Component {
-  constructor(props) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Help.constructor");
-    }
-    super(props);
-    this.state = {};
-
-    // Handles
+export default function Help() {
+  if (process.env.REACT_APP_DEBUG === "TRUE") {
+    console.log("Help");
   }
-  render() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Help.render");
-    }
-    // i18n
-    const { t } = this.props;
+  // i18n
+  const { t } = useTranslation();
 
-    return (
-      <Box>
-        <Appbar route="home" title={t("generic.label.help")} />
-        <Box sx={{ height: 48 }} />
-      </Box>
-    );
-  }
+  // States
+  const [tocome, setTocome] = useState(false);
 
   // Handles
-}
+  function openTocome() {
+    setTocome(true);
+  }
+  function closeTocome() {
+    setTocome(false);
+  }
 
-export default withTranslation()(Help);
+  return (
+    <Box>
+      <Appbar route="help" title={t("generic.label.help")} />
+      <Box sx={{ height: 48 }} />
+
+      <Box textAlign="center">
+        <Box sx={{ height: 48 }} />
+        <Button
+          variant="outlined"
+          sx={{
+            width: "80%",
+            m: 1,
+          }}
+          onClick={openTocome}
+        >
+          {t("generic.button.tocome")}
+        </Button>
+      </Box>
+      <ToComeModal open={tocome} callback={closeTocome} />
+    </Box>
+  );
+}

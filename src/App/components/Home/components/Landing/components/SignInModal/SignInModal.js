@@ -21,7 +21,7 @@ import serviceModalChange from "../../../../../../shared/services/serviceModalCh
 import { random_id } from "../../../../../../shared/services/toolkit.js";
 // Reducers
 import appStore from "../../../../../../store/appStore.js";
-import sliceSignIn from "../../../../../../store/sliceSignIn.js";
+import sliceSignInModal from "../../../../../../store/sliceSignInModal.js";
 
 export default function SignInModal() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -35,18 +35,18 @@ export default function SignInModal() {
 
   // Selects
   const select = {
-    open: useSelector((state) => state.sliceSignIn.open),
-    inputs: useSelector((state) => state.sliceSignIn.inputs),
-    errors: useSelector((state) => state.sliceSignIn.errors),
-    disabled: useSelector((state) => state.sliceSignIn.disabled),
-    loading: useSelector((state) => state.sliceSignIn.loading),
-    snackData: useSelector((state) => state.sliceSignIn.snackData),
+    open: useSelector((state) => state.sliceSignInModal.open),
+    inputs: useSelector((state) => state.sliceSignInModal.inputs),
+    errors: useSelector((state) => state.sliceSignInModal.errors),
+    disabled: useSelector((state) => state.sliceSignInModal.disabled),
+    loading: useSelector((state) => state.sliceSignInModal.loading),
+    snackData: useSelector((state) => state.sliceSignInModal.snackData),
   };
   // Changes
   const changes = {
     login: (e) => {
       appStore.dispatch({
-        type: "sliceSignIn/change",
+        type: "sliceSignInModal/change",
         payload: {
           inputs: { login: e.target.value },
           errors: { login: false },
@@ -55,7 +55,7 @@ export default function SignInModal() {
     },
     password: (e) => {
       appStore.dispatch({
-        type: "sliceSignIn/change",
+        type: "sliceSignInModal/change",
         payload: {
           inputs: { password: e.target.value },
           errors: { password: false },
@@ -72,7 +72,7 @@ export default function SignInModal() {
         id="dialog_signin"
         open={select.open === true}
         onClose={() => {
-          appStore.dispatch({ type: "sliceSignIn/close" });
+          appStore.dispatch({ type: "sliceSignInModal/close" });
         }}
         fullWidth={true}
       >
@@ -123,7 +123,7 @@ export default function SignInModal() {
           <Button
             data-testid="buttonClose"
             onClick={() => {
-              appStore.dispatch({ type: "sliceSignUp/close" });
+              appStore.dispatch({ type: "sliceSignInModal/close" });
             }}
           >
             {t("generic.button.cancel")}

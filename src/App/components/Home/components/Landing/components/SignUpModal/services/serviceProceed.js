@@ -16,13 +16,13 @@ async function serviceProceed() {
 
   try {
     // Lock UI
-    appStore.dispatch({ type: "sliceSignUp/lock" });
-    const signUpInputs = { ...appStore.getState().sliceSignUp.inputs };
+    appStore.dispatch({ type: "sliceSignUpModal/lock" });
+    const signUpInputs = { ...appStore.getState().sliceSignUpModal.inputs };
 
     // Check inputs
     let proceedCheckOutcome = serviceProceedCheck(signUpInputs);
     appStore.dispatch({
-      type: "sliceSignUp/change",
+      type: "sliceSignUpModal/change",
       payload: proceedCheckOutcome.stateChanges,
     });
 
@@ -42,7 +42,7 @@ async function serviceProceed() {
       switch (data.type) {
         case "auth.signup.success.signedup":
           appStore.dispatch({
-            type: "sliceSignUp/change",
+            type: "sliceSignUpModal/change",
             payload: {
               open: false,
               inputs: {
@@ -64,12 +64,12 @@ async function serviceProceed() {
           });
           // Open signin modal
           appStore.dispatch({
-            type: "sliceSignIn/open",
+            type: "sliceSignInModal/open",
           });
           break;
         case "auth.signup.success.alreadysignedup":
           appStore.dispatch({
-            type: "sliceSignUp/change",
+            type: "sliceSignUpModal/change",
             payload: {
               disabled: false,
               loading: false,
@@ -85,7 +85,7 @@ async function serviceProceed() {
           break;
         case "auth.signup.error.savingoncreate":
           appStore.dispatch({
-            type: "sliceSignUp/change",
+            type: "sliceSignUpModal/change",
             payload: {
               disabled: false,
               loading: false,
@@ -101,7 +101,7 @@ async function serviceProceed() {
           break;
         case "auth.signup.error.savingfrominvited":
           appStore.dispatch({
-            type: "sliceSignUp/change",
+            type: "sliceSignUpModal/change",
             payload: {
               disabled: false,
               loading: false,
@@ -117,7 +117,7 @@ async function serviceProceed() {
           break;
         case "auth.signup.error.notfound":
           appStore.dispatch({
-            type: "sliceSignUp/change",
+            type: "sliceSignUpModal/change",
             payload: {
               disabled: false,
               loading: false,
@@ -133,7 +133,7 @@ async function serviceProceed() {
           break;
         default:
           appStore.dispatch({
-            type: "sliceSignUp/change",
+            type: "sliceSignUpModal/change",
             payload: {
               disabled: false,
               loading: false,
@@ -150,7 +150,7 @@ async function serviceProceed() {
     } else {
       if (proceedCheckOutcome.errors.length > 0) {
         appStore.dispatch({
-          type: "sliceSignUp/change",
+          type: "sliceSignUpModal/change",
           payload: {
             disabled: false,
             loading: false,
@@ -173,7 +173,7 @@ async function serviceProceed() {
     }
     // Error network
     appStore.dispatch({
-      type: "sliceSignUp/change",
+      type: "sliceSignUpModal/change",
       payload: {
         disabled: false,
         loading: false,

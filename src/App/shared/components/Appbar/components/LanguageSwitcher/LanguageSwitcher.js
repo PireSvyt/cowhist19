@@ -1,134 +1,63 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Cookies from "js-cookie";
-import { withTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { IconButton, Typography, Menu, MenuItem, Box } from "@mui/material";
 
 import LanguageIcon from "@mui/icons-material/Language.js";
 
 // Shared
 import { random_id } from "../../../../services/toolkit.js";
-import Snack from "../../../Snack/Snack.js";
 
-class LanguageSwitcher extends React.Component {
-  constructor(props) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("LanguageSwitcher.constructor");
-    }
-    super(props);
-    // i18n
-    const { t } = this.props;
-
-    this.state = {
-      open: false,
-      languages: ["enGB", "frFR"],
-      language: "",
-      openSnack: false,
-      snack: { id: undefined },
-    };
-
-    // Handles
-    this.handleOpen = this.handleOpen.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSnack = this.handleSnack.bind(this);
+export default function LanguageSwitcher(props) {
+  if (process.env.REACT_APP_DEBUG === "TRUE") {
+    console.log("LanguageSwitcher");
   }
-  render() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("LanguageSwitcher.render");
-    }
-    // i18n
-    const { t } = this.props;
+  // i18n
+  const { t } = useTranslation();
 
-    const { anchorEl } = this.state;
+  // Constants
+  const languages = ["enGB", "frFR"];
 
-    return (
-      <Box hidden={!this.props.show}>
-        <IconButton onClick={this.handleOpen} size="small" sx={{ ml: 2 }}>
-          <LanguageIcon sx={{ color: "white" }} />
-        </IconButton>
-        <Menu
-          open={this.state.open}
-          onClose={this.handleClose}
-          anchorEl={anchorEl}
-          anchorOrigin={{ vertical: "top", horizontal: "right" }}
-          MenuListProps={{
-            "aria-labelledby": "basic-button",
-          }}
-        >
-          {this.state.languages.map((language) => {
-            return (
-              <MenuItem
-                key={random_id()}
-                onClick={() => this.handleChange(language)}
-                selected={language === this.state.language}
-              >
-                {t("generic.language." + language + ".long")}
-              </MenuItem>
-            );
-          })}
-        </Menu>
-
-        <Snack
-          open={this.state.openSnack}
-          snack={this.state.snack}
-          callback={this.handleSnack}
-        />
-      </Box>
-    );
-  }
+  // States
+  const [switcherOpen, setSwitcherOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
 
   // Handles
-  handleOpen() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("LanguageSwitcher.handleOpen");
-    }
-    this.setState((prevState, props) => ({
-      open: true,
-    }));
+  const openSwitcher = (event) => {
+    setAnchorEl(event.currentTarget);
+    setSwitcherOpen(true);
+  };
+  function closeSwitcher() {
+    setSwitcherOpen(false);
   }
-  handleClose() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("LanguageSwitcher.handleClose");
-    }
-    this.setState((prevState, props) => ({
-      open: false,
-    }));
-  }
-  handleChange(language) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("LanguageSwitcher.handleChange");
-    }
-    this.setState((prevState, props) => ({
-      language: language,
-      open: false,
-    }));
-    // Save user preference in cookies
-    // https://medium.com/how-to-react/how-to-use-js-cookie-to-store-data-in-cookies-in-react-js-aab47f8a45c3
-    Cookies.set("cowhist19_language", language);
-    // Notify user to refresh
-    /*this.setState((prevState, props) => ({
-      openSnack: true,
-      snack: {
-        uid: random_id(),
-        id: "generic.snack.feedback.languagechange",
-      },
-    }));*/
-    // Reload page
-    window.location.reload(false);
-  }
-  handleSnack(action) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("TableModal.handleSnack " + action);
-    }
-    switch (action) {
-      case "close":
-        this.setState((prevState, props) => ({
-          openSnack: false,
-        }));
-        break;
-      default:
-    }
-  }
-}
 
-export default withTranslation()(LanguageSwitcher);
+  return (
+    <Box hidden={!props.show}>
+      <IconButton onClick={openSwitcher} size="small" sx={{ ml: 2 }}>
+        <LanguageIcon sx={{ color: "white" }} />
+      </IconButton>
+      <Menu
+        open={switcherOpen}
+        onClose={closeSwitcher}
+        anchorEl={anchorEl}
+        MenuListProps={{
+          "aria-labelledby": "basic-button",
+        }}
+      >
+        {languages.map((language) => {
+          return (
+            <MenuItem
+              key={random_id()}
+              onClick={() => {
+                Cookies.set("cowhist19_language", language);
+                window.location.reload(false);
+              }}
+            >
+              {t("generic.language." + language + ".long")}
+            </MenuItem>
+          );
+        })}
+      </Menu>
+    </Box>
+  );
+}

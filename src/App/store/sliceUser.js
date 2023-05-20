@@ -16,7 +16,7 @@ const sliceUser = createSlice({
     signin: (state, action) => {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
         console.log("sliceUser.signin");
-        console.log(action.payload);
+        //console.log(action.payload);
       }
       state.signedin = true;
       state.token = action.payload.token;
@@ -24,27 +24,18 @@ const sliceUser = createSlice({
       state.login = action.payload.decodedtoken.login;
       state.pseudo = action.payload.decodedtoken.pseudo;
       state.status = action.payload.decodedtoken.status;
-      if (action.payload.priviledges !== undefined) {
-        state.priviledges = action.payload.priviledges;
-      }
-      if (action.payload.tables !== undefined) {
-        state.tables = action.payload.tables;
-      }
     },
-    update: (state, action) => {
+    details: (state, action) => {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("sliceUser.update");
+        console.log("sliceUser.signin");
         //console.log(action.payload);
       }
+      state.token = action.payload.token;
       state.login = action.payload.login;
       state.pseudo = action.payload.pseudo;
       state.status = action.payload.status;
-      if (action.payload.priviledges !== undefined) {
-        state.priviledges = action.payload.priviledges;
-      }
-      if (action.payload.tables !== undefined) {
-        state.tables = action.payload.tables;
-      }
+      state.priviledges = action.payload.priviledges;
+      state.tables = action.payload.tables;
     },
     signout: (state) => {
       if (process.env.REACT_APP_DEBUG === "TRUE") {

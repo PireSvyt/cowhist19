@@ -17,13 +17,13 @@ async function serviceProceed() {
 
   try {
     // Lock UI
-    appStore.dispatch({ type: "sliceSignIn/lock" });
-    const signInInputs = { ...appStore.getState().sliceSignIn.inputs };
+    appStore.dispatch({ type: "sliceSignInModal/lock" });
+    const signInInputs = { ...appStore.getState().sliceSignInModal.inputs };
 
     // Check inputs
     let proceedCheckOutcome = serviceProceedCheck(signInInputs);
     appStore.dispatch({
-      type: "sliceSignIn/change",
+      type: "sliceSignInModal/change",
       payload: proceedCheckOutcome.stateChanges,
     });
 
@@ -57,7 +57,7 @@ async function serviceProceed() {
                 console.log(proceedOutcome.errors);
               }
               appStore.dispatch({
-                type: "sliceSignIn/change",
+                type: "sliceSignInModal/change",
                 payload: {
                   disabled: false,
                   loading: false,
@@ -74,7 +74,7 @@ async function serviceProceed() {
               // https://medium.com/how-to-react/how-to-use-js-cookie-to-store-data-in-cookies-in-react-js-aab47f8a45c3
               Cookies.set("cowhist19_token", data.data.token);
               appStore.dispatch({
-                type: "sliceSignIn/change",
+                type: "sliceSignInModal/change",
                 payload: {
                   open: false,
                   inputs: {
@@ -97,7 +97,7 @@ async function serviceProceed() {
           break;
         case "auth.signin.error.notfound":
           appStore.dispatch({
-            type: "sliceSignIn/change",
+            type: "sliceSignInModal/change",
             payload: {
               disabled: false,
               loading: false,
@@ -113,7 +113,7 @@ async function serviceProceed() {
           break;
         case "auth.signin.error.invalidpassword":
           appStore.dispatch({
-            type: "sliceSignIn/change",
+            type: "sliceSignInModal/change",
             payload: {
               disabled: false,
               loading: false,
@@ -129,7 +129,7 @@ async function serviceProceed() {
           break;
         case "auth.signin.error.onpasswordcompare":
           appStore.dispatch({
-            type: "sliceSignIn/change",
+            type: "sliceSignInModal/change",
             payload: {
               disabled: false,
               loading: false,
@@ -145,7 +145,7 @@ async function serviceProceed() {
           break;
         case "auth.signin.error.onfind":
           appStore.dispatch({
-            type: "sliceSignIn/change",
+            type: "sliceSignInModal/change",
             payload: {
               disabled: false,
               loading: false,
@@ -161,7 +161,7 @@ async function serviceProceed() {
           break;
         default:
           appStore.dispatch({
-            type: "sliceSignIn/change",
+            type: "sliceSignInModal/change",
             payload: {
               disabled: false,
               loading: false,
@@ -179,7 +179,7 @@ async function serviceProceed() {
     } else {
       if (proceedCheckOutcome.errors.length > 0) {
         appStore.dispatch({
-          type: "sliceSignIn/change",
+          type: "sliceSignInModal/change",
           payload: {
             disabled: false,
             loading: false,
@@ -202,7 +202,7 @@ async function serviceProceed() {
     }
     // Error network
     appStore.dispatch({
-      type: "sliceSignIn/change",
+      type: "sliceSignInModal/change",
       payload: {
         disabled: false,
         loading: false,

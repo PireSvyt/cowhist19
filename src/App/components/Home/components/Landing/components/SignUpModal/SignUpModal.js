@@ -20,7 +20,7 @@ import serviceModalChange from "../../../../../../shared/services/serviceModalCh
 import { random_id } from "../../../../../../shared/services/toolkit.js";
 // Reducers
 import appStore from "../../../../../../store/appStore.js";
-import sliceSignUp from "../../../../../../store/sliceSignUp.js";
+import sliceSignUpModal from "../../../../../../store/sliceSignUpModal.js";
 
 export default function SignUpModal() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -34,18 +34,18 @@ export default function SignUpModal() {
 
   // Selects
   const select = {
-    open: useSelector((state) => state.sliceSignUp.open),
-    inputs: useSelector((state) => state.sliceSignUp.inputs),
-    errors: useSelector((state) => state.sliceSignUp.errors),
-    disabled: useSelector((state) => state.sliceSignUp.disabled),
-    loading: useSelector((state) => state.sliceSignUp.loading),
-    snackData: useSelector((state) => state.sliceSignUp.snackData),
+    open: useSelector((state) => state.sliceSignUpModal.open),
+    inputs: useSelector((state) => state.sliceSignUpModal.inputs),
+    errors: useSelector((state) => state.sliceSignUpModal.errors),
+    disabled: useSelector((state) => state.sliceSignUpModal.disabled),
+    loading: useSelector((state) => state.sliceSignUpModal.loading),
+    snackData: useSelector((state) => state.sliceSignUpModal.snackData),
   };
   // Changes
   const changes = {
     pseudo: (e) => {
       appStore.dispatch({
-        type: "sliceSignUp/change",
+        type: "sliceSignUpModal/change",
         payload: {
           inputs: { pseudo: e.target.value },
           errors: { pseudo: false },
@@ -54,7 +54,7 @@ export default function SignUpModal() {
     },
     login: (e) => {
       appStore.dispatch({
-        type: "sliceSignUp/change",
+        type: "sliceSignUpModal/change",
         payload: {
           inputs: { login: e.target.value },
           errors: { login: false },
@@ -63,7 +63,7 @@ export default function SignUpModal() {
     },
     password: (e) => {
       appStore.dispatch({
-        type: "sliceSignUp/change",
+        type: "sliceSignUpModal/change",
         payload: {
           inputs: { password: e.target.value },
           errors: { password: false },
@@ -72,7 +72,7 @@ export default function SignUpModal() {
     },
     repeatpassword: (e) => {
       appStore.dispatch({
-        type: "sliceSignUp/change",
+        type: "sliceSignUpModal/change",
         payload: {
           inputs: { repeatpassword: e.target.value },
           errors: { repeatpassword: false },
@@ -89,7 +89,7 @@ export default function SignUpModal() {
         id="dialog_signup"
         open={select.open === true}
         onClose={() => {
-          appStore.dispatch({ type: "sliceSignUp/close" });
+          appStore.dispatch({ type: "sliceSignUpModal/close" });
         }}
         fullWidth={true}
       >
@@ -161,7 +161,7 @@ export default function SignUpModal() {
           <Button
             data-testid="buttonClose"
             onClick={() => {
-              appStore.dispatch({ type: "sliceSignUp/close" });
+              appStore.dispatch({ type: "sliceSignUpModal/close" });
             }}
           >
             {t("generic.button.cancel")}

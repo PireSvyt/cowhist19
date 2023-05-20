@@ -69,8 +69,8 @@ export default function MyTables() {
           </ListItem>
         ))}
       </List>
+
+      <TableModal />
     </Box>
   );
 }
-
-// <TableModal />

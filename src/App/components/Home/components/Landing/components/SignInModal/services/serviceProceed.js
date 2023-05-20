@@ -50,7 +50,7 @@ async function serviceProceed() {
       // Response management
       switch (data.type) {
         case "auth.signin.success":
-          serviceGrantAccess(data.data.token).then((proceedOutcome) => {
+          serviceAccessGrant(data.data.token).then((proceedOutcome) => {
             if (proceedOutcome.errors.length > 0) {
               if (process.env.REACT_APP_DEBUG === "TRUE") {
                 console.log("proceedOutcome errors");

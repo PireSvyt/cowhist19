@@ -111,7 +111,7 @@ export default function TableModal() {
     <Box>
       <Dialog
         id="dialog_table"
-        open={open}
+        open={open === true}
         onClose={() => {
           appStore.dispatch({ type: "sliceTableModal/close" });
         }}

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Box, Button } from "@mui/material";
 
 // Components
@@ -8,6 +9,8 @@ import { Box, Button } from "@mui/material";
 // Shared
 import Appbar from "../../shared/components/Appbar/Appbar.js";
 import ToComeModal from "../../shared/components/ToComeModal/ToComeModal.js";
+// Reducers
+import appStore from "../../store/appStore.js";
 
 export default function Help() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -15,17 +18,6 @@ export default function Help() {
   }
   // i18n
   const { t } = useTranslation();
-
-  // States
-  const [tocome, setTocome] = useState(false);
-
-  // Handles
-  function openTocome() {
-    setTocome(true);
-  }
-  function closeTocome() {
-    setTocome(false);
-  }
 
   // Selects
   const select = {
@@ -45,7 +37,9 @@ export default function Help() {
             width: "80%",
             m: 1,
           }}
-          onClick={openTocome}
+          onClick={() => {
+            appStore.dispatch({ type: "sliceToComeModal/open" });
+          }}
         >
           {t("generic.button.tocome")}
         </Button>

@@ -1,6 +1,6 @@
 import React from "react";
 import { withTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 import { ButtonGroup, Button, Box } from "@mui/material";
 
 // Components
@@ -8,8 +8,7 @@ import SignUpModal from "./components/SignUpModal/SignUpModal.js";
 import SignInModal from "./components/SignInModal/SignInModal.js";
 // Reducers
 import reduxStore from "../../../../store/reduxStore.js";
-import { actionSignInOpen } from "./components/SignInModal/store/sliceSignIn.js";
-//import { actionSignInOpen } from "./components/SignInModal/store/storeSignIn.js";
+import storeSignIn from "./components/SignInModal/store/storeSignIn.js";
 
 class Landing extends React.Component {
   constructor(props) {
@@ -49,7 +48,7 @@ class Landing extends React.Component {
             </Button>
             <Button
               onClick={() => {
-                useDispatch(actionSignInOpen());
+                storeSignIn.dispatch({ type: "sliceSignIn/actionSignInOpen" });
               }}
               size="large"
             >
@@ -59,7 +58,10 @@ class Landing extends React.Component {
         </Box>
 
         <SignUpModal />
-        <SignInModal />
+
+        <Provider store={storeSignIn}>
+          <SignInModal />
+        </Provider>
       </Box>
     );
   }

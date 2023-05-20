@@ -12,37 +12,25 @@ const sliceSignIn = createSlice({
     passwordError: false,
     disabled: false,
     loading: false,
+    snackOpen: false,
+    snackData: { id: undefined },
   },
   reducers: {
-    actionSignInOpen: (state, action) => {
+    actionSignInOpen: (state) => {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
         console.log("sliceSignIn.actionSignInOpen");
-        //console.log(action.payload);
       }
-      return {
-        ...state,
-        open: true,
+      state.open = true;
+      state.inputs = {
+        login: "",
+        password: "",
       };
+      state.loginError = false;
+      state.passwordError = false;
     },
-    actionSignInChange: (state, action) => {
-      if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("sliceSignIn.actionSignInChange");
-        //console.log(action.payload);
-      }
-      if (action.payload.inputs !== undefined) {
-        state.inputs = action.payload.inputs;
-      }
-      if (action.payload.loginError !== undefined) {
-        state.loginError = action.payload.loginError;
-      }
-      if (action.payload.passwordError !== undefined) {
-        state.passwordError = action.payload.passwordError;
-      }
-    },
-    actionSignInClose: (state, action) => {
+    actionSignInClose: (state) => {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
         console.log("sliceSignIn.actionSignInClose");
-        //console.log(action.payload);
       }
       state.open = false;
       state.inputs = {
@@ -54,17 +42,60 @@ const sliceSignIn = createSlice({
       state.disabled = false;
       state.loading = false;
     },
+    actionSignInStateChanges: (state, action) => {
+      if (process.env.REACT_APP_DEBUG === "TRUE") {
+        console.log("sliceSignIn.actionSignInStateChanges");
+        //console.log(action.payload);
+      }
+      if (action.payload.open !== undefined) {
+        state.open = action.payload.open;
+      }
+      // Inputs
+      if (action.payload.login !== undefined) {
+        state.inputs.login = action.payload.login;
+      }
+      if (action.payload.password !== undefined) {
+        state.inputs.password = action.payload.password;
+      }
+      // Errors
+      if (action.payload.loginError !== undefined) {
+        state.loginError = action.payload.loginError;
+      }
+      if (action.payload.passwordError !== undefined) {
+        state.passwordError = action.payload.passwordError;
+      }
+      // Lock
+      if (action.payload.disabled !== undefined) {
+        state.disabled = action.payload.disabled;
+      }
+      if (action.payload.loading !== undefined) {
+        state.loading = action.payload.loading;
+      }
+      // Snack
+      if (action.payload.snackOpen !== undefined) {
+        state.snackOpen = action.payload.snackOpen;
+      }
+      if (action.payload.snackData !== undefined) {
+        state.snackData = action.payload.snackData;
+      }
+    },
+    actionSignInLock: (state, action) => {
+      if (process.env.REACT_APP_DEBUG === "TRUE") {
+        console.log("sliceSignIn.actionSignInLock");
+        //console.log(action.payload);
+      }
+      state.disabled = true;
+      state.loading = true;
+    },
+    actionSignInSnack: (state, action) => {
+      if (process.env.REACT_APP_DEBUG === "TRUE") {
+        console.log("sliceSignIn.actionSignInStateChanges");
+        //console.log(action.payload);
+      }
+      //state.snackOpen = true;
+      state.snackData = action.payload;
+    },
   },
 });
 
 export default sliceSignIn.reducer;
-
-export const selectSignInOpen = (state) => state.signIn.open;
-export const selectSignInInputs = (state) => state.signIn.inputs;
-export const selectSignInLoginError = (state) => state.signIn.loginError;
-export const selectSignInPasswordError = (state) => state.signIn.passwordError;
-export const selectSignInDisabled = (state) => state.signIn.disabled;
-export const selectSignInLoading = (state) => state.signIn.loading;
-
-export const { actionSignInOpen, actionSignInClose, actionSignInChange } =
-  sliceSignIn.actions;

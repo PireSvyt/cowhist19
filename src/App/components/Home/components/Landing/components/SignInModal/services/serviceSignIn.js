@@ -3,10 +3,13 @@ import { AES } from "crypto-js";
 
 // Services
 import apiSignIn from "./apiSignIn.js";
+import serviceSignInCheck from "./serviceSignInCheck.js";
 // Resources
 import emptySignin from "../../../../../../../shared/resources/emptySignIn";
 // Shared
 import { random_id } from "../../../../../../../shared/services/toolkit.js";
+// Reducers
+import storeSignIn from "../store/sliceSignIn.js";
 
 async function serviceSignIn(user) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -41,23 +44,25 @@ async function serviceSignIn(user) {
       case "auth.signin.success":
         // https://medium.com/how-to-react/how-to-use-js-cookie-to-store-data-in-cookies-in-react-js-aab47f8a45c3
         Cookies.set("cowhist19_token", data.data.token);
-        stateChanges.signin = emptySignin;
+        stateChanges.inputs = emptySignin;
         stateChanges.disabled = false;
         stateChanges.loading = false;
-        stateChanges.openSnack = true;
-        stateChanges.snack = {
+        stateChanges.snackOpen = true;
+        stateChanges.snackData = {
           uid: random_id(),
           id: "signin.snack.signedin",
         };
+        /*
         callbacks.push({ key: "close" });
         callbacks.push({
           key: "signedin",
           option: data.data.token,
         });
+        */
         break;
       case "auth.signin.error.notfound":
-        stateChanges.openSnack = true;
-        stateChanges.snack = {
+        stateChanges.snackOpen = true;
+        stateChanges.snackData = {
           uid: random_id(),
           id: "signin.snack.notfound",
         };
@@ -65,8 +70,8 @@ async function serviceSignIn(user) {
         stateChanges.loading = false;
         break;
       case "auth.signin.error.invalidpassword":
-        stateChanges.openSnack = true;
-        stateChanges.snack = {
+        stateChanges.snackOpen = true;
+        stateChanges.snackData = {
           uid: random_id(),
           id: "signin.snack.unauthorized",
         };
@@ -74,8 +79,8 @@ async function serviceSignIn(user) {
         stateChanges.loading = false;
         break;
       case "auth.signin.error.onpasswordcompare":
-        stateChanges.openSnack = true;
-        stateChanges.snack = {
+        stateChanges.snackOpen = true;
+        stateChanges.snackData = {
           uid: random_id(),
           id: "generic.snack.error.wip",
         };
@@ -83,8 +88,8 @@ async function serviceSignIn(user) {
         stateChanges.loading = false;
         break;
       case "auth.signin.error.onfind":
-        stateChanges.openSnack = true;
-        stateChanges.snack = {
+        stateChanges.snackOpen = true;
+        stateChanges.snackData = {
           uid: random_id(),
           id: "generic.snack.error.wip",
         };
@@ -92,8 +97,8 @@ async function serviceSignIn(user) {
         stateChanges.loading = false;
         break;
       default:
-        stateChanges.openSnack = true;
-        stateChanges.snack = {
+        stateChanges.snackOpen = true;
+        stateChanges.snackData = {
           uid: random_id(),
           id: "generic.snack.api.unmanagedtype",
           details: data.type,
@@ -118,8 +123,8 @@ async function serviceSignIn(user) {
       stateChanges: {
         disabled: false,
         loading: false,
-        openSnack: true,
-        snack: {
+        snackOpen: true,
+        snackData: {
           uid: random_id(),
           id: "generic.snack.api.errornetwork",
         },

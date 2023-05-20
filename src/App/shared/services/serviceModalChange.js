@@ -26,6 +26,7 @@ function serviceModalChange(target, previousValue, complement) {
         console.log("change login : " + target.value);
       }
       stateChanges.loginError = false;
+      stateChanges.login = target.value;
       newValue.login = target.value;
       break;
     case "password":
@@ -33,6 +34,7 @@ function serviceModalChange(target, previousValue, complement) {
         console.log("change password : " + target.value);
       }
       stateChanges.passwordError = false;
+      stateChanges.password = target.value;
       newValue.password = target.value;
       break;
     case "repeatpassword":

@@ -155,7 +155,7 @@ async function serviceProceed() {
     }
     // Error network
     appStore.dispatch({
-      type: "sliceSignUpModal/change",
+      type: "sliceInviteModal/change",
       payload: {
         disabled: false,
         loading: false,

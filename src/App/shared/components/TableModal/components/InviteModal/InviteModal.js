@@ -73,7 +73,7 @@ export default function InviteModal() {
     <Box>
       <Dialog
         id="dialog_invite"
-        open={open === true}
+        open={select.open}
         onClose={() => {
           appStore.dispatch({ type: "sliceInviteModal/close" });
         }}

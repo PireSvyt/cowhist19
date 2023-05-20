@@ -70,7 +70,7 @@ export default function SignInModal() {
       <Dialog
         data-testid="componentSignInModal"
         id="dialog_signin"
-        open={select.open === true}
+        open={select.open}
         onClose={() => {
           appStore.dispatch({ type: "sliceSignInModal/close" });
         }}

@@ -114,9 +114,10 @@ export default function Table() {
       >
         {t("table.button.newgame")}
       </Fab>
+      <Box sx={{ height: 60 }} />
+
       <TableModal />
       <GameModal />
-      <Box sx={{ height: 60 }} />
     </Box>
   );
 }

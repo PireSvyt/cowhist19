@@ -3,86 +3,137 @@ import apiTableSave from "./apiTableSave.js";
 import serviceProceedCheck from "./serviceProceedCheck.js";
 // Shared
 import { random_id } from "../../../services/toolkit.js";
+// Reducers
+import appStore from "../../../../store/appStore.js";
 
-async function serviceProceed( table) {
+async function serviceProceed(table) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("serviceProceed");
   }
 
   try {
-    let callbacks = [];
-    let errors = [];
-    let stateChanges = {};
+    // Lock UI
+    appStore.dispatch({ type: "sliceTableModal/lock" });
+    let tableInputs = { ...appStore.getState().sliceTableModal.inputs };
 
-    // Prep
-    let tableToSave = table;
-    tableToSave.users = table.players;
+    // Check inputs
+    let proceedCheckOutcome = serviceProceedCheck(tableInputs);
+    appStore.dispatch({
+      type: "sliceTableModal/change",
+      payload: proceedCheckOutcome.stateChanges,
+    });
 
-    // API call
-    const data = await apiTableSave( tableToSave);
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("data.type : " + data.type);
+    if (proceedCheckOutcome.proceed === true) {
+      // Prep
+      tableInputs.users = tableInputs.players;
+
+      // API call
+      const data = await apiTableSave(tableInputs);
+      if (process.env.REACT_APP_DEBUG === "TRUE") {
+        console.log("data.type : " + data.type);
+      }
+
+      // Response management
+      switch (data.type) {
+        case "table.save.success.created":
+          appStore.dispatch({
+            type: "sliceSnack/change",
+            payload: {
+              uid: random_id(),
+              id: "table.snack.saved",
+            },
+          });
+          window.location = "/table/" + data.data.id;
+          break;
+        case "table.save.success.modified":
+          appStore.dispatch({
+            type: "sliceTableModal/change",
+            payload: {
+              disabled: false,
+              loading: false,
+            },
+          });
+          appStore.dispatch({
+            type: "sliceSnack/change",
+            payload: {
+              uid: random_id(),
+              id: "table.snack.saved",
+            },
+          });
+
+          //callbacks.push({ key: "updatetable" });
+          break;
+        case "table.save.error.oncreate":
+          appStore.dispatch({
+            type: "sliceTableModal/change",
+            payload: {
+              disabled: false,
+              loading: false,
+            },
+          });
+          appStore.dispatch({
+            type: "sliceSnack/change",
+            payload: {
+              uid: random_id(),
+              id: "generic.snack.error.wip",
+            },
+          });
+          break;
+        default:
+          appStore.dispatch({
+            type: "sliceTableModal/change",
+            payload: {
+              disabled: false,
+              loading: false,
+            },
+          });
+          appStore.dispatch({
+            type: "sliceSnack/change",
+            payload: {
+              uid: random_id(),
+              id: "generic.snack.api.unmanagedtype",
+            },
+          });
+      }
+    } else {
+      if (proceedCheckOutcome.errors.length > 0) {
+        appStore.dispatch({
+          type: "sliceTableModal/change",
+          payload: {
+            disabled: false,
+            loading: false,
+          },
+        });
+        appStore.dispatch({
+          type: "sliceSnack/change",
+          payload: {
+            uid: random_id(),
+            id: "generic.snack.error.withdetails",
+            details: proceedCheckOutcome.errors,
+          },
+        });
+      }
     }
-
-    // Response management
-    switch (data.type) {
-      case "table.save.success.created":
-        callbacks.push({ key: "totable", option: data.data.id });
-        break;
-      case "table.save.success.modified":
-        stateChanges.disabled = false;
-        stateChanges.loading = false;
-        callbacks.push({ key: "updatetable" });
-        stateChanges.openSnack = true;
-        stateChanges.snack = {
-          uid: random_id(),
-          id: "table.snack.saved",
-        };
-        break;
-      case "table.save.error.oncreate":
-        stateChanges.disabled = false;
-        stateChanges.loading = false;
-        stateChanges.openSnack = true;
-        stateChanges.snack = {
-          uid: random_id(),
-          id: "generic.snack.error.wip",
-        };
-        break;
-      default:
-        stateChanges.openSnack = true;
-        stateChanges.snack = {
-          uid: random_id(),
-          id: "generic.snack.api.unmanagedtype",
-        };
-        stateChanges.disabled = false;
-        stateChanges.loading = false;
-    }
-
-    // Response
-    return {
-      stateChanges: stateChanges,
-      callbacks: callbacks,
-      errors: errors,
-    };
   } catch (err) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("service caught error");
       console.log(err);
     }
     // Error network
-    return {
-      stateChanges: {
+    appStore.dispatch({
+      type: "sliceTableModal/change",
+      payload: {
         disabled: false,
         loading: false,
-        openSnack: true,
-        snack: {
-          uid: random_id(),
-          id: "generic.snack.api.errornetwork",
-        },
       },
-      callbacks: [],
-      errors: [],
-    };
+    });
+    appStore.dispatch({
+      type: "sliceSnack/change",
+      payload: {
+        uid: random_id(),
+        id: "generic.snack.api.errornetwork",
+      },
+    });
   }
 }
 

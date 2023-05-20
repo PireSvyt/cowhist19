@@ -8,6 +8,7 @@ import sliceTableStats from "./sliceTableStats.js";
 import sliceSignUp from "./sliceSignUp.js";
 import sliceSignIn from "./sliceSignIn.js";
 import sliceSnack from "./sliceSnack.js";
+import sliceTable from "./sliceTable.js";
 
 export default configureStore({
   reducer: {
@@ -15,6 +16,7 @@ export default configureStore({
     sliceSignIn: sliceSignIn,
     sliceUser: sliceUser,
     sliceSnack: sliceSnack,
+    sliceTable: sliceTable,
     tableDetails: sliceTableDetails,
     tableHistory: sliceTableHistory,
     tableStats: sliceTableStats,

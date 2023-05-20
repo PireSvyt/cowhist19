@@ -53,9 +53,9 @@ const sliceTable = createSlice({
       state.disabled = false;
       state.loading = false;
     },
-    actionSignInStateChanges: (state, action) => {
+    change: (state, action) => {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("sliceTable.actionSignInStateChanges");
+        console.log("sliceTable.change");
         //console.log(action.payload);
       }
       if (action.payload.open !== undefined) {
@@ -94,9 +94,9 @@ const sliceTable = createSlice({
         state.snackData = action.payload.snackData;
       }
     },
-    actionSignInLock: (state, action) => {
+    lock: (state, action) => {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("sliceTable.actionSignInLock");
+        console.log("sliceTable.lock");
         //console.log(action.payload);
       }
       state.disabled = true;

@@ -44,6 +44,8 @@ export default function ConfirmModal(props) {
         // Set state
         setUid(props.data.uid);
         setOpen(true);
+      } else {
+        setOpen(false);
       }
     }
   }, [props]);

@@ -114,6 +114,9 @@ export default function HistoryCard(props) {
                   callback: () => {
                     setConfirmData({
                       uid: "",
+                      title: "",
+                      content: "",
+                      callToActions: [],
                     });
                   },
                 },

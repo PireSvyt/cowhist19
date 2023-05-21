@@ -125,7 +125,7 @@ export default function InviteModal() {
                 />
               }
               label={t("invite.input.acknowledgement")}
-              error={select.errors.acknowledgement}
+              error={select.errors.acknowledgement ? "error" : null}
             />
           </Box>
         </DialogContent>
@@ -151,103 +151,3 @@ export default function InviteModal() {
     </Box>
   );
 }
-
-/*
-  componentDidUpdate(prevState) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("InviteModal.componentDidUpdate");
-    }
-    if (prevState.open !== this.props.open) {
-      this.setState((prevState, props) => ({
-        user: { ...emptyUser },
-      }));
-    }
-  }
-
-  // handleCloseMenu
-  handleClose() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("InviteModal.handleClose");
-    }
-
-    this.setState((prevState, props) => ({
-      user: { ...emptyUser },
-      pseudoError: false,
-      loginError: false,
-      acknowledgementError: false,
-    }));
-
-    this.props.callback("close");
-  }
-  handleChange(event, newValue) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("InviteModal.handleChange");
-    }
-    let serviceChangeOutcome = serviceModalChange(
-      event.target,
-      this.state.user
-    );
-    if (serviceChangeOutcome.errors.length > 0) {
-      console.log("serviceModalChange errors");
-      console.log(serviceChangeOutcome.errors);
-    } else {
-      serviceChangeOutcome.stateChanges.user = serviceChangeOutcome.newValue;
-      this.setState((prevState, props) => serviceChangeOutcome.stateChanges);
-    }
-  }
-  handleProceed() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("InviteModal.handleProceed");
-    }
-
-    // Check inputs
-    let proceedCheckOutcome = serviceProceedCheck(this.state.user);
-    if (proceedCheckOutcome.errors.length !== 0) {
-      if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("proceedCheckOutcome errors");
-        console.log(proceedCheckOutcome.errors);
-      }
-    }
-    this.setState((prevState, props) => proceedCheckOutcome.stateChanges);
-
-    // Proceed or not?
-    if (proceedCheckOutcome.proceed === true) {
-      this.setState((prevState, props) => ({
-        disabled: true,
-        loading: true,
-      }));
-
-      serviceProceed(this.state.user).then((proceedOutcome) => {
-        if (proceedOutcome.errors.length !== 0) {
-          if (process.env.REACT_APP_DEBUG === "TRUE") {
-            console.log("proceedOutcome errors");
-            console.log(proceedOutcome.errors);
-          }
-        }
-        this.setState((prevState, props) => proceedOutcome.stateChanges);
-        proceedOutcome.callbacks.forEach((callback) => {
-          if (callback.option === undefined) {
-            this.props.callback(callback.key);
-          } else {
-            this.props.callback(callback.key, callback.option);
-          }
-        });
-      });
-    } else {
-      // Snack
-      if (proceedCheckOutcome.errors.length > 0) {
-        this.setState((prevState, props) => ({
-          openSnack: true,
-          snack: {
-            uid: random_id(),
-            id: "generic.snack.error.withdetails",
-            details: proceedCheckOutcome.errors,
-          },
-        }));
-      }
-    }
-  }
-}
-
-export default withTranslation()(InviteModal);
-*/

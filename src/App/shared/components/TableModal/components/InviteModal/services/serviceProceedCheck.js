@@ -15,20 +15,29 @@ function serviceProceedCheck(user) {
   if (user.pseudo === null || user.pseudo === "") {
     proceed = false;
     errors.push("invite.error.missingpseudo");
-    stateChanges.pseudoError = true;
+    if (stateChanges.errors === undefined) {
+      stateChanges.errors = {};
+    }
+    stateChanges.errors.pseudo = true;
   }
 
   // Is email empty?
   if (user.login === null || user.login === "") {
     proceed = false;
     errors.push("invite.error.missinglogin");
-    stateChanges.loginError = true;
+    if (stateChanges.errors === undefined) {
+      stateChanges.errors = {};
+    }
+    stateChanges.errors.login = true;
   } else {
     // Login is an email?
     if (!validateEmail(user.login)) {
       proceed = false;
       errors.push("invite.error.invalidlogin");
-      stateChanges.loginError = true;
+      if (stateChanges.errors === undefined) {
+        stateChanges.errors = {};
+      }
+      stateChanges.errors.login = true;
     }
   }
 
@@ -36,13 +45,13 @@ function serviceProceedCheck(user) {
   if (user.acknowledgement !== true) {
     proceed = false;
     errors.push("invite.error.missingacknowledgement");
-    stateChanges.acknowledgementError = true;
+    if (stateChanges.errors === undefined) {
+      stateChanges.errors = {};
+    }
+    stateChanges.errors.acknowledgement = true;
   }
 
   // Outcome
-  if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("proceed " + proceed);
-  }
   return {
     stateChanges: stateChanges,
     proceed: proceed,

@@ -10,7 +10,7 @@ async function apiTableSave(table) {
       table,
       {
         headers: {
-          Authorization: "Bearer " + appStore.getState().userDetails.token,
+          Authorization: "Bearer " + appStore.getState().sliceUser.token,
         },
       }
     );

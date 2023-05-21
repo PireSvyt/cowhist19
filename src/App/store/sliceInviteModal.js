@@ -24,7 +24,7 @@ const sliceInviteModal = createSlice({
       }
       state.open = true;
       state.inputs = {
-        pseudp: "",
+        pseudo: "",
         login: "",
         acknowledgement: false,
       };
@@ -53,7 +53,7 @@ const sliceInviteModal = createSlice({
     change: (state, action) => {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
         console.log("sliceInviteModal.change");
-        //console.log(action.payload);
+        console.log(action.payload);
       }
       if (action.payload.open !== undefined) {
         state.open = action.payload.open;

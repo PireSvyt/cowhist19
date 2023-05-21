@@ -55,7 +55,14 @@ export default function MyTables() {
         <IconButton
           sx={{ p: 2 }}
           onClick={() => {
-            appStore.dispatch({ type: "sliceTableModal/new" });
+            appStore.dispatch({
+              type: "sliceTableModal/new",
+              payload: {
+                _id: appStore.getState().sliceUser.id,
+                pseudo: appStore.getState().sliceUser.pseudo,
+                status: appStore.getState().sliceUser.status,
+              },
+            });
           }}
         >
           <AddIcon />

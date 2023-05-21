@@ -17,7 +17,7 @@ const sliceTableModal = createSlice({
     loading: false,
   },
   reducers: {
-    new: (state) => {
+    new: (state, action) => {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
         console.log("sliceTableModal.new");
       }
@@ -25,7 +25,7 @@ const sliceTableModal = createSlice({
       state.id = "";
       state.inputs = {
         name: "",
-        players: [],
+        players: [action.payload],
       };
       state.errors = {
         name: false,
@@ -89,6 +89,19 @@ const sliceTableModal = createSlice({
       }
       if (action.payload.loading !== undefined) {
         state.loading = action.payload.loading;
+      }
+    },
+    adduser: (state, action) => {
+      if (process.env.REACT_APP_DEBUG === "TRUE") {
+        console.log("sliceTableModal.adduser");
+        //console.log(action.payload);
+      }
+      if (
+        state.inputs.players.some((player) => player._id === action.payload._id)
+      ) {
+        // Not to be added
+      } else {
+        state.inputs.players.push(action.payload);
       }
     },
     removeuser: (state, action) => {

@@ -7,6 +7,7 @@ const sliceTableDetails = createSlice({
     name: "",
     players: [],
     contracts: [],
+    state: "available"
   },
   reducers: {
     set: (state, action) => {
@@ -18,7 +19,11 @@ const sliceTableDetails = createSlice({
       state.name = action.payload.name;
       state.players = action.payload.players;
       state.contracts = action.payload.contracts;
+      state.state = "available";
     },
+    lock: (state) => {
+      state.state = "busy";
+    }
   },
 });
 

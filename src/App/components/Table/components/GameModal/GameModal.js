@@ -60,8 +60,10 @@ export default function GameModal() {
       });
     },
     attack: (e) => {
-      let players = appStore.getState().sliceGameModal.players;
-      let newPlayers = players.filter((player) => player.role === "defense");
+      let gamePlayers = appStore.getState().sliceGameModal.players;
+      let newPlayers = gamePlayers.filter(
+        (player) => player.role === "defense"
+      );
       target.value.forEach((attackant) => {
         newPlayers.push({
           _id: attackant._id,
@@ -78,8 +80,8 @@ export default function GameModal() {
       });
     },
     defense: (e) => {
-      let players = appStore.getState().sliceGameModal.players;
-      let newPlayers = players.filter((player) => player.role === "attack");
+      let gamePlayers = appStore.getState().sliceGameModal.players;
+      let newPlayers = gamePlayers.filter((player) => player.role === "attack");
       target.value.forEach((defenser) => {
         newPlayers.push({
           _id: defenser._id,
@@ -110,7 +112,7 @@ export default function GameModal() {
     <Box>
       <Dialog
         id="dialog_transaction"
-        open={open}
+        open={select.open}
         onClose={() => {
           appStore.dispatch({ type: "sliceGameModal/close" });
         }}
@@ -137,7 +139,7 @@ export default function GameModal() {
                 onChange={changes.contract}
                 error={select.errors.contract}
               >
-                {contracts.map((contract) => (
+                {select.contracts.map((contract) => (
                   <MenuItem key={contract.key} value={contract.key}>
                     {t("game.label.contract." + contract.key)}
                   </MenuItem>
@@ -183,7 +185,7 @@ export default function GameModal() {
                 }
                 onChange={changes.attack}
               >
-                {players.map((player) => (
+                {select.players.map((player) => (
                   <MenuItem key={player._id} value={player._id}>
                     {player.pseudo}
                   </MenuItem>
@@ -209,7 +211,7 @@ export default function GameModal() {
                     error={select.errors.defense}
                   />
                 )}
-                options={players.filter(
+                options={select.players.filter(
                   (player) =>
                     !select.inputs.players.find(
                       (actualPlayer) => actualPlayer._id === player._id
@@ -231,7 +233,7 @@ export default function GameModal() {
                 }
                 onChange={changes.defense}
               >
-                {players.map((player) => (
+                {select.players.map((player) => (
                   <MenuItem key={player._id} value={player._id}>
                     {player.pseudo}
                   </MenuItem>

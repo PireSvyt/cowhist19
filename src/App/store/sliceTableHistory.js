@@ -4,6 +4,7 @@ const sliceTableHistory = createSlice({
   name: "sliceTableHistory",
   initialState: {
     games: [],
+    state: "available",
   },
   reducers: {
     set: (state, action) => {
@@ -12,6 +13,10 @@ const sliceTableHistory = createSlice({
         //console.log(action.payload);
       }
       state.games = action.payload;
+      state.state = "available";
+    },
+    lock: (state) => {
+      state.state = "busy";
     },
   },
 });

@@ -1,1 +1,1 @@
-test.todo("TO TEST serviceTableStats");
+test.todo("TO TEST serviceGetTableStats");

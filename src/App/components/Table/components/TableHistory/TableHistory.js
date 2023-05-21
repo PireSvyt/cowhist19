@@ -1,6 +1,15 @@
 import * as React from "react";
 import { useTranslation } from "react-i18next";
-import { Box, List, ListItem } from "@mui/material";
+import { useSelector } from "react-redux";
+import {
+  Box,
+  List,
+  ListItem,
+  Card,
+  Typography,
+  IconButton,
+} from "@mui/material";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline.js";
 
 // Services
 import serviceGameDelete from "./services/serviceGameDelete.js";
@@ -19,15 +28,15 @@ export default function TableHistory() {
 
   // Selects
   const select = {
-    history: useSelector((state) => state.sliceTableHistory.history),
+    history: useSelector((state) => state.sliceTableHistory.games),
     players: useSelector((state) => state.sliceTableDetails.players),
   };
 
   return (
     <Box>
       <List dense={true}>
-        {players !== [] ? (
-          history.games.map((game) => (
+        {select.players !== [] ? (
+          select.history.map((game) => (
             <ListItem key={"game-" + game._id}>
               <GameCard game={game} />
             </ListItem>
@@ -45,7 +54,7 @@ export default function TableHistory() {
       // Attack
       props.game.players.forEach((actualPlayer) => {
         if (actualPlayer.role === "attack") {
-          let pseudoPlayer = players.filter((player) => {
+          let pseudoPlayer = select.players.filter((player) => {
             player._id === actualPlayer._id;
           });
           if (pseudoPlayer.length > 0) {
@@ -59,7 +68,7 @@ export default function TableHistory() {
       // Defense
       props.game.players.forEach((actualPlayer) => {
         if (actualPlayer.role === "defense") {
-          let pseudoPlayer = players.filter((player) => {
+          let pseudoPlayer = select.players.filter((player) => {
             player._id === actualPlayer._id;
           });
           if (pseudoPlayer.length > 0) {

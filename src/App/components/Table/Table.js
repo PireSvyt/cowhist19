@@ -24,17 +24,24 @@ export default function Table() {
   // i18n
   const { t } = useTranslation();
 
-  // Load at opening
-  //serviceGetTableDetails();
-  //serviceGetTableStats();
-
   // States
   const [tab, setTab] = useState(0);
 
   // Selects
   const select = {
     name: useSelector((state) => state.sliceTableDetails.name),
+    token: useSelector((state) => state.sliceUser.token),
   };
+
+  // Load at opening
+  if (select.token !== "") {
+    if (appStore.getState().sliceTableDetails.state === "available") {
+      serviceGetTableDetails();
+    }
+    if (appStore.getState().sliceTableStats.state === "available") {
+      serviceGetTableStats();
+    }
+  }
 
   function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -53,11 +60,15 @@ export default function Table() {
   function changeTab(event, newTabIndex) {
     switch (newTabIndex) {
       case 0:
-        serviceGetTableStats();
+        if (appStore.getState().sliceTableStats.state === "available") {
+          serviceGetTableStats();
+        }
         setTab(newTabIndex);
         break;
       case 1:
-        serviceGetTableHistory();
+        if (appStore.getState().sliceTableHistory.state === "available") {
+          serviceGetTableHistory();
+        }
         setTab(newTabIndex);
         break;
       default:

@@ -6,7 +6,7 @@ import appStore from "../../../store/appStore.js";
 async function apiTableDetails(id) {
   try {
     const res = await axios.get(
-      process.env.REACT_APP_SERVER_URL + "/table/" + id,
+      process.env.REACT_APP_SERVER_URL + "/table/v1/" + id,
       {
         headers: {
           Authorization: "Bearer " + appStore.getState().sliceUser.token,
@@ -15,14 +15,7 @@ async function apiTableDetails(id) {
     );
     return res.data;
   } catch (err) {
-    const res = {
-      status: err.response.status,
-      message: "error on apiTableDetails " + id,
-      table: {},
-      error: err,
-    };
-    console.error(res);
-    return res;
+    return err.response.data;
   }
 }
 

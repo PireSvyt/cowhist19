@@ -30,7 +30,6 @@ const sliceUser = createSlice({
         console.log("sliceUser.signin");
         //console.log(action.payload);
       }
-      state.token = action.payload.token;
       state.login = action.payload.login;
       state.pseudo = action.payload.pseudo;
       state.status = action.payload.status;

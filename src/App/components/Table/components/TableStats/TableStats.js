@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Box, List, ListItem, Card } from "@mui/material";
+import { Box, List, ListItem, Card, Typography } from "@mui/material";
 
 export default function TableStats() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -19,7 +19,7 @@ export default function TableStats() {
   return (
     <Box>
       <List dense={true}>
-        {stats.ranking.map((player) => (
+        {select.stats.ranking.map((player) => (
           <ListItem key={"ranking-" + player._id}>
             <RankingCard player={player} />
           </ListItem>
@@ -32,8 +32,10 @@ export default function TableStats() {
   function RankingCard(props) {
     // Stringify
     function stringifyPlayer() {
-      if (players.length !== 0) {
-        let pseudolist = players.filter((p) => props.player._id === p._id);
+      if (select.players.length !== 0) {
+        let pseudolist = select.players.filter(
+          (p) => props.player._id === p._id
+        );
         if (pseudolist.length > 0) {
           return pseudolist[0]["pseudo"];
         } else {
@@ -55,7 +57,7 @@ export default function TableStats() {
           }}
         >
           <Typography sx={{ fontWeight: "bold" }} gutterBottom>
-            {this.stringifyPlayer()}
+            {stringifyPlayer()}
           </Typography>
           <Box
             sx={{

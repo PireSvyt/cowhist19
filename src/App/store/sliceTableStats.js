@@ -6,6 +6,7 @@ const sliceTableStats = createSlice({
     stats: {
       ranking: [],
     },
+    state: "available",
   },
   reducers: {
     set: (state, action) => {
@@ -14,6 +15,10 @@ const sliceTableStats = createSlice({
         //console.log(action.payload);
       }
       state.stats = action.payload;
+      state.state = "available";
+    },
+    lock: (state) => {
+      state.state = "busy";
     },
   },
 });

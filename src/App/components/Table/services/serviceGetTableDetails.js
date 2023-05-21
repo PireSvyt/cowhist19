@@ -11,15 +11,14 @@ async function serviceTableDetails() {
   }
 
   try {
-    let callbacks = [];
-    let errors = [];
-    let stateChanges = {};
+    // Lock UI
+    appStore.dispatch({ type: "sliceTableDetails/lock" });
 
     // Initialize
     let id = window.location.href.split("/table/")[1];
 
     // API call
-    const data = await serviceTableDetails(id);
+    const data = await apiTableDetails(id);
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("data.type : " + data.type);
     }
@@ -28,56 +27,49 @@ async function serviceTableDetails() {
     switch (data.type) {
       case "table.details.success":
         appStore.dispatch({
-          type: "tableDetails/set",
+          type: "sliceTableDetails/set",
           payload: data.data.table,
         });
         break;
       case "table.details.error.onaggregate":
-        stateChanges.openSnack = true;
-        stateChanges.snack = {
-          uid: random_id(),
-          id: "generic.snack.error",
-        };
+        appStore.dispatch({
+          type: "sliceSnack/change",
+          payload: {
+            uid: random_id(),
+            id: "generic.snack.error.wip",
+          },
+        });
         break;
       case "table.details.error.onfind":
-        stateChanges.openSnack = true;
-        stateChanges.snack = {
-          uid: random_id(),
-          id: "generic.snack.error",
-        };
+        appStore.dispatch({
+          type: "sliceSnack/change",
+          payload: {
+            uid: random_id(),
+            id: "generic.snack.error.wip",
+          },
+        });
         break;
       default:
-        stateChanges.openSnack = true;
-        stateChanges.snack = {
-          uid: random_id(),
-          id: "generic.snack.api.unmanagedtype",
-          details: data.type,
-        };
+        appStore.dispatch({
+          type: "sliceSnack/change",
+          payload: {
+            uid: random_id(),
+            id: "generic.snack.api.unmanagedtype",
+          },
+        });
     }
-
-    // Response
-    return {
-      stateChanges: stateChanges,
-      callbacks: callbacks,
-      errors: errors,
-    };
   } catch (err) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("service caught error");
       console.log(err);
     }
-    // Error network
-    return {
-      stateChanges: {
-        openSnack: true,
-        snack: {
-          uid: random_id(),
-          id: "generic.snack.api.errornetwork",
-        },
+    appStore.dispatch({
+      type: "sliceSnack/change",
+      payload: {
+        uid: random_id(),
+        id: "generic.snack.error.unknown",
       },
-      callbacks: [],
-      errors: [],
-    };
+    });
   }
 }
 

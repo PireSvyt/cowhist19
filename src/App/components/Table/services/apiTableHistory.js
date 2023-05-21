@@ -6,24 +6,18 @@ import appStore from "../../../store/appStore.js";
 async function apiTableHistory(id, parameters) {
   try {
     const res = await axios.post(
-      process.env.REACT_APP_SERVER_URL + "/table/history/" + id,
+      process.env.REACT_APP_SERVER_URL + "/table/v1/history/" + id,
       parameters,
       {
         headers: {
-          Authorization: "Bearer " + appStore.getState().userDetails.token,
+          Authorization: "Bearer " + appStore.getState().sliceUser.token,
         },
       }
     );
     return res.data;
   } catch (err) {
-    const res = {
-      status: err.response.status,
-      message: "error on apiTableHistory " + id,
-      games: [],
-      error: err,
-    };
-    console.error(res);
-    return res;
+    console.log(err);
+    return err.response.data;
   }
 }
 

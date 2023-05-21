@@ -10,13 +10,13 @@ async function apiTableStats(id, parameters) {
       parameters,
       {
         headers: {
-          Authorization: "Bearer " + appStore.getState().userDetails.token,
+          Authorization: "Bearer " + appStore.getState().sliceUser.token,
         },
       }
     );
     return res.data;
   } catch (err) {
-    return err.response.status;
+    return err.response.data;
   }
 }
 

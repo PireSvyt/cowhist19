@@ -64,7 +64,6 @@ async function serviceProceed(table) {
           });
           // Update table
           serviceGetTableDetails();
-          serviceGetTableStats();
           break;
         case "table.save.error.oncreate":
           appStore.dispatch({
@@ -99,20 +98,31 @@ async function serviceProceed(table) {
           });
       }
     } else {
+      appStore.dispatch({
+        type: "sliceTableModal/change",
+        payload: {
+          disabled: false,
+          loading: false,
+        },
+      });
       if (proceedCheckOutcome.errors.length > 0) {
-        appStore.dispatch({
-          type: "sliceTableModal/change",
-          payload: {
-            disabled: false,
-            loading: false,
-          },
-        });
         appStore.dispatch({
           type: "sliceSnack/change",
           payload: {
             uid: random_id(),
             id: "generic.snack.error.withdetails",
             details: proceedCheckOutcome.errors,
+          },
+        });
+      }
+      if (proceedCheckOutcome.confirmation.required) {
+        appStore.dispatch({
+          type: "sliceConfirmModal/open",
+          payload: {
+            uid: random_id(),
+            title: proceedCheckOutcome.confirmation.title,
+            content: proceedCheckOutcome.confirmation.content,
+            callToActions: proceedCheckOutcome.confirmation.callToActions,
           },
         });
       }

@@ -5,6 +5,7 @@ function serviceProceedCheck(table, callback) {
   let proceed = true;
   let errors = [];
   let stateChanges = {};
+  let confirmation = {};
 
   // Checks
 
@@ -33,24 +34,19 @@ function serviceProceedCheck(table, callback) {
         stateChanges.errors = {};
       }
       stateChanges.errors.players = true;
-      /**
-       *
-       *
-       *
-       *
-       *
-       */
-      stateChanges.openConfirmModal = true;
-      stateChanges.confirmModalTitle = "table.confirm.deletenoeusers.title";
-      stateChanges.confirmModalContent = "table.confirm.deletenoeusers.content";
-      stateChanges.confirmModalCTA = [
+      confirmation.required = true;
+      confirmation.openConfirmModal = true;
+      confirmation.confirmModalTitle = "table.confirm.deletenoeusers.title";
+      confirmation.confirmModalContent = "table.confirm.deletenoeusers.content";
+      confirmation.confirmModalCTA = [
         {
           label: "generic.button.cancel",
-          callback: () => callback("close"),
+          callback: () =>
+            appStore.dispatch({ type: "sliceConfirmModal/close" }),
         },
         {
           label: "generic.button.proceed",
-          callback: () => callback("delete"),
+          callback: () => serviceTableDelete(table._id),
           variant: "contained",
           color: "error",
         },
@@ -63,6 +59,7 @@ function serviceProceedCheck(table, callback) {
     stateChanges: stateChanges,
     proceed: proceed,
     errors: errors,
+    confirmation: confirmation,
   };
 }
 

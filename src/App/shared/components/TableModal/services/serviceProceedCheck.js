@@ -1,3 +1,6 @@
+// Services
+import serviceDelete from "./serviceDelete.js";
+
 function serviceProceedCheck(table, callback) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("serviceProceedCheck");
@@ -46,7 +49,7 @@ function serviceProceedCheck(table, callback) {
         },
         {
           label: "generic.button.proceed",
-          callback: () => serviceTableDelete(table._id),
+          callback: () => serviceDelete(table._id),
           variant: "contained",
           color: "error",
         },

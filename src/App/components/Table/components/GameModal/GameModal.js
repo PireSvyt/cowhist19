@@ -51,20 +51,27 @@ export default function GameModal() {
   // Changes
   const changes = {
     contract: (e) => {
+      let contract = select.contracts.filter(
+        (c) => c.key === e.target.value
+      )[0];
       appStore.dispatch({
-        type: "sliceTableModal/change",
+        type: "sliceGameModal/change",
         payload: {
-          inputs: { name: e.target.value },
-          errors: { name: false },
+          inputs: { contract: e.target.value },
+          errors: { contract: false },
+          requirements: {
+            attack: "(" + contract.attack + ")",
+            defense: "(" + contract.defense + ")",
+            outcome: "", //"(max. +" + (13 - contract.folds) + ")",
+          },
         },
       });
     },
     attack: (e) => {
-      let gamePlayers = appStore.getState().sliceGameModal.players;
-      let newPlayers = gamePlayers.filter(
+      let newPlayers = select.inputs.players.filter(
         (player) => player.role === "defense"
       );
-      target.value.forEach((attackant) => {
+      e.target.value.forEach((attackant) => {
         newPlayers.push({
           _id: attackant._id,
           pseudo: attackant.pseudo,
@@ -72,7 +79,7 @@ export default function GameModal() {
         });
       });
       appStore.dispatch({
-        type: "sliceTableModal/change",
+        type: "sliceGameModal/change",
         payload: {
           inputs: { players: newPlayers },
           errors: { attack: false },
@@ -80,9 +87,10 @@ export default function GameModal() {
       });
     },
     defense: (e) => {
-      let gamePlayers = appStore.getState().sliceGameModal.players;
-      let newPlayers = gamePlayers.filter((player) => player.role === "attack");
-      target.value.forEach((defenser) => {
+      let newPlayers = select.inputs.players.filter(
+        (player) => player.role === "attack"
+      );
+      e.target.value.forEach((defenser) => {
         newPlayers.push({
           _id: defenser._id,
           pseudo: defenser.pseudo,
@@ -90,7 +98,7 @@ export default function GameModal() {
         });
       });
       appStore.dispatch({
-        type: "sliceTableModal/change",
+        type: "sliceGameModal/change",
         payload: {
           inputs: { players: newPlayers },
           errors: { defense: false },
@@ -99,7 +107,7 @@ export default function GameModal() {
     },
     outcome: (e) => {
       appStore.dispatch({
-        type: "sliceTableModal/change",
+        type: "sliceGameModal/change",
         payload: {
           inputs: { outcome: e.target.value },
           errors: { outcome: false },
@@ -183,7 +191,13 @@ export default function GameModal() {
                     />
                   ))
                 }
-                onChange={changes.attack}
+                onChange={(event, newValue) => {
+                  event.target = {
+                    name: "attack",
+                    value: newValue,
+                  };
+                  changes.attack(event, newValue);
+                }}
               >
                 {select.players.map((player) => (
                   <MenuItem key={player._id} value={player._id}>
@@ -231,7 +245,13 @@ export default function GameModal() {
                     />
                   ))
                 }
-                onChange={changes.defense}
+                onChange={(event, newValue) => {
+                  event.target = {
+                    name: "attack",
+                    value: newValue,
+                  };
+                  changes.defense(event, newValue);
+                }}
               >
                 {select.players.map((player) => (
                   <MenuItem key={player._id} value={player._id}>

@@ -17,13 +17,21 @@ function serviceProceedCheck(game, contracts) {
   ) {
     proceed = false;
     errors.push("game.error.missingcontract");
-    stateChanges.contractError = true;
+    if (stateChanges.errors === undefined) {
+      stateChanges.errors = {};
+    }
+    stateChanges.errors.contract = true;
   } else {
     // Contract behing defined, checking teams
     let contract = contracts.filter((c) => c.key === game.contract)[0];
     if (game.players === []) {
       proceed = false;
       errors.push(" Players empty");
+      if (stateChanges.errors === undefined) {
+        stateChanges.errors = {};
+      }
+      stateChanges.errors.attack = true;
+      stateChanges.errors.defense = true;
     } else {
       // Is attack well formed?
       if (
@@ -32,7 +40,10 @@ function serviceProceedCheck(game, contracts) {
       ) {
         proceed = false;
         errors.push("game.error.attackmissmatch");
-        stateChanges.attackError = true;
+        if (stateChanges.errors === undefined) {
+          stateChanges.errors = {};
+        }
+        stateChanges.errors.attack = true;
       }
 
       // Is defense well formed?
@@ -42,14 +53,20 @@ function serviceProceedCheck(game, contracts) {
       ) {
         proceed = false;
         errors.push("game.error.defensemissmatch");
-        stateChanges.defenseError = true;
+        if (stateChanges.errors === undefined) {
+          stateChanges.errors = {};
+        }
+        stateChanges.errors.defense = true;
       }
 
       // Is outcome consistent?
       if (game.outcome + contract.folds > 13) {
         proceed = false;
         errors.push("game.error.outcomemissmatch");
-        stateChanges.outcomeError = true;
+        if (stateChanges.errors === undefined) {
+          stateChanges.errors = {};
+        }
+        stateChanges.errors.outcome = true;
       }
     }
   }

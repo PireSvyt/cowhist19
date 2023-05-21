@@ -15,7 +15,6 @@ import serviceGetTableHistory from "./services/serviceGetTableHistory.js";
 import Appbar from "../../shared/components/Appbar/Appbar.js";
 import TableModal from "../../shared/components/TableModal/TableModal.js";
 import Snack from "../../shared/components/Snack/Snack2.js";
-import ConfirmModal from "../../shared/components/ConfirmModal/ConfirmModal.js";
 // Reducers
 import appStore from "../../store/appStore.js";
 
@@ -33,7 +32,6 @@ export default function Table() {
   const select = {
     name: useSelector((state) => state.sliceTableDetails.name),
     token: useSelector((state) => state.sliceUser.token),
-    confirmData: useSelector((state) => state.sliceConfirmModal.confirmData),
     snackData: useSelector((state) => state.sliceSnack.snackData),
   };
 
@@ -135,7 +133,6 @@ export default function Table() {
       <GameModal />
 
       <Snack data-testid="componentSnack" data={select.snackData} />
-      <ConfirmModal data={select.confirmData} />
     </Box>
   );
 }

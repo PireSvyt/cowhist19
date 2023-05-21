@@ -6,7 +6,7 @@ import { random_id } from "../../../../../shared/services/toolkit.js";
 // Reducers
 import appStore from "../../../../../store/appStore.js";
 
-async function serviceProceed(game) {
+async function serviceProceed() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("serviceProceed");
   }
@@ -14,10 +14,17 @@ async function serviceProceed(game) {
   try {
     // Lock UI
     appStore.dispatch({ type: "sliceGameModal/lock" });
-    const gameInputs = { ...appStore.getState().sliceGameModal.inputs };
+    let gameInputs = { ...appStore.getState().sliceGameModal.inputs };
+    const gameId = appStore.getState().sliceGameModal.id;
+    const tableId = appStore.getState().sliceTableDetails.id;
+    gameInputs._id = gameId;
+    gameInputs.table = tableId;
 
     // Check inputs
-    let proceedCheckOutcome = serviceProceedCheck(gameInputs);
+    let proceedCheckOutcome = serviceProceedCheck(
+      gameInputs,
+      appStore.getState().sliceTableDetails.contracts
+    );
     appStore.dispatch({
       type: "sliceGameModal/change",
       payload: proceedCheckOutcome.stateChanges,
@@ -27,7 +34,7 @@ async function serviceProceed(game) {
       // Prep
 
       // API call
-      const data = await apiGameSave(game);
+      const data = await apiGameSave(gameInputs);
       if (process.env.REACT_APP_DEBUG === "TRUE") {
         console.log("data.type : " + data.type);
       }
@@ -38,6 +45,7 @@ async function serviceProceed(game) {
           appStore.dispatch({
             type: "sliceGameModal/change",
             payload: {
+              open: false,
               disabled: false,
               loading: false,
               inputs: {
@@ -116,7 +124,7 @@ async function serviceProceed(game) {
             type: "sliceSnack/change",
             payload: {
               uid: random_id(),
-              id: "game.snack.error.wip",
+              id: "generic.snack.error.wip",
             },
           });
           break;
@@ -132,7 +140,7 @@ async function serviceProceed(game) {
             type: "sliceSnack/change",
             payload: {
               uid: random_id(),
-              id: "game.snack.error.wip",
+              id: "generic.snack.error.wip",
             },
           });
           break;

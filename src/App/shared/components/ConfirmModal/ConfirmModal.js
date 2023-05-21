@@ -34,7 +34,11 @@ export default function ConfirmModal(props) {
   // Effects
   React.useEffect(() => {
     if (props.data !== undefined) {
-      if (props.data.uid !== uid && props.data.uid !== undefined) {
+      if (
+        props.data.uid !== uid &&
+        props.data.uid !== undefined &&
+        props.data.uid !== ""
+      ) {
         // TODO LEVERAGE FLAGS
 
         // Set state

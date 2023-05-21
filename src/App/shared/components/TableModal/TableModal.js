@@ -149,6 +149,7 @@ export default function TableModal() {
                   pt: 2,
                   pb: 2,
                 }}
+                color={select.errors.players ? "error" : null}
               >
                 {t("table.label.players")}
               </Typography>

@@ -3,6 +3,7 @@ import apiTableSave from "./apiTableSave.js";
 import serviceProceedCheck from "./serviceProceedCheck.js";
 // Shared
 import { random_id } from "../../../services/toolkit.js";
+import serviceGetTableDetails from "../../../../components/Table/services/serviceGetTableDetails.js";
 // Reducers
 import appStore from "../../../../store/appStore.js";
 
@@ -49,6 +50,7 @@ async function serviceProceed(table) {
           appStore.dispatch({
             type: "sliceTableModal/change",
             payload: {
+              open: false,
               disabled: false,
               loading: false,
             },
@@ -60,8 +62,9 @@ async function serviceProceed(table) {
               id: "table.snack.saved",
             },
           });
-
-          //callbacks.push({ key: "updatetable" });
+          // Update table
+          serviceGetTableDetails();
+          serviceGetTableStats();
           break;
         case "table.save.error.oncreate":
           appStore.dispatch({

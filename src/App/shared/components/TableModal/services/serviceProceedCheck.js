@@ -12,7 +12,10 @@ function serviceProceedCheck(table, callback) {
   if (table.name === undefined || table.name === "") {
     proceed = false;
     errors.push("table.error.missingname");
-    stateChanges.nameError = true;
+    if (stateChanges.errors === undefined) {
+      stateChanges.errors = {};
+    }
+    stateChanges.errors.name = true;
   }
 
   // Empty use list at create?
@@ -20,8 +23,23 @@ function serviceProceedCheck(table, callback) {
     proceed = false;
     if (table._id === "" || table._id === undefined) {
       errors.push("table.error.creationwithoutplayers");
-      stateChanges.playersError = true;
+      if (stateChanges.errors === undefined) {
+        stateChanges.errors = {};
+      }
+      stateChanges.errors.players = true;
     } else {
+      // Save confirm would delete table
+      if (stateChanges.errors === undefined) {
+        stateChanges.errors = {};
+      }
+      stateChanges.errors.players = true;
+      /**
+       *
+       *
+       *
+       *
+       *
+       */
       stateChanges.openConfirmModal = true;
       stateChanges.confirmModalTitle = "table.confirm.deletenoeusers.title";
       stateChanges.confirmModalContent = "table.confirm.deletenoeusers.content";

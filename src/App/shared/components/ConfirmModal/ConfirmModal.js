@@ -36,7 +36,7 @@ export default function ConfirmModal(props) {
       <Dialog
         id="dialog_confirm"
         open={open}
-        onClose={props.callback("close")}
+        onClose={() => props.callback("close")}
         fullWidth={true}
       >
         <DialogTitle>{t(props.data.title)}</DialogTitle>

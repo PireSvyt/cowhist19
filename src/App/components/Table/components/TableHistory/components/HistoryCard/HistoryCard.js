@@ -12,6 +12,7 @@ import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline.js"
 
 // Services
 import serviceGameDelete from "./services/serviceGameDelete.js";
+import serviceGetTableHistory from "../../../../services/serviceGetTableHistory.js";
 // Shared
 import { random_id } from "../../../../../../shared/services/toolkit.js";
 import ConfirmModal from "../../../../../../shared/components/ConfirmModal/ConfirmModal.js";
@@ -84,7 +85,10 @@ export default function HistoryCard(props) {
       case "delete":
         setConfirmOpen(false);
         setDeleting(true);
-        serviceGameDelete(props.game._id);
+        serviceGameDelete(props.game._id).then(() => {
+          setDeleting(false);
+          serviceGetTableHistory();
+        });
         break;
       default:
         console.error("HistoryCard.confirmCallback unmatched " + choice);
@@ -110,7 +114,7 @@ export default function HistoryCard(props) {
           </Typography>
         </Box>
 
-        <IconButton onClick={() => setConfirmOpen(true)}>
+        <IconButton onClick={() => setConfirmOpen(true)} disabled={deleting}>
           <RemoveCircleOutlineIcon />
         </IconButton>
       </Box>

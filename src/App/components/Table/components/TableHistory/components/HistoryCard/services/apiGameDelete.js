@@ -6,10 +6,10 @@ import appStore from "../../../../../../../store/appStore.js";
 async function apiGameDelete(gamieid) {
   try {
     const res = await axios.delete(
-      process.env.REACT_APP_SERVER_URL + "/v1/game/" + gamieid,
+      process.env.REACT_APP_SERVER_URL + "/game/v1/" + gamieid,
       {
         headers: {
-          Authorization: "Bearer " + appStore.getState().userDetails.token,
+          Authorization: "Bearer " + appStore.getState().sliceUser.token,
         },
       }
     );

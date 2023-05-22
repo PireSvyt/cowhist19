@@ -13,7 +13,6 @@ import Activation from "./components/Activation/Activation.js";
 import Table from "./components/Table/Table.js";
 import Account from "./components/Account/Account.js";
 import Help from "./components/Help/Help.js";
-import GetManager from "./components/GetManager/GetManager.js";
 // Services
 import serviceAssessCookie from "./services/serviceAssessCookie.js";
 
@@ -28,21 +27,15 @@ export default function App() {
   // Gather token from cookies
   serviceAssessCookie();
 
-  // Source
-  const queue = useSelector((state) => state.sliceGetManager.queue);
-
   return (
-    <div>
-      <Router>
-        <Routes>
-          <Route exact path="/" element={<Home />} />
-          <Route path="/activation/:id" element={<Activation />} />
-          <Route path="/account" element={<Account />} />
-          <Route path="/table/:id" element={<Table />} />
-          <Route path="/help" element={<Help />} />
-        </Routes>
-      </Router>
-      <GetManager queue={queue} />
-    </div>
+    <Router>
+      <Routes>
+        <Route exact path="/" element={<Home />} />
+        <Route path="/activation/:id" element={<Activation />} />
+        <Route path="/account" element={<Account />} />
+        <Route path="/table/:id" element={<Table />} />
+        <Route path="/help" element={<Help />} />
+      </Routes>
+    </Router>
   );
 }

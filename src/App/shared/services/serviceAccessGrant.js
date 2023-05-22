@@ -36,24 +36,7 @@ async function serviceGrantAccess(token) {
           decodedtoken: decodedtoken,
         },
       });
-      //serviceGetUserDetails();
-      appStore.dispatch({
-        type: "sliceGetManager/pile",
-        payload: {
-          dependencies: [
-            {
-              getstate: (() => {
-                return appStore.getState().sliceUser.token;
-              }).toString(),
-              condition: "!==",
-              expectation: "",
-            },
-          ],
-          job: {
-            service: "getUserDetails",
-          },
-        },
-      });
+      serviceGetUserDetails();
     } else {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
         console.log("invalid status");

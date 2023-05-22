@@ -4,8 +4,6 @@ import sliceUser from "./sliceUser.js";
 import sliceTableDetails from "./sliceTableDetails.js";
 import sliceTableHistory from "./sliceTableHistory.js";
 import sliceTableStats from "./sliceTableStats.js";
-// GetManager
-import sliceGetManager from "./sliceGetManager.js";
 // UI components
 import sliceSignUpModal from "./sliceSignUpModal.js";
 import sliceSignInModal from "./sliceSignInModal.js";
@@ -21,7 +19,6 @@ export default configureStore({
     sliceTableDetails: sliceTableDetails,
     sliceTableHistory: sliceTableHistory,
     sliceTableStats: sliceTableStats,
-    sliceGetManager: sliceGetManager,
     sliceSignUpModal: sliceSignUpModal,
     sliceSignInModal: sliceSignInModal,
     sliceTableModal: sliceTableModal,

@@ -9,6 +9,7 @@ import {
   IconButton,
 } from "@mui/material";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline.js";
+import CircularProgress from "@mui/material/CircularProgress";
 
 // Services
 import serviceGameDelete from "./services/serviceGameDelete.js";
@@ -115,7 +116,12 @@ export default function HistoryCard(props) {
         </Box>
 
         <IconButton onClick={() => setConfirmOpen(true)} disabled={deleting}>
-          <RemoveCircleOutlineIcon />
+          <Box hidden={!deleting}>
+            <CircularProgress size={24} sx={{ color: "grey.500" }} />
+          </Box>
+          <Box hidden={deleting}>
+            <RemoveCircleOutlineIcon />
+          </Box>
         </IconButton>
       </Box>
 
@@ -131,7 +137,6 @@ export default function HistoryCard(props) {
               label: "generic.button.cancel",
               choice: "close",
             },
-
             {
               label: "generic.button.proceed",
               choice: "delete",

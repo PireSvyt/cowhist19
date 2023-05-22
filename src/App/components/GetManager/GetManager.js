@@ -5,6 +5,10 @@ import appStore from "../../store/appStore.js";
 import getUserDetails from "./services/getUserDetails/getUserDetails.js";
 
 export default function GetManager(props) {
+  
+  // Constants
+  let debug = true
+  
   // State
   const [jobs, setJobs] = useState([]);
   const [looping, setLooping] = useState(false);
@@ -13,7 +17,8 @@ export default function GetManager(props) {
   useEffect(() => {
     if (props.queue !== undefined) {
       Object.values(props.queue).forEach((pile) => {
-        if (!jobs.includes(pile.id)) {
+        console.log(jobs)
+        if (!jobs.some(job => job === pile.id)) {
           if (pile.status === "waiting") {
             acknowledge(pile);
           } else {
@@ -23,8 +28,12 @@ export default function GetManager(props) {
       });
     }
   }, [props]);
+  
 
   function acknowledge(pile) {
+    if (debug) {
+      console.log("GetManager.acknowledge " + pile.id)
+    }
     setJobs(jobs.push(pile.id));
     appStore.dispatch({
       type: "sliceGetManager/status",
@@ -35,6 +44,9 @@ export default function GetManager(props) {
     });
     // Trigger loop
     if (!looping) {
+    if (debug) {
+      console.log("GetManager fire loop")
+    }
       loop();
     }
   }
@@ -62,7 +74,10 @@ export default function GetManager(props) {
     let ready = true;
     if (pile.dependencies !== undefined) {
       Object.values(pile.dependencies).forEach((dependency) => {
-        let depstate = dependency.getstate();
+        let depstate = Function("return " + dependency.getstate)();
+    if (debug) {
+      console.log(depstate)
+    }
         switch (dependency.condition) {
           case "===":
             ready = depstate === dependency.expectation;
@@ -84,26 +99,36 @@ export default function GetManager(props) {
         }
       });
     }
+    if (debug) {
+      console.log("GetManager.readytofire " + ready + " " + pile.id)
+    }
     return ready;
   }
 
   function fire(pile) {
+    if (debug) {
+      console.log("GetManager.fire " + pile.id)
+    }
     // Fire a job
     // Status
     appStore.dispatch({
       type: "sliceGetManager/status",
       payload: {
-        id: job,
+        id: pile.id,
         status: "running",
       },
     });
     // job
-    switch (pile.job) {
+    switch (pile.job.service) {
       case "getUserDetails":
         getUserDetails().then(outcome => {
+    if (debug) {
+      console.log("GetManager.fire done " + pile.id)
+    }
+    setJobs(jobs.filter(job => job !== pile.id))
           appStore.dispatch({
-            type: "sliceGetManager/deplie",
-            payload: {        id: job      },
+            type: "sliceGetManager/depile",
+            payload: {        id: pile.id      },
           });
         })
         break;

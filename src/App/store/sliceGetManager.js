@@ -23,18 +23,23 @@ const sliceGetManager = createSlice({
         console.log("sliceGetManager.pile");
         //console.log(action.payload);
       }
-      Object.values(action.payload.piles).forEach((pile) => {
-        if (
-          Object.values(state.queue).some((p) => p.service === pile.service)
-        ) {
-          // Not to be piled
-        } else {
-          pile.id = random_id();
-          pile.status = "waiting";
-          pile.since = { waiting: Date.now(), queuing: null, running: null };
-          state.queue[pile.id] = pile;
-        }
-      });
+      if (
+        Object.values(state.queue).some(
+          (p) => p.job.service === action.payload.job.service
+        )
+      ) {
+        // Not to be piled
+      } else {
+        let pile = action.payload;
+        pile.id = random_id();
+        pile.status = "waiting";
+        pile.since = {
+          waiting: Date.now(),
+          queuing: null,
+          running: null,
+        };
+        state.queue[pile.id] = pile;
+      }
     },
     depile: (state, action) => {
       if (process.env.REACT_APP_DEBUG === "TRUE") {

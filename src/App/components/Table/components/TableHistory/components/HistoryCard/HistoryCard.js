@@ -11,7 +11,7 @@ import {
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline.js";
 
 // Services
-import serviceGameDelete from "../../services/serviceGameDelete.js";
+import serviceGameDelete from "./services/serviceGameDelete.js";
 // Shared
 import { random_id } from "../../../../../../shared/services/toolkit.js";
 import ConfirmModal from "../../../../../../shared/components/ConfirmModal/ConfirmModal.js";
@@ -24,14 +24,6 @@ export default function HistoryCard(props) {
   }
   // i18n
   const { t } = useTranslation();
-
-  // State
-  const [confirmData, setConfirmData] = useState({
-    uid: "",
-    title: "",
-    content: "",
-    callToActions: [],
-  });
 
   function stringifyPlayers() {
     let res = "";
@@ -81,6 +73,24 @@ export default function HistoryCard(props) {
     //{ weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
   }
 
+  // Confirm modal
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  function confirmCallback(choice) {
+    switch (choice) {
+      case "close":
+        setConfirmOpen(false);
+        break;
+      case "delete":
+        setConfirmOpen(false);
+        setDeleting(true);
+        serviceGameDelete(props.game._id);
+        break;
+      default:
+        console.error("HistoryCard.confirmCallback unmatched " + choice);
+    }
+  }
+
   return (
     <Card sx={{ width: "100%", p: 1 }}>
       <Box
@@ -100,39 +110,34 @@ export default function HistoryCard(props) {
           </Typography>
         </Box>
 
-        <IconButton
-          onClick={() => {
-            setConfirmData({
-              uid: random_id(),
-              title: "game.confirm.delete.title",
-              content: "game.confirm.delete.content",
-              callToActions: [
-                {
-                  label: "generic.button.cancel",
-                  callback: () => {
-                    setConfirmData({
-                      uid: "",
-                      title: "",
-                      content: "",
-                      callToActions: [],
-                    });
-                  },
-                },
-                {
-                  label: "generic.button.proceed",
-                  callback: () => serviceGameDelete(props.game._id),
-                  variant: "contained",
-                  color: "error",
-                },
-              ],
-            });
-          }}
-        >
+        <IconButton onClick={() => setConfirmOpen(true)}>
           <RemoveCircleOutlineIcon />
         </IconButton>
       </Box>
+
       <Typography variant="body2">{stringifyPlayers()}</Typography>
-      <ConfirmModal data={confirmData} />
+
+      <ConfirmModal
+        open={confirmOpen}
+        data={{
+          title: "game.confirm.delete.title",
+          content: "game.confirm.delete.content",
+          callToActions: [
+            {
+              label: "generic.button.cancel",
+              choice: "close",
+            },
+
+            {
+              label: "generic.button.proceed",
+              choice: "delete",
+              variant: "contained",
+              color: "error",
+            },
+          ],
+        }}
+        callback={confirmCallback}
+      />
     </Card>
   );
 }

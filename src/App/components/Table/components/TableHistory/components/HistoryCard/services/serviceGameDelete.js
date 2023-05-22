@@ -1,9 +1,9 @@
 // Services
 import apiGameDelete from "./apiGameDelete.js";
 // Shared
-import { random_id } from "../../../../../shared/services/toolkit.js";
+import { random_id } from "../../../../../../../shared/services/toolkit.js";
 // Reducers
-import appStore from "../../../../../store/appStore.js";
+import appStore from "../../../../../../../store/appStore.js";
 
 async function serviceGameDelete(gamieid) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

@@ -50,15 +50,19 @@ export default function Appbar(props) {
     setMenuOpen(false);
   }
   function toHome() {
+    setMenuOpen(false);
     window.location = "/";
   }
   function toHelp() {
+    setMenuOpen(false);
     window.location = "/help";
   }
   function toAccount() {
+    setMenuOpen(false);
     window.location = "/account";
   }
   function signOut() {
+    setMenuOpen(false);
     serviceAccessDeny();
   }
 

@@ -11,8 +11,6 @@ import {
 } from "@mui/material";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline.js";
 
-// Services
-import serviceGameDelete from "./services/serviceGameDelete.js";
 // Components
 import HistoryCard from "./components/HistoryCard/HistoryCard.js";
 // Reducers

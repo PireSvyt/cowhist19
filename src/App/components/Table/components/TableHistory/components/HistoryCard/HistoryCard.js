@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import {
   Box,
   List,
@@ -34,19 +33,16 @@ export default function HistoryCard(props) {
     callToActions: [],
   });
 
-  // Selects
-  const select = {
-    players: useSelector((state) => state.sliceTableDetails.players),
-  };
-
   function stringifyPlayers() {
     let res = "";
     // Attack
-    props.game.players.forEach((actualPlayer) => {
-      if (actualPlayer.role === "attack") {
-        let pseudoPlayer = select.players.filter((player) => {
-          player._id === actualPlayer._id;
-        });
+    props.game.players.forEach((gamePlayer) => {
+      if (gamePlayer.role === "attack") {
+        let pseudoPlayer = appStore
+          .getState()
+          .sliceTableDetails.players.filter((tablePlayer) => {
+            tablePlayer._id === gamePlayer._id;
+          });
         if (pseudoPlayer.length > 0) {
           res = res + pseudoPlayer[0].pseudo + ", ";
         } else {
@@ -56,11 +52,13 @@ export default function HistoryCard(props) {
     });
     res = res + t("game.label.against") + " ";
     // Defense
-    props.game.players.forEach((actualPlayer) => {
-      if (actualPlayer.role === "defense") {
-        let pseudoPlayer = select.players.filter((player) => {
-          player._id === actualPlayer._id;
-        });
+    props.game.players.forEach((gamePlayer) => {
+      if (gamePlayer.role === "defense") {
+        let pseudoPlayer = appStore
+          .getState()
+          .sliceTableDetails.players.filter((tablePlayer) => {
+            tablePlayer._id === gamePlayer._id;
+          });
         if (pseudoPlayer.length > 0) {
           res = res + pseudoPlayer[0].pseudo + ", ";
         } else {

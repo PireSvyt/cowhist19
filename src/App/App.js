@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
 import { withTranslation } from "react-i18next";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Provider, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 // https://www.geeksforgeeks.org/how-to-create-a-multi-page-website-using-react-js/
 
@@ -13,6 +13,7 @@ import Activation from "./components/Activation/Activation.js";
 import Table from "./components/Table/Table.js";
 import Account from "./components/Account/Account.js";
 import Help from "./components/Help/Help.js";
+import GetManager from "./components/GetManager/GetManager.js";
 // Services
 import serviceAssessCookie from "./services/serviceAssessCookie.js";
 
@@ -27,15 +28,21 @@ export default function App() {
   // Gather token from cookies
   serviceAssessCookie();
 
+  // Source
+  const queue = useSelector((state) => state.sliceGetManager.queue);
+
   return (
-    <Router>
-      <Routes>
-        <Route exact path="/" element={<Home />} />
-        <Route path="/activation/:id" element={<Activation />} />
-        <Route path="/account" element={<Account />} />
-        <Route path="/table/:id" element={<Table />} />
-        <Route path="/help" element={<Help />} />
-      </Routes>
-    </Router>
+    <div>
+      <Router>
+        <Routes>
+          <Route exact path="/" element={<Home />} />
+          <Route path="/activation/:id" element={<Activation />} />
+          <Route path="/account" element={<Account />} />
+          <Route path="/table/:id" element={<Table />} />
+          <Route path="/help" element={<Help />} />
+        </Routes>
+      </Router>
+      <GetManager queue={queue} />
+    </div>
   );
 }

@@ -13,6 +13,8 @@ import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline.js"
 
 // Components
 import HistoryCard from "./components/HistoryCard/HistoryCard.js";
+// Services
+import serviceGetTableHistory from "../../services/serviceGetTableHistory.js";
 // Reducers
 import appStore from "../../../../store/appStore.js";
 

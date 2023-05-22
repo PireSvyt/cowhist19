@@ -3,6 +3,9 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Box, List, ListItem, Card, Typography } from "@mui/material";
 
+// Service
+import serviceGetTableStats from "../../services/serviceGetTableStats.js";
+
 export default function TableStats() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("TableStats");

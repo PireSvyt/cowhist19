@@ -73,10 +73,13 @@ async function serviceProceed() {
               id: "game.snack.saved",
             },
           });
+          appStore.dispatch({
+            type: "sliceTableStats/unload",
+          });
+          appStore.dispatch({
+            type: "sliceTableHistory/unload",
+          });
           break;
-
-        //callbacks.push({ key: "updategames" });
-
         case "game.save.success.modified":
           appStore.dispatch({
             type: "sliceGameModal/change",

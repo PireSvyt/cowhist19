@@ -64,7 +64,14 @@ async function serviceProceed(table) {
             },
           });
           // Update table
-          serviceGetTableDetails();
+          serviceGetTableDetails().then(() => {
+            appStore.dispatch({
+              type: "sliceTableStats/unload",
+            });
+            appStore.dispatch({
+              type: "sliceTableHistory/unload",
+            });
+          });
           return { type: "success" };
           break;
         case "table.save.error.oncreate":

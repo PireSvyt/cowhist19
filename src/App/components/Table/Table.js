@@ -12,6 +12,7 @@ import GameModal from "./components/GameModal/GameModal.js";
 import serviceGetTableDetails from "./services/serviceGetTableDetails.js";
 import serviceGetTableStats from "./services/serviceGetTableStats.js";
 import serviceGetTableHistory from "./services/serviceGetTableHistory.js";
+
 // Shared
 import Appbar from "../../shared/components/Appbar/Appbar.js";
 import TableModal from "../../shared/components/TableModal/TableModal.js";
@@ -31,7 +32,8 @@ export default function Table() {
 
   // Selects
   const select = {
-    loaded: useSelector((state) => state.sliceUser.loaded),
+    userLoaded: useSelector((state) => state.sliceUser.loaded),
+    tableDetailsLoaded: useSelector((state) => state.sliceTableDetails.loaded),
     signedin: useSelector((state) => state.sliceUser.signedin),
     name: useSelector((state) => state.sliceTableDetails.name),
     token: useSelector((state) => state.sliceUser.token),
@@ -41,12 +43,9 @@ export default function Table() {
   };
 
   // Load at opening
-  if (select.token !== "") {
-    if (appStore.getState().sliceTableDetails.state === "available") {
+  if (select.userLoaded === true) {
+    if (select.tableDetailsLoaded === false) {
       serviceGetTableDetails();
-    }
-    if (appStore.getState().sliceTableStats.state === "available") {
-      serviceGetTableStats();
     }
   }
 

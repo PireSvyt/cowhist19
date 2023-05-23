@@ -22,6 +22,9 @@ const sliceTableStats = createSlice({
     lock: (state) => {
       state.state = "busy";
     },
+    unload: (state) => {
+      state.loaded = false;
+    },
   },
 });
 

@@ -32,18 +32,17 @@ export default function Table() {
 
   // Selects
   const select = {
-    userLoaded: useSelector((state) => state.sliceUser.loaded),
+    authLoaded: useSelector((state) => state.sliceUserAuth.loaded),
     tableDetailsLoaded: useSelector((state) => state.sliceTableDetails.loaded),
-    signedin: useSelector((state) => state.sliceUser.signedin),
+    signedin: useSelector((state) => state.sliceUserAuth.signedin),
     name: useSelector((state) => state.sliceTableDetails.name),
-    token: useSelector((state) => state.sliceUser.token),
     snackData: useSelector((state) => state.sliceSnack.snackData),
     openTableModal: useSelector((state) => state.sliceTableModal.open),
     openGameModal: useSelector((state) => state.sliceGameModal.open),
   };
 
   // Load at opening
-  if (select.userLoaded === true) {
+  if (select.authLoaded === true && select.signedin === true) {
     if (select.tableDetailsLoaded === false) {
       serviceGetTableDetails();
     }
@@ -101,7 +100,7 @@ export default function Table() {
         }}
       />
       <Box sx={{ height: 48 }} />
-      {select.loaded === false ? (
+      {select.authLoaded === false ? (
         <Box sx={{ left: "10%", right: "10%" }}>
           <LinearProgress />
         </Box>

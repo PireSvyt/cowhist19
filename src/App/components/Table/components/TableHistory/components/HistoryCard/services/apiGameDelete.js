@@ -9,7 +9,7 @@ async function apiGameDelete(gamieid) {
       process.env.REACT_APP_SERVER_URL + "/game/v1/" + gamieid,
       {
         headers: {
-          Authorization: "Bearer " + appStore.getState().sliceUser.token,
+          Authorization: "Bearer " + appStore.getState().sliceUserAuth.token,
         },
       }
     );

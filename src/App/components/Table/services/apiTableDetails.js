@@ -9,7 +9,7 @@ async function apiTableDetails(id) {
       process.env.REACT_APP_SERVER_URL + "/table/v1/" + id,
       {
         headers: {
-          Authorization: "Bearer " + appStore.getState().sliceUser.token,
+          Authorization: "Bearer " + appStore.getState().sliceUserAuth.token,
         },
       }
     );

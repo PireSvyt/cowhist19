@@ -13,7 +13,7 @@ function serviceAccessDeny() {
 
   // State management
   appStore.dispatch({
-    type: "sliceUser/signout",
+    type: "sliceUserAuth/signout",
   });
 
   // Remove cookies

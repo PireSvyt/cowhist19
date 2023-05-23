@@ -10,7 +10,7 @@ async function apiTableHistory(id, parameters) {
       parameters,
       {
         headers: {
-          Authorization: "Bearer " + appStore.getState().sliceUser.token,
+          Authorization: "Bearer " + appStore.getState().sliceUserAuth.token,
         },
       }
     );

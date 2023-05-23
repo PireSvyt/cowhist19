@@ -21,7 +21,7 @@ async function serviceGetUserDetails() {
     switch (data.type) {
       case "user.details.success":
         appStore.dispatch({
-          type: "sliceUser/details",
+          type: "sliceUserDetails/set",
           payload: data.data.user,
         });
         break;

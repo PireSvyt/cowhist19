@@ -10,7 +10,7 @@ async function apiGameSave(game) {
       game,
       {
         headers: {
-          Authorization: "Bearer " + appStore.getState().sliceUser.token,
+          Authorization: "Bearer " + appStore.getState().sliceUserAuth.token,
         },
       }
     );

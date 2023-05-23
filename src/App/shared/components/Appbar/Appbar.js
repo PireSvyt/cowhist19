@@ -38,7 +38,7 @@ export default function Appbar(props) {
 
   // Selects
   const select = {
-    signedin: useSelector((state) => state.sliceUser.signedin),
+    signedin: useSelector((state) => state.sliceUserAuth.signedin),
   };
 
   // Handles

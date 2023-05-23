@@ -33,9 +33,7 @@ export default function TableStats() {
   return (
     <Box>
       {!(select.loadedDetails === true && select.loadedStats === true) ? (
-        <Box
-          sx={{ position: "fixed", bottom: "50%", left: "10%", right: "10%" }}
-        >
+        <Box sx={{ left: "10%", right: "10%" }}>
           <LinearProgress />
         </Box>
       ) : select.stats.ranking.length === 0 ? (

@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import SmsFailedIcon from "@mui/icons-material/SmsFailed";
 import AddIcon from "@mui/icons-material/Add.js";
+import LinearProgress from "@mui/material/LinearProgress";
 
 // Components
 import TableCard from "./components/TableCard/TableCard.js";
@@ -29,7 +30,8 @@ export default function MyTables() {
 
   // Selects
   const select = {
-    tables: useSelector((state) => state.sliceUser.tables),
+    detailsLoaded: useSelector((state) => state.sliceUserDetails.loaded),
+    tables: useSelector((state) => state.sliceUserDetails.tables),
     openTableModal: useSelector((state) => state.sliceTableModal.open),
   };
 
@@ -45,9 +47,9 @@ export default function MyTables() {
             appStore.dispatch({
               type: "sliceTableModal/new",
               payload: {
-                _id: appStore.getState().sliceUser.id,
-                pseudo: appStore.getState().sliceUser.pseudo,
-                status: appStore.getState().sliceUser.status,
+                _id: appStore.getState().sliceUserDetails.id,
+                pseudo: appStore.getState().sliceUserDetails.pseudo,
+                status: appStore.getState().sliceUserDetails.status,
               },
             });
           }}
@@ -56,7 +58,11 @@ export default function MyTables() {
         </IconButton>
       </Stack>
 
-      {select.tables.length === 0 ? (
+      {select.detailsLoaded === false ? (
+        <Box sx={{ left: "10%", right: "10%" }}>
+          <LinearProgress />
+        </Box>
+      ) : select.tables.length === 0 ? (
         <Box
           sx={{
             m: 2,

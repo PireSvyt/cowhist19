@@ -30,10 +30,9 @@ async function serviceGrantAccess(token) {
     ) {
       // Then update variables to signed in
       appStore.dispatch({
-        type: "sliceUser/signin",
+        type: "sliceUserAuth/signin",
         payload: {
-          token: token,
-          decodedtoken: decodedtoken,
+          token: token
         },
       });
       serviceGetUserDetails();

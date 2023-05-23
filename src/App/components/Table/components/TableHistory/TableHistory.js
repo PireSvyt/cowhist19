@@ -44,7 +44,7 @@ export default function TableHistory() {
     <Box>
       {!(select.loadedDetails === true && select.loadedHistory === true) ? (
         <Box
-          sx={{ position: "fixed", bottom: "50%", left: "10%", right: "10%" }}
+          sx={{ left: "10%", right: "10%" }}
         >
           <LinearProgress />
         </Box>

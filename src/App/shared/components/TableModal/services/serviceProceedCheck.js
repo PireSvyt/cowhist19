@@ -45,7 +45,7 @@ function serviceProceedCheck(table, callback) {
 
   // Creation without user?
   if (table._id === "" && table.players.length > 0) {
-    let userId = appStore.getState().sliceUser.id;
+    let userId = appStore.getState().sliceUserAuth.id;
     if (
       table.players.filter((player) => {
         return player._id === userId;

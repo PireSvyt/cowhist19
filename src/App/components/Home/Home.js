@@ -24,8 +24,8 @@ export default function Home() {
 
   // Selects
   const select = {
-    loaded: useSelector((state) => state.sliceUser.loaded),
-    signedin: useSelector((state) => state.sliceUser.signedin),
+    authLoaded: useSelector((state) => state.sliceUserAuth.loaded),
+    signedin: useSelector((state) => state.sliceUserAuth.signedin),
     snackData: useSelector((state) => state.sliceSnack.snackData),
     tocomeData: useSelector((state) => state.sliceToComeModal.tocomeData),
   };
@@ -34,7 +34,7 @@ export default function Home() {
     <Box>
       <Appbar route="home" title={t("generic.label.product")} />
       <Box sx={{ height: 48 }} />
-      {select.loaded === false ? (
+      {select.authLoaded === false ? (
         <Box sx={{ left: "10%", right: "10%" }}>
           <LinearProgress />
         </Box>

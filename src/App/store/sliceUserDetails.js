@@ -4,6 +4,7 @@ const sliceUserDetails = createSlice({
   name: "sliceUserDetails",
   initialState: {
     loaded: false,
+    id: "",
     login: "",
     pseudo: "",
     status: "",
@@ -17,6 +18,7 @@ const sliceUserDetails = createSlice({
         //console.log(action.payload);
       }
       state.loaded = true;
+      state.id = action.payload._id;
       state.login = action.payload.login;
       state.pseudo = action.payload.pseudo;
       state.status = action.payload.status;
@@ -25,6 +27,12 @@ const sliceUserDetails = createSlice({
     },
     lock: (state) => {
       state.state = "busy";
+    },
+    unload: (state) => {
+      if (process.env.REACT_APP_DEBUG === "TRUE") {
+        console.log("sliceUserDetails.unload");
+      }
+      state.loaded = false;
     },
   },
 });

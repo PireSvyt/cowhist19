@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 // APIs
-import sliceUser from "./sliceUser.js";
+import sliceUserAuth from "./sliceUserAuth.js";
 import sliceUserDetails from "./sliceUserDetails.js";
 import sliceTableDetails from "./sliceTableDetails.js";
 import sliceTableHistory from "./sliceTableHistory.js";
@@ -16,7 +16,7 @@ import sliceToComeModal from "./sliceToComeModal.js";
 
 export default configureStore({
   reducer: {
-    sliceUser: sliceUser,
+    sliceUserAuth: sliceUserAuth,
     sliceUserDetails: sliceUserDetails,
     sliceTableDetails: sliceTableDetails,
     sliceTableHistory: sliceTableHistory,

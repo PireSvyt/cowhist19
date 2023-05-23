@@ -7,7 +7,7 @@ async function apiUserDetails() {
   try {
     const res = await axios.get(process.env.REACT_APP_SERVER_URL + "/user/v1", {
       headers: {
-        Authorization: "Bearer " + appStore.getState().sliceUser.token,
+        Authorization: "Bearer " + appStore.getState().sliceUserAuth.token,
       },
     });
     return res.data;

@@ -19,10 +19,11 @@ export default function Account() {
 
   // Selects
   const select = {
-    loaded: useSelector((state) => state.sliceUser.loaded),
-    signedin: useSelector((state) => state.sliceUser.signedin),
-    login: useSelector((state) => state.sliceUser.login),
-    pseudo: useSelector((state) => state.sliceUser.pseudo),
+    authLoaded: useSelector((state) => state.sliceUserAuth.loaded),
+    signedin: useSelector((state) => state.sliceUserAuth.signedin),
+    detailsLoaded: useSelector((state) => state.sliceUserDetails.loaded),
+    login: useSelector((state) => state.sliceUserDetails.login),
+    pseudo: useSelector((state) => state.sliceUserDetails.pseudo),
     tocomeData: useSelector((state) => state.sliceToComeModal.tocomeData),
   };
 
@@ -30,11 +31,13 @@ export default function Account() {
     <div>
       <Appbar route="account" title={t("generic.menu.account")} />
       <Box sx={{ height: 48 }} />
-      {select.loaded === false ? (
+      {select.authLoaded === false || select.detailsLoaded === false ? (
         <Box sx={{ left: "10%", right: "10%" }}>
           <LinearProgress />
         </Box>
-      ) : select.signedin === false ? null : (
+      ) : !(
+          select.signedin === true && select.detailsLoaded === true
+        ) ? null : (
         <Box component="span">
           <Paper
             sx={{
@@ -218,8 +221,7 @@ export default function Account() {
               </Box>
             </Box>
           </Paper>
-          
-          
+
           <ToComeModal data={select.tocomeData} />
         </Box>
       )}

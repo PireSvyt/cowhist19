@@ -18,12 +18,13 @@ export default function Landing() {
 
   // Selects
   const select = {
-    signedin: useSelector((state) => state.sliceUser.signedin),
+    openSignInModal: useSelector((state) => state.sliceSignInModal.open),
+    openSignUpModal: useSelector((state) => state.sliceSignUpModal.open),
   };
 
   // Render
   return (
-    <Box hidden={select.signedin === true}>
+    <Box>
       <Box
         textAlign="center"
         sx={{
@@ -50,8 +51,8 @@ export default function Landing() {
         </ButtonGroup>
       </Box>
 
-      <SignUpModal />
-      <SignInModal />
+      {select.openSignInModal === true ? <SignInModal /> : null}
+      {select.openSignUpModal === true ? <SignUpModal /> : null}
     </Box>
   );
 }

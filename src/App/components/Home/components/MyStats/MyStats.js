@@ -13,13 +13,8 @@ export default function MyStats() {
   // i18n
   const { t } = useTranslation();
 
-  // Selects
-  const select = {
-    signedin: useSelector((state) => state.sliceUser.signedin),
-  };
-
   return (
-    <Box hidden={select.signedin === false} sx={{ m: 2 }}>
+    <Box sx={{ m: 2 }}>
       <Typography variant="h6" component="span">
         {t("home.label.mystats")}
       </Typography>

@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline.js";
 import LinearProgress from "@mui/material/LinearProgress";
+import SmsFailedIcon from "@mui/icons-material/SmsFailed";
 
 // Components
 import HistoryCard from "./components/HistoryCard/HistoryCard.js";
@@ -28,13 +29,57 @@ export default function TableHistory() {
 
   // Selects
   const select = {
+    loadedDetails: useSelector((state) => state.sliceTableDetails.loaded),
+    loadedHistory: useSelector((state) => state.sliceTableHistory.loaded),
     history: useSelector((state) => state.sliceTableHistory.games),
     players: useSelector((state) => state.sliceTableDetails.players),
   };
 
+  // Load
+  if (select.loadedDetails && !select.loadedHistory) {
+    serviceGetTableHistory();
+  }
+
   return (
     <Box>
-      {select.history.length > 0 && select.players.length > 0 ? (
+      {!(select.loadedDetails === true && select.loadedHistory === true) ? (
+        <Box
+          sx={{ position: "fixed", bottom: "50%", left: "10%", right: "10%" }}
+        >
+          <LinearProgress />
+        </Box>
+      ) : select.history.length === 0 ? (
+        <Box
+          sx={{
+            m: 2,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography
+            sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }}
+            variant="h6"
+            component="span"
+            align="center"
+          >
+            {t("table.label.nogames")}
+          </Typography>
+          <SmsFailedIcon
+            sx={{ mt: 2, mb: 2 }}
+            fontSize="large"
+            color="primary"
+          />
+          <Typography
+            sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }}
+            variant="body1"
+            component="span"
+            align="center"
+          >
+            {t("table.label.nogameshistoryexplanation")}
+          </Typography>
+        </Box>
+      ) : (
         <List dense={true}>
           {select.history.map((game) => {
             let gameCard = { ...game };
@@ -59,12 +104,6 @@ export default function TableHistory() {
             );
           })}
         </List>
-      ) : (
-        <Box
-          sx={{ position: "fixed", bottom: "50%", left: "10%", right: "10%" }}
-        >
-          <LinearProgress />
-        </Box>
       )}
     </Box>
   );

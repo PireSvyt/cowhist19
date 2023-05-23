@@ -1,5 +1,7 @@
 // Services
 import serviceTableDelete from "./serviceTableDelete.js";
+// Reducers
+import appStore from "../../../../store/appStore.js";
 
 function serviceProceedCheck(table, callback) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -38,6 +40,23 @@ function serviceProceedCheck(table, callback) {
       }
       stateChanges.errors.players = true;
       confirmation.required = true;
+    }
+  }
+
+  // Creation without user?
+  if (table._id === "" && table.players.length > 0) {
+    let userId = appStore.getState().sliceUser.id;
+    if (
+      table.players.filter((player) => {
+        return player._id === userId;
+      }).length === 0
+    ) {
+      if (stateChanges.errors === undefined) {
+        stateChanges.errors = {};
+      }
+      errors.push("table.error.creationwithoutuser");
+      stateChanges.errors.players = true;
+      proceed = false;
     }
   }
 

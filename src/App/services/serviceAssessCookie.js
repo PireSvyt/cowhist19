@@ -16,6 +16,7 @@ async function serviceAssessCookie() {
     if (token === undefined) {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
         console.log("serviceAssessCookie no token from cookies");
+        serviceAccessDeny();
       }
     } else {
       // API call
@@ -26,7 +27,7 @@ async function serviceAssessCookie() {
         case "auth.assess.success.validtoken":
           // Sign in token
           serviceAccessGrant(token).then((proceedOutcome) => {
-            if (proceedOutcome.errors.length !== 0) {
+            if (proceedOutcome.errors.length > 0) {
               if (process.env.REACT_APP_DEBUG === "TRUE") {
                 console.log("proceedOutcome errors");
                 console.log(proceedOutcome.errors);
@@ -44,6 +45,7 @@ async function serviceAssessCookie() {
       console.log("service caught error");
       console.log(error);
     }
+    serviceAccessDeny();
   }
 }
 

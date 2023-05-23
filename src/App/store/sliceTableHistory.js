@@ -3,6 +3,7 @@ import { createSlice, configureStore } from "@reduxjs/toolkit";
 const sliceTableHistory = createSlice({
   name: "sliceTableHistory",
   initialState: {
+    loaded: false,
     games: [],
     state: "available",
   },
@@ -12,6 +13,7 @@ const sliceTableHistory = createSlice({
         console.log("sliceTableHistory.set");
         //console.log(action.payload);
       }
+      state.loaded = true;
       state.games = action.payload;
       state.state = "available";
     },

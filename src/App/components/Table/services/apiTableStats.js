@@ -5,16 +5,6 @@ import appStore from "../../../store/appStore.js";
 
 async function apiTableStats(id, parameters) {
   try {
-    // API dependency
-    let tokenisok = false;
-    do {
-      setTimeout(function () {
-        if (appStore.getState().sliceUser.token !== "") {
-          tokenisok = true;
-        }
-      }, 20); // every N ms
-    } while (tokenisok);
-    // API request
     const res = await axios.post(
       process.env.REACT_APP_SERVER_URL + "/table/v1/stats/" + id,
       parameters,

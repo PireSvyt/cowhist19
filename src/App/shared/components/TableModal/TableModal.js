@@ -18,6 +18,7 @@ import {
   Card,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
+import SmsFailedIcon from "@mui/icons-material/SmsFailed";
 
 import AddIcon from "@mui/icons-material/Add.js";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline.js";
@@ -48,6 +49,7 @@ export default function TableModal() {
     errors: useSelector((state) => state.sliceTableModal.errors),
     disabled: useSelector((state) => state.sliceTableModal.disabled),
     loading: useSelector((state) => state.sliceTableModal.loading),
+    openInviteModal: useSelector((state) => state.sliceInviteModal.open),
   };
 
   // Changes
@@ -177,13 +179,77 @@ export default function TableModal() {
               </IconButton>
             </Stack>
 
-            <List dense={true}>
-              {select.inputs.players.map((player) => (
-                <ListItem key={"player-" + player._id}>
-                  <PlayerCard player={player} />
-                </ListItem>
-              ))}
-            </List>
+            {select.inputs.players.length === 0 && select.id === "" ? (
+              <Box
+                sx={{
+                  m: 2,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }}
+                  variant="h6"
+                  component="span"
+                  align="center"
+                >
+                  {t("table.label.nouserscreate")}
+                </Typography>
+                <SmsFailedIcon
+                  sx={{ mt: 2, mb: 2 }}
+                  fontSize="large"
+                  color="primary"
+                />
+                <Typography
+                  sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }}
+                  variant="body1"
+                  component="span"
+                  align="center"
+                >
+                  {t("table.label.nouserscreateexplanation")}
+                </Typography>
+              </Box>
+            ) : select.inputs.players.length === 0 ? (
+              <Box
+                sx={{
+                  m: 2,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }}
+                  variant="h6"
+                  component="span"
+                  align="center"
+                >
+                  {t("table.label.nousersdelete")}
+                </Typography>
+                <SmsFailedIcon
+                  sx={{ mt: 2, mb: 2 }}
+                  fontSize="large"
+                  color="error"
+                />
+                <Typography
+                  sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }}
+                  variant="body1"
+                  component="span"
+                  align="center"
+                >
+                  {t("table.label.nousersdeleteexplanation")}
+                </Typography>
+              </Box>
+            ) : (
+              <List dense={true}>
+                {select.inputs.players.map((player) => (
+                  <ListItem key={"player-" + player._id}>
+                    <PlayerCard player={player} />
+                  </ListItem>
+                ))}
+              </List>
+            )}
           </Box>
         </DialogContent>
 
@@ -200,34 +266,43 @@ export default function TableModal() {
             onClick={callServiceProceed}
             disabled={select.disabled}
             loading={select.loading}
+            color={
+              select.inputs.players.length === 0 && select.id === ""
+                ? "primary"
+                : select.inputs.players.length === 0
+                ? "error"
+                : "primary"
+            }
           >
             {t("generic.button.save")}
           </LoadingButton>
         </DialogActions>
       </Dialog>
 
-      <InviteModal />
+      {select.openInviteModal === true ? <InviteModal /> : null}
 
-      <ConfirmModal
-        open={confirmOpen}
-        data={{
-          title: "table.confirm.deletenoeusers.title",
-          content: "table.confirm.deletenoeusers.content",
-          callToActions: [
-            {
-              label: "generic.button.cancel",
-              choice: "close",
-            },
-            {
-              label: "generic.button.proceed",
-              choice: "delete",
-              variant: "contained",
-              color: "error",
-            },
-          ],
-        }}
-        callback={confirmCallback}
-      />
+      {confirmOpen === true ? (
+        <ConfirmModal
+          open={confirmOpen}
+          data={{
+            title: "table.confirm.deletenoeusers.title",
+            content: "table.confirm.deletenoeusers.content",
+            callToActions: [
+              {
+                label: "generic.button.cancel",
+                choice: "close",
+              },
+              {
+                label: "generic.button.proceed",
+                choice: "delete",
+                variant: "contained",
+                color: "error",
+              },
+            ],
+          }}
+          callback={confirmCallback}
+        />
+      ) : null}
     </Box>
   );
 }

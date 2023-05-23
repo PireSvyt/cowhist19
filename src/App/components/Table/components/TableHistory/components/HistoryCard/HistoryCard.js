@@ -91,37 +91,38 @@ export default function HistoryCard(props) {
         </Box>
 
         <IconButton onClick={() => setConfirmOpen(true)} disabled={deleting}>
-          <Box hidden={!deleting}>
+          {deleting ? (
             <CircularProgress size={24} sx={{ color: "grey.500" }} />
-          </Box>
-          <Box hidden={deleting}>
+          ) : (
             <RemoveCircleOutlineIcon />
-          </Box>
+          )}
         </IconButton>
       </Box>
 
       <Typography variant="body2">{stringifyPlayers()}</Typography>
 
-      <ConfirmModal
-        open={confirmOpen}
-        data={{
-          title: "game.confirm.delete.title",
-          content: "game.confirm.delete.content",
-          callToActions: [
-            {
-              label: "generic.button.cancel",
-              choice: "close",
-            },
-            {
-              label: "generic.button.proceed",
-              choice: "delete",
-              variant: "contained",
-              color: "error",
-            },
-          ],
-        }}
-        callback={confirmCallback}
-      />
+      {confirmOpen === false ? null : (
+        <ConfirmModal
+          open={confirmOpen}
+          data={{
+            title: "game.confirm.delete.title",
+            content: "game.confirm.delete.content",
+            callToActions: [
+              {
+                label: "generic.button.cancel",
+                choice: "close",
+              },
+              {
+                label: "generic.button.proceed",
+                choice: "delete",
+                variant: "contained",
+                color: "error",
+              },
+            ],
+          }}
+          callback={confirmCallback}
+        />
+      )}
     </Card>
   );
 }

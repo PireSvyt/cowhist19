@@ -149,7 +149,7 @@ export default function Appbar(props) {
               {props.title}
             </Typography>
 
-            <Box hidden={!(props.route === "table")}>
+            {!(props.route === "table") ? null : (
               <IconButton
                 size="large"
                 color="inherit"
@@ -157,7 +157,7 @@ export default function Appbar(props) {
               >
                 <EditIcon />
               </IconButton>
-            </Box>
+            )}
           </Box>
 
           <Box
@@ -169,35 +169,36 @@ export default function Appbar(props) {
           >
             <LanguageSwitcher show={showLanguageSwitcher} />
 
-            <Box hidden={menuItems.length === 0 || !select.signedin}>
-              <IconButton size="large" onClick={openMenu}>
-                <MenuIcon sx={{ color: "white" }} />
-              </IconButton>
-            </Box>
-            <Menu
-              open={menuOpen}
-              onClose={closeMenu}
-              anchorEl={anchorEl}
-              MenuListProps={{
-                "aria-labelledby": "basic-button",
-              }}
-            >
-              {menuItems.map((item) => {
-                return (
-                  <MenuItem
-                    hidden={!(item.signed && select.signedin)}
-                    key={random_id()}
-                    onClick={item.onclick}
-                  >
-                    {t(item.label)}
-                  </MenuItem>
-                );
-              })}
-            </Menu>
+            {menuItems.length === 0 || !select.signedin ? null : (
+              <Box>
+                <IconButton size="large" onClick={openMenu}>
+                  <MenuIcon sx={{ color: "white" }} />
+                </IconButton>
 
-            <Box
-              hidden={!(props.route === "account" || props.route === "help")}
-            >
+                <Menu
+                  open={menuOpen}
+                  onClose={closeMenu}
+                  anchorEl={anchorEl}
+                  MenuListProps={{
+                    "aria-labelledby": "basic-button",
+                  }}
+                >
+                  {menuItems.map((item) => {
+                    return (
+                      <MenuItem
+                        hidden={!(item.signed && select.signedin)}
+                        key={random_id()}
+                        onClick={item.onclick}
+                      >
+                        {t(item.label)}
+                      </MenuItem>
+                    );
+                  })}
+                </Menu>
+              </Box>
+            )}
+
+            {!(props.route === "account" || props.route === "help") ? null : (
               <IconButton
                 size="large"
                 color="inherit"
@@ -205,7 +206,7 @@ export default function Appbar(props) {
               >
                 <CloseIcon />
               </IconButton>
-            </Box>
+            )}
           </Box>
         </Box>
       </Toolbar>

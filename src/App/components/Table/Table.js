@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Box, Tabs, Tab, Fab } from "@mui/material";
+import LinearProgress from "@mui/material/LinearProgress";
 
 // Components
 import TableStats from "./components/TableStats/TableStats.js";
@@ -30,9 +31,13 @@ export default function Table() {
 
   // Selects
   const select = {
+    loaded: useSelector((state) => state.sliceUser.loaded),
+    signedin: useSelector((state) => state.sliceUser.signedin),
     name: useSelector((state) => state.sliceTableDetails.name),
     token: useSelector((state) => state.sliceUser.token),
     snackData: useSelector((state) => state.sliceSnack.snackData),
+    openTableModal: useSelector((state) => state.sliceTableModal.open),
+    openGameModal: useSelector((state) => state.sliceGameModal.open),
   };
 
   // Load at opening
@@ -97,42 +102,50 @@ export default function Table() {
         }}
       />
       <Box sx={{ height: 48 }} />
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs value={tab} onChange={changeTab} variant="fullWidth">
-          <Tab
-            label={t("table.label.stats")}
-            id="tab-0"
-            aria-controls="tabpanel-0"
-          />
-          <Tab
-            label={t("table.label.history")}
-            id="tab-1"
-            aria-controls="tabpanel-1"
-          />
-        </Tabs>
-      </Box>
-      <TabPanel value={tab} index={0}>
-        <TableStats />
-      </TabPanel>
-      <TabPanel value={tab} index={1}>
-        <TableHistory />
-      </TabPanel>
-      <Fab
-        variant="extended"
-        color="primary"
-        sx={{ position: "fixed", bottom: 20, right: 20 }}
-        onClick={() => {
-          appStore.dispatch({ type: "sliceGameModal/new" });
-        }}
-      >
-        {t("table.button.newgame")}
-      </Fab>
-      <Box sx={{ height: 60 }} />
+      {select.loaded === false ? (
+        <Box sx={{ left: "10%", right: "10%" }}>
+          <LinearProgress />
+        </Box>
+      ) : select.signedin === false ? null : (
+        <Box>
+          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+            <Tabs value={tab} onChange={changeTab} variant="fullWidth">
+              <Tab
+                label={t("table.label.stats")}
+                id="tab-0"
+                aria-controls="tabpanel-0"
+              />
+              <Tab
+                label={t("table.label.history")}
+                id="tab-1"
+                aria-controls="tabpanel-1"
+              />
+            </Tabs>
+          </Box>
+          <TabPanel value={tab} index={0}>
+            <TableStats />
+          </TabPanel>
+          <TabPanel value={tab} index={1}>
+            <TableHistory />
+          </TabPanel>
+          <Fab
+            variant="extended"
+            color="primary"
+            sx={{ position: "fixed", bottom: 20, right: 20 }}
+            onClick={() => {
+              appStore.dispatch({ type: "sliceGameModal/new" });
+            }}
+          >
+            {t("table.button.newgame")}
+          </Fab>
+          <Box sx={{ height: 60 }} />
 
-      <TableModal />
-      <GameModal />
+          {select.openTableModal === true ? <TableModal /> : null}
+          {select.openGameModal === true ? <GameModal /> : null}
 
-      <Snack data-testid="componentSnack" data={select.snackData} />
+          <Snack data-testid="componentSnack" data={select.snackData} />
+        </Box>
+      )}
     </Box>
   );
 }

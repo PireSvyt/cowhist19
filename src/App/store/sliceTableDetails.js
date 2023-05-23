@@ -3,6 +3,7 @@ import { createSlice, configureStore } from "@reduxjs/toolkit";
 const sliceTableDetails = createSlice({
   name: "sliceTableDetails",
   initialState: {
+    loaded: false,
     id: "",
     name: "",
     players: [],
@@ -15,6 +16,7 @@ const sliceTableDetails = createSlice({
         console.log("sliceTableDetails.set");
         //console.log(action.payload);
       }
+      state.loaded = true;
       state.id = action.payload._id;
       state.name = action.payload.name;
       state.players = action.payload.players;

@@ -3,6 +3,7 @@ import { createSlice, configureStore } from "@reduxjs/toolkit";
 const sliceTableStats = createSlice({
   name: "sliceTableStats",
   initialState: {
+    loaded: false,
     stats: {
       ranking: [],
     },
@@ -14,6 +15,7 @@ const sliceTableStats = createSlice({
         console.log("sliceTableStats.set");
         //console.log(action.payload);
       }
+      state.loaded = true;
       state.stats = action.payload;
       state.state = "available";
     },

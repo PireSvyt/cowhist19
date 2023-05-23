@@ -10,9 +10,11 @@ import {
   Box,
   Card,
 } from "@mui/material";
-
+import SmsFailedIcon from "@mui/icons-material/SmsFailed";
 import AddIcon from "@mui/icons-material/Add.js";
 
+// Components
+import TableCard from "./components/TableCard/TableCard.js";
 // Shared
 import TableModal from "../../../../shared/components/TableModal/TableModal.js";
 // Reducers
@@ -27,27 +29,12 @@ export default function MyTables() {
 
   // Selects
   const select = {
-    signedin: useSelector((state) => state.sliceUser.signedin),
     tables: useSelector((state) => state.sliceUser.tables),
+    openTableModal: useSelector((state) => state.sliceTableModal.open),
   };
 
-  // Table card
-  function TableCard(props) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("TableCard " + props.table._id);
-    }
-    function onClick() {
-      window.location = "/table/" + props.table._id;
-    }
-    return (
-      <Card sx={{ width: "100%", p: 1 }} onClick={onClick}>
-        <Typography>{props.table.name}</Typography>
-      </Card>
-    );
-  }
-
   return (
-    <Box hidden={select.signedin === false}>
+    <Box>
       <Stack direction="row" justifyContent="space-between">
         <Typography sx={{ p: 2 }} variant="h6" component="span">
           {t("home.label.mytables")}
@@ -69,15 +56,48 @@ export default function MyTables() {
         </IconButton>
       </Stack>
 
-      <List dense={true}>
-        {select.tables.map((table) => (
-          <ListItem key={"table-" + table._id}>
-            <TableCard table={table} />
-          </ListItem>
-        ))}
-      </List>
+      {select.tables.length === 0 ? (
+        <Box
+          sx={{
+            m: 2,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography
+            sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }}
+            variant="h6"
+            component="span"
+            align="center"
+          >
+            {t("home.label.notables")}
+          </Typography>
+          <SmsFailedIcon
+            sx={{ mt: 2, mb: 2 }}
+            fontSize="large"
+            color="primary"
+          />
+          <Typography
+            sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }}
+            variant="body1"
+            component="span"
+            align="center"
+          >
+            {t("home.label.notablesexplanation")}
+          </Typography>
+        </Box>
+      ) : (
+        <List dense={true}>
+          {select.tables.map((table) => (
+            <ListItem key={"table-" + table._id}>
+              <TableCard table={table} />
+            </ListItem>
+          ))}
+        </List>
+      )}
 
-      <TableModal />
+      {select.openTableModal === true ? <TableModal /> : null}
     </Box>
   );
 }

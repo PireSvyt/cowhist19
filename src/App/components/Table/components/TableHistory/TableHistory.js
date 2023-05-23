@@ -10,6 +10,7 @@ import {
   IconButton,
 } from "@mui/material";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline.js";
+import LinearProgress from "@mui/material/LinearProgress";
 
 // Components
 import HistoryCard from "./components/HistoryCard/HistoryCard.js";
@@ -33,17 +34,21 @@ export default function TableHistory() {
 
   return (
     <Box>
-      <List dense={true}>
-        {select.players !== [] ? (
-          select.history.map((game) => (
+      {select.history.length > 0 && select.players.length > 0 ? (
+        <List dense={true}>
+          {select.history.map((game) => (
             <ListItem key={"game-" + game._id}>
-              <HistoryCard game={game} />
+              <HistoryCard game={game} tablePlayers={select.players} />
             </ListItem>
-          ))
-        ) : (
-          <div />
-        )}
-      </List>
+          ))}
+        </List>
+      ) : (
+        <Box
+          sx={{ position: "fixed", bottom: "50%", left: "10%", right: "10%" }}
+        >
+          <LinearProgress />
+        </Box>
+      )}
     </Box>
   );
 }

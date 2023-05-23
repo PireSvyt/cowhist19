@@ -17,8 +17,6 @@ import serviceGetTableHistory from "../../../../services/serviceGetTableHistory.
 // Shared
 import { random_id } from "../../../../../../shared/services/toolkit.js";
 import ConfirmModal from "../../../../../../shared/components/ConfirmModal/ConfirmModal.js";
-// Reducers
-import appStore from "../../../../../../store/appStore.js";
 
 export default function HistoryCard(props) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -28,39 +26,36 @@ export default function HistoryCard(props) {
   const { t } = useTranslation();
 
   function stringifyPlayers() {
+    // Add pseudo to game players
+    let gamePlayers = { ...props.game.players };
+    let gameStoryInputs = {
+      attack: [],
+      defense: [],
+    };
+    Object.values(gamePlayers).forEach((gamePlayer) => {
+      let pseudoPlayer = props.tablePlayers.filter((tablePlayer) => {
+        return tablePlayer._id === gamePlayer._id;
+      });
+      let readyGamePlayer = { ...gamePlayer };
+      if (pseudoPlayer.length > 0) {
+        readyGamePlayer.pseudo = pseudoPlayer[0].pseudo;
+      } else {
+        readyGamePlayer.pseudo = "a removed user";
+      }
+      gameStoryInputs[gamePlayer.role].push(readyGamePlayer);
+    });
+
     let res = "";
     // Attack
-    props.game.players.forEach((gamePlayer) => {
-      if (gamePlayer.role === "attack") {
-        let pseudoPlayer = appStore
-          .getState()
-          .sliceTableDetails.players.filter((tablePlayer) => {
-            tablePlayer._id === gamePlayer._id;
-          });
-        if (pseudoPlayer.length > 0) {
-          res = res + pseudoPlayer[0].pseudo + ", ";
-        } else {
-          res = res + "a removed user, ";
-        }
-      }
+    gameStoryInputs.attack.forEach((gamePlayer) => {
+      res = res + gamePlayer.pseudo + ", ";
     });
-    res = res + t("game.label.against") + " ";
+    res = res.slice(0, -2) + " " + t("game.label.against") + " ";
     // Defense
-    props.game.players.forEach((gamePlayer) => {
-      if (gamePlayer.role === "defense") {
-        let pseudoPlayer = appStore
-          .getState()
-          .sliceTableDetails.players.filter((tablePlayer) => {
-            tablePlayer._id === gamePlayer._id;
-          });
-        if (pseudoPlayer.length > 0) {
-          res = res + pseudoPlayer[0].pseudo + ", ";
-        } else {
-          res = res + "a removed user, ";
-        }
-      }
+    gameStoryInputs.defense.forEach((gamePlayer) => {
+      res = res + gamePlayer.pseudo + ", ";
     });
-    return res;
+    return res.slice(0, -2);
   }
   function stringifyOutcome() {
     if (props.game.outcome >= 0) {

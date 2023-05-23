@@ -1,5 +1,5 @@
 // Services
-import serviceDelete from "./serviceDelete.js";
+import serviceTableDelete from "./serviceTableDelete.js";
 
 function serviceProceedCheck(table, callback) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -38,22 +38,6 @@ function serviceProceedCheck(table, callback) {
       }
       stateChanges.errors.players = true;
       confirmation.required = true;
-      confirmation.openConfirmModal = true;
-      confirmation.confirmModalTitle = "table.confirm.deletenoeusers.title";
-      confirmation.confirmModalContent = "table.confirm.deletenoeusers.content";
-      confirmation.confirmModalCTA = [
-        {
-          label: "generic.button.cancel",
-          callback: () =>
-            appStore.dispatch({ type: "sliceConfirmModal/close" }),
-        },
-        {
-          label: "generic.button.proceed",
-          callback: () => serviceDelete(table._id),
-          variant: "contained",
-          color: "error",
-        },
-      ];
     }
   }
 

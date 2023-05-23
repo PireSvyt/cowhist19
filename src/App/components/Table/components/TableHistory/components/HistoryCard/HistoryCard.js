@@ -15,7 +15,6 @@ import CircularProgress from "@mui/material/CircularProgress";
 import serviceGameDelete from "./services/serviceGameDelete.js";
 import serviceGetTableHistory from "../../../../services/serviceGetTableHistory.js";
 // Shared
-import { random_id } from "../../../../../../shared/services/toolkit.js";
 import ConfirmModal from "../../../../../../shared/components/ConfirmModal/ConfirmModal.js";
 
 export default function HistoryCard(props) {
@@ -24,51 +23,6 @@ export default function HistoryCard(props) {
   }
   // i18n
   const { t } = useTranslation();
-
-  function stringifyPlayers() {
-    // Add pseudo to game players
-    let gamePlayers = { ...props.game.players };
-    let gameStoryInputs = {
-      attack: [],
-      defense: [],
-    };
-    Object.values(gamePlayers).forEach((gamePlayer) => {
-      let pseudoPlayer = props.tablePlayers.filter((tablePlayer) => {
-        return tablePlayer._id === gamePlayer._id;
-      });
-      let readyGamePlayer = { ...gamePlayer };
-      if (pseudoPlayer.length > 0) {
-        readyGamePlayer.pseudo = pseudoPlayer[0].pseudo;
-      } else {
-        readyGamePlayer.pseudo = "a removed user";
-      }
-      gameStoryInputs[gamePlayer.role].push(readyGamePlayer);
-    });
-
-    let res = "";
-    // Attack
-    gameStoryInputs.attack.forEach((gamePlayer) => {
-      res = res + gamePlayer.pseudo + ", ";
-    });
-    res = res.slice(0, -2) + " " + t("game.label.against") + " ";
-    // Defense
-    gameStoryInputs.defense.forEach((gamePlayer) => {
-      res = res + gamePlayer.pseudo + ", ";
-    });
-    return res.slice(0, -2);
-  }
-  function stringifyOutcome() {
-    if (props.game.outcome >= 0) {
-      return t("game.label.won") + "  +" + props.game.outcome;
-    } else {
-      return t("game.label.lost") + "  " + props.game.outcome;
-    }
-  }
-  function stringifyDate() {
-    let date = new Date(props.game.date);
-    return date.toLocaleString("fr-FR");
-    //{ weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
-  }
 
   // Confirm modal
   const [confirmOpen, setConfirmOpen] = useState(false);
@@ -89,6 +43,32 @@ export default function HistoryCard(props) {
       default:
         console.error("HistoryCard.confirmCallback unmatched " + choice);
     }
+  }
+
+  function stringifyPlayers() {
+    let res = "";
+    // Attack
+    props.game.attackPlayers.forEach((gamePlayer) => {
+      res = res + gamePlayer.pseudo + ", ";
+    });
+    res = res.slice(0, -2) + " " + t("game.label.against") + " ";
+    // Defense
+    props.game.defensePlayers.forEach((gamePlayer) => {
+      res = res + gamePlayer.pseudo + ", ";
+    });
+    return res.slice(0, -2);
+  }
+  function stringifyOutcome() {
+    if (props.game.outcome >= 0) {
+      return t("game.label.won") + "  +" + props.game.outcome;
+    } else {
+      return t("game.label.lost") + "  " + props.game.outcome;
+    }
+  }
+  function stringifyDate() {
+    let date = new Date(props.game.date);
+    return date.toLocaleString("fr-FR");
+    //{ weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
   }
 
   return (

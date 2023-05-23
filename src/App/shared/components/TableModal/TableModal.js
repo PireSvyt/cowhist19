@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import jwt_decode from "jwt-decode";
@@ -24,9 +24,12 @@ import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline.js"
 
 // Components
 import InviteModal from "./components/InviteModal/InviteModal.js";
+import PlayerCard from "./components/PlayerCard/PlayerCard.js";
 // Services
 import serviceProceed from "./services/serviceProceed.js";
-import apiTableDelete from "./services/apiTableDelete.js";
+import serviceTableDelete from "./services/serviceTableDelete.js";
+// Shared
+import ConfirmModal from "../../../shared/components/ConfirmModal/ConfirmModal.js";
 // Reducers
 import appStore from "../../../store/appStore.js";
 
@@ -72,39 +75,50 @@ export default function TableModal() {
   // Constants
   const componentHeight = window.innerHeight - 115;
 
-  // Player card
-  function PlayerCard(props) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("PlayerCard " + props.player._id);
-    }
-    // i18n
-    const { t } = useTranslation();
+  // Services
+  function callServiceProceed() {
+    serviceProceed().then((serviceProceedOutcome) => {
+      switch (serviceProceedOutcome.type) {
+        case "error":
+          if (process.env.REACT_APP_DEBUG === "TRUE") {
+            console.log("TableModal.callServiceProceed error");
+          }
+          break;
+        case "success":
+          if (process.env.REACT_APP_DEBUG === "TRUE") {
+            console.log("TableModal.callServiceProceed error");
+          }
+          break;
+        case "confirmDelete":
+          setConfirmOpen(true);
+          break;
+        default:
+          console.error(
+            "TableModal.callServiceProceed unmatched type " +
+              serviceProceedOutcome.type
+          );
+      }
+    });
+  }
 
-    // Handles
-    function removeUser() {
-      appStore.dispatch({
-        type: "sliceTableModal/removeuser",
-        payload: props.player._id,
-      });
+  // Confirm modal
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  function confirmCallback(choice) {
+    switch (choice) {
+      case "close":
+        setConfirmOpen(false);
+        break;
+      case "delete":
+        setConfirmOpen(false);
+        setDeleting(true);
+        serviceTableDelete(select.id).then(() => {
+          setDeleting(false);
+        });
+        break;
+      default:
+        console.error("HistoryCard.confirmCallback unmatched " + choice);
     }
-
-    return (
-      <Card sx={{ width: "100%", p: 1 }}>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <Typography>{props.player.pseudo}</Typography>
-          <IconButton onClick={removeUser}>
-            <RemoveCircleOutlineIcon />
-          </IconButton>
-        </Box>
-      </Card>
-    );
   }
 
   return (
@@ -183,7 +197,7 @@ export default function TableModal() {
           </Button>
           <LoadingButton
             variant="contained"
-            onClick={serviceProceed}
+            onClick={callServiceProceed}
             disabled={select.disabled}
             loading={select.loading}
           >
@@ -193,6 +207,27 @@ export default function TableModal() {
       </Dialog>
 
       <InviteModal />
+
+      <ConfirmModal
+        open={confirmOpen}
+        data={{
+          title: "table.confirm.deletenoeusers.title",
+          content: "table.confirm.deletenoeusers.content",
+          callToActions: [
+            {
+              label: "generic.button.cancel",
+              choice: "close",
+            },
+            {
+              label: "generic.button.proceed",
+              choice: "delete",
+              variant: "contained",
+              color: "error",
+            },
+          ],
+        }}
+        callback={confirmCallback}
+      />
     </Box>
   );
 }

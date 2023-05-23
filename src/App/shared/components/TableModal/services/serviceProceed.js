@@ -45,6 +45,7 @@ async function serviceProceed(table) {
             },
           });
           window.location = "/table/" + data.data.id;
+          return { type: "success" };
           break;
         case "table.save.success.modified":
           appStore.dispatch({
@@ -64,6 +65,7 @@ async function serviceProceed(table) {
           });
           // Update table
           serviceGetTableDetails();
+          return { type: "success" };
           break;
         case "table.save.error.oncreate":
           appStore.dispatch({
@@ -80,6 +82,7 @@ async function serviceProceed(table) {
               id: "generic.snack.error.wip",
             },
           });
+          return { type: "error" };
           break;
         default:
           appStore.dispatch({
@@ -96,6 +99,7 @@ async function serviceProceed(table) {
               id: "generic.snack.api.unmanagedtype",
             },
           });
+          return { type: "error" };
       }
     } else {
       appStore.dispatch({
@@ -114,18 +118,12 @@ async function serviceProceed(table) {
             details: proceedCheckOutcome.errors,
           },
         });
+        return { type: "error" };
       }
       if (proceedCheckOutcome.confirmation.required) {
-        appStore.dispatch({
-          type: "sliceConfirmModal/open",
-          payload: {
-            uid: random_id(),
-            title: proceedCheckOutcome.confirmation.title,
-            content: proceedCheckOutcome.confirmation.content,
-            callToActions: proceedCheckOutcome.confirmation.callToActions,
-          },
-        });
+        return { type: "confirmDelete" };
       }
+      return { type: "error" };
     }
   } catch (err) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -147,6 +145,7 @@ async function serviceProceed(table) {
         id: "generic.snack.api.errornetwork",
       },
     });
+    return { type: "error" };
   }
 }
 

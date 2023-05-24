@@ -106,7 +106,12 @@ export default function Table() {
         </Box>
       ) : select.signedin === false ? null : (
         <Box>
-          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+          <Box
+            sx={{
+              borderBottom: 1,
+              borderColor: "divider",
+            }}
+          >
             <Tabs value={tab} onChange={changeTab} variant="fullWidth">
               <Tab
                 label={t("table.label.stats")}

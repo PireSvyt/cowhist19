@@ -8,7 +8,7 @@ import LanguageIcon from "@mui/icons-material/Language.js";
 // Shared
 import { random_id } from "../../../../services/toolkit.js";
 
-export default function LanguageSwitcher(props) {
+export default function LanguageSwitcher() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("LanguageSwitcher");
   }
@@ -32,7 +32,7 @@ export default function LanguageSwitcher(props) {
   }
 
   return (
-    <Box hidden={!props.show}>
+    <Box>
       <IconButton onClick={openSwitcher} size="small" sx={{ ml: 2 }}>
         <LanguageIcon sx={{ color: "white" }} />
       </IconButton>

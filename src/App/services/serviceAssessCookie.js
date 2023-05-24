@@ -16,8 +16,8 @@ async function serviceAssessCookie() {
     if (token === undefined) {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
         console.log("serviceAssessCookie no token from cookies");
-        serviceAccessDeny();
       }
+      serviceAccessDeny();
     } else {
       // API call
       const data = await apiAuthAssess(token);

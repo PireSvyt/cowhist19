@@ -64,6 +64,7 @@ export default function Appbar(props) {
   function signOut() {
     setMenuOpen(false);
     serviceAccessDeny();
+    window.location = "/";
   }
 
   // MenuItems
@@ -149,7 +150,7 @@ export default function Appbar(props) {
               {props.title}
             </Typography>
 
-            {!(props.route === "table") ? null : (
+            {!(props.route === "table" || props.title === "") ? null : (
               <IconButton
                 size="large"
                 color="inherit"
@@ -167,7 +168,7 @@ export default function Appbar(props) {
               alignItems: "center",
             }}
           >
-            <LanguageSwitcher show={showLanguageSwitcher} />
+            {showLanguageSwitcher === true ? <LanguageSwitcher /> : null}
 
             {menuItems.length === 0 || !select.signedin ? null : (
               <Box>

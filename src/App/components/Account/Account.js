@@ -1,43 +1,43 @@
-import React from "react";
-import { withTranslation } from "react-i18next";
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Paper, Button, Typography, Box } from "@mui/material";
+import LinearProgress from "@mui/material/LinearProgress";
 
 // Shared
 import Appbar from "../../shared/components/Appbar/Appbar.js";
 import ToComeModal from "../../shared/components/ToComeModal/ToComeModal.js";
+// Reducers
+import appStore from "../../store/appStore.js";
 
-class Account extends React.Component {
-  constructor(props) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Account.constructor");
-    }
-    super(props);
-    this.state = {
-      showToComeModal: false,
-    };
-
-    // Handles
-    this.handleAppbarCallback = this.handleAppbarCallback.bind(this);
-    this.handleOpenToComeModal = this.handleOpenToComeModal.bind(this);
-    this.handleToComeModalCallback = this.handleToComeModalCallback.bind(this);
+export default function Account() {
+  if (process.env.REACT_APP_DEBUG === "TRUE") {
+    console.log("Account");
   }
-  render() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Account.render");
-    }
-    // i18n
-    const { t } = this.props;
+  // i18n
+  const { t } = useTranslation();
 
-    return (
-      <div>
-        <Appbar
-          signedin={this.props.signedin}
-          token={this.props.token}
-          callback={this.handleAppbarCallback}
-          route="account"
-          title={t("generic.menu.account")}
-        />
-        <Box sx={{ height: 48 }} />
+  // Selects
+  const select = {
+    authLoaded: useSelector((state) => state.sliceUserAuth.loaded),
+    signedin: useSelector((state) => state.sliceUserAuth.signedin),
+    detailsLoaded: useSelector((state) => state.sliceUserDetails.loaded),
+    login: useSelector((state) => state.sliceUserDetails.login),
+    pseudo: useSelector((state) => state.sliceUserDetails.pseudo),
+    tocomeData: useSelector((state) => state.sliceToComeModal.tocomeData),
+  };
+
+  return (
+    <div>
+      <Appbar route="account" title={t("generic.menu.account")} />
+      <Box sx={{ height: 48 }} />
+      {select.authLoaded === false || select.detailsLoaded === false ? (
+        <Box sx={{ left: "10%", right: "10%" }}>
+          <LinearProgress />
+        </Box>
+      ) : !(
+          select.signedin === true && select.detailsLoaded === true
+        ) ? null : (
         <Box component="span">
           <Paper
             sx={{
@@ -61,9 +61,7 @@ class Account extends React.Component {
               </Typography>
               <Box textAlign="center">
                 <Typography variant="body1" gutterBottom>
-                  {this.props.user !== undefined
-                    ? this.props.user.pseudo
-                    : "pseudo place holder"}
+                  {select.pseudo}
                 </Typography>
                 <Button
                   variant="outlined"
@@ -71,7 +69,9 @@ class Account extends React.Component {
                     width: "80%",
                     m: 1,
                   }}
-                  onClick={this.handleOpenToComeModal}
+                  onClick={() => {
+                    appStore.dispatch({ type: "sliceToComeModal/open" });
+                  }}
                 >
                   {t("account.button.changepseudo")}
                 </Button>
@@ -87,9 +87,7 @@ class Account extends React.Component {
               </Typography>
               <Box textAlign="center">
                 <Typography variant="body1" gutterBottom>
-                  {this.props.user !== undefined
-                    ? this.props.user.login
-                    : "email place holder"}
+                  {select.login}
                 </Typography>
                 <Button
                   variant="outlined"
@@ -97,7 +95,9 @@ class Account extends React.Component {
                     width: "80%",
                     m: 1,
                   }}
-                  onClick={this.handleOpenToComeModal}
+                  onClick={() => {
+                    appStore.dispatch({ type: "sliceToComeModal/open" });
+                  }}
                 >
                   {t("account.button.changeemail")}
                 </Button>
@@ -118,7 +118,9 @@ class Account extends React.Component {
                     width: "80%",
                     m: 1,
                   }}
-                  onClick={this.handleOpenToComeModal}
+                  onClick={() => {
+                    appStore.dispatch({ type: "sliceToComeModal/open" });
+                  }}
                 >
                   {t("account.button.changepassword")}
                 </Button>
@@ -156,7 +158,9 @@ class Account extends React.Component {
                     width: "80%",
                     m: 1,
                   }}
-                  onClick={this.handleOpenToComeModal}
+                  onClick={() => {
+                    appStore.dispatch({ type: "sliceToComeModal/open" });
+                  }}
                 >
                   {t("account.button.merge")}
                 </Button>
@@ -181,7 +185,9 @@ class Account extends React.Component {
                     width: "80%",
                     m: 1,
                   }}
-                  onClick={this.handleOpenToComeModal}
+                  onClick={() => {
+                    appStore.dispatch({ type: "sliceToComeModal/open" });
+                  }}
                 >
                   {t("account.button.anonymize")}
                 </Button>
@@ -206,58 +212,19 @@ class Account extends React.Component {
                     width: "80%",
                     m: 1,
                   }}
-                  onClick={this.handleOpenToComeModal}
+                  onClick={() => {
+                    appStore.dispatch({ type: "sliceToComeModal/open" });
+                  }}
                 >
                   {t("account.button.close")}
                 </Button>
               </Box>
             </Box>
           </Paper>
-          <ToComeModal
-            open={this.state.showToComeModal}
-            callback={this.handleToComeModalCallback}
-          />
+
+          <ToComeModal data={select.tocomeData} />
         </Box>
-      </div>
-    );
-  }
-
-  // Handles
-  handleAppbarCallback(action, details) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Account.handleAppbarCallback " + action);
-    }
-    switch (action) {
-      case "signedout":
-        this.props.callback("signedout");
-        break;
-      case "signedin":
-        this.props.callback("signedin", details);
-        break;
-      default:
-    }
-  }
-  handleOpenToComeModal() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Account.handleOpenToComeModal");
-    }
-    this.setState((prevState, props) => ({
-      showToComeModal: true,
-    }));
-  }
-  handleToComeModalCallback(action) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Account.handleToComeModalCallback " + action);
-    }
-    switch (action) {
-      case "close":
-        this.setState((prevState, props) => ({
-          showToComeModal: false,
-        }));
-        break;
-      default:
-    }
-  }
+      )}
+    </div>
+  );
 }
-
-export default withTranslation()(Account);

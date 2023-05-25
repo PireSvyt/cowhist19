@@ -1,5 +1,6 @@
 import * as React from "react";
-import { withTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import {
   Button,
   TextField,
@@ -12,247 +13,170 @@ import {
 
 import { LoadingButton } from "@mui/lab";
 
-// Resources
-import emptySignup from "../../../../../../shared/resources/emptySignUp.js";
-
 // Services
-import serviceSignUpCheck from "./services/serviceSignUpCheck.js";
-import serviceSignUp from "./services/serviceSignUp.js";
-
+import serviceProceed from "./services/serviceProceed.js";
 // Shared
 import serviceModalChange from "../../../../../../shared/services/serviceModalChange.js";
-import Snack from "../../../../../../shared/components/Snack/Snack.js";
 import { random_id } from "../../../../../../shared/services/toolkit.js";
+// Reducers
+import appStore from "../../../../../../store/appStore.js";
+import sliceSignUpModal from "../../../../../../store/sliceSignUpModal.js";
 
-class SignUpModal extends React.Component {
-  constructor(props) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignUpModal.constructor");
-    }
-    super(props);
-    this.state = {
-      signup: { ...emptySignup },
-      pseudoError: false,
-      loginError: false,
-      passwordError: false,
-      repeatpasswordError: false,
-      disabled: false,
-      loading: false,
-      componentHeight: undefined,
-      openSnack: false,
-      snack: { id: undefined },
-    };
-
-    // Handles
-    this.handleClose = this.handleClose.bind(this);
-    this.handleProceed = this.handleProceed.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSnack = this.handleSnack.bind(this);
+export default function SignUpModal() {
+  if (process.env.REACT_APP_DEBUG === "TRUE") {
+    console.log("SignUpModal");
   }
-  render() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignUpModal.render");
-    }
-    // i18n
-    const { t } = this.props;
+  // i18n
+  const { t } = useTranslation();
 
-    return (
-      <Box>
-        <Dialog
-          id="dialog_signup"
-          open={this.props.open}
-          onClose={this.handleClose}
-          fullWidth={true}
+  // Constants
+  const componentHeight = window.innerHeight - 115;
+
+  // Selects
+  const select = {
+    open: useSelector((state) => state.sliceSignUpModal.open),
+    inputs: useSelector((state) => state.sliceSignUpModal.inputs),
+    errors: useSelector((state) => state.sliceSignUpModal.errors),
+    disabled: useSelector((state) => state.sliceSignUpModal.disabled),
+    loading: useSelector((state) => state.sliceSignUpModal.loading),
+    snackData: useSelector((state) => state.sliceSignUpModal.snackData),
+  };
+  // Changes
+  const changes = {
+    pseudo: (e) => {
+      appStore.dispatch({
+        type: "sliceSignUpModal/change",
+        payload: {
+          inputs: { pseudo: e.target.value },
+          errors: { pseudo: false },
+        },
+      });
+    },
+    login: (e) => {
+      appStore.dispatch({
+        type: "sliceSignUpModal/change",
+        payload: {
+          inputs: { login: e.target.value },
+          errors: { login: false },
+        },
+      });
+    },
+    password: (e) => {
+      appStore.dispatch({
+        type: "sliceSignUpModal/change",
+        payload: {
+          inputs: { password: e.target.value },
+          errors: { password: false },
+        },
+      });
+    },
+    repeatpassword: (e) => {
+      appStore.dispatch({
+        type: "sliceSignUpModal/change",
+        payload: {
+          inputs: { repeatpassword: e.target.value },
+          errors: { repeatpassword: false },
+        },
+      });
+    },
+  };
+
+  // Render
+  return (
+    <Box>
+      <Dialog
+        data-testid="componentSignUpModal"
+        id="dialog_signup"
+        open={select.open === true}
+        onClose={() => {
+          appStore.dispatch({ type: "sliceSignUpModal/close" });
+        }}
+        fullWidth={true}
+      >
+        <DialogTitle>{t("signin.label.title")}</DialogTitle>
+        <DialogContent
+          sx={{
+            height: componentHeight,
+          }}
         >
-          <DialogTitle>{t("signup.label.title")}</DialogTitle>
-          <DialogContent
+          <Box
+            component="form"
             sx={{
-              height: this.state.componentHeight,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-evenly",
             }}
           >
-            <Box
-              component="form"
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-evenly",
-              }}
-            >
-              <TextField
-                name="pseudo"
-                required
-                label={t("generic.input.pseudo")}
-                variant="standard"
-                value={this.state.signup.pseudo || ""}
-                onChange={this.handleChange}
-                autoComplete="off"
-                error={this.state.pseudoError}
-              />
-              <TextField
-                name="login"
-                required
-                label={t("generic.input.email")}
-                variant="standard"
-                value={this.state.signup.login || ""}
-                onChange={this.handleChange}
-                autoComplete="off"
-                type="email"
-                error={this.state.loginError}
-              />
-              <TextField
-                name="password"
-                required
-                label={t("generic.input.password")}
-                variant="standard"
-                value={this.state.signup.password || ""}
-                onChange={this.handleChange}
-                autoComplete="off"
-                type="password"
-                error={this.state.passwordError}
-              />
-              <TextField
-                name="repeatpassword"
-                required
-                label={t("signup.input.repeatpassword")}
-                variant="standard"
-                value={this.state.signup.repeatpassword || ""}
-                onChange={this.handleChange}
-                autoComplete="off"
-                type="password"
-                error={this.state.repeatpasswordError}
-              />
-            </Box>
-          </DialogContent>
+            <TextField
+              data-testid="fieldPseudo"
+              name="pseudo"
+              required
+              label={t("generic.input.pseudo")}
+              variant="standard"
+              value={select.inputs.pseudo || ""}
+              onChange={changes.pseudo}
+              autoComplete="off"
+              error={select.errors.pseudo}
+            />
+            <TextField
+              data-testid="fieldLogin"
+              name="login"
+              required
+              label={t("generic.input.email")}
+              variant="standard"
+              value={select.inputs.login}
+              onChange={changes.login}
+              autoComplete="off"
+              type="email"
+              error={select.errors.login}
+            />
+            <TextField
+              data-testid="fieldPassword"
+              name="password"
+              required
+              label={t("generic.input.password")}
+              variant="standard"
+              value={select.inputs.password}
+              onChange={changes.password}
+              autoComplete="off"
+              type="password"
+              error={select.errors.password}
+            />
+            <TextField
+              data-testid="fieldRepeatPassword"
+              name="repeatpassword"
+              required
+              label={t("signup.input.repeatpassword")}
+              variant="standard"
+              value={select.inputs.repeatpassword || ""}
+              onChange={changes.repeatpassword}
+              autoComplete="off"
+              type="password"
+              error={select.errors.repeatpassword}
+            />
+          </Box>
+        </DialogContent>
 
-          <DialogActions>
-            <Button onClick={this.handleClose}>
-              {t("generic.button.cancel")}
-            </Button>
-            <LoadingButton
-              variant="contained"
-              onClick={this.handleProceed}
-              disabled={this.state.disabled}
-              loading={this.state.loading}
-            >
-              {t("generic.button.proceed")}
-            </LoadingButton>
-          </DialogActions>
-        </Dialog>
-
-        <Snack
-          open={this.state.openSnack}
-          snack={this.state.snack}
-          callback={this.handleSnack}
-        />
-      </Box>
-    );
-  }
-  componentDidMount() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      //console.log("SignUpModal.componentDidMount");
-    }
-    this.setState({
-      componentHeight: window.innerHeight - 115,
-    });
-  }
-
-  // Handles
-  handleClose() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignUpModal.handleClose");
-    }
-
-    this.setState((prevState, props) => ({
-      signup: { ...emptySignup },
-      pseudoError: false,
-      loginError: false,
-      passwordError: false,
-      repeatpasswordError: false,
-    }));
-
-    this.props.callback("close");
-  }
-  handleChange(event, newValue) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignUpModal.handleChange");
-    }
-    let serviceChangeOutcome = serviceModalChange(
-      event.target,
-      this.state.signup
-    );
-    if (serviceChangeOutcome.errors.length > 0) {
-      console.log("serviceModalChange errors");
-      console.log(serviceChangeOutcome.errors);
-    } else {
-      serviceChangeOutcome.stateChanges.signup = serviceChangeOutcome.newValue;
-      this.setState((prevState, props) => serviceChangeOutcome.stateChanges);
-    }
-  }
-  handleProceed() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignUpModal.handleProceed");
-    }
-
-    // Check inputs
-    let proceedCheckOutcome = serviceSignUpCheck(this.state.signup);
-    if (proceedCheckOutcome.errors.length > 0) {
-      if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("proceedCheckOutcome errors");
-        console.log(proceedCheckOutcome.errors);
-      }
-    }
-    this.setState((prevState, props) => proceedCheckOutcome.stateChanges);
-
-    // Post or publish
-    if (proceedCheckOutcome.proceed === true) {
-      this.setState((prevState, props) => ({
-        disabled: true,
-        loading: true,
-      }));
-
-      serviceSignUp({ ...this.state.signup }).then((proceedOutcome) => {
-        if (proceedOutcome.errors.length > 0) {
-          if (process.env.REACT_APP_DEBUG === "TRUE") {
-            console.log("proceedOutcome errors");
-            console.log(proceedOutcome.errors);
-          }
-        }
-        this.setState((prevState, props) => proceedOutcome.stateChanges);
-        proceedOutcome.callbacks.forEach((callback) => {
-          if (callback.option === undefined) {
-            this.props.callback(callback.key);
-          } else {
-            this.props.callback(callback.key, callback.option);
-          }
-        });
-      });
-    } else {
-      // Snack
-      if (proceedCheckOutcome.errors.length > 0) {
-        this.setState((prevState, props) => ({
-          openSnack: true,
-          snack: {
-            uid: random_id(),
-            id: "generic.snack.error.withdetails",
-            details: proceedCheckOutcome.errors,
-          },
-        }));
-      }
-    }
-  }
-  handleSnack(action) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("SignUpModal.handleSnack " + action);
-    }
-    switch (action) {
-      case "close":
-        this.setState((prevState, props) => ({
-          openSnack: false,
-        }));
-        break;
-      default:
-    }
-  }
+        <DialogActions>
+          <Button
+            data-testid="buttonClose"
+            onClick={() => {
+              appStore.dispatch({ type: "sliceSignUpModal/close" });
+            }}
+          >
+            {t("generic.button.cancel")}
+          </Button>
+          <LoadingButton
+            data-testid="buttonProceed"
+            variant="contained"
+            onClick={serviceProceed}
+            disabled={select.disabled}
+            loading={select.loading}
+          >
+            {t("generic.button.proceed")}
+          </LoadingButton>
+        </DialogActions>
+      </Dialog>
+    </Box>
+  );
 }
-
-export default withTranslation()(SignUpModal);

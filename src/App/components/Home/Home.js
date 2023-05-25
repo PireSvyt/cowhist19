@@ -1,91 +1,53 @@
 import React from "react";
-import { withTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Box } from "@mui/material";
+import LinearProgress from "@mui/material/LinearProgress";
 
 // Components
 import Landing from "./components/Landing/Landing.js";
 import MyStats from "./components/MyStats/MyStats.js";
 import MyTables from "./components/MyTables/MyTables.js";
-
 // Shared
 import Appbar from "../../shared/components/Appbar/Appbar.js";
+import Snack from "../../shared/components/Snack/Snack2.js";
+import ToComeModal from "../../shared/components/ToComeModal/ToComeModal.js";
+// Reducers
+import appStore from "../../store/appStore.js";
 
-class Home extends React.Component {
-  constructor(props) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Home.constructor");
-    }
-    super(props);
-    this.state = {};
+export default function Home() {
+  if (process.env.REACT_APP_DEBUG === "TRUE") {
+    console.log("Home");
+  }
+  // i18n
+  const { t } = useTranslation();
 
-    // Handles
-    this.handleAppbarCallback = this.handleAppbarCallback.bind(this);
-    this.handleLandingCallback = this.handleLandingCallback.bind(this);
-    this.handleMyTablesCallback = this.handleMyTablesCallback.bind(this);
-  }
-  render() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Home.render");
-    }
-    // i18n
-    const { t } = this.props;
+  // Selects
+  const select = {
+    authLoaded: useSelector((state) => state.sliceUserAuth.loaded),
+    signedin: useSelector((state) => state.sliceUserAuth.signedin),
+    snackData: useSelector((state) => state.sliceSnack.snackData),
+    tocomeData: useSelector((state) => state.sliceToComeModal.tocomeData),
+  };
 
-    return (
-      <div>
-        <Appbar
-          signedin={this.props.signedin}
-          callback={this.handleAppbarCallback}
-          token={this.props.token}
-          route="home"
-          title={t("generic.label.product")}
-        />
-        <Box sx={{ height: 48 }} />
-        <Landing
-          open={this.props.signedin === false}
-          callback={this.handleLandingCallback}
-        />
-        <MyStats open={this.props.signedin === true} token={this.props.token} />
-        <MyTables
-          signedin={this.props.signedin}
-          callback={this.handleMyTablesCallback}
-          token={this.props.token}
-          tables={this.props.user === undefined ? [] : this.props.user.tables}
-        />
-      </div>
-    );
-  }
-
-  // Handles
-  handleAppbarCallback(action, details) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Home.handleLandingCallback " + action);
-    }
-    switch (action) {
-      case "signedout":
-        this.props.callback("signedout");
-        break;
-      default:
-    }
-  }
-  handleLandingCallback(action, details) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Home.handleLandingCallback " + action);
-    }
-    switch (action) {
-      case "signedin":
-        this.props.callback("signedin", details);
-        break;
-      default:
-    }
-  }
-  handleMyTablesCallback(action, details) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Home.handleMyTablesCallback " + action);
-    }
-    switch (action) {
-      default:
-    }
-  }
+  return (
+    <Box>
+      <Appbar route="home" title={t("generic.label.product")} />
+      <Box sx={{ height: 48 }} />
+      {select.authLoaded === false ? (
+        <Box sx={{ left: "10%", right: "10%" }}>
+          <LinearProgress />
+        </Box>
+      ) : select.signedin === false ? (
+        <Landing />
+      ) : (
+        <Box>
+          <MyStats />
+          <MyTables />
+        </Box>
+      )}
+      <Snack data-testid="componentSnack" data={select.snackData} />
+      <ToComeModal data={select.tocomeData} />
+    </Box>
+  );
 }
-
-export default withTranslation()(Home);

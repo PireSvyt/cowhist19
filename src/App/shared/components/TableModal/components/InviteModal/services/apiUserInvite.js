@@ -1,20 +1,23 @@
-import axios from 'axios';
+import axios from "axios";
 
-async function apiUserInvite(token, user) {
-    try {
-      const res = await axios.post(process.env.REACT_APP_SERVER_URL + "/user/invite", user, {
-        headers: { Authorization: "Bearer " + token },
-      });
-      return res.data;
-    } catch (err) {
-      let res = {
-        status: err.response.status,
-        message: "error on apiUserInvite",
-        error: err,
-        user: user,
-      };
-      return res;
-    }
+// Reducers
+import appStore from "../../../../../../store/appStore.js";
+
+async function apiUserInvite(inviteInputs) {
+  try {
+    const res = await axios.post(
+      process.env.REACT_APP_SERVER_URL + "/user/v1/invite",
+      inviteInputs,
+      {
+        headers: {
+          Authorization: "Bearer " + appStore.getState().sliceUserAuth.token,
+        },
+      }
+    );
+    return res.data;
+  } catch (err) {
+    return err.response.data;
   }
+}
 
 export default apiUserInvite;

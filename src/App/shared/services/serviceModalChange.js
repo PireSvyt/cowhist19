@@ -13,6 +13,7 @@ function serviceModalChange(target, previousValue, complement) {
       }
       stateChanges.nameError = false;
       newValue.name = target.value;
+      stateChanges.errors.name = false;
       break;
     case "pseudo":
       if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -20,12 +21,15 @@ function serviceModalChange(target, previousValue, complement) {
       }
       stateChanges.pseudoError = false;
       newValue.pseudo = target.value;
+      stateChanges.errors.pseudo = false;
       break;
     case "login":
       if (process.env.REACT_APP_DEBUG === "TRUE") {
         console.log("change login : " + target.value);
       }
       stateChanges.loginError = false;
+      stateChanges.login = target.value;
+      stateChanges.errors.login = false;
       newValue.login = target.value;
       break;
     case "password":
@@ -33,6 +37,7 @@ function serviceModalChange(target, previousValue, complement) {
         console.log("change password : " + target.value);
       }
       stateChanges.passwordError = false;
+      stateChanges.password = target.value;
       newValue.password = target.value;
       break;
     case "repeatpassword":

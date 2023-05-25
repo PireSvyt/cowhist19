@@ -1,268 +1,82 @@
-import React from "react";
-import { withTranslation } from "react-i18next";
-import { Box, Tabs, Tab, Fab } from "@mui/material";
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { Box, Tabs, Tab, Fab, Typography, Button } from "@mui/material";
+import LinearProgress from "@mui/material/LinearProgress";
+import ErrorIcon from "@mui/icons-material/Error";
 
 // Components
 import TableStats from "./components/TableStats/TableStats.js";
 import TableHistory from "./components/TableHistory/TableHistory.js";
 import GameModal from "./components/GameModal/GameModal.js";
-
 // Services
-import serviceTableStats from "./services/serviceTableStats.js";
-import apiTableHistory from "./services/apiTableHistory.js";
+import serviceGetTableDetails from "./services/serviceGetTableDetails.js";
+import serviceGetTableStats from "./services/serviceGetTableStats.js";
+import serviceGetTableHistory from "./services/serviceGetTableHistory.js";
 
 // Shared
 import Appbar from "../../shared/components/Appbar/Appbar.js";
 import TableModal from "../../shared/components/TableModal/TableModal.js";
-import apiTableDetails from "../../shared/services/apiTableDetails.js";
+import Snack from "../../shared/components/Snack/Snack2.js";
+// Reducers
+import appStore from "../../store/appStore.js";
 
-class Table extends React.Component {
-  constructor(props) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Table.constructor");
-    }
-    super(props);
-    this.state = {
-      selectedTab: 0,
-      table: {
-        _id: "",
-        name: "Table",
-        players: [],
-        contracts: [],
-      },
-      tableDetailsLoaded: false,
-      tableHistory: [],
-      tableHistoryLoaded: false,
-      tableStats: {},
-      tableStatsLoaded: false,
-      openTableModal: false,
-      openGameModal: false,
-      gameid: "",
-    };
-
-    // Helpers
-    this.getTableDetails = this.getTableDetails.bind(this);
-    this.getTableHistory = this.getTableHistory.bind(this);
-    this.getTableStats = this.getTableStats.bind(this);
-
-    // Handles
-    this.handleAppbarCallback = this.handleAppbarCallback.bind(this);
-    this.handleTableChangeTab = this.handleTableChangeTab.bind(this);
-    this.handleTableStatsCallback = this.handleTableStatsCallback.bind(this);
-    this.handleTableHistoryCallback =
-      this.handleTableHistoryCallback.bind(this);
-    this.handleOpenTableModal = this.handleOpenTableModal.bind(this);
-    this.handleTableModalCallback = this.handleTableModalCallback.bind(this);
-    this.handleOpenGameModal = this.handleOpenGameModal.bind(this);
-    this.handleGameModalCallback = this.handleGameModalCallback.bind(this);
+export default function Table() {
+  if (process.env.REACT_APP_DEBUG === "TRUE") {
+    console.log("Table");
   }
-  render() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Table.render");
-    }
-    // i18n
-    const { t } = this.props;
+  // i18n
+  const { t } = useTranslation();
 
+  // States
+  const [tab, setTab] = useState(0);
+
+  // Selects
+  const select = {
+    authLoaded: useSelector((state) => state.sliceUserAuth.loaded),
+    tableDetailsLoaded: useSelector((state) => state.sliceTableDetails.loaded),
+    tableDenied: useSelector((state) => state.sliceTableDetails.denied),
+    signedin: useSelector((state) => state.sliceUserAuth.signedin),
+    name: useSelector((state) => state.sliceTableDetails.name),
+    snackData: useSelector((state) => state.sliceSnack.snackData),
+    openTableModal: useSelector((state) => state.sliceTableModal.open),
+    openGameModal: useSelector((state) => state.sliceGameModal.open),
+  };
+
+  // Load at opening
+  if (select.authLoaded === true && select.signedin === true) {
+    if (select.tableDetailsLoaded === false) {
+      serviceGetTableDetails();
+    }
+  }
+
+  function TabPanel(props) {
+    const { children, value, index, ...other } = props;
     return (
-      <Box>
-        <Appbar
-          signedin={this.props.signedin}
-          callback={this.handleAppbarCallback}
-          token={this.props.token}
-          route="table"
-          title={this.state.table.name}
-          edittable={this.handleOpenTableModal}
-        />
-        <Box sx={{ height: 48 }} />
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <Tabs
-            value={this.state.selectedTab}
-            onChange={this.handleTableChangeTab}
-            variant="fullWidth"
-          >
-            <Tab
-              label={t("table.label.stats")}
-              id="tab-0"
-              aria-controls="tabpanel-0"
-            />
-            <Tab
-              label={t("table.label.history")}
-              id="tab-1"
-              aria-controls="tabpanel-1"
-            />
-          </Tabs>
-        </Box>
-        <TabPanel value={this.state.selectedTab} index={0}>
-          <TableStats
-            token={this.props.token}
-            callback={this.handleTableStatsCallback}
-            stats={this.state.tableStats}
-            players={
-              this.state.table === undefined ? [] : this.state.table.players
-            }
-          />
-        </TabPanel>
-        <TabPanel value={this.state.selectedTab} index={1}>
-          <TableHistory
-            token={this.props.token}
-            callback={this.handleTableHistoryCallback}
-            history={this.state.tableHistory}
-            players={
-              this.state.table === undefined ? [] : this.state.table.players
-            }
-          />
-        </TabPanel>
-        <Fab
-          variant="extended"
-          color="primary"
-          sx={{ position: "fixed", bottom: 20, right: 20 }}
-          onClick={this.handleOpenGameModal}
-        >
-          {t("table.button.newgame")}
-        </Fab>
-        <TableModal
-          open={this.state.openTableModal}
-          callback={this.handleTableModalCallback}
-          token={this.props.token}
-          tableid={this.state.table === undefined ? "" : this.state.table._id}
-        />
-        <GameModal
-          open={this.state.openGameModal}
-          callback={this.handleGameModalCallback}
-          token={this.props.token}
-          gameid={this.state.gameid}
-          players={this.state.table.players}
-          tableid={this.state.table._id}
-          contracts={this.state.table.contracts}
-        />
-        <Box sx={{ height: 60 }} />
+      <Box
+        role="tabpanel"
+        hidden={value !== index}
+        id={"tabpanel-" + index}
+        aria-labelledby={"tab-" + index}
+        {...other}
+      >
+        {value === index && <Box sx={{ p: 1 }}>{children}</Box>}
       </Box>
     );
   }
-  componentDidMount() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Table.componentDidMount");
-    }
-    // Load
-    if (this.state.table._id === "") {
-      if (this.state.tableDetailsLoaded === false) {
-        this.getTableDetails();
-      }
-    }
-  }
-  componentDidUpdate(prevState, prevProps) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Table.componentDidUpdate");
-    }
-    // Load
-    if (this.state.table._id === "") {
-      if (this.state.tableDetailsLoaded === false) {
-        this.getTableDetails();
-      }
-      if (this.state.tableStatsLoaded === false) {
-        this.getTableStats();
-      }
-    }
-  }
-
-  // Helpers
-  getTableDetails() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Table.getTableDetails ");
-    }
-    if (this.props.token !== undefined) {
-      let tableid = window.location.href.split("/table/")[1];
-      apiTableDetails(this.props.token, tableid).then((data) => {
-        this.setState((prevState, props) => ({
-          table: data.table,
-          tableDetailsLoaded: true,
-        }));
-      });
-    }
-  }
-  getTableHistory() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Table.getTableHistory ");
-    }
-    if (this.props.token !== undefined) {
-      let tableid = window.location.href.split("/table/")[1];
-      let parameters = {
-        need: "list",
-        games: {
-          index: 0,
-          number: 20,
-        },
-      };
-      apiTableHistory(this.props.token, tableid, parameters).then((data) => {
-        this.setState((prevState, props) => ({
-          tableHistory: data.games,
-          tableHistoryLoaded: true,
-        }));
-      });
-    }
-  }
-  getTableStats() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Table.getTableStats ");
-    }
-    let parameters = {
-      need: "ranking",
-    };
-    if (this.props.token !== undefined && this.state.table.players !== []) {
-      let tableid = window.location.href.split("/table/")[1];
-
-      serviceTableStats(
-        this.props.token,
-        tableid,
-        parameters,
-        this.state.table.players
-      ).then((proceedOutcome) => {
-        if (proceedOutcome.errors.length > 0) {
-          if (process.env.REACT_APP_DEBUG === "TRUE") {
-            console.log("proceedOutcome errors");
-            console.log(proceedOutcome.errors);
-          }
-        }
-        this.setState((prevState, props) => proceedOutcome.stateChanges);
-        proceedOutcome.callbacks.forEach((callback) => {
-          if (callback.option === undefined) {
-            this.props.callback(callback.key);
-          } else {
-            this.props.callback(callback.key, callback.option);
-          }
-        });
-      });
-    }
-  }
-
-  // Handles
-  handleAppbarCallback(action, details) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Table.handleTableCallback " + action);
-    }
-    switch (action) {
-      case "signedout":
-        this.props.callback("signedout");
-        break;
-      default:
-    }
-  }
-  handleTableChangeTab(event, newTabIndex) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Table.handleTableChangeTab " + newTabIndex);
-    }
+  function changeTab(event, newTabIndex) {
     switch (newTabIndex) {
       case 0:
-        this.getTableStats();
-        this.setState({
-          selectedTab: newTabIndex,
-        });
+        if (appStore.getState().sliceTableStats.state === "available") {
+          serviceGetTableStats();
+        }
+        setTab(newTabIndex);
         break;
       case 1:
-        this.getTableHistory();
-        this.setState({
-          selectedTab: newTabIndex,
-        });
+        if (appStore.getState().sliceTableHistory.state === "available") {
+          serviceGetTableHistory();
+        }
+        setTab(newTabIndex);
         break;
       default:
         if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -270,119 +84,109 @@ class Table extends React.Component {
         }
     }
   }
-  handleTableStatsCallback(action, details) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Table.handleTableStatsCallback " + action);
-    }
-    switch (action) {
-      default:
-    }
-  }
-  handleTableHistoryCallback(action, details) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Table.handleTableHistoryCallback " + action);
-    }
-    switch (action) {
-      case "refresh":
-        this.getTableHistory();
-        break;
-      case "open":
-        this.setState((prevState, props) => ({
-          gameid: details,
-          openGameModal: true,
-        }));
-        break;
-      default:
-    }
-  }
-  handleOpenTableModal() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Table.handleOpenTableModal ");
-    }
-    this.setState((prevState, props) => ({
-      openTableModal: true,
-    }));
-  }
-  handleTableModalCallback(action, details) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Table.handleTableModalCallback " + action);
-    }
-    switch (action) {
-      case "close":
-        this.setState((prevState, props) => ({
-          openTableModal: false,
-        }));
-        break;
-      case "totable":
-        // Reload table
-        this.getTableDetails();
-        this.setState((prevState, props) => ({
-          openTableModal: false,
-        }));
-        break;
-      case "updatetable":
-        // Reload table
-        this.getTableDetails();
-        // Reload history
-        this.getTableHistory();
-        this.setState((prevState, props) => ({
-          openTableModal: false,
-        }));
-        break;
-      default:
-    }
-  }
-  handleOpenGameModal() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Table.handleOpenGameModal ");
-    }
-    this.setState((prevState, props) => ({
-      openGameModal: true,
-      gameid: "",
-    }));
-  }
-  handleGameModalCallback(action, details) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("Table.handleGameModalCallback " + action);
-    }
-    switch (action) {
-      case "close":
-        this.setState((prevState, props) => ({
-          openGameModal: false,
-        }));
-        break;
-      case "updategames":
-        this.setState((prevState, props) => ({
-          openGameModal: false,
-        }));
-        switch (this.state.selectedTab) {
-          case 0:
-            this.getTableStats();
-            break;
-          case 1:
-            this.getTableHistory();
-            break;
-          default:
-        }
-        break;
-      default:
-    }
-  }
-}
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
   return (
-    <Box
-      role="tabpanel"
-      hidden={value !== index}
-      id={"tabpanel-" + index}
-      aria-labelledby={"tab-" + index}
-      {...other}
-    >
-      {value === index && <Box sx={{ p: 1 }}>{children}</Box>}
+    <Box>
+      <Appbar
+        route="table"
+        title={select.name}
+        edittable={() => {
+          appStore.dispatch({
+            type: "sliceTableModal/open",
+            payload: {
+              id: appStore.getState().sliceTableDetails.id,
+              name: appStore.getState().sliceTableDetails.name,
+              players: appStore.getState().sliceTableDetails.players,
+            },
+          });
+        }}
+      />
+      <Box sx={{ height: 48 }} />
+      {select.authLoaded === false ? (
+        <Box sx={{ left: "10%", right: "10%" }}>
+          <LinearProgress />
+        </Box>
+      ) : select.signedin === false ? null : select.tableDenied === true ? (
+        <Box
+          sx={{
+            m: 2,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography
+            sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }}
+            variant="h6"
+            component="span"
+            align="center"
+          >
+            {t("table.label.deniedaccess")}
+          </Typography>
+          <ErrorIcon sx={{ mt: 2, mb: 2 }} fontSize="large" color="error" />
+          <Typography
+            sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }}
+            variant="body1"
+            component="span"
+            align="center"
+          >
+            {t("table.label.deniedaccessexplanation")}
+          </Typography>
+          <Button
+            onClick={() => {
+              window.location = "/";
+            }}
+            variant={"contained"}
+            sx={{ mt: 2, mb: 2 }}
+          >
+            {t("generic.button.tohome")}
+          </Button>
+        </Box>
+      ) : (
+        <Box>
+          <Box
+            sx={{
+              borderBottom: 1,
+              borderColor: "divider",
+            }}
+          >
+            <Tabs value={tab} onChange={changeTab} variant="fullWidth">
+              <Tab
+                label={t("table.label.stats")}
+                id="tab-0"
+                aria-controls="tabpanel-0"
+              />
+              <Tab
+                label={t("table.label.history")}
+                id="tab-1"
+                aria-controls="tabpanel-1"
+              />
+            </Tabs>
+          </Box>
+          <TabPanel value={tab} index={0}>
+            <TableStats />
+          </TabPanel>
+          <TabPanel value={tab} index={1}>
+            <TableHistory />
+          </TabPanel>
+          <Fab
+            variant="extended"
+            color="primary"
+            sx={{ position: "fixed", bottom: 20, right: 20 }}
+            onClick={() => {
+              appStore.dispatch({ type: "sliceGameModal/new" });
+            }}
+          >
+            {t("table.button.newgame")}
+          </Fab>
+          <Box sx={{ height: 60 }} />
+
+          {select.openTableModal === true ? <TableModal /> : null}
+          {select.openGameModal === true ? <GameModal /> : null}
+
+          <Snack data-testid="componentSnack" data={select.snackData} />
+        </Box>
+      )}
     </Box>
   );
 }
-
-export default withTranslation()(Table);

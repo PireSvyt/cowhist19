@@ -1,12 +1,17 @@
 import axios from "axios";
 
-async function apiGameSave(token, user) {
+// Reducers
+import appStore from "../../../../../store/appStore.js";
+
+async function apiGameSave(game) {
   try {
     const res = await axios.post(
       process.env.REACT_APP_SERVER_URL + "/game/v1/save",
-      user,
+      game,
       {
-        headers: { Authorization: "Bearer " + token },
+        headers: {
+          Authorization: "Bearer " + appStore.getState().sliceUserAuth.token,
+        },
       }
     );
     return res.data;

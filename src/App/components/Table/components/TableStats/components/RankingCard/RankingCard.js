@@ -1,25 +1,19 @@
-import * as React from "react";
-import { withTranslation } from "react-i18next";
-import { Typography, Box, Card } from "@mui/material";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import {
+  Box,
+  Card,
+  Typography,
+} from "@mui/material";
 
-class RankingCard extends React.Component {
-  constructor(props) {
-    super(props);
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("RankingCard.constructor " + this.props.player._id);
-    }
-    // Handlers
-    this.stringifyPlayer = this.stringifyPlayer.bind(this);
+export default function RankingCard(props) {
+  if (process.env.REACT_APP_DEBUG === "TRUE") {
+    console.log("RankingCard " + props.player._id);
   }
-  render() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("RankingCard.render " + this.props.player._id);
-    }
-    // i18n
-    const { t } = this.props;
-
+  // i18n
+  const { t } = useTranslation();
     return (
-      <Card sx={{ width: "100%", p: 1 }} onClick={this.handleOpen}>
+      <Card sx={{ width: "100%", p: 1 }}>
         <Box
           sx={{
             display: "flex",
@@ -29,7 +23,7 @@ class RankingCard extends React.Component {
           }}
         >
           <Typography sx={{ fontWeight: "bold" }} gutterBottom>
-            {this.stringifyPlayer()}
+            {props.player.pseudo}
           </Typography>
           <Box
             sx={{
@@ -41,11 +35,11 @@ class RankingCard extends React.Component {
             <Typography sx={{ fontWeight: "bold" }}>
               {t("table.label.score") +
                 " " +
-                parseFloat(this.props.player.scorev0).toFixed(1)}
+                parseFloat(props.player.scorev0).toFixed(1)}
             </Typography>
             <Typography sx={{ pl: 1 }}>
               {"(av.pts " +
-                parseFloat(this.props.player.averagepoints).toFixed(1) +
+                parseFloat(props.player.averagepoints).toFixed(1) +
                 ")"}
             </Typography>
           </Box>
@@ -59,40 +53,19 @@ class RankingCard extends React.Component {
           }}
         >
           <Typography sx={{ typography: "caption" }}>
-            {this.props.player.games + " " + t("table.label.games")}
+            {props.player.games + " " + t("table.label.games")}
           </Typography>
           <Typography sx={{ typography: "caption" }}>
-            {parseFloat(this.props.player.ratevictory * 100).toFixed(0) +
+            {parseFloat(props.player.ratevictory * 100).toFixed(0) +
               "% " +
               t("table.label.victory")}
           </Typography>
           <Typography sx={{ typography: "caption" }}>
-            {parseFloat(this.props.player.rateattack * 100).toFixed(0) +
+            {parseFloat(props.player.rateattack * 100).toFixed(0) +
               "% " +
               t("table.label.attack")}
           </Typography>
         </Box>
       </Card>
     );
-  }
-
-  // Helpers
-  stringifyPlayer() {
-    if (this.props.players.length !== 0) {
-      let pseudolist = this.props.players.filter(
-        (p) => this.props.player._id === p._id
-      );
-      if (pseudolist.length > 0) {
-        return pseudolist[0]["pseudo"];
-      } else {
-        return "Placeholder";
-      }
-    } else {
-      return "Placeholder";
-    }
-  }
-
-  // Handles
 }
-
-export default withTranslation()(RankingCard);

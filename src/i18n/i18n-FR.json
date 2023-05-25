@@ -3,6 +3,7 @@
     "label": {
       "product": "CoWhist 19",
       "account": "Compte",
+      "help": "Aide",
       "tocome": "A venir...",
       "tocomeintro": "Cette fonctionnalité n'est pas encore disponible.",
       "tocomedetails": "We are delighted by your interest and propose to record it for the team to prioritize for this! \n This is anonymous ;)"
@@ -11,6 +12,7 @@
       "home": "Accueil",
       "account": "Mon compte",
       "table": "Table",
+      "help": "Aide",
       "signout": "Se deconnecter"
     },
     "input": {

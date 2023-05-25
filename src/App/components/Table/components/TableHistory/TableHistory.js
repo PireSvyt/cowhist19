@@ -1,149 +1,110 @@
 import * as React from "react";
-import { withTranslation } from "react-i18next";
-import { Box, List, ListItem } from "@mui/material";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import {
+  Box,
+  List,
+  ListItem,
+  Card,
+  Typography,
+  IconButton,
+} from "@mui/material";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline.js";
+import LinearProgress from "@mui/material/LinearProgress";
+import SmsFailedIcon from "@mui/icons-material/SmsFailed";
 
 // Components
-import GameCard from "./components/GameCard/GameCard.js";
-
+import HistoryCard from "./components/HistoryCard/HistoryCard.js";
 // Services
-import apiGameDelete from "./services/apiGameDelete.js";
+import serviceGetTableHistory from "../../services/serviceGetTableHistory.js";
+// Reducers
+import appStore from "../../../../store/appStore.js";
 
-// Shared
-import ConfirmModal from "../../../../shared/components/ConfirmModal/ConfirmModal.js";
-import { random_id } from "../../../../shared/services/toolkit.js";
-
-class TableHistory extends React.Component {
-  constructor(props) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("TableHistory.constructor");
-    }
-    super(props);
-    this.state = {
-      openConfirmModal: false,
-      confirmModalTitle: "",
-      confirmModalContent: "",
-      confirmModalCTA: [],
-    };
-
-    // Handles
-    this.handleGameCardCallback = this.handleGameCardCallback.bind(this);
-    this.handleConfirmModalCallback =
-      this.handleConfirmModalCallback.bind(this);
+export default function TableHistory() {
+  if (process.env.REACT_APP_DEBUG === "TRUE") {
+    console.log("TableHistory");
   }
-  render() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("TableHistory.render");
-    }
+  // i18n
+  const { t } = useTranslation();
 
-    return (
-      <Box>
+  // Selects
+  const select = {
+    loadedDetails: useSelector((state) => state.sliceTableDetails.loaded),
+    loadedHistory: useSelector((state) => state.sliceTableHistory.loaded),
+    history: useSelector((state) => state.sliceTableHistory.games),
+    players: useSelector((state) => state.sliceTableDetails.players),
+  };
+
+  // Load
+  if (select.loadedDetails && !select.loadedHistory) {
+    serviceGetTableHistory();
+  }
+
+  return (
+    <Box>
+      {!(select.loadedDetails === true && select.loadedHistory === true) ? (
+        <Box
+          sx={{ left: "10%", right: "10%" }}
+        >
+          <LinearProgress />
+        </Box>
+      ) : select.history.length === 0 ? (
+        <Box
+          sx={{
+            m: 2,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography
+            sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }}
+            variant="h6"
+            component="span"
+            align="center"
+          >
+            {t("table.label.nogames")}
+          </Typography>
+          <SmsFailedIcon
+            sx={{ mt: 2, mb: 2 }}
+            fontSize="large"
+            color="primary"
+          />
+          <Typography
+            sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }}
+            variant="body1"
+            component="span"
+            align="center"
+          >
+            {t("table.label.nogameshistoryexplanation")}
+          </Typography>
+        </Box>
+      ) : (
         <List dense={true}>
-          {this.props.players !== [] ? (
-            this.props.history.map((game) => (
+          {select.history.map((game) => {
+            let gameCard = { ...game };
+            gameCard.attackPlayers = [];
+            gameCard.defensePlayers = [];
+            Object.values(game.players).forEach((gamePlayer) => {
+              let pseudoPlayer = select.players.filter((tablePlayer) => {
+                return tablePlayer._id === gamePlayer._id;
+              });
+              let readyGamePlayer = { ...gamePlayer };
+              if (pseudoPlayer.length > 0) {
+                readyGamePlayer.pseudo = pseudoPlayer[0].pseudo;
+              } else {
+                readyGamePlayer.pseudo = "a removed user";
+              }
+              gameCard[gamePlayer.role + "Players"].push(readyGamePlayer);
+            });
+            return (
               <ListItem key={"game-" + game._id}>
-                <GameCard
-                  game={game}
-                  players={this.props.players}
-                  callback={this.handleGameCardCallback}
-                />
+                <HistoryCard game={gameCard} />
               </ListItem>
-            ))
-          ) : (
-            <div />
-          )}
+            );
+          })}
         </List>
-
-        <ConfirmModal
-          open={this.state.openConfirmModal}
-          title={this.state.confirmModalTitle}
-          content={this.state.confirmModalContent}
-          callToActions={this.state.confirmModalCTA}
-          callback={this.handleConfirmModalCallback}
-        />
-      </Box>
-    );
-  }
-
-  // Handlers
-  handleGameCardCallback(action, details) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("TableHistory.handleGameCardCallback " + action);
-    }
-    switch (action) {
-      case "delete":
-        this.setState({
-          openConfirmModal: true,
-          confirmModalTitle: "game.confirm.delete.title",
-          confirmModalContent: "game.confirm.delete.content",
-          confirmModalCTA: [
-            {
-              label: "generic.button.cancel",
-              callback: () => this.handleConfirmModalCallback("close"),
-            },
-            {
-              label: "generic.button.proceed",
-              callback: () =>
-                this.handleConfirmModalCallback("delete", details),
-              variant: "contained",
-              color: "error",
-            },
-          ],
-        });
-        break;
-      case "close":
-        this.setState((prevState, props) => ({
-          openConfirmModal: false,
-          confirmModalTitle: "",
-          confirmModalContent: "",
-          confirmModalCTA: [],
-        }));
-        break;
-      default:
-    }
-  }
-
-  handleConfirmModalCallback(action, details) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("TableHistory.handleConfirmModalCallback " + action);
-    }
-    switch (action) {
-      case "delete":
-        // Close confirm modal
-        this.setState((prevState, props) => ({
-          openConfirmModal: false,
-          confirmModalTitle: "",
-          confirmModalContent: "",
-          confirmModalCTA: [],
-        }));
-        // API call
-        apiGameDelete(this.props.token, details).then((res) => {
-          switch (res.status) {
-            case 200:
-              this.setState((prevState, props) => ({
-                openSnack: true,
-                snack: { uid: random_id(), id: "game.snack.deleted" },
-              }));
-              this.props.callback("refresh");
-              break;
-            default:
-              this.setState((prevState, props) => ({
-                openSnack: true,
-                snack: { uid: random_id(), id: "generic.snack.errorunknown" },
-              }));
-          }
-        });
-        break;
-      case "close":
-        this.setState((prevState, props) => ({
-          openConfirmModal: false,
-          confirmModalTitle: "",
-          confirmModalContent: "",
-          confirmModalCTA: [],
-        }));
-        break;
-      default:
-    }
-  }
+      )}
+    </Box>
+  );
 }
-
-export default withTranslation()(TableHistory);

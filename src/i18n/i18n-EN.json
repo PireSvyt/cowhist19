@@ -3,6 +3,7 @@
     "label": {
       "product": "CoWhist 19",
       "account": "Account",
+      "help": "Help",
       "tocome": "To come...",
       "tocomeintro": "This functionality is not available yet.",
       "tocomedetails": "We are delighted by your interest and propose to record it for the team to prioritize for this! \n This is anonymous ;)"
@@ -11,6 +12,7 @@
       "home": "Home",
       "account": "My account",
       "table": "Table",
+      "help": "Help",
       "signout": "Sign out"
     },
     "input": {
@@ -30,7 +32,8 @@
       "view": "View",
       "edit": "Edit",
       "proceed": "Proceed",
-      "tocome": "To come..."
+      "tocome": "To come...",
+      "tohome": "To home"
     },
     "snack": {
       "api": {
@@ -45,7 +48,7 @@
       },
       "feedback": {
         "wip": "Work in progress...",
-        "languagechange" : "Refresh the page to enjoy this language..."
+        "languagechange": "Refresh the page to enjoy this language..."
       }
     },
     "language": {
@@ -92,6 +95,9 @@
       "signin": "Sign in"
     },
     "error": {
+      "emptytoken": "empty token",
+      "invalidtoken": "invalid token",
+      "invalidstatus": "invalid status",
       "missinglogin": "missing email",
       "invalidlogin": "invalid email",
       "missingpassword": "missing password"
@@ -150,7 +156,9 @@
   "home": {
     "label": {
       "mystats": "My stats",
-      "mytables": "My tables"
+      "mytables": "My tables",
+      "notables": "No tables so far...",
+      "notablesexplanation": "You are not playing at any table so far...\n\nCreate a new table with using the \"+\" icon and invite your friends to play!"
     },
     "input": {},
     "button": {},
@@ -166,7 +174,16 @@
       "score": "score",
       "games": "games",
       "victory": "victory",
-      "attack": "attack"
+      "attack": "attack",
+      "deniedaccess": "Denied access",
+      "deniedaccessexplanation": "You're not a member of this table.\n\nYou can't access a table you're not a memebr of.",
+      "nogames": "No games so far...",
+      "nogameshistoryexplanation": "You haven't played any game so far?\n\nPlay and click the new game button to save your games and access the table history here!",
+      "nogamesstatsexplanation": "You haven't played any game so far?\n\nPlay and click the new game button to save your games and access the player stats here!",
+      "nouserscreate": "No players, really?",
+      "nouserscreateexplanation": "You have removed all players from the table.\nIt is not possible to ceate a table without any player, especially you no?\n\nYou can invite players to this table pressing the \"+\" icon.",
+      "nousersdelete": "No players, really?",
+      "nousersdeleteexplanation": "You have removed all players from the table.\n\nSaving a table without any player will delete the table."
     },
     "input": {},
     "button": {
@@ -174,7 +191,8 @@
     },
     "error": {
       "missingname": "missing name",
-      "creationwithoutplayers": "missing players to create a table"
+      "creationwithoutplayers": "missing players to create a table",
+      "creationwithoutuser": "table creation impossible without you among the players"
     },
     "confirm": {
       "delete": {

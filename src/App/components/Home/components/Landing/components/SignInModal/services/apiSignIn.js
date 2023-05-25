@@ -1,10 +1,10 @@
 import axios from "axios";
 
-async function apiSignIn(user) {
+async function apiSignIn(signInInputs) {
   try {
     const res = await axios.post(
       process.env.REACT_APP_SERVER_URL + "/auth/v1/signin",
-      user
+      signInInputs
     );
     return res.data;
   } catch (err) {

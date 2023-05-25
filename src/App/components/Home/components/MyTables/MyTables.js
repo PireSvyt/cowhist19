@@ -1,5 +1,6 @@
 import * as React from "react";
-import { withTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import {
   Stack,
   List,
@@ -9,139 +10,100 @@ import {
   Box,
   Card,
 } from "@mui/material";
-
+import SmsFailedIcon from "@mui/icons-material/SmsFailed";
 import AddIcon from "@mui/icons-material/Add.js";
+import LinearProgress from "@mui/material/LinearProgress";
 
+// Components
+import TableCard from "./components/TableCard/TableCard.js";
 // Shared
-import Snack from "../../../../shared/components/Snack/Snack.js";
 import TableModal from "../../../../shared/components/TableModal/TableModal.js";
+// Reducers
+import appStore from "../../../../store/appStore.js";
 
-class MyTables extends React.Component {
-  constructor(props) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("MyTables.constructor");
-    }
-    super(props);
-    this.state = {
-      openTableModal: false,
-      tableid: "",
-      openSnack: false,
-      snack: undefined,
-    };
-    // Handles
-    this.handleOpenTableModal = this.handleOpenTableModal.bind(this);
-    this.handleTableModalCallback = this.handleTableModalCallback.bind(this);
-    this.handleSnack = this.handleSnack.bind(this);
+export default function MyTables() {
+  if (process.env.REACT_APP_DEBUG === "TRUE") {
+    console.log("MyTables");
   }
-  render() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("MyTables.render");
-    }
-    // i18n
-    const { t } = this.props;
+  // i18n
+  const { t } = useTranslation();
 
-    return (
-      <Box hidden={this.props.signedin !== true}>
-        <Stack direction="row" justifyContent="space-between">
-          <Typography sx={{ p: 2 }} variant="h6" component="span">
-            {t("home.label.mytables")}
+  // Selects
+  const select = {
+    detailsLoaded: useSelector((state) => state.sliceUserDetails.loaded),
+    tables: useSelector((state) => state.sliceUserDetails.tables),
+    openTableModal: useSelector((state) => state.sliceTableModal.open),
+  };
+
+  return (
+    <Box>
+      <Stack direction="row" justifyContent="space-between">
+        <Typography sx={{ p: 2 }} variant="h6" component="span">
+          {t("home.label.mytables")}
+        </Typography>
+        <IconButton
+          sx={{ p: 2 }}
+          onClick={() => {
+            appStore.dispatch({
+              type: "sliceTableModal/new",
+              payload: {
+                _id: appStore.getState().sliceUserDetails.id,
+                pseudo: appStore.getState().sliceUserDetails.pseudo,
+                status: appStore.getState().sliceUserDetails.status,
+              },
+            });
+          }}
+        >
+          <AddIcon />
+        </IconButton>
+      </Stack>
+
+      {select.detailsLoaded === false ? (
+        <Box sx={{ left: "10%", right: "10%" }}>
+          <LinearProgress />
+        </Box>
+      ) : select.tables.length === 0 ? (
+        <Box
+          sx={{
+            m: 2,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography
+            sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }}
+            variant="h6"
+            component="span"
+            align="center"
+          >
+            {t("home.label.notables")}
           </Typography>
-          <IconButton sx={{ p: 2 }} onClick={this.handleOpenTableModal}>
-            <AddIcon />
-          </IconButton>
-        </Stack>
-
+          <SmsFailedIcon
+            sx={{ mt: 2, mb: 2 }}
+            fontSize="large"
+            color="primary"
+          />
+          <Typography
+            sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }}
+            variant="body1"
+            component="span"
+            align="center"
+          >
+            {t("home.label.notablesexplanation")}
+          </Typography>
+        </Box>
+      ) : (
         <List dense={true}>
-          {this.props.tables.map((table) => (
+          {select.tables.map((table) => (
             <ListItem key={"table-" + table._id}>
               <TableCard table={table} />
             </ListItem>
           ))}
         </List>
+      )}
 
-        <TableModal
-          open={this.state.openTableModal}
-          callback={this.handleTableModalCallback}
-          token={this.props.token}
-          tableid={this.state.tableid}
-        />
-        <Snack
-          open={this.state.openSnack}
-          snack={this.state.snack}
-          callback={this.handleSnack}
-        />
-      </Box>
-    );
-  }
-
-  // Handlers
-  handleOpenTableModal() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("MyTables.handleOpenTableModal ");
-    }
-    this.setState((prevState, props) => ({
-      openTableModal: true,
-      tableid: undefined,
-    }));
-  }
-  handleTableModalCallback(action, details) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("MyTables.handleTableModalCallback " + action);
-    }
-    switch (action) {
-      case "totable":
-        window.location = "/table/" + details;
-        break;
-      case "close":
-        this.setState((prevState, props) => ({
-          openTableModal: false,
-        }));
-        break;
-      default:
-    }
-  }
-  handleSnack(action) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("MyTables.handleSnack " + action);
-    }
-    switch (action) {
-      case "close":
-        this.setState((prevState, props) => ({
-          openSnack: false,
-        }));
-        break;
-      default:
-    }
-  }
+      {select.openTableModal === true ? <TableModal /> : null}
+    </Box>
+  );
 }
-
-class TableCard extends React.Component {
-  constructor(props) {
-    super(props);
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("TableCard.constructor " + this.props.table._id);
-    }
-    // Handlers
-    this.handleOpen = this.handleOpen.bind(this);
-  }
-  render() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("TableCard.render " + this.props.table._id);
-    }
-    return (
-      <Card sx={{ width: "100%", p: 1 }} onClick={this.handleOpen}>
-        <Typography>{this.props.table.name}</Typography>
-      </Card>
-    );
-  }
-
-  // Handles
-  handleOpen() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("TableCard.handleOpen " + this.props.table._id);
-    }
-    window.location = "/table/" + this.props.table._id;
-  }
-}
-
-export default withTranslation()(MyTables);

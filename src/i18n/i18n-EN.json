@@ -32,7 +32,8 @@
       "view": "View",
       "edit": "Edit",
       "proceed": "Proceed",
-      "tocome": "To come..."
+      "tocome": "To come...",
+      "tohome": "To home"
     },
     "snack": {
       "api": {
@@ -174,6 +175,8 @@
       "games": "games",
       "victory": "victory",
       "attack": "attack",
+      "deniedaccess": "Denied access",
+      "deniedaccessexplanation": "You're not a member of this table.\n\nYou can't access a table you're not a memebr of.",
       "nogames": "No games so far...",
       "nogameshistoryexplanation": "You haven't played any game so far?\n\nPlay and click the new game button to save your games and access the table history here!",
       "nogamesstatsexplanation": "You haven't played any game so far?\n\nPlay and click the new game button to save your games and access the player stats here!",

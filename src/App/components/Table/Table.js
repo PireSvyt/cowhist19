@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Box, Tabs, Tab, Fab } from "@mui/material";
+import { Box, Tabs, Tab, Fab, Typography, Button } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
+import ErrorIcon from "@mui/icons-material/Error";
 
 // Components
 import TableStats from "./components/TableStats/TableStats.js";
@@ -34,6 +35,7 @@ export default function Table() {
   const select = {
     authLoaded: useSelector((state) => state.sliceUserAuth.loaded),
     tableDetailsLoaded: useSelector((state) => state.sliceTableDetails.loaded),
+    tableDenied: useSelector((state) => state.sliceTableDetails.denied),
     signedin: useSelector((state) => state.sliceUserAuth.signedin),
     name: useSelector((state) => state.sliceTableDetails.name),
     snackData: useSelector((state) => state.sliceSnack.snackData),
@@ -104,7 +106,43 @@ export default function Table() {
         <Box sx={{ left: "10%", right: "10%" }}>
           <LinearProgress />
         </Box>
-      ) : select.signedin === false ? null : (
+      ) : select.signedin === false ? null : select.tableDenied === true ? (
+        <Box
+          sx={{
+            m: 2,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography
+            sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }}
+            variant="h6"
+            component="span"
+            align="center"
+          >
+            {t("table.label.deniedaccess")}
+          </Typography>
+          <ErrorIcon sx={{ mt: 2, mb: 2 }} fontSize="large" color="error" />
+          <Typography
+            sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }}
+            variant="body1"
+            component="span"
+            align="center"
+          >
+            {t("table.label.deniedaccessexplanation")}
+          </Typography>
+          <Button
+            onClick={() => {
+              window.location = "/";
+            }}
+            variant={"contained"}
+            sx={{ mt: 2, mb: 2 }}
+          >
+            {t("generic.button.tohome")}
+          </Button>
+        </Box>
+      ) : (
         <Box>
           <Box
             sx={{

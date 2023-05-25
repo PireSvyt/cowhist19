@@ -4,6 +4,7 @@ const sliceTableDetails = createSlice({
   name: "sliceTableDetails",
   initialState: {
     loaded: false,
+    denied: false,
     id: "",
     name: "",
     players: [],
@@ -22,6 +23,9 @@ const sliceTableDetails = createSlice({
       state.players = action.payload.players;
       state.contracts = action.payload.contracts;
       state.state = "available";
+    },
+    deny: (state) => {
+      state.denied = true;
     },
     lock: (state) => {
       state.state = "busy";

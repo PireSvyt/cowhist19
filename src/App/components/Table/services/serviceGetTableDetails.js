@@ -49,6 +49,11 @@ async function serviceTableDetails() {
           },
         });
         break;
+      case "table.details.error.deniedaccess":
+        appStore.dispatch({
+          type: "sliceTableDetails/deny",
+        });
+        break;
       default:
         appStore.dispatch({
           type: "sliceSnack/change",

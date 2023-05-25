@@ -39,6 +39,7 @@ export default function Appbar(props) {
   // Selects
   const select = {
     signedin: useSelector((state) => state.sliceUserAuth.signedin),
+    tableDenied: useSelector((state) => state.sliceTableDetails.denied),
   };
 
   // Handles
@@ -150,7 +151,8 @@ export default function Appbar(props) {
               {props.title}
             </Typography>
 
-            {!(props.route === "table" || props.title === "") ? null : (
+            {!(props.route === "table" || props.title === "") ||
+            select.tableDenied === true ? null : (
               <IconButton
                 size="large"
                 color="inherit"

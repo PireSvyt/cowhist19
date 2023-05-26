@@ -29,7 +29,7 @@ async function serviceProceed() {
 
     if (proceedCheckOutcome.proceed === true) {
       // Password encryption
-      if (process.env.NODE_ENV === "production") {
+      if (process.env.NODE_ENV === "_production") {
         signInInputs.password = AES.encrypt(
           signInInputs.password,
           process.env.REACT_APP_ENCRYPTION

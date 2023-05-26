@@ -13,6 +13,7 @@ import Activation from "./components/Activation/Activation.js";
 import Table from "./components/Table/Table.js";
 import Account from "./components/Account/Account.js";
 import Help from "./components/Help/Help.js";
+import Admin from "./components/Admin/Admin.js";
 // Services
 import serviceAssessCookie from "./services/serviceAssessCookie.js";
 
@@ -35,6 +36,7 @@ export default function App() {
         <Route path="/account" element={<Account />} />
         <Route path="/table/:id" element={<Table />} />
         <Route path="/help" element={<Help />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
     </Router>
   );

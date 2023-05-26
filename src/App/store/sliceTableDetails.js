@@ -26,6 +26,7 @@ const sliceTableDetails = createSlice({
     },
     deny: (state) => {
       state.denied = true;
+      state.name = "A table";
     },
     lock: (state) => {
       state.state = "busy";

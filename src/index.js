@@ -8,7 +8,6 @@ import "./i18n/i18n-config.js";
 import appStore from "./App/store/appStore.js";
 
 const root = createRoot(document.getElementById("root"));
-
 root.render(
   <React.StrictMode>
     <Provider store={appStore}>
@@ -16,3 +15,5 @@ root.render(
     </Provider>
   </React.StrictMode>
 );
+
+//document.body.requestFullscreen();

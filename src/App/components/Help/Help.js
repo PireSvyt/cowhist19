@@ -1,16 +1,13 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { Box, Button } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
+// Resources
+import faqs from "./resources/faqs.json";
 // Components
-//import Documentation from "./components/Documentation/Documentation.js";
-//import Howto from "./components/Howto/Howto.js";
+import Faq from "./components/Faq.js";
 // Shared
 import Appbar from "../../shared/components/Appbar/Appbar.js";
-import ToComeModal from "../../shared/components/ToComeModal/ToComeModal.js";
-// Reducers
-import appStore from "../../store/appStore.js";
 
 export default function Help() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -19,32 +16,17 @@ export default function Help() {
   // i18n
   const { t } = useTranslation();
 
-  // Selects
-  const select = {
-    tocomeData: useSelector((state) => state.sliceToComeModal.tocomeData),
-  };
-
   return (
     <Box>
       <Appbar route="help" title={t("generic.label.help")} />
       <Box sx={{ height: 48 }} />
 
-      <Box textAlign="center">
-        <Box sx={{ height: 48 }} />
-        <Button
-          variant="outlined"
-          sx={{
-            width: "80%",
-            m: 1,
-          }}
-          onClick={() => {
-            appStore.dispatch({ type: "sliceToComeModal/open" });
-          }}
-        >
-          {t("generic.button.tocome")}
-        </Button>
-      </Box>
-      <ToComeModal data={select.tocomeData} />
+      <Typography variant="h6" sx={{ mt: 2, mb: 1 }}>
+        Frequently asked questions (FAQ)
+      </Typography>
+      {faqs.map((faq) => {
+        return <Faq section={faq} depth={0} key={faq.title} />;
+      })}
     </Box>
   );
 }

@@ -18,7 +18,7 @@ async function serviceProceed() {
   try {
     // Lock UI
     appStore.dispatch({ type: "sliceSignInModal/lock" });
-    const signInInputs = { ...appStore.getState().sliceSignInModal.inputs };
+    let signInInputs = { ...appStore.getState().sliceSignInModal.inputs };
 
     // Check inputs
     let proceedCheckOutcome = serviceProceedCheck(signInInputs);
@@ -28,18 +28,20 @@ async function serviceProceed() {
     });
 
     if (proceedCheckOutcome.proceed === true) {
-      // Prep
       // Password encryption
-      /*
-      signInInputs
-      let encryptedPassword = AES.encrypt(
-        user.password.toString(),
-        process.env.REACT_APP_ENCRYPTION_KEY.toString()
-      ).toString();
-      console.log(encryptedPassword);
-      user.password = encryptedPassword;
-      */
-      signInInputs.encryption = false;
+      if (process.env.NODE_ENV === "production") {
+        signInInputs.password = AES.encrypt(
+          signInInputs.password,
+          process.env.REACT_APP_ENCRYPTION
+        ).toString();
+        signInInputs.login = AES.encrypt(
+          signInInputs.login,
+          process.env.REACT_APP_ENCRYPTION
+        ).toString();
+        signInInputs.encryption = true;
+      } else {
+        signInInputs.encryption = false;
+      }
 
       // API call
       const data = await apiSignIn(signInInputs);

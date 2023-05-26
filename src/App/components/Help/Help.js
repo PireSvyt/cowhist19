@@ -1,11 +1,11 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 // Resources
-import helps from "./resources/helps.json";
+import faqs from "./resources/faqs.json";
 // Components
-import HelpSection from "./components/HelpSection.js";
+import Faq from "./components/Faq.js";
 // Shared
 import Appbar from "../../shared/components/Appbar/Appbar.js";
 
@@ -21,8 +21,11 @@ export default function Help() {
       <Appbar route="help" title={t("generic.label.help")} />
       <Box sx={{ height: 48 }} />
 
-      {helps.map((help) => {
-        return <HelpSection section={help} depth={0} key={help.title} />;
+      <Typography variant="h6" sx={{ mt: 2, mb: 1 }}>
+        Frequently asked questions (FAQ)
+      </Typography>
+      {faqs.map((faq) => {
+        return <Faq section={faq} depth={0} key={faq.title} />;
       })}
     </Box>
   );

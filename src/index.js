@@ -16,4 +16,4 @@ root.render(
   </React.StrictMode>
 );
 
-document.body.requestFullscreen();
+//document.body.requestFullscreen();

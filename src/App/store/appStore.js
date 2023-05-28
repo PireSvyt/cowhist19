@@ -13,6 +13,8 @@ import sliceInviteModal from "./sliceInviteModal.js";
 import sliceGameModal from "./sliceGameModal.js";
 import sliceSnack from "./sliceSnack.js";
 import sliceToComeModal from "./sliceToComeModal.js";
+// Admin
+import sliceAdminStats from "./sliceAdminStats.js";
 
 export default configureStore({
   reducer: {
@@ -28,5 +30,6 @@ export default configureStore({
     sliceGameModal: sliceGameModal,
     sliceSnack: sliceSnack,
     sliceToComeModal: sliceToComeModal,
+    sliceAdminStats: sliceAdminStats,
   },
 });

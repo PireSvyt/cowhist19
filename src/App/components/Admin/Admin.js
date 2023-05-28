@@ -4,11 +4,10 @@ import { Box } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
 
 // Components
+import AdminStats from "./components/AdminStats/AdminStats.js";
 // Shared
 import Appbar from "../../shared/components/Appbar/Appbar.js";
 import Snack from "../../shared/components/Snack/Snack2.js";
-// Reducers
-import appStore from "../../store/appStore.js";
 
 export default function Admin() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -19,7 +18,8 @@ export default function Admin() {
   const select = {
     authLoaded: useSelector((state) => state.sliceUserAuth.loaded),
     signedin: useSelector((state) => state.sliceUserAuth.signedin),
-    privileges: useSelector((state) => state.sliceUserDetails.privileges),
+    userLoaded: useSelector((state) => state.sliceUserDetails.loaded),
+    priviledges: useSelector((state) => state.sliceUserDetails.priviledges),
   };
 
   return (
@@ -31,7 +31,9 @@ export default function Admin() {
           <LinearProgress />
         </Box>
       ) : select.signedin === false ? null : (
-        <Box></Box>
+        <Box>
+          {!select.priviledges.includes("admin") ? null : <AdminStats />}
+        </Box>
       )}
       <Snack data-testid="componentSnack" data={select.snackData} />
     </Box>

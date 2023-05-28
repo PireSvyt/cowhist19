@@ -33,15 +33,25 @@
             "text": "Here is the exhaustive list of cookies which are stored only your device and leveraged by the app to provide you a better experience:"
           },
           {
-            "type": "textlist",
-            "list": [
+            "type": "section",
+            "title": "Json web (authentication) token",
+            "ref": "help.cookies.usage.token",
+            "details": [
               {
-                "primary": "Json web (authentication) token",
-                "secondary": "As soon as you sign in, this is stored in your cookies and allows you to not have to sign in at every clicks.\nYou can see this token as the key assessing that you are authorized for subsequent actions.\n\nWhen you close the app, so that you don't have to sign in each time, the validity of the token from your cookies is assessed. If valid, you're automatically signed in and can enjoy the app!\n\nThis is precisely with this token that we make sure no one else than you has access to your data."
-              },
+                "type": "paragraph",
+                "text": "As soon as you sign in, this is stored in your cookies and allows you to not have to sign in at every clicks.\nYou can see this token as the key assessing that you are authorized for subsequent actions.\n\nWhen you close the app, so that you don't have to sign in each time, the validity of the token from your cookies is assessed. If valid, you're automatically signed in and can enjoy the app!\n\nThis is precisely with this token that we make sure no one else than you has access to your data."
+              }
+            ]
+          },
+
+          {
+            "type": "section",
+            "title": "Selected language",
+            "ref": "help.cookies.usage.token",
+            "details": [
               {
-                "primary": "Selected language",
-                "secondary": "When you select a language preference, the selected language is stored in your cookies.\n\nEach time you come back, this is leveraged as your language preference.\n\nIt remains on your device and is here only to display the app as you prefer it to be."
+                "type": "paragraph",
+                "text": "When you select a language preference, the selected language is stored in your cookies.\n\nEach time you come back, this is leveraged as your language preference.\n\nIt remains on your device and is here only to display the app as you prefer it to be."
               }
             ]
           }

@@ -105,7 +105,7 @@ export default function Appbar(props) {
     },
     toAdmin: {
       item: "admin",
-      label: "generic.menu.admin",
+      label: "Admin",
       onclick: toAdmin,
       signed: true,
     },
@@ -202,7 +202,7 @@ export default function Appbar(props) {
           >
             {showLanguageSwitcher === true ? <LanguageSwitcher /> : null}
 
-            {menuItems.length === 0 || !select.signedin ? null : (
+            {menuItems.length === 0 ? null : (
               <Box>
                 <IconButton size="large" onClick={openMenu}>
                   <MenuIcon sx={{ color: "white" }} />
@@ -217,15 +217,31 @@ export default function Appbar(props) {
                   }}
                 >
                   {menuItems.map((item) => {
-                    return (
-                      <MenuItem
-                        hidden={!(item.signed && select.signedin)}
-                        key={random_id()}
-                        onClick={item.onclick}
-                      >
-                        {t(item.label)}
-                      </MenuItem>
-                    );
+                    if (item.signed && select.signedin) {
+                      return (
+                        <MenuItem
+                          hidden={!(item.signed && select.signedin)}
+                          key={random_id()}
+                          onClick={item.onclick}
+                        >
+                          {t(item.label)}
+                        </MenuItem>
+                      );
+                    } else {
+                      if (item.signed === false) {
+                        return (
+                          <MenuItem
+                            hidden={!(item.signed && select.signedin)}
+                            key={random_id()}
+                            onClick={item.onclick}
+                          >
+                            {t(item.label)}
+                          </MenuItem>
+                        );
+                      } else {
+                        return null;
+                      }
+                    }
                   })}
                 </Menu>
               </Box>

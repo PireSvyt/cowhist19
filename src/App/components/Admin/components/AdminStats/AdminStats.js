@@ -56,9 +56,7 @@ export default function AdminStats() {
           {select.stats.usersbystatus.map((status) => {
             return (
               <ListItem key={"status-" + status._id}>
-                <Typography>
-                  {status._id + " : " + status.nbusers + " users"}
-                </Typography>
+                <Typography>{status.nbusers + " " + status._id}</Typography>
               </ListItem>
             );
           })}
@@ -69,7 +67,10 @@ export default function AdminStats() {
             return (
               <ListItem key={"playernb-" + playernb._id}>
                 <Typography>
-                  {playernb._id + " players : " + playernb.nbtables + " tables"}
+                  {playernb.nbtables +
+                    " tables with " +
+                    playernb._id +
+                    "players"}
                 </Typography>
               </ListItem>
             );
@@ -81,7 +82,7 @@ export default function AdminStats() {
             return (
               <ListItem key={"gamesnb-" + gamesnb._id}>
                 <Typography>
-                  {gamesnb._id + " games : " + gamesnb.nbtables + " tables"}
+                  {gamesnb.nbtables + " tables with " + gamesnb._id + " games "}
                 </Typography>
               </ListItem>
             );

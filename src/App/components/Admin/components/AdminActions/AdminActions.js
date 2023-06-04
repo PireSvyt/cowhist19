@@ -21,7 +21,7 @@ export default function AdminActions() {
             width: "80%",
             m: 1,
           }}
-          onClick={() => null}
+          onClick={() => servicePopulate()}
         >
           {"Populate"}
         </Button>

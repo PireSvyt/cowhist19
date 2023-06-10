@@ -16,6 +16,7 @@ export default function AdminActions() {
           {"Actions"}
         </Typography>
         <Button
+                  color="error"
           variant="outlined"
           sx={{
             width: "80%",
@@ -23,7 +24,7 @@ export default function AdminActions() {
           }}
           onClick={() => servicePopulate()}
         >
-          {"Populate"}
+          {"Populate DB"}
         </Button>
       </Paper>
     </Box>

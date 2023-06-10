@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import jwt_decode from "jwt-decode";
 import {
   Button,
   TextField,
@@ -15,13 +14,11 @@ import {
   IconButton,
   List,
   ListItem,
-  Card,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import SmsFailedIcon from "@mui/icons-material/SmsFailed";
 
 import AddIcon from "@mui/icons-material/Add.js";
-import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline.js";
 
 // Components
 import InviteModal from "./components/InviteModal/InviteModal.js";

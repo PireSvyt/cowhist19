@@ -11,175 +11,44 @@ async function servicePopulate() {
   }
 
   try {
-    // Lock UI
-    appStore.dispatch({ type: "sliceGameModal/lock" });
-    let gameInputs = { ...appStore.getState().sliceGameModal.inputs };
-    const gameId = appStore.getState().sliceGameModal.id;
-    const tableId = appStore.getState().sliceTableDetails.id;
-    gameInputs._id = gameId;
-    gameInputs.table = tableId;
+    // API call
+    const data = await apiPopulate();
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("data.type : " + data.type);
+    }
 
-    // Check inputs
-    let proceedCheckOutcome = servicePopulateCheck(
-      gameInputs,
-      appStore.getState().sliceTableDetails.contracts
-    );
-    appStore.dispatch({
-      type: "sliceGameModal/change",
-      payload: proceedCheckOutcome.stateChanges,
-    });
-
-    if (proceedCheckOutcome.proceed === true) {
-      // Prep
-
-      // API call
-      const data = await apiGameSave(gameInputs);
-      if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("data.type : " + data.type);
-      }
-
-      // Response management
-      switch (data.type) {
-        case "game.save.success.created":
-          appStore.dispatch({
-            type: "sliceGameModal/change",
-            payload: {
-              open: false,
-              disabled: false,
-              loading: false,
-              inputs: {
-                contract: "",
-                players: [],
-                outcome: 0,
-              },
-              errors: {
-                contract: false,
-                attack: false,
-                defense: false,
-                outcome: false,
-              },
-              requirements: {
-                attack: "",
-                defense: "",
-                outcome: "",
-              },
-            },
-          });
-          appStore.dispatch({
-            type: "sliceSnack/change",
-            payload: {
-              uid: random_id(),
-              id: "game.snack.saved",
-            },
-          });
-          appStore.dispatch({
-            type: "sliceTableStats/unload",
-          });
-          appStore.dispatch({
-            type: "sliceTableHistory/unload",
-          });
-          break;
-        case "game.save.success.modified":
-          appStore.dispatch({
-            type: "sliceGameModal/change",
-            payload: {
-              disabled: false,
-              loading: false,
-              inputs: {
-                contract: "",
-                players: [],
-                outcome: 0,
-              },
-              errors: {
-                contract: false,
-                attack: false,
-                defense: false,
-                outcome: false,
-              },
-              requirements: {
-                attack: "",
-                defense: "",
-                outcome: "",
-              },
-            },
-          });
-          appStore.dispatch({
-            type: "sliceSnack/change",
-            payload: {
-              uid: random_id(),
-              id: "game.snack.saved",
-            },
-          });
-          break;
-
-        //callbacks.push({ key: "updategames" });
-
-        case "game.save.error.oncreate":
-          appStore.dispatch({
-            type: "sliceGameModal/change",
-            payload: {
-              disabled: false,
-              loading: false,
-            },
-          });
-          appStore.dispatch({
-            type: "sliceSnack/change",
-            payload: {
-              uid: random_id(),
-              id: "generic.snack.error.wip",
-            },
-          });
-          break;
-        case "game.save.error.onmodify":
-          appStore.dispatch({
-            type: "sliceGameModal/change",
-            payload: {
-              disabled: false,
-              loading: false,
-            },
-          });
-          appStore.dispatch({
-            type: "sliceSnack/change",
-            payload: {
-              uid: random_id(),
-              id: "generic.snack.error.wip",
-            },
-          });
-          break;
-        default:
-          appStore.dispatch({
-            type: "sliceGameModal/change",
-            payload: {
-              disabled: false,
-              loading: false,
-            },
-          });
-          appStore.dispatch({
-            type: "sliceSnack/change",
-            payload: {
-              uid: random_id(),
-              id: "generic.snack.api.unmanagedtype",
-            },
-          });
-      }
-    } else {
-      if (proceedCheckOutcome.errors.length > 0) {
-        appStore.dispatch({
-          type: "sliceGameModal/change",
-          payload: {
-            disabled: false,
-            loading: false,
-          },
-        });
+    // Response management
+    switch (data.type) {
+      case "admin.populate.success":
+        break;
+      case "admin.populate.error.unauthorized":
+        break;
+      case "admin.populate.error.deniedaccess":
         appStore.dispatch({
           type: "sliceSnack/change",
           payload: {
             uid: random_id(),
-            id: "generic.snack.error.withdetails",
-            details: proceedCheckOutcome.errors,
+            id: "generic.snack.error.wip",
           },
         });
-      }
+        break;
+      case "admin.populate.error.failedpopulation":
+        appStore.dispatch({
+          type: "sliceSnack/change",
+          payload: {
+            uid: random_id(),
+            id: "generic.snack.error.wip",
+          },
+        });
+        break;
+      default:
+        appStore.dispatch({
+          type: "sliceSnack/change",
+          payload: {
+            uid: random_id(),
+            id: "generic.snack.api.unmanagedtype",
+          },
+        });
     }
   } catch (err) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -187,13 +56,6 @@ async function servicePopulate() {
       console.log(err);
     }
     // Error network
-    appStore.dispatch({
-      type: "sliceGameModal/change",
-      payload: {
-        disabled: false,
-        loading: false,
-      },
-    });
     appStore.dispatch({
       type: "sliceSnack/change",
       payload: {

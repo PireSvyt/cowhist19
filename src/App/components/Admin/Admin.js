@@ -5,6 +5,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 
 // Components
 import AdminStats from "./components/AdminStats/AdminStats.js";
+import AdminActions from "./components/AdminActions/AdminActions.js";
 // Shared
 import Appbar from "../../shared/components/Appbar/Appbar.js";
 import Snack from "../../shared/components/Snack/Snack2.js";
@@ -32,7 +33,12 @@ export default function Admin() {
         </Box>
       ) : select.signedin === false ? null : (
         <Box>
-          {!select.priviledges.includes("admin") ? null : <AdminStats />}
+          {!select.priviledges.includes("admin") ? null : (
+            <Box>
+              <AdminStats />
+              <AdminActions />
+            </Box>
+          )}
         </Box>
       )}
       <Snack data-testid="componentSnack" data={select.snackData} />

@@ -1,13 +1,11 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Box, Card, Typography } from "@mui/material";
+import {  Card, Typography } from "@mui/material";
 
 export default function TableCard(props) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("TableCard " + props.table._id);
   }
-  // i18n
-  const { t } = useTranslation();
 
   return (
     <Card

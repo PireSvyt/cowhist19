@@ -12,8 +12,6 @@ import MyTables from "./components/MyTables/MyTables.js";
 import Appbar from "../../shared/components/Appbar/Appbar.js";
 import Snack from "../../shared/components/Snack/Snack2.js";
 import ToComeModal from "../../shared/components/ToComeModal/ToComeModal.js";
-// Reducers
-import appStore from "../../store/appStore.js";
 
 export default function Home() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

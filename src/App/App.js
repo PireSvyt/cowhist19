@@ -1,9 +1,5 @@
 import * as React from "react";
-import Cookies from "js-cookie";
-import jwt_decode from "jwt-decode";
-import { withTranslation } from "react-i18next";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 // https://www.geeksforgeeks.org/how-to-create-a-multi-page-website-using-react-js/
 
@@ -16,9 +12,6 @@ import Help from "./components/Help/Help.js";
 import Admin from "./components/Admin/Admin.js";
 // Services
 import serviceAssessCookie from "./services/serviceAssessCookie.js";
-
-// Reducers
-import appStore from "./store/appStore.js";
 
 export default function App() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

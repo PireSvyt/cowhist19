@@ -12,9 +12,6 @@ import {
   DialogTitle,
 } from "@mui/material";
 
-// Reducers
-import appStore from "../../../store/appStore.js";
-
 export default function ToComeModal(props) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("ToComeModal");

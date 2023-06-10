@@ -24,6 +24,7 @@ import { random_id } from "../../services/toolkit.js";
 import serviceAccessDeny from "../../services/serviceAccessDeny.js";
 // Reducers
 import appStore from "../../../store/appStore.js";
+import { createFalse } from "typescript";
 
 export default function Appbar(props) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -40,6 +41,7 @@ export default function Appbar(props) {
   const select = {
     signedin: useSelector((state) => state.sliceUserAuth.signedin),
     tableDenied: useSelector((state) => state.sliceTableDetails.denied),
+    priviledges: useSelector((state) => state.sliceUserDetails.priviledges),
   };
 
   // Handles
@@ -61,6 +63,10 @@ export default function Appbar(props) {
   function toAccount() {
     setMenuOpen(false);
     window.location = "/account";
+  }
+  function toAdmin() {
+    setMenuOpen(false);
+    window.location = "/admin";
   }
   function signOut() {
     setMenuOpen(false);
@@ -97,6 +103,12 @@ export default function Appbar(props) {
       onclick: toHelp,
       signed: false,
     },
+    toAdmin: {
+      item: "admin",
+      label: "Admin",
+      onclick: toAdmin,
+      signed: true,
+    },
   };
 
   // Constants
@@ -106,6 +118,9 @@ export default function Appbar(props) {
     case "home":
       menuItems.push(potentialMenuItems.toAccount);
       menuItems.push(potentialMenuItems.toHelp);
+      if (select.priviledges.includes("admin")) {
+        menuItems.push(potentialMenuItems.toAdmin);
+      }
       menuItems.push(potentialMenuItems.signOut);
       showLanguageSwitcher = true;
       break;
@@ -113,6 +128,9 @@ export default function Appbar(props) {
       menuItems.push(potentialMenuItems.toHome);
       menuItems.push(potentialMenuItems.toAccount);
       menuItems.push(potentialMenuItems.toHelp);
+      if (select.priviledges.includes("admin")) {
+        menuItems.push(potentialMenuItems.toAdmin);
+      }
       menuItems.push(potentialMenuItems.signOut);
       showLanguageSwitcher = false;
       break;
@@ -125,11 +143,23 @@ export default function Appbar(props) {
     case "help":
       showLanguageSwitcher = true;
       break;
+    case "admin":
+      showLanguageSwitcher = false;
+      menuItems.push(potentialMenuItems.toHome);
+      menuItems.push(potentialMenuItems.signOut);
+      break;
     default:
   }
 
   return (
-    <AppBar position="fixed" sx={{ top: 0, bottom: "auto" }}>
+    <AppBar
+      position="fixed"
+      sx={{
+        top: 0,
+        bottom: "auto",
+      }}
+      color={props.route === "admin" ? "error" : "primary"}
+    >
       <Toolbar>
         <Box
           sx={{
@@ -172,7 +202,7 @@ export default function Appbar(props) {
           >
             {showLanguageSwitcher === true ? <LanguageSwitcher /> : null}
 
-            {menuItems.length === 0 || !select.signedin ? null : (
+            {menuItems.length === 0 ? null : (
               <Box>
                 <IconButton size="large" onClick={openMenu}>
                   <MenuIcon sx={{ color: "white" }} />
@@ -187,15 +217,31 @@ export default function Appbar(props) {
                   }}
                 >
                   {menuItems.map((item) => {
-                    return (
-                      <MenuItem
-                        hidden={!(item.signed && select.signedin)}
-                        key={random_id()}
-                        onClick={item.onclick}
-                      >
-                        {t(item.label)}
-                      </MenuItem>
-                    );
+                    if (item.signed && select.signedin) {
+                      return (
+                        <MenuItem
+                          hidden={!(item.signed && select.signedin)}
+                          key={random_id()}
+                          onClick={item.onclick}
+                        >
+                          {t(item.label)}
+                        </MenuItem>
+                      );
+                    } else {
+                      if (item.signed === false) {
+                        return (
+                          <MenuItem
+                            hidden={!(item.signed && select.signedin)}
+                            key={random_id()}
+                            onClick={item.onclick}
+                          >
+                            {t(item.label)}
+                          </MenuItem>
+                        );
+                      } else {
+                        return null;
+                      }
+                    }
                   })}
                 </Menu>
               </Box>

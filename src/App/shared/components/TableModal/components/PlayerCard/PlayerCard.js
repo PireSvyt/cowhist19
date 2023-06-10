@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
+import React from "react";
 import { Box, Card, Typography, IconButton } from "@mui/material";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline.js";
 
@@ -10,8 +9,6 @@ export default function PlayerCard(props) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("PlayerCard " + props.player._id);
   }
-  // i18n
-  const { t } = useTranslation();
 
   // Handles
   function removeUser() {

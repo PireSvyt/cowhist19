@@ -1,4 +1,4 @@
-import { createSlice, configureStore } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const sliceSignUpModal = createSlice({
   name: "sliceSignUpModal",

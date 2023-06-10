@@ -1,5 +1,3 @@
-// Services
-import serviceTableDelete from "./serviceTableDelete.js";
 // Reducers
 import appStore from "../../../../store/appStore.js";
 

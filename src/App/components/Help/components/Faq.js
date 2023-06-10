@@ -28,7 +28,7 @@ const Faq = (props) => {
         {props.section.details.length === 0
           ? null
           : props.section.details.map((detail) => {
-              console.log(detail);
+              //console.log(detail);
               switch (detail.type) {
                 case "section":
                   return (

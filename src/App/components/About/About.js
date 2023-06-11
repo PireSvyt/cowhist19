@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Box, Typography, Accordion, AccordionSummary, AccordionDetails, Link, List, ListItem  } from "@mui/material";
+import { Box, Typography, Accordion, AccordionSummary, AccordionDetails, Link  } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 // Shared
@@ -44,28 +44,33 @@ export default function About() {
             <Typography variant="body1" gutterBottom sx={{ whiteSpace: "pre-line" }}>
                 Motivations are multiple:
             </Typography>
-            <List sx={{ listStylePosition: 'inside' }}>
-                <ListItem sx={{ display: 'list-item' }}>
-                    <Typography variant="body1" sx={{ whiteSpace: "pre-line" }}>
-                        Personal learning opportunity about web product development practices and challenges
-                    </Typography>
-                </ListItem>
-                <ListItem sx={{ display: 'list-item' }}>
-                    <Typography variant="body1" sx={{ whiteSpace: "pre-line" }}>
-                        Sharing opportunity for others willing to setup a web product offer to get inspired, eventually to learn and to not replicate mistakes
-                    </Typography>
-                </ListItem>
-                <ListItem sx={{ display: 'list-item' }}>
-                    <Typography variant="body1" sx={{ whiteSpace: "pre-line" }}>
-                        Answering a concrete user need which friends and I benefit from
-                    </Typography>
-                </ListItem>
-            </List>
+            <Typography component="div">
+                <ul>
+                    <li>
+                        <Typography variant="body1" sx={{ whiteSpace: "pre-line" }}>
+                            Personal learning opportunity about web product development practices and challenges
+                        </Typography>
+                    </li>
+                    <li>
+                        <Typography variant="body1" sx={{ whiteSpace: "pre-line" }}>
+                            Sharing opportunity for others willing to setup a web product offer to get inspired, eventually to learn and to not replicate mistakes
+                        </Typography>
+                    </li>
+                    <li>
+                        <Typography variant="body1" sx={{ whiteSpace: "pre-line" }}>
+                            Answering a concrete user need which friends and I benefit from
+                        </Typography>
+                    </li>
+                </ul>
+            </Typography>
+            <Typography variant="body2" sx={{ whiteSpace: "pre-line" }}>
+                Note that this project for sure exposes biases, mistakes and space for improvement.
+            </Typography>
             <Typography variant="body2" gutterBottom sx={{ whiteSpace: "pre-line" }}>
-                Note that this project for sure exposes biases, mistakes and space for improvement. \nTherefore, as long as constructive and aligned with the motivations, feedback and suggestions are more than welcome about any aspect.
+                Therefore, as long as constructive and aligned with the motivations, feedback and suggestions are more than welcome about any aspect.
             </Typography>
             <Typography variant="body1">
-                Know more about the project:
+                More about the project?
             </Typography>
             <Link 
                 sx={{ typography: "body1", "& > :not(style) + :not(style)": { ml: 2 }, }} 
@@ -86,20 +91,25 @@ export default function About() {
             <Typography variant="body1" gutterBottom sx={{ whiteSpace: "pre-line" }}>
                 It would be erroneous to literally speak about a team as well as to claim doing this on my own.
             </Typography>
-            <List sx={{ listStyleType: 'disc' }}>
-                <ListItem sx={{ display: 'list-item' }}>
-                    <Typography variant="body1" sx={{ whiteSpace: "pre-line" }}>
-                        I mostly do the hand work on my own writing this documentation, performing the analysis, designing the experience, prioritizing functionalities and coding
-                    </Typography>
-                </ListItem>
-                <ListItem sx={{ display: 'list-item' }}>
-                    <Typography variant="body1" sx={{ whiteSpace: "pre-line" }}>
-                        But I as well recieve support and advices from friends only multiple fronts including technology choices, web architecture and implementation, communication and much more!\nI thank all contributors and supporters without whom this project would be taste-less
-                    </Typography>
-                </ListItem>
-            </List>
+            <Typography component="div">
+                <ul>
+                    <li>
+                        <Typography variant="body1" sx={{ whiteSpace: "pre-line" }}>
+                            I mostly do the hand work on my own writing this documentation, performing the analysis, designing the experience, prioritizing functionalities and coding.
+                        </Typography>
+                    </li>
+                    <li>
+                        <Typography variant="body1" sx={{ whiteSpace: "pre-line" }}>
+                            I as well recieve support and advices from friends only multiple fronts including technology choices, web architecture and implementation, communication and much more!
+                        </Typography>
+                        <Typography variant="body1" sx={{ whiteSpace: "pre-line" }}>
+                            I thank all contributors and supporters without whom this project would be taste-less.
+                        </Typography>
+                    </li>
+                </ul>
+            </Typography>
             <Typography variant="body1">
-                To know more about me:
+                More about me?
             </Typography>
             <Link 
                 sx={{ typography: "body1", "& > :not(style) + :not(style)": { ml: 2 }, }} 

@@ -68,9 +68,9 @@ export default function AdminStats() {
               <ListItem key={"playernb-" + playernb._id}>
                 <Typography>
                   {playernb.nbtables +
-                    " tables with " +
+                    " with " +
                     playernb._id +
-                    "players"}
+                    " players"}
                 </Typography>
               </ListItem>
             );
@@ -82,7 +82,7 @@ export default function AdminStats() {
             return (
               <ListItem key={"gamesnb-" + gamesnb._id}>
                 <Typography>
-                  {gamesnb.nbtables + " tables with " + gamesnb._id + " games "}
+                  {gamesnb.nbtables + " with " + gamesnb._id + " games "}
                 </Typography>
               </ListItem>
             );

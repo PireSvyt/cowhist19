@@ -1,0 +1,223 @@
+[
+  {
+    "title": "About the cookies",
+    "type": "section",
+    "ref": "help.cookies",
+    "details": [
+      {
+        "type": "section",
+        "title": "What is our cookie policy?",
+        "ref": "help.cookies.policy",
+        "details": [
+          {
+            "type": "statement",
+            "text": "Cookies are to be used only for functional aspects and because they bring value to users! They are user's property!"
+          },
+          {
+            "type": "paragraph",
+            "text": "In other words, cookies are used the least possible and only in the user's interest."
+          },
+          {
+            "type": "emphasis",
+            "text": "Your data will never be commercialized, exhanged, given or leveraged. They stay on your device to provide you a better experience."
+          }
+        ]
+      },
+      {
+        "type": "section",
+        "ref": "help.cookies.usage",
+        "title": "What cookies does the app use?",
+        "details": [
+          {
+            "type": "paragraph",
+            "text": "Here is the exhaustive list of cookies which are stored only your device and leveraged by the app to provide you a better experience:"
+          },
+          {
+            "type": "section",
+            "title": "Json web (authentication) token",
+            "ref": "help.cookies.usage.token",
+            "details": [
+              {
+                "type": "paragraph",
+                "text": "As soon as you sign in, this is stored in your cookies and allows you to not have to sign in at every clicks.\nYou can see this token as the key assessing that you are authorized for subsequent actions.\n\nWhen you close the app, so that you don't have to sign in each time, the validity of the token from your cookies is assessed. If valid, you're automatically signed in and can enjoy the app!\n\nThis is precisely with this token that we make sure no one else than you has access to your data."
+              }
+            ]
+          },
+
+          {
+            "type": "section",
+            "title": "Selected language",
+            "ref": "help.cookies.usage.token",
+            "details": [
+              {
+                "type": "paragraph",
+                "text": "When you select a language preference, the selected language is stored in your cookies.\n\nEach time you come back, this is leveraged as your language preference.\n\nIt remains on your device and is here only to display the app as you prefer it to be."
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "About the security",
+    "type": "section",
+    "ref": "help.security",
+    "details": [
+      {
+        "type": "section",
+        "ref": "help.security.password",
+        "title": "How is managed my password?",
+        "details": [
+          {
+            "type": "statement",
+            "text": "Your password is never transiting \"in clear\"!"
+          },
+          {
+            "type": "paragraph",
+            "text": "Concretely, your password is encrypted with a key in you device and then decrypted on our server to authenticate your credentials.\nTo do so, the key is hidden in the application both on exposed side (the website) and service side. This enables your password to not transit in clear on the web."
+          },
+          {
+            "type": "paragraph",
+            "text": "Follow this link for more details about the algorithm used:"
+          },
+          {
+            "type": "link",
+            "text": "Advanced Encryption Standard (Wikipedia)",
+            "url": "https://fr.wikipedia.org/wiki/Advanced_Encryption_Standard"
+          }
+        ]
+      },
+      {
+        "type": "section",
+        "ref": "help.security.storage",
+        "title": "How is my data stored?",
+        "details": [
+          {
+            "type": "statement",
+            "text": "Your password is never saved \"in clear\"!"
+          },
+          {
+            "type": "paragraph",
+            "text": "Concretely, your password is encrypted in a way it cannot be depcrypted. The encrypted form is stored in the database at sign up. At sign in, your password is assessed as with respect to the encrypted form to grant or deny access to your account."
+          },
+          {
+            "type": "paragraph",
+            "text": "Follow this link for more details about the algorithm used:"
+          },
+          {
+            "type": "link",
+            "text": "Bcrypt (Wikipedia)",
+            "url": "https://en.wikipedia.org/wiki/Bcrypt"
+          }
+        ]
+      },
+      {
+        "type": "section",
+        "ref": "help.security.access",
+        "title": "Who has access to my data?",
+        "details": [
+          {
+            "type": "statement",
+            "text": "Your personal data are stored only to allow you accessing the product and is not looked at by anyone!"
+          },
+          {
+            "type": "paragraph",
+            "text": "In practice, your personal data are stored in our database only to provide you access to your account, you password is encrypted and your email adress will be as well to prevent it to be available in case of haccking. \nNobody is looking at those information."
+          },
+          {
+            "type": "paragraph",
+            "text": "The only data which are leveraged are product related and they are only looked at from a macro-scopic perspective.\nAn example is the number of games stored per weeks overall table which allows to capture the usage of the product. But in any case tracking the usage of a specific user."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "About the tables",
+    "type": "section",
+    "ref": "help.tables",
+    "details": [
+      {
+        "type": "section",
+        "ref": "help.tables.invite",
+        "title": "What does it man to invite a player?",
+        "details": [
+          {
+            "type": "paragraph",
+            "text": "To play cards, you need to be a minimum number of players around the table.\nYou can see an invitation to a table as a ticket to play within a closed circle of a table."
+          },
+          {
+            "type": "paragraph",
+            "text": "Once invited to a table, the invited player can access the table and perform the same operations as other players."
+          }
+        ]
+      },
+      {
+        "type": "section",
+        "ref": "help.tables.guest",
+        "title": "What does it man to have guests?",
+        "details": [
+          {
+            "type": "paragraph",
+            "text": "You may from time to time play with some guests who may not be relevant to invite, because it is exceptional or because they don't want to be part of it."
+          },
+          {
+            "type": "paragraph",
+            "text": "So that you can still play even though gathering at less than the minimum number of players required, you can play with a guest, who's statistics are not computed."
+          },
+          {
+            "type": "paragraph",
+            "text": "To add a guest in the table, edit the table and select the number of guests allowed per games. You can then select one or more guests when recording a game instead of a players."
+          }
+        ]
+      },
+      {
+        "type": "section",
+        "ref": "help.tables.access",
+        "title": "Who can access my tables?",
+        "details": [
+          {
+            "type": "paragraph",
+            "text": "Only the players invited to your table can access the table (not even the guests)."
+          },
+          {
+            "type": "paragraph",
+            "text": "To see who is invited to a table edit the table from the table page clicking the pencil icon in the appbar."
+          }
+        ]
+      },
+      {
+        "type": "section",
+        "ref": "help.tables.deletion",
+        "title": "What happens when deleting a table?",
+        "details": []
+      }
+    ]
+  },
+  {
+    "title": "About the games",
+    "type": "section",
+    "ref": "help.games",
+    "details": [
+      {
+        "type": "section",
+        "ref": "help.games.points",
+        "title": "What are the existing contracts?",
+        "details": []
+      },
+      {
+        "type": "section",
+        "ref": "help.games.points",
+        "title": "Why can't I save a game?",
+        "details": []
+      },
+      {
+        "type": "section",
+        "ref": "help.games.points",
+        "title": "How are points computed?",
+        "details": []
+      }
+    ]
+  }
+]

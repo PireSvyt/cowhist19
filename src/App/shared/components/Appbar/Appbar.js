@@ -22,9 +22,6 @@ import LanguageSwitcher from "./components/LanguageSwitcher/LanguageSwitcher.js"
 import { random_id } from "../../services/toolkit.js";
 // Shared
 import serviceAccessDeny from "../../services/serviceAccessDeny.js";
-// Reducers
-import appStore from "../../../store/appStore.js";
-import { createFalse } from "typescript";
 
 export default function Appbar(props) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -56,9 +53,13 @@ export default function Appbar(props) {
     setMenuOpen(false);
     window.location = "/";
   }
-  function toHelp() {
+  function toDocumentation() {
     setMenuOpen(false);
-    window.location = "/help";
+    window.location = "/documentation";
+  }
+  function toAbout() {
+    setMenuOpen(false);
+    window.location = "/about";
   }
   function toAccount() {
     setMenuOpen(false);
@@ -97,10 +98,16 @@ export default function Appbar(props) {
       onclick: toHome,
       signed: true,
     },
-    toHelp: {
-      item: "help",
-      label: "generic.menu.help",
-      onclick: toHelp,
+    toDocumentation: {
+      item: "documentation",
+      label: "generic.menu.documentation",
+      onclick: toDocumentation,
+      signed: false,
+    },
+    toAbout: {
+      item: "about",
+      label: "generic.menu.about",
+      onclick: toAbout,
       signed: false,
     },
     toAdmin: {
@@ -117,7 +124,8 @@ export default function Appbar(props) {
   switch (props.route) {
     case "home":
       menuItems.push(potentialMenuItems.toAccount);
-      menuItems.push(potentialMenuItems.toHelp);
+      menuItems.push(potentialMenuItems.toDocumentation);
+      menuItems.push(potentialMenuItems.toAbout);
       if (select.priviledges.includes("admin")) {
         menuItems.push(potentialMenuItems.toAdmin);
       }
@@ -127,7 +135,8 @@ export default function Appbar(props) {
     case "table":
       menuItems.push(potentialMenuItems.toHome);
       menuItems.push(potentialMenuItems.toAccount);
-      menuItems.push(potentialMenuItems.toHelp);
+      menuItems.push(potentialMenuItems.toDocumentation);
+      menuItems.push(potentialMenuItems.toAbout);
       if (select.priviledges.includes("admin")) {
         menuItems.push(potentialMenuItems.toAdmin);
       }
@@ -140,8 +149,11 @@ export default function Appbar(props) {
     case "account":
       showLanguageSwitcher = true;
       break;
-    case "help":
-      showLanguageSwitcher = true;
+    case "documentation":
+      showLanguageSwitcher = false;
+      break;
+    case "about":
+      showLanguageSwitcher = false;
       break;
     case "admin":
       showLanguageSwitcher = false;
@@ -247,7 +259,9 @@ export default function Appbar(props) {
               </Box>
             )}
 
-            {!(props.route === "account" || props.route === "help") ? null : (
+            {!(props.route === "account" 
+            || props.route === "documentation" 
+            || props.route === "about") ? null : (
               <IconButton
                 size="large"
                 color="inherit"

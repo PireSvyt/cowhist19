@@ -44,7 +44,7 @@ export default function About() {
             <Typography variant="body1" gutterBottom sx={{ whiteSpace: "pre-line" }}>
                 Motivations are multiple:
             </Typography>
-            <List sx={{ listStyleType: 'disc', listStylePosition: 'inside' }}>
+            <List sx={{ listStylePosition: 'inside' }}>
                 <ListItem sx={{ display: 'list-item' }}>
                     <Typography variant="body1" sx={{ whiteSpace: "pre-line" }}>
                         Personal learning opportunity about web product development practices and challenges
@@ -86,7 +86,7 @@ export default function About() {
             <Typography variant="body1" gutterBottom sx={{ whiteSpace: "pre-line" }}>
                 It would be erroneous to literally speak about a team as well as to claim doing this on my own.
             </Typography>
-            <List sx={{ listStyleType: 'disc', listStylePosition: 'inside' }}>
+            <List sx={{ listStyleType: 'disc' }}>
                 <ListItem sx={{ display: 'list-item' }}>
                     <Typography variant="body1" sx={{ whiteSpace: "pre-line" }}>
                         I mostly do the hand work on my own writing this documentation, performing the analysis, designing the experience, prioritizing functionalities and coding

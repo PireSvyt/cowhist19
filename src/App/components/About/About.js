@@ -33,7 +33,7 @@ export default function About() {
             <Typography>About the motivations</Typography>
         </AccordionSummary>
         <AccordionDetails>
-            <Typography sx={{ whiteSpace: "pre-line" }}>Motivations:
+            <Typography sx={{ whiteSpace: "pre-line" }}>
 * Personal learning opportunity about web product development practices and challenges
 * Sharing opportunity for others willing to setup a web product offer to get inspired, eventually to learn and to not replicate mistakes
 * Answering a concrete user need which friends and I benefit from

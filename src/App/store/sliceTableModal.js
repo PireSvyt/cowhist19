@@ -8,10 +8,12 @@ const sliceTableModal = createSlice({
     inputs: {
       _id: "",
       name: "",
+      guests: 0,
       players: [],
     },
     errors: {
       name: false,
+      guests: false,
       players: false,
     },
     disabled: false,
@@ -27,10 +29,12 @@ const sliceTableModal = createSlice({
       state.inputs = {
         _id: "",
         name: "",
+        guests: 0,
         players: [action.payload],
       };
       state.errors = {
         name: false,
+        guests: false,
         players: false,
       };
     },
@@ -43,9 +47,11 @@ const sliceTableModal = createSlice({
       state.id = action.payload.id;
       state.inputs._id = action.payload.id;
       state.inputs.name = action.payload.name;
+      state.inputs.guests = action.payload.guests;
       state.inputs.players = action.payload.players;
       state.errors = {
         name: false,
+        guests: false,
         players: false,
       };
     },
@@ -57,6 +63,7 @@ const sliceTableModal = createSlice({
       state.errors = {
         _id: "",
         name: false,
+        guests: false,
         players: false,
       };
       state.disabled = false;
@@ -75,6 +82,9 @@ const sliceTableModal = createSlice({
         if (action.payload.inputs.name !== undefined) {
           state.inputs.name = action.payload.inputs.name;
         }
+        if (action.payload.inputs.guests !== undefined) {
+          state.inputs.guests = action.payload.inputs.guests;
+        }
         if (action.payload.inputs.players !== undefined) {
           state.inputs.players = action.payload.inputs.players;
         }
@@ -83,6 +93,9 @@ const sliceTableModal = createSlice({
       if (action.payload.errors !== undefined) {
         if (action.payload.errors.name !== undefined) {
           state.errors.name = action.payload.errors.name;
+        }
+        if (action.payload.errors.guests !== undefined) {
+          state.errors.guests = action.payload.errors.guests;
         }
         if (action.payload.errors.players !== undefined) {
           state.errors.players = action.payload.errors.players;

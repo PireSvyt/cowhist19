@@ -45,6 +45,7 @@ export default function GameModal() {
     disabled: useSelector((state) => state.sliceGameModal.disabled),
     loading: useSelector((state) => state.sliceGameModal.loading),
     players: useSelector((state) => state.sliceTableDetails.players),
+    guests: useSelector((state) => state.sliceTableDetails.guests),
     contracts: useSelector((state) => state.sliceTableDetails.contracts),
   };
 
@@ -75,6 +76,7 @@ export default function GameModal() {
         newPlayers.push({
           _id: attackant._id,
           pseudo: attackant.pseudo,
+          guest: attackant.guest,
           role: "attack",
         });
       });
@@ -94,6 +96,7 @@ export default function GameModal() {
         newPlayers.push({
           _id: defenser._id,
           pseudo: defenser.pseudo,
+          guest: defenser.guest,
           role: "defense",
         });
       });

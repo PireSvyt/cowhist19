@@ -185,12 +185,14 @@
       "nousersdelete": "No players, really?",
       "nousersdeleteexplanation": "You have removed all players from the table.\n\nSaving a table without any player will delete the table."
     },
-    "input": {},
+    "input": {
+      "guests": "Guests"},
     "button": {
       "newgame": "New game"
     },
     "error": {
       "missingname": "missing name",
+      "missingguests": "missing guests",
       "creationwithoutplayers": "missing players to create a table",
       "creationwithoutuser": "table creation impossible without you among the players"
     },

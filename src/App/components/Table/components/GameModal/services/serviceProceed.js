@@ -33,10 +33,13 @@ async function serviceProceed() {
     if (proceedCheckOutcome.proceed === true) {
       // Prep
       // Store guest users as nonuser : guest
-      gameInputs.players.forEach(player => {
+      gameInputs.players = gameInputs.players.map((player) => {
         if (player.status === "guest") {
           player.nonuser = "guest"
         }
+        // Lighten payload
+        delete player.pseudo
+        return player
       });
 
       // API call

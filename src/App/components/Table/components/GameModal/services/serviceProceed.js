@@ -34,12 +34,13 @@ async function serviceProceed() {
       // Prep
       // Store guest users as nonuser : guest
       gameInputs.players = gameInputs.players.map((player) => {
+        let newPlayer = {...player}
         if (player.status === "guest") {
-          player.nonuser = "guest"
+          newPlayer.nonuser = "guest"
         }
         // Lighten payload
-        delete player.pseudo
-        return player
+        delete newPlayer.pseudo
+        return newPlayer
       });
 
       // API call

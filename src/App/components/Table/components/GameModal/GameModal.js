@@ -76,7 +76,7 @@ export default function GameModal() {
         newPlayers.push({
           _id: attackant._id,
           pseudo: attackant.pseudo,
-          guest: attackant.guest,
+          status: attackant.status,
           role: "attack",
         });
       });
@@ -96,7 +96,7 @@ export default function GameModal() {
         newPlayers.push({
           _id: defenser._id,
           pseudo: defenser.pseudo,
-          guest: defenser.guest,
+          status: defenser.status,
           role: "defense",
         });
       });

@@ -33,7 +33,7 @@ function serviceProceedCheck(table, callback) {
   }
 
   // Empty use list at create?
-  if (table.players.length === 0) {
+  if (table.players.filter(p => p.status !== "guest").length === 0) {
     proceed = false;
     if (table._id === "" || table._id === undefined) {
       errors.push("table.error.creationwithoutplayers");

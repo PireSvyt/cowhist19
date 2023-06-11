@@ -78,28 +78,10 @@ export default function TableHistory() {
         </Box>
       ) : (
         <List dense={true}>
-          {select.history.map((game) => {
-            let gameCard = { ...game };
-            gameCard.attackPlayers = [];
-            gameCard.defensePlayers = [];
-            Object.values(game.players).forEach((gamePlayer) => {
-              let pseudoPlayer = select.players.filter((tablePlayer) => {
-                return tablePlayer._id === gamePlayer._id;
-              });
-              let readyGamePlayer = { ...gamePlayer };
-              if (pseudoPlayer.length > 0) {
-                readyGamePlayer.pseudo = pseudoPlayer[0].pseudo;
-              } else {
-                readyGamePlayer.pseudo = "a removed user";
-              }
-              gameCard[gamePlayer.role + "Players"].push(readyGamePlayer);
-            });
-            return (
-              <ListItem key={"game-" + game._id}>
-                <HistoryCard game={gameCard} />
-              </ListItem>
-            );
-          })}
+          {select.history.map((game) => (
+            <ListItem key={"game-" + game._id}>
+              <HistoryCard game={gameCard} />
+            </ListItem>))}
         </List>
       )}
     </Box>

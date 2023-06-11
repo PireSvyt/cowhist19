@@ -267,11 +267,13 @@ export default function TableModal() {
               </Box>
             ) : (
               <List dense={true}>
-                {select.inputs.players.map((player) => (
+                {select.inputs.players.map((player) => {
+                  player.status === "guest" ? (null) : (
                   <ListItem key={"player-" + player._id}>
                     <PlayerCard player={player} />
                   </ListItem>
-                ))}
+                )}
+                )}
               </List>
             )}
           </Box>

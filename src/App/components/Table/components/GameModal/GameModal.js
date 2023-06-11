@@ -184,7 +184,7 @@ export default function GameModal() {
                   if (option.status === "guest") {
                     return t("game.label.guest")
                   } else {
-                    option.pseudo
+                    return option.pseudo
                   }}}
                 defaultValue={[]}
                 value={select.inputs.players.filter(
@@ -194,7 +194,13 @@ export default function GameModal() {
                   value.map((option, index) => (
                     <Chip
                       variant="outlined"
-                      label={option.pseudo}
+                      label={() => {
+                        if (option.status === "guest") {
+                          return t("game.label.guest")
+                        } else {
+                          return option.pseudo
+                        }
+                      }}
                       {...getTagProps({ index })}
                     />
                   ))
@@ -209,7 +215,13 @@ export default function GameModal() {
               >
                 {select.players.map((player) => (
                   <MenuItem key={player._id} value={player._id}>
-                    {player.pseudo}
+                    {() => {
+                        if (option.status === "guest") {
+                          return t("game.label.guest")
+                        } else {
+                          return option.pseudo
+                        }
+                      }}
                   </MenuItem>
                 ))}
               </Autocomplete>
@@ -243,7 +255,7 @@ export default function GameModal() {
                   if (option.status === "guest") {
                     return t("game.label.guest")
                   } else {
-                    option.pseudo
+                    return option.pseudo
                   }}}
                 defaultValue={[]}
                 value={select.inputs.players.filter(
@@ -253,7 +265,13 @@ export default function GameModal() {
                   value.map((option, index) => (
                     <Chip
                       variant="outlined"
-                      label={option.pseudo}
+                      label={() => {
+                        if (option.status === "guest") {
+                          return t("game.label.guest")
+                        } else {
+                          return option.pseudo
+                        }
+                      }}
                       {...getTagProps({ index })}
                     />
                   ))
@@ -268,7 +286,13 @@ export default function GameModal() {
               >
                 {select.players.map((player) => (
                   <MenuItem key={player._id} value={player._id}>
-                    {player.pseudo}
+                    {() => {
+                        if (option.status === "guest") {
+                          return t("game.label.guest")
+                        } else {
+                          return option.pseudo
+                        }
+                      }}
                   </MenuItem>
                 ))}
               </Autocomplete>

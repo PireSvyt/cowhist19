@@ -33,7 +33,7 @@ async function serviceProceed() {
     if (proceedCheckOutcome.proceed === true) {
       // Prep
       // Store guest users as nonuser : guest
-      gameInputs.players.array.forEach(player => {
+      gameInputs.players.forEach(player => {
         if (player.status === "guest") {
           player.nonuser = "guest"
         }

@@ -39,7 +39,7 @@ export default function About() {
 * Answering a concrete user need which friends and I benefit from
 </Typography>
             <Typography sx={{ whiteSpace: "pre-line" }}>Note that this project for sure exposes biases, mistakes and space for improvement. \nTherefore, as long as constructive and aligned with the motivations, feedback and suggestions are more than welcome about any aspect.</Typography>
-            <Link href={"https://chambray-pyjama-98f.notion.site/CoWhist19-32b3bcfb5a744b698c32c9d34b3c36f2?pvs=4"} 
+            <Link href={"https://chambray-pyjama-98f.notion.site/CoWhist19-32b3bcfb5a744b698c32c9d34b3c36f2"} 
                 target="_blank" rel="noreferrer">CoWhist19© project open documentation</Link>
         </AccordionDetails>
       </Accordion>

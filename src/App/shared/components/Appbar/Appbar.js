@@ -56,9 +56,13 @@ export default function Appbar(props) {
     setMenuOpen(false);
     window.location = "/";
   }
-  function toHelp() {
+  function toDocumentation() {
     setMenuOpen(false);
-    window.location = "/help";
+    window.location = "/documentation";
+  }
+  function toAbout() {
+    setMenuOpen(false);
+    window.location = "/about";
   }
   function toAccount() {
     setMenuOpen(false);
@@ -97,10 +101,16 @@ export default function Appbar(props) {
       onclick: toHome,
       signed: true,
     },
-    toHelp: {
-      item: "help",
-      label: "generic.menu.help",
-      onclick: toHelp,
+    toDocumentation: {
+      item: "documentation",
+      label: "generic.menu.documentation",
+      onclick: toDocumentation,
+      signed: false,
+    },
+    toDocumentation: {
+      item: "about",
+      label: "generic.menu.about",
+      onclick: toAbout,
       signed: false,
     },
     toAdmin: {
@@ -117,7 +127,7 @@ export default function Appbar(props) {
   switch (props.route) {
     case "home":
       menuItems.push(potentialMenuItems.toAccount);
-      menuItems.push(potentialMenuItems.toHelp);
+      menuItems.push(potentialMenuItems.toDocumentation);
       if (select.priviledges.includes("admin")) {
         menuItems.push(potentialMenuItems.toAdmin);
       }
@@ -127,7 +137,7 @@ export default function Appbar(props) {
     case "table":
       menuItems.push(potentialMenuItems.toHome);
       menuItems.push(potentialMenuItems.toAccount);
-      menuItems.push(potentialMenuItems.toHelp);
+      menuItems.push(potentialMenuItems.toDocumentation);
       if (select.priviledges.includes("admin")) {
         menuItems.push(potentialMenuItems.toAdmin);
       }
@@ -140,7 +150,7 @@ export default function Appbar(props) {
     case "account":
       showLanguageSwitcher = true;
       break;
-    case "help":
+    case "documentation":
       showLanguageSwitcher = true;
       break;
     case "admin":
@@ -247,7 +257,7 @@ export default function Appbar(props) {
               </Box>
             )}
 
-            {!(props.route === "account" || props.route === "help") ? null : (
+            {!(props.route === "account" || props.route === "documentation") ? null : (
               <IconButton
                 size="large"
                 color="inherit"

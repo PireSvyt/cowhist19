@@ -268,12 +268,16 @@ export default function TableModal() {
             ) : (
               <List dense={true}>
                 {select.inputs.players.map((player) => {
-                  player.status === "guest" ? (null) : (
-                  <ListItem key={"player-" + player._id}>
-                    <PlayerCard player={player} />
-                  </ListItem>
-                )}
-                )}
+                  if (player.status === "guest") {
+                    return null
+                  } else {
+                    return (
+                      <ListItem key={"player-" + player._id}>
+                        <PlayerCard player={player} />
+                      </ListItem>
+                    )
+                  }
+                })}
               </List>
             )}
           </Box>

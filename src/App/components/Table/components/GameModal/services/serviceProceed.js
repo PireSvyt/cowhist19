@@ -32,6 +32,15 @@ async function serviceProceed() {
 
     if (proceedCheckOutcome.proceed === true) {
       // Prep
+      // Store guest users as nonuser : guest
+      gameInputs.players.array.forEach(player => {
+        if (player.status === "guest") {
+          player.nonuser = "guest"
+        }
+        // Lighten paylod
+        delete player.pseudo
+        delete player.status
+      });
 
       // API call
       const data = await apiGameSave(gameInputs);

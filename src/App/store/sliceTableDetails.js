@@ -23,17 +23,8 @@ const sliceTableDetails = createSlice({
       state.loaded = true;
       state.id = action.payload._id;
       state.name = action.payload.name;
-      state.players = action.payload.players;
       state.guests = action.payload.guests;
-      if (state.guests > 0) {
-        for (var g = 1; g <= state.guests; g++) {
-          state.players.push({
-            _id: random_id(),
-            pseudo: "guest",
-            guest: true,
-          });
-        }
-      }
+      state.players = action.payload.players;
       state.contracts = action.payload.contracts;
       state.state = "available";
     },

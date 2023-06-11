@@ -22,9 +22,6 @@ import LanguageSwitcher from "./components/LanguageSwitcher/LanguageSwitcher.js"
 import { random_id } from "../../services/toolkit.js";
 // Shared
 import serviceAccessDeny from "../../services/serviceAccessDeny.js";
-// Reducers
-import appStore from "../../../store/appStore.js";
-import { createFalse } from "typescript";
 
 export default function Appbar(props) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -107,7 +104,7 @@ export default function Appbar(props) {
       onclick: toDocumentation,
       signed: false,
     },
-    toDocumentation: {
+    toAbout: {
       item: "about",
       label: "generic.menu.about",
       onclick: toAbout,
@@ -128,6 +125,7 @@ export default function Appbar(props) {
     case "home":
       menuItems.push(potentialMenuItems.toAccount);
       menuItems.push(potentialMenuItems.toDocumentation);
+      menuItems.push(potentialMenuItems.toAbout);
       if (select.priviledges.includes("admin")) {
         menuItems.push(potentialMenuItems.toAdmin);
       }
@@ -138,6 +136,7 @@ export default function Appbar(props) {
       menuItems.push(potentialMenuItems.toHome);
       menuItems.push(potentialMenuItems.toAccount);
       menuItems.push(potentialMenuItems.toDocumentation);
+      menuItems.push(potentialMenuItems.toAbout);
       if (select.priviledges.includes("admin")) {
         menuItems.push(potentialMenuItems.toAdmin);
       }
@@ -257,7 +256,9 @@ export default function Appbar(props) {
               </Box>
             )}
 
-            {!(props.route === "account" || props.route === "documentation") ? null : (
+            {!(props.route === "account" 
+            || props.route === "documentation" 
+            || props.route === "about") ? null : (
               <IconButton
                 size="large"
                 color="inherit"

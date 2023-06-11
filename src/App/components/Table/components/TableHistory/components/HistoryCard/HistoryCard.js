@@ -80,6 +80,9 @@ export default function HistoryCard(props) {
           res = res + "unknown user" + ", ";
       }     
     });
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("stringifyPlayers " + res.slice(0, -2));
+    }
     return res.slice(0, -2);
   }
   function stringifyOutcome() {

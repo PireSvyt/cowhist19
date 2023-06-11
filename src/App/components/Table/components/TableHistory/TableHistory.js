@@ -79,7 +79,7 @@ export default function TableHistory() {
         <List dense={true}>
           {select.history.map((game) => (
             <ListItem key={"game-" + game._id}>
-              <HistoryCard game={gameCard} />
+              <HistoryCard game={game} />
             </ListItem>))}
         </List>
       )}

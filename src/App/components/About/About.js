@@ -20,37 +20,50 @@ export default function About() {
 
       <Accordion sx={{ mt: 2}}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography>CoWhist19© app</Typography>
+            <Typography  variant="h6">
+                CoWhist19© app
+            </Typography>
         </AccordionSummary>
         <AccordionDetails>
-            <Typography gutterBottom sx={{ whiteSpace: "pre-line" }}>CoWhist19© is a free webapp enabling everyone to play Whist card game with closed circles, by storing game outcomes, providing history and analytics.</Typography>
-            <Typography gutterBottom sx={{ whiteSpace: "pre-line" }}>The product is currently at the minimum value proposition / minimum viable product (MVP) stage and minimum viable experience (MVE) is in progress to reach an official launch.</Typography>
+            <Typography variant="body1" gutterBottom sx={{ whiteSpace: "pre-line" }}>
+                CoWhist19© is a free webapp enabling everyone to play Whist card game with closed circles, by storing game outcomes, providing history and analytics.
+            </Typography>
+            <Typography variant="body1" gutterBottom sx={{ whiteSpace: "pre-line" }}>
+                The product is currently at the minimum value proposition / minimum viable product (MVP) stage and minimum viable experience (MVE) is in progress to reach an official launch.
+            </Typography>
         </AccordionDetails>
       </Accordion>
 
       <Accordion>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography>The motivations</Typography>
+            <Typography variant="h6">
+                The motivations
+            </Typography>
         </AccordionSummary>
         <AccordionDetails>
             <List>
-                <ListItem>
-                    <Typography sx={{ whiteSpace: "pre-line" }}>
+                <ListItem sx={{ display: 'list-item' }}>
+                    <Typography variant="body1" sx={{ whiteSpace: "pre-line" }}>
                         Personal learning opportunity about web product development practices and challenges
                     </Typography>
                 </ListItem>
-                <ListItem>
-                    <Typography sx={{ whiteSpace: "pre-line" }}>
+                <ListItem sx={{ display: 'list-item' }}>
+                    <Typography variant="body1" sx={{ whiteSpace: "pre-line" }}>
                         Sharing opportunity for others willing to setup a web product offer to get inspired, eventually to learn and to not replicate mistakes
                     </Typography>
                 </ListItem>
-                <ListItem>
-                    <Typography sx={{ whiteSpace: "pre-line" }}>
+                <ListItem sx={{ display: 'list-item' }}>
+                    <Typography variant="body1" sx={{ whiteSpace: "pre-line" }}>
                         Answering a concrete user need which friends and I benefit from
                     </Typography>
                 </ListItem>
             </List>
-            <Typography  gutterBottom sx={{ whiteSpace: "pre-line" }}>Note that this project for sure exposes biases, mistakes and space for improvement. \nTherefore, as long as constructive and aligned with the motivations, feedback and suggestions are more than welcome about any aspect.</Typography>
+            <Typography variant="body2" gutterBottom sx={{ whiteSpace: "pre-line" }}>
+                Note that this project for sure exposes biases, mistakes and space for improvement. \nTherefore, as long as constructive and aligned with the motivations, feedback and suggestions are more than welcome about any aspect.
+            </Typography>
+            <Typography variant="body1">
+                Know more about the project:
+            </Typography>
             <Link 
                 sx={{ typography: "body1", "& > :not(style) + :not(style)": { ml: 2 }, }} 
                 href={"https://chambray-pyjama-98f.notion.site/CoWhist19-32b3bcfb5a744b698c32c9d34b3c36f2"} 
@@ -62,25 +75,29 @@ export default function About() {
 
       <Accordion>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography>The author</Typography>
+            <Typography variant="h6">
+                The author
+            </Typography>
         </AccordionSummary>
         <AccordionDetails>
-        <Typography  gutterBottom sx={{ whiteSpace: "pre-line" }}>
-            It would be erroneous to literally speak about a team as well as to claim doing this on my own.
-        </Typography>
+            <Typography variant="body1" gutterBottom sx={{ whiteSpace: "pre-line" }}>
+                It would be erroneous to literally speak about a team as well as to claim doing this on my own.
+            </Typography>
             <List>
-                <ListItem>
-                    <Typography sx={{ whiteSpace: "pre-line" }}>
-                    I mostly do the hand work on my own writing this documentation, performing the analysis, designing the experience, prioritizing functionalities and coding
+                <ListItem sx={{ display: 'list-item' }}>
+                    <Typography variant="body1" sx={{ whiteSpace: "pre-line" }}>
+                        I mostly do the hand work on my own writing this documentation, performing the analysis, designing the experience, prioritizing functionalities and coding
                     </Typography>
                 </ListItem>
-                <ListItem>
-                    <Typography sx={{ whiteSpace: "pre-line" }}>
-                    But I as well recieve support and advices from friends only multiple fronts including technology choices, web architecture and implementation, communication and much more!\nI thank all contributors and supporters without whom this project would be taste-less
+                <ListItem sx={{ display: 'list-item' }}>
+                    <Typography variant="body1" sx={{ whiteSpace: "pre-line" }}>
+                        But I as well recieve support and advices from friends only multiple fronts including technology choices, web architecture and implementation, communication and much more!\nI thank all contributors and supporters without whom this project would be taste-less
                     </Typography>
                 </ListItem>
             </List>
-            <Typography>Know more about me with my LinkedIn profile:</Typography>
+            <Typography variant="body1">
+                To know more about me:
+            </Typography>
             <Link 
                 sx={{ typography: "body1", "& > :not(style) + :not(style)": { ml: 2 }, }} 
                 href={"https://www.linkedin.com/in/pierresavoyat/"} 

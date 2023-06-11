@@ -179,13 +179,13 @@ export default function GameModal() {
                     !select.inputs.players.find(
                       (actualPlayer) => actualPlayer._id === player._id
                     )
-                ).map((player) => {
-                  if(player.status === "guest") {
-                    player.pseudo = t("game.label.guest")
-                  }
-                  return player
-                })}
-                getOptionLabel={(option) => option.pseudo}
+                )}
+                getOptionLabel={(option) => {
+                  if (option.status === "guest") {
+                    return t("game.label.guest")
+                  } else {
+                    option.pseudo
+                  }}}
                 defaultValue={[]}
                 value={select.inputs.players.filter(
                   (player) => player.role === "attack"
@@ -238,13 +238,13 @@ export default function GameModal() {
                     !select.inputs.players.find(
                       (actualPlayer) => actualPlayer._id === player._id
                     )
-                ).map((player) => {
-                  if(player.status === "guest") {
-                    player.pseudo = t("game.label.guest")
-                  }
-                  return player
-                })}
-                getOptionLabel={(option) => option.pseudo}
+                )}
+                getOptionLabel={(option) => {
+                  if (option.status === "guest") {
+                    return t("game.label.guest")
+                  } else {
+                    option.pseudo
+                  }}}
                 defaultValue={[]}
                 value={select.inputs.players.filter(
                   (player) => player.role === "defense"

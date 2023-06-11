@@ -29,7 +29,6 @@ export default function TableHistory() {
     loadedDetails: useSelector((state) => state.sliceTableDetails.loaded),
     loadedHistory: useSelector((state) => state.sliceTableHistory.loaded),
     history: useSelector((state) => state.sliceTableHistory.games),
-    players: useSelector((state) => state.sliceTableDetails.players),
   };
 
   // Load

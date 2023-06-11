@@ -215,13 +215,7 @@ export default function GameModal() {
               >
                 {select.players.map((player) => (
                   <MenuItem key={player._id} value={player._id}>
-                    {() => {
-                        if (option.status === "guest") {
-                          return t("game.label.guest")
-                        } else {
-                          return option.pseudo
-                        }
-                      }}
+                    {option.status === "guest" ? (t("game.label.guest")) :(option.pseudo)}
                   </MenuItem>
                 ))}
               </Autocomplete>
@@ -286,13 +280,7 @@ export default function GameModal() {
               >
                 {select.players.map((player) => (
                   <MenuItem key={player._id} value={player._id}>
-                    {() => {
-                        if (option.status === "guest") {
-                          return t("game.label.guest")
-                        } else {
-                          return option.pseudo
-                        }
-                      }}
+                   {option.status === "guest" ? (t("game.label.guest")) :(option.pseudo)}  
                   </MenuItem>
                 ))}
               </Autocomplete>

@@ -234,7 +234,7 @@ export default function TableModal() {
                   {t("table.label.nouserscreateexplanation")}
                 </Typography>
               </Box>
-            ) : select.inputs.players.length === 0 ? (
+            ) : select.inputs.players.filter((player) => player.status !== "guest").length === 0 ? (
               <Box
                 sx={{
                   m: 2,

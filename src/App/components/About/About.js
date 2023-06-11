@@ -49,7 +49,10 @@ export default function About() {
             <Typography>About the author</Typography>
         </AccordionSummary>
         <AccordionDetails>
-            <Typography>Know more about the author via the following LinkedIn page:</Typography>
+            <Typography>It would be erroneous to literally speak about a team as well as to claim doing this on my own.
+* I mostly do the hand work on my own writing this documentation, performing the analysis, designing the experience, prioritizing functionalities and coding
+* But I as well recieve support and advices from friends only multiple fronts including technology choices, web architecture and implementation, communication and much more! I thank all contributors and supporters without whom this project would be taste-less</Typography>
+            <Typography>Know more about me with my LinkedIn profile:</Typography>
             <Link href={"www.linkedin.com/in/pierresavoyat"} target="_blank" rel="noreferrer">SAVOYAT Pierre LinkedIn profile</Link>
         </AccordionDetails>
       </Accordion>

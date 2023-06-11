@@ -22,8 +22,18 @@ function serviceProceedCheck(table, callback) {
     stateChanges.errors.name = true;
   }
 
+  // Missing guests?
+  if (table.guests === undefined || table.guests === "") {
+    proceed = false;
+    errors.push("table.error.missingguests");
+    if (stateChanges.errors === undefined) {
+      stateChanges.errors = {};
+    }
+    stateChanges.errors.guests = true;
+  }
+
   // Empty use list at create?
-  if (table.players.length === 0) {
+  if (table.players.filter(p => p.status !== "guest").length === 0) {
     proceed = false;
     if (table._id === "" || table._id === undefined) {
       errors.push("table.error.creationwithoutplayers");

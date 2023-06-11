@@ -48,13 +48,37 @@ export default function HistoryCard(props) {
   function stringifyPlayers() {
     let res = "";
     // Attack
-    props.game.attackPlayers.forEach((gamePlayer) => {
-      res = res + gamePlayer.pseudo + ", ";
+    props.game.attack.forEach((gamePlayer) => {
+      switch (gamePlayer.nonuser) {
+        case "na":
+          res = res + gamePlayer.pseudo + ", ";
+          break;
+        case "guest":
+          res = res + t("game.label.guest") + ", ";
+          break;
+        case "removeduser":
+          res = res + t("game.label.removeduser") + ", ";
+          break;
+        default:
+          res = res + "unknown user" + ", ";
+      }      
     });
     res = res.slice(0, -2) + " " + t("game.label.against") + " ";
     // Defense
-    props.game.defensePlayers.forEach((gamePlayer) => {
-      res = res + gamePlayer.pseudo + ", ";
+    props.game.defense.forEach((gamePlayer) => {
+      switch (gamePlayer.nonuser) {
+        case "na":
+          res = res + gamePlayer.pseudo + ", ";
+          break;
+        case "guest":
+          res = res + t("game.label.guest") + ", ";
+          break;
+        case "removeduser":
+          res = res + t("game.label.removeduser") + ", ";
+          break;
+        default:
+          res = res + "unknown user" + ", ";
+      }     
     });
     return res.slice(0, -2);
   }

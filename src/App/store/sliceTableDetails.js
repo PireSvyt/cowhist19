@@ -1,4 +1,6 @@
+import { TramOutlined } from "@mui/icons-material";
 import { createSlice } from "@reduxjs/toolkit";
+import { random_id } from "../shared/services/toolkit.js";
 
 const sliceTableDetails = createSlice({
   name: "sliceTableDetails",
@@ -7,6 +9,7 @@ const sliceTableDetails = createSlice({
     denied: false,
     id: "",
     name: "",
+    guests: 0,
     players: [],
     contracts: [],
     state: "available",
@@ -20,6 +23,7 @@ const sliceTableDetails = createSlice({
       state.loaded = true;
       state.id = action.payload._id;
       state.name = action.payload.name;
+      state.guests = action.payload.guests;
       state.players = action.payload.players;
       state.contracts = action.payload.contracts;
       state.state = "available";

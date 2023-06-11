@@ -14,6 +14,10 @@ import {
   IconButton,
   List,
   ListItem,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import SmsFailedIcon from "@mui/icons-material/SmsFailed";
@@ -57,6 +61,15 @@ export default function TableModal() {
         payload: {
           inputs: { name: e.target.value },
           errors: { name: false },
+        },
+      });
+    },
+    guests: (e) => {
+      appStore.dispatch({
+        type: "sliceTableModal/change",
+        payload: {
+          inputs: { guests: e.target.value },
+          errors: { guests: false },
         },
       });
     },
@@ -155,6 +168,20 @@ export default function TableModal() {
               error={select.errors.name}
             />
 
+            <FormControl variant="standard">
+              <InputLabel>{t("table.input.guests")}</InputLabel>
+              <Select
+                value={select.inputs.guests}
+                label={t("table.input.guests")}
+                onChange={changes.guests}
+                error={select.errors.guests}
+              >
+                <MenuItem value={0}>0</MenuItem>
+                <MenuItem value={1}>1</MenuItem>
+                <MenuItem value={2}>2</MenuItem>
+              </Select>
+            </FormControl>
+
             <Stack direction="row" justifyContent="space-between">
               <Typography
                 variant="body1"
@@ -207,7 +234,7 @@ export default function TableModal() {
                   {t("table.label.nouserscreateexplanation")}
                 </Typography>
               </Box>
-            ) : select.inputs.players.length === 0 ? (
+            ) : select.inputs.players.filter((player) => player.status !== "guest").length === 0 ? (
               <Box
                 sx={{
                   m: 2,
@@ -240,11 +267,17 @@ export default function TableModal() {
               </Box>
             ) : (
               <List dense={true}>
-                {select.inputs.players.map((player) => (
-                  <ListItem key={"player-" + player._id}>
-                    <PlayerCard player={player} />
-                  </ListItem>
-                ))}
+                {select.inputs.players.map((player) => {
+                  if (player.status === "guest") {
+                    return null
+                  } else {
+                    return (
+                      <ListItem key={"player-" + player._id}>
+                        <PlayerCard player={player} />
+                      </ListItem>
+                    )
+                  }
+                })}
               </List>
             )}
           </Box>

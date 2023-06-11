@@ -26,7 +26,9 @@ async function serviceProceed(table) {
 
     if (proceedCheckOutcome.proceed === true) {
       // Prep
-      tableInputs.users = tableInputs.players;
+      tableInputs.users = tableInputs.players.filter((player) => player.status !== "guest");
+      // Lighten payload
+      delete tableInputs.players
 
       // API call
       const data = await apiTableSave(tableInputs);

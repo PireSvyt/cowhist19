@@ -185,12 +185,14 @@
       "nousersdelete": "No players, really?",
       "nousersdeleteexplanation": "You have removed all players from the table.\n\nSaving a table without any player will delete the table."
     },
-    "input": {},
+    "input": {
+      "guests": "Guests"},
     "button": {
       "newgame": "New game"
     },
     "error": {
       "missingname": "missing name",
+      "missingguests": "missing guests",
       "creationwithoutplayers": "missing players to create a table",
       "creationwithoutuser": "table creation impossible without you among the players"
     },
@@ -239,6 +241,8 @@
       "won": "won in",
       "lost": "lost in",
       "against": "against",
+      "guest" : "a guest", 
+      "removeduser" : "a removed user",
       "contract": {
         "8plis": "Coop. 8 folds",
         "9plis": "Coop. 9 folds",
@@ -251,6 +255,7 @@
         "solo8": "Solo 8 folds",
         "petitemisere": "Small misery",
         "grandemisere": "Large misery",
+        "grandemisereetalee": "Open large misery",
         "trou8": "Hole in 8 folds",
         "trou9": "Hole in 9 folds",
         "petitchelem": "Small Slam",

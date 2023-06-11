@@ -32,6 +32,16 @@ async function serviceProceed() {
 
     if (proceedCheckOutcome.proceed === true) {
       // Prep
+      // Store guest users as nonuser : guest
+      gameInputs.players = gameInputs.players.map((player) => {
+        let newPlayer = {...player}
+        if (player.status === "guest") {
+          newPlayer.nonuser = "guest"
+        }
+        // Lighten payload
+        delete newPlayer.pseudo
+        return newPlayer
+      });
 
       // API call
       const data = await apiGameSave(gameInputs);

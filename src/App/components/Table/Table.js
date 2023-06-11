@@ -95,7 +95,8 @@ export default function Table() {
             type: "sliceTableModal/open",
             payload: {
               id: appStore.getState().sliceTableDetails.id,
-              name: appStore.getState().sliceTableDetails.name,
+              name: appStore.getState().sliceTableDetails.name,              
+              guests: appStore.getState().sliceTableDetails.guests,
               players: appStore.getState().sliceTableDetails.players,
             },
           });

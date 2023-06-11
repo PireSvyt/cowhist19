@@ -150,7 +150,10 @@ export default function Appbar(props) {
       showLanguageSwitcher = true;
       break;
     case "documentation":
-      showLanguageSwitcher = true;
+      showLanguageSwitcher = false;
+      break;
+    case "about":
+      showLanguageSwitcher = false;
       break;
     case "admin":
       showLanguageSwitcher = false;

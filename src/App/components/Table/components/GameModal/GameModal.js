@@ -194,13 +194,7 @@ export default function GameModal() {
                   value.map((option, index) => (
                     <Chip
                       variant="outlined"
-                      label={() => {
-                        if (option.status === "guest") {
-                          return t("game.label.guest")
-                        } else {
-                          return option.pseudo
-                        }
-                      }}
+                      label={option.status === "guest" ? (t("game.label.guest")) :(option.pseudo)}
                       {...getTagProps({ index })}
                     />
                   ))
@@ -259,13 +253,7 @@ export default function GameModal() {
                   value.map((option, index) => (
                     <Chip
                       variant="outlined"
-                      label={() => {
-                        if (option.status === "guest") {
-                          return t("game.label.guest")
-                        } else {
-                          return option.pseudo
-                        }
-                      }}
+                      label={option.status === "guest" ? (t("game.label.guest")) :(option.pseudo)}
                       {...getTagProps({ index })}
                     />
                   ))

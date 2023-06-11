@@ -37,9 +37,6 @@ async function serviceProceed() {
         if (player.status === "guest") {
           player.nonuser = "guest"
         }
-        // Lighten paylod
-        delete player.pseudo
-        delete player.status
       });
 
       // API call

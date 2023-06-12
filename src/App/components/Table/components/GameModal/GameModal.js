@@ -159,7 +159,9 @@ export default function GameModal() {
             </FormControl>
 
             <FormControl variant="standard">
-              <InputLabel>Chip</InputLabel>
+              <InputLabel>
+                {t("game.input.attack") + " " + select.requirements.attack}
+              </InputLabel>
               <Select
                 name="attack"
                 multiple
@@ -176,7 +178,7 @@ export default function GameModal() {
                 renderValue={(selected) => (
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                     {selected.map((player) => (
-                      <Chip key={player._id} label={option.status === "guest" ? (t("game.label.guest")) :(option.pseudo)} />
+                      <Chip key={player._id} label={player.status === "guest" ? (t("game.label.guest")) :(player.pseudo)} />
                     ))}
                   </Box>
                 )}

@@ -32,7 +32,7 @@ export default function GameModal() {
 
   // Constants
   const componentHeight = window.innerHeight - 115;
-  const menuItemHeight = 56
+  const menuItemHeight = 55
 
   // Selects
   const select = {
@@ -179,8 +179,8 @@ export default function GameModal() {
                 error={select.errors.contract}
                 MenuProps={{ style: {maxHeight: menuItemHeight * 6.5} }}  
                 open={select.focuses.contract}
-                onOpen={changes.openMenu}
-                onClose={changes.closeMenu}
+                onOpen={() => changes.openMenu("contract")}
+                onClose={() => changes.closeMenu("contract")}
               >
                 {select.contracts.map((contract) => (
                   <MenuItem key={contract.key} value={contract.key}>
@@ -213,7 +213,10 @@ export default function GameModal() {
                     })}
                   </Box>
                 )}
-                MenuProps={{ style: {maxHeight: menuItemHeight * 4.5} }}           
+                MenuProps={{ style: {maxHeight: menuItemHeight * 4.5} }}   
+                open={select.focuses.attack}     
+                onOpen={() => changes.openMenu("attack")}
+                onClose={() => changes.closeMenu("attack")}
               >                
                 {select.players.filter(potentialPlayer => 
                    !select.inputs.players.map(selectedPlayer => selectedPlayer._id).includes(potentialPlayer._id)
@@ -252,7 +255,10 @@ export default function GameModal() {
                     })}
                   </Box>
                 )}
-                MenuProps={{ style: {maxHeight: menuItemHeight * 4.5} }}     
+                MenuProps={{ style: {maxHeight: menuItemHeight * 4.5} }}    
+                open={select.focuses.defense}
+                onOpen={() => changes.openMenu("defense")}
+                onClose={() => changes.closeMenu("defense")}
               >                
                 {select.players.filter(potentialPlayer => 
                   !select.inputs.players.map(selectedPlayer => selectedPlayer._id).includes(potentialPlayer._id)

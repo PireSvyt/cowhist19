@@ -159,6 +159,37 @@ export default function GameModal() {
             </FormControl>
 
             <FormControl variant="standard">
+              <InputLabel>Chip</InputLabel>
+              <Select
+                name="attack"
+                multiple
+                value={select.inputs.players.filter(
+                  (player) => player.role === "attack"
+                )}
+                onChange={(event, newValue) => {
+                  event.target = {
+                    name: "attack",
+                    value: newValue,
+                  };
+                  changes.attack(event, newValue);
+                }}
+                renderValue={(selected) => (
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                    {selected.map((player) => (
+                      <Chip key={player._id} label={option.status === "guest" ? (t("game.label.guest")) :(option.pseudo)} />
+                    ))}
+                  </Box>
+                )}
+              >
+                {select.players.map((player) => (
+                  <MenuItem key={player._id} value={player._id}>
+                    {player.status === "guest" ? (t("game.label.guest")) :(player.pseudo)}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <FormControl variant="standard">
               <Autocomplete
                 name="attack"
                 multiple

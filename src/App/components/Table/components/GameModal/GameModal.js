@@ -164,7 +164,7 @@ export default function GameModal() {
               </Select>
             </FormControl>
 
-            <FormControl variant="standard">
+            <FormControl variant="standard" error={select.errors.attack}>
               <InputLabel>
                 {t("game.input.attack") + " " + select.requirements.attack}
               </InputLabel>
@@ -177,15 +177,15 @@ export default function GameModal() {
                       let selectedPlayer = select.inputs.players.filter((player) => player._id === playerid)[0]
                       return (
                         <Chip 
-                          key={playerid} clickable onClick={() => changes.removeFromAttack(playerid)}
+                          key={playerid}
                           label={selectedPlayer.status === "guest" ? (t("game.label.guest")) : (selectedPlayer.pseudo)} 
                           onDelete={() => changes.removeFromAttack(playerid)}
+                          onMouseDown={(event) => {event.stopPropagation()}}
                         />
                       )
                     })}
                   </Box>
-                )}
-                error={select.errors.attack}
+                )}              
               >                
                 {select.players.filter(potentialPlayer => 
                    !select.inputs.players.map(selectedPlayer => selectedPlayer._id).includes(potentialPlayer._id)

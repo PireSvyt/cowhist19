@@ -207,6 +207,7 @@ export default function GameModal() {
                   </Box>
                 )}
               >
+                
                 {select.players.map((player) => {
                   if (select.inputs.players.filter((p) => p._id === player._id).length > 0) {
                     // Already selected

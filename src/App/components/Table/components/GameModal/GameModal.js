@@ -67,7 +67,7 @@ export default function GameModal() {
       });
     },
     addToAttack: (id) => {
-      let newPlayers = select.inputs.players
+      let newPlayers = {...select.inputs.players}
       let selectedPlayer = select.players.filter(player => player._id === id)[0]
       newPlayers.push({
         _id: id,
@@ -96,7 +96,7 @@ export default function GameModal() {
       });
     },
     addToDefense: (id) => {
-      let newPlayers = select.inputs.players
+      let newPlayers = {...select.inputs.players}
       let selectedPlayer = select.players.filter(player => player._id === id)[0]
       newPlayers.push({
         _id: id,
@@ -182,9 +182,7 @@ export default function GameModal() {
                 name="attack"
                 multiple
                 value={
-                  select.inputs.players.filter(
-                    (player) => player.role === "attack"
-                  ).map(player => player._id)
+                  select.inputs.players.filter((player) => player.role === "attack").map(player => player._id)
                 }
                 renderValue={(selected) => (
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>

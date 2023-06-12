@@ -61,12 +61,23 @@ export default function GameModal() {
           inputs: { contract: e.target.value },
           errors: { contract: false },
           requirements: {
-            attack: "(" + contract.attack + ")",
-            defense: "(" + contract.defense + ")",
+            attack: contract.attack,
+            defense: contract.defense,
             outcome: "", //"(max. +" + (13 - contract.folds) + ")",
           },
         },
       });
+      // Auto open next menu ?
+      if (select.inputs.contract !== "" &&
+          select.inputs.players.length === 0 && 
+          select.inputs.outcome === 0) {
+        appStore.dispatch({
+          type: "sliceGameModal/openMenu",
+          payload: {
+            menu: "attack"
+          },
+        });
+      }
     },
     addToAttack: (id) => {
       let selectedPlayer = select.players.filter(player => player._id === id)[0]
@@ -82,6 +93,18 @@ export default function GameModal() {
           errors: { attack: false },
         },
       });
+      // Auto open next menu ?
+      if (select.inputs.contract !== "" &&
+          select.inputs.players.filter(p => p.role === "attack").length === select.requirements.attack && 
+          select.inputs.players.filter(p => p.role === "defense").length === 0 && 
+          select.inputs.outcome === 0) {
+        appStore.dispatch({
+          type: "sliceGameModal/openMenu",
+          payload: {
+            menu: "defense"
+          },
+        });
+      }
     },
     removeFromAttack: (id) => {
       appStore.dispatch({
@@ -106,6 +129,18 @@ export default function GameModal() {
           errors: { defense: false },
         },
       });
+      // Auto open next menu ?
+      if (select.inputs.contract !== "" &&
+          select.inputs.players.filter(p => p.role === "attack").length === select.requirements.attack && 
+          select.inputs.players.filter(p => p.role === "defense").length === select.requirements.defense && 
+          select.inputs.outcome === 0) {
+        appStore.dispatch({
+          type: "sliceGameModal/closeMenu",
+          payload: {
+            menu: "defense"
+          },
+        });
+      }
     },
     removeFromDefense: (id) => {
       appStore.dispatch({
@@ -188,7 +223,10 @@ export default function GameModal() {
 
             <FormControl variant="standard" error={select.errors.attack}>
               <InputLabel>
-                {t("game.input.attack") + " " + select.requirements.attack}
+                { select.requirements.attack !== 0 ? ( 
+                  t("game.input.attack") + " (" + select.requirements.attack + ")" ) : (
+                  t("game.input.attack")
+                )}
               </InputLabel>
               <Select
                 name="attack" 
@@ -231,7 +269,10 @@ export default function GameModal() {
 
             <FormControl variant="standard" error={select.errors.defense}>
               <InputLabel>
-                {t("game.input.defense") + " " + select.requirements.defense}
+                { select.requirements.defense !== 0 ? ( 
+                  t("game.input.defense") + " (" + select.requirements.defense + ")" ) : (
+                  t("game.input.defense")
+                )}
               </InputLabel>
               <Select
                 name="defense" multiple

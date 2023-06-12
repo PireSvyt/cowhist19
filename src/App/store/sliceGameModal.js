@@ -22,9 +22,9 @@ const sliceGameModal = createSlice({
       outcome: false,
     },
     requirements: {
-      attack: "",
-      defense: "",
-      outcome: "",
+      attack: 0,
+      defense: 0,
+      outcome: 0,
     },
     disabled: false,
     loading: false,
@@ -53,9 +53,9 @@ const sliceGameModal = createSlice({
         outcome: false,
       };
       state.requirements = {
-        attack: "",
-        defense: "",
-        outcome: "",
+        attack: 0,
+        defense: 0,
+        outcome: 0,
       };
       state.disabled = false;
       state.loading = false;
@@ -83,9 +83,9 @@ const sliceGameModal = createSlice({
         outcome: false,
       };
       state.requirements = {
-        attack: "",
-        defense: "",
-        outcome: "",
+        attack: 0,
+        defense: 0,
+        outcome: 0,
       };
       state.disabled = false;
       state.loading = false;
@@ -107,9 +107,9 @@ const sliceGameModal = createSlice({
         outcome: false,
       };
       state.requirements = {
-        attack: "",
-        defense: "",
-        outcome: "",
+        attack: 0,
+        defense: 0,
+        outcome: 0,
       };
       state.disabled = false;
       state.loading = false;

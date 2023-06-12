@@ -208,7 +208,7 @@ export default function GameModal() {
                 )}
               >
                 {select.players.map((player) => {
-                  if (select.inputs.players.filter((p) => p._id === player._id) > 0) {
+                  if (select.inputs.players.filter((p) => p._id === player._id).length > 0) {
                     // Already selected
                     return null
                   } else {
@@ -249,7 +249,7 @@ export default function GameModal() {
                 )}
               >
                 {select.players.map((player) => {
-                  if (select.inputs.players.filter((p) => p._id === player._id) > 0) {
+                  if (select.inputs.players.filter((p) => p._id === player._id).length > 0) {
                     // Already selected
                     return null
                   } else {

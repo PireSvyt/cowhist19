@@ -67,8 +67,6 @@ export default function GameModal() {
       });
     },
     addToAttack: (e) => {
-      console.log("addToAttack")
-      console.log(e)
       let newPlayers = select.inputs.players.filter(
         (player) => player.role === "defense"
       );
@@ -192,7 +190,7 @@ export default function GameModal() {
                 value={select.inputs.players.filter(
                   (player) => player.role === "attack"
                 )}
-                onChange={changes.addToAttack}
+                //onChange={changes.addToAttack}
                 renderValue={(selected) => (
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                     {selected.map((player) => (
@@ -206,8 +204,7 @@ export default function GameModal() {
                     ))}
                   </Box>
                 )}
-              >
-                
+              >                
                 {select.players.map((player) => {
                   if (select.inputs.players.filter((p) => p._id === player._id).length > 0) {
                     // Already selected
@@ -215,7 +212,11 @@ export default function GameModal() {
                   } else {
                     // Available for selection
                     return (
-                      <MenuItem key={player._id} value={player._id}>
+                      <MenuItem 
+                        key={player._id} 
+                        value={player._id}
+                        onClick={() => changes.addToAttack(player._id)}
+                        >
                         {player.status === "guest" ? (t("game.label.guest")) :(player.pseudo)}
                       </MenuItem>
                     )

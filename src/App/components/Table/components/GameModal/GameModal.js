@@ -66,7 +66,16 @@ export default function GameModal() {
         },
       });
     },
-    addToAttack: (e) => {
+    addToAttack: (id) => {
+      let newPlayers = select.inputs.players
+      let selectedPlayer = select.players.filter(player => player._id === id)[0]
+      newPlayers.push({
+        _id: id,
+        pseudo: selectedPlayer.pseudo,
+        status: selectedPlayer.status,
+        role: "attack",
+      });
+      /*
       let newPlayers = select.inputs.players.filter(
         (player) => player.role === "defense"
       );
@@ -78,6 +87,7 @@ export default function GameModal() {
           role: "attack",
         });
       });
+      */
       appStore.dispatch({
         type: "sliceGameModal/change",
         payload: {

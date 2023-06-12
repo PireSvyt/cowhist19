@@ -68,7 +68,11 @@ export default function GameModal() {
     },
     addToAttack: (id) => {
       let newPlayers = {...select.inputs.players}
+      console.log("current selected players")
+      console.log(newPlayers)
       let selectedPlayer = select.players.filter(player => player._id === id)[0]
+      console.log("adding attackant")
+      console.log(selectedPlayer)
       newPlayers.push({
         _id: id,
         pseudo: selectedPlayer.pseudo,
@@ -84,6 +88,10 @@ export default function GameModal() {
       });
     },
     removeFromAttack: (id) => {
+      console.log("current selected players")
+      console.log(select.inputs.players)
+      console.log("removing attackant")
+      console.log(id)
       let newPlayers = select.inputs.players.filter(
         (player) => player._id !== id
       );
@@ -190,35 +198,27 @@ export default function GameModal() {
                       let selectedPlayer = select.inputs.players.filter((player) => player._id === playerid)[0]
                       return (
                         <Chip 
-                          key={playerid} 
+                          key={playerid} clickable onClick={null}
                           label={selectedPlayer.status === "guest" ? (t("game.label.guest")) : (selectedPlayer.pseudo)} 
-                          clickable
-                          onClick={null}
                           onDelete={() => changes.removeFromAttack(playerid)}
                         />
                       )
-                    }
-                    )}
+                    })}
                   </Box>
                 )}
               >                
-                {select.players.map((player) => {
-                  if (select.inputs.players.filter((p) => p._id === player._id).length > 0) {
-                    // Already selected
-                    return null
-                  } else {
-                    // Available for selection
-                    return (
-                      <MenuItem 
-                        key={player._id} 
-                        value={player._id}
-                        onClick={() => changes.addToAttack(player._id)}
-                        >
-                        {player.status === "guest" ? (t("game.label.guest")) :(player.pseudo)}
-                      </MenuItem>
-                    )
-                  }
-                })}
+                {select.players.filter(potentialPlayer => 
+                   !select.inputs.players.map(selectedPlayer => selectedPlayer._id).includes(potentialPlayer._id)
+                  ).map(potentialPlayer => (
+                    <MenuItem 
+                      key={potentialPlayer._id} 
+                      value={potentialPlayer._id}
+                      onClick={() => changes.addToAttack(potentialPlayer._id)}
+                    >
+                      {potentialPlayer.status === "guest" ? (t("game.label.guest")) :(potentialPlayer.pseudo)}
+                    </MenuItem>
+                  ))
+                }
               </Select>
             </FormControl>
 

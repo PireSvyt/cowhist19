@@ -189,9 +189,7 @@ export default function GameModal() {
               <Select
                 name="attack"
                 multiple
-                value={
-                  select.inputs.players.filter((player) => player.role === "attack").map(player => player._id)
-                }
+                value={ select.inputs.players.filter((player) => player.role === "attack").map(player => player._id) }
                 renderValue={(selected) => (
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                     {selected.map((playerid) => {
@@ -211,8 +209,7 @@ export default function GameModal() {
                    !select.inputs.players.map(selectedPlayer => selectedPlayer._id).includes(potentialPlayer._id)
                   ).map(potentialPlayer => (
                     <MenuItem 
-                      key={potentialPlayer._id} 
-                      value={potentialPlayer._id}
+                      key={potentialPlayer._id} value={potentialPlayer._id}
                       onClick={() => changes.addToAttack(potentialPlayer._id)}
                     >
                       {potentialPlayer.status === "guest" ? (t("game.label.guest")) :(potentialPlayer.pseudo)}

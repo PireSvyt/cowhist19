@@ -32,6 +32,7 @@ export default function GameModal() {
 
   // Constants
   const componentHeight = window.innerHeight - 115;
+  const menuItemHeight = 60
 
   // Selects
   const select = {
@@ -155,6 +156,7 @@ export default function GameModal() {
                 value={select.inputs.contract}
                 onChange={changes.contract}
                 error={select.errors.contract}
+                MenuProps={{ style: {maxHeight: menuItemHeight * 4.5} }}   
               >
                 {select.contracts.map((contract) => (
                   <MenuItem key={contract.key} value={contract.key}>
@@ -187,7 +189,7 @@ export default function GameModal() {
                     })}
                   </Box>
                 )}
-                PaperProps={{ style: {maxHeight: 48 * 4.5} }}          
+                MenuProps={{ style: {maxHeight: menuItemHeight * 6.5} }}           
               >                
                 {select.players.filter(potentialPlayer => 
                    !select.inputs.players.map(selectedPlayer => selectedPlayer._id).includes(potentialPlayer._id)
@@ -226,7 +228,7 @@ export default function GameModal() {
                     })}
                   </Box>
                 )}
-                MenuProps={{ style: {maxHeight: 48 * 4.5} }}     
+                MenuProps={{ style: {maxHeight: menuItemHeight * 4.5} }}     
               >                
                 {select.players.filter(potentialPlayer => 
                   !select.inputs.players.map(selectedPlayer => selectedPlayer._id).includes(potentialPlayer._id)

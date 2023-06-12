@@ -169,7 +169,8 @@ export default function GameModal() {
                 {t("game.input.attack") + " " + select.requirements.attack}
               </InputLabel>
               <Select
-                name="attack" multiple
+                name="attack" 
+                multiple
                 value={ select.inputs.players.filter((player) => player.role === "attack").map(player => player._id) }
                 renderValue={(selected) => (
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
@@ -191,7 +192,8 @@ export default function GameModal() {
                    !select.inputs.players.map(selectedPlayer => selectedPlayer._id).includes(potentialPlayer._id)
                   ).map(potentialPlayer => (
                     <MenuItem 
-                      key={potentialPlayer._id} value={potentialPlayer._id}
+                      key={potentialPlayer._id} 
+                      value={potentialPlayer._id}
                       onClick={() => changes.addToAttack(potentialPlayer._id)}
                     >
                       {potentialPlayer.status === "guest" ? (t("game.label.guest")) :(potentialPlayer.pseudo)}
@@ -201,7 +203,7 @@ export default function GameModal() {
               </Select>
             </FormControl>
 
-            <FormControl variant="standard">
+            <FormControl variant="standard" error={select.errors.defense}>
               <InputLabel>
                 {t("game.input.defense") + " " + select.requirements.defense}
               </InputLabel>
@@ -214,21 +216,22 @@ export default function GameModal() {
                       let selectedPlayer = select.inputs.players.filter((player) => player._id === playerid)[0]
                       return (
                         <Chip 
-                          key={playerid} clickable onClick={() => changes.removeFromDefense(playerid)}
+                          key={playerid}
                           label={selectedPlayer.status === "guest" ? (t("game.label.guest")) : (selectedPlayer.pseudo)} 
                           onDelete={() => changes.removeFromDefense(playerid)}
+                          onMouseDown={(event) => {event.stopPropagation()}}
                         />
                       )
                     })}
                   </Box>
                 )}
-                error={select.errors.defense}
               >                
                 {select.players.filter(potentialPlayer => 
                   !select.inputs.players.map(selectedPlayer => selectedPlayer._id).includes(potentialPlayer._id)
                   ).map(potentialPlayer => (
                     <MenuItem 
-                      key={potentialPlayer._id} value={potentialPlayer._id}
+                      key={potentialPlayer._id} 
+                      value={potentialPlayer._id}
                       onClick={() => changes.addToDefense(potentialPlayer._id)}
                     >
                       {potentialPlayer.status === "guest" ? (t("game.label.guest")) :(potentialPlayer.pseudo)}

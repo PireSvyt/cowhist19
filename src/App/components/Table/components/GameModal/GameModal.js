@@ -16,6 +16,7 @@ import {
   InputLabel,
   MenuItem,
   FormControl,
+  StandardInput,
   Chip,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -197,6 +198,7 @@ export default function GameModal() {
                   (player) => player.role === "attack"
                 )}
                 onChange={changes.attack}
+                input={<StandardInput label="Chip" />}
                 renderValue={(selected) => (
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                     {selected.map((player) => (

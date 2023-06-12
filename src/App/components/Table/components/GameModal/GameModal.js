@@ -88,6 +88,18 @@ export default function GameModal() {
         },
       });
     },
+    removeFromAttack: (id) => {
+      let newPlayers = select.inputs.players.filter(
+        (player) => player._id !== id
+      );
+      appStore.dispatch({
+        type: "sliceGameModal/change",
+        payload: {
+          inputs: { players: newPlayers },
+          errors: { attack: false },
+        },
+      });
+    },
     defense: (e) => {
       let newPlayers = select.inputs.players.filter(
         (player) => player.role === "attack"
@@ -100,6 +112,18 @@ export default function GameModal() {
           role: "defense",
         });
       });
+      appStore.dispatch({
+        type: "sliceGameModal/change",
+        payload: {
+          inputs: { players: newPlayers },
+          errors: { defense: false },
+        },
+      });
+    },
+    removeFromDefense: (id) => {
+      let newPlayers = select.inputs.players.filter(
+        (player) => player._id !== id
+      );
       appStore.dispatch({
         type: "sliceGameModal/change",
         payload: {
@@ -168,17 +192,15 @@ export default function GameModal() {
                 value={select.inputs.players.filter(
                   (player) => player.role === "attack"
                 )}
-                onChange={(event, newValue) => {
-                  event.target = {
-                    name: "attack",
-                    value: newValue,
-                  };
-                  changes.attack(event, newValue);
-                }}
+                onChange={changes.attack}
                 renderValue={(selected) => (
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                     {selected.map((player) => (
-                      <Chip key={player._id} label={player.status === "guest" ? (t("game.label.guest")) :(player.pseudo)} />
+                      <Chip 
+                        key={player._id} 
+                        onDelete={() => changes.removeFromAttack(player._id)}
+                        label={player.status === "guest" ? (t("game.label.guest")) : (player.pseudo)} 
+                      />
                     ))}
                   </Box>
                 )}

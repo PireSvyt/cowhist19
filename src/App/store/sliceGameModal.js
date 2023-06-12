@@ -214,14 +214,26 @@ const sliceGameModal = createSlice({
         console.log("sliceGameModal.openMenu");
         //console.log(action.payload);
       }
-      const menus = ["contract", "attack", "defense", "outcome"]
-      menus.forEach(menu => {
-        if (menu === action.payload.menu) {
-          state.focuses[menu] = true
-        } else {
-          state.focuses[menu] = false
-        }
-      })
+      if (action.payload.menu === "contract") {
+        state.focuses.contract = true
+      } else {
+        state.focuses.contract = false
+      }
+      if (action.payload.menu === "attack") {
+        state.focuses.attack = true
+      } else {
+        state.focuses.attack = false
+      }
+      if (action.payload.menu === "defense") {
+        state.focuses.defense = true
+      } else {
+        state.focuses.defense = false
+      }
+      if (action.payload.menu === "outcome") {
+        state.focuses.outcome = true
+      } else {
+        state.focuses.outcome = false
+      }
     },
     closeMenu: (state, action) => {
       if (process.env.REACT_APP_DEBUG === "TRUE") {

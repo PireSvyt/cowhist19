@@ -15,6 +15,12 @@ const sliceGameModal = createSlice({
       defense: false,
       outcome: false,
     },
+    focuses: {
+      contract: false,
+      attack: false,
+      defense: false,
+      outcome: false,
+    },
     requirements: {
       attack: "",
       defense: "",
@@ -40,6 +46,12 @@ const sliceGameModal = createSlice({
         defense: false,
         outcome: false,
       };
+      state.focuses = {
+        contract: true,
+        attack: false,
+        defense: false,
+        outcome: false,
+      };
       state.requirements = {
         attack: "",
         defense: "",
@@ -59,6 +71,12 @@ const sliceGameModal = createSlice({
         outcome: 0,
       };
       state.errors = {
+        contract: false,
+        attack: false,
+        defense: false,
+        outcome: false,
+      };
+      state.focuses = {
         contract: false,
         attack: false,
         defense: false,
@@ -190,6 +208,27 @@ const sliceGameModal = createSlice({
       }
       state.disabled = true;
       state.loading = true;
+    },
+    openMenu: (state, action) => {
+      if (process.env.REACT_APP_DEBUG === "TRUE") {
+        console.log("sliceGameModal.openMenu");
+        //console.log(action.payload);
+      }
+      const menus = ["contract", "attack", "defense", "outcome"]
+      menus.forEach(menu => {
+        if (menu === action.payload.menu) {
+          state.focuses[menu] = true
+        } else {
+          state.focuses[menu] = false
+        }
+      })
+    },
+    closeMenu: (state, action) => {
+      if (process.env.REACT_APP_DEBUG === "TRUE") {
+        console.log("sliceGameModal.closeMenu");
+        //console.log(action.payload);
+      }
+      state.focuses[action.payload.menu] = false
     },
   },
 });

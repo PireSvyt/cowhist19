@@ -32,7 +32,7 @@ export default function GameModal() {
 
   // Constants
   const componentHeight = window.innerHeight - 115;
-  const menuItemHeight = 60
+  const menuItemHeight = 56
 
   // Selects
   const select = {
@@ -40,6 +40,7 @@ export default function GameModal() {
     id: useSelector((state) => state.sliceGameModal.id),
     inputs: useSelector((state) => state.sliceGameModal.inputs),
     errors: useSelector((state) => state.sliceGameModal.errors),
+    focuses: useSelector((state) => state.sliceGameModal.focuses),
     requirements: useSelector((state) => state.sliceGameModal.requirements),
     disabled: useSelector((state) => state.sliceGameModal.disabled),
     loading: useSelector((state) => state.sliceGameModal.loading),
@@ -124,6 +125,26 @@ export default function GameModal() {
         },
       });
     },
+    openMenu: (e) => {
+      console.log("e.target")
+      console.log(e.target)
+      appStore.dispatch({
+        type: "sliceGameModal/openMenu",
+        payload: {
+          menu: e.target.name
+        },
+      });
+    },
+    closeMenu: (e) => {
+      console.log("e.target")
+      console.log(e.target)
+      appStore.dispatch({
+        type: "sliceGameModal/closeMenu",
+        payload: {
+          menu: e.target.name
+        },
+      });
+    }
   };
 
   return (
@@ -156,7 +177,10 @@ export default function GameModal() {
                 value={select.inputs.contract}
                 onChange={changes.contract}
                 error={select.errors.contract}
-                MenuProps={{ style: {maxHeight: menuItemHeight * 4.5} }}   
+                MenuProps={{ style: {maxHeight: menuItemHeight * 6.5} }}  
+                open={select.focuses.contract}
+                onOpen={changes.openMenu}
+                onClose={changes.closeMenu}
               >
                 {select.contracts.map((contract) => (
                   <MenuItem key={contract.key} value={contract.key}>
@@ -189,7 +213,7 @@ export default function GameModal() {
                     })}
                   </Box>
                 )}
-                MenuProps={{ style: {maxHeight: menuItemHeight * 6.5} }}           
+                MenuProps={{ style: {maxHeight: menuItemHeight * 4.5} }}           
               >                
                 {select.players.filter(potentialPlayer => 
                    !select.inputs.players.map(selectedPlayer => selectedPlayer._id).includes(potentialPlayer._id)

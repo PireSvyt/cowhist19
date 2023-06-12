@@ -16,7 +16,7 @@ import {
   InputLabel,
   MenuItem,
   FormControl,
-  StandardInput,
+  InputBase,
   Chip,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -69,8 +69,8 @@ export default function GameModal() {
         },
       });
     },
-    attack: (e) => {
-      console.log("attack")
+    addToAttack: (e) => {
+      console.log("addToAttack")
       console.log(e)
       let newPlayers = select.inputs.players.filter(
         (player) => player.role === "defense"
@@ -91,9 +91,9 @@ export default function GameModal() {
         },
       });
     },
-    removeFromAttack: (id) => {
+    removeFromAttack: (e) => {
       console.log("removeFromAttack")
-      console.log(id)
+      console.log(e)
       let newPlayers = select.inputs.players.filter(
         (player) => player._id !== id
       );
@@ -197,17 +197,17 @@ export default function GameModal() {
                 value={select.inputs.players.filter(
                   (player) => player.role === "attack"
                 )}
-                onChange={changes.attack}
-                input={<StandardInput label="Chip" />}
+                onChange={changes.addToAttack}
+                input={<InputBase label="Chip" />}
                 renderValue={(selected) => (
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                     {selected.map((player) => (
                       <Chip 
                         key={player._id} 
+                        label={player.status === "guest" ? (t("game.label.guest")) : (player.pseudo)} 
                         clickable
                         onClick={null}
-                        onDelete={() => changes.removeFromAttack(player._id)}
-                        label={player.status === "guest" ? (t("game.label.guest")) : (player.pseudo)} 
+                        onDelete={changes.removeFromAttack}
                       />
                     ))}
                   </Box>

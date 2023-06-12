@@ -125,23 +125,19 @@ export default function GameModal() {
         },
       });
     },
-    openMenu: (e) => {
-      console.log("e.target")
-      console.log(e.target)
+    openMenu: (menu) => {
       appStore.dispatch({
         type: "sliceGameModal/openMenu",
         payload: {
-          menu: e.target.name
+          menu: menu
         },
       });
     },
-    closeMenu: (e) => {
-      console.log("e.target")
-      console.log(e.target)
+    closeMenu: (menu) => {
       appStore.dispatch({
         type: "sliceGameModal/closeMenu",
         payload: {
-          menu: e.target.name
+          menu: menu
         },
       });
     }

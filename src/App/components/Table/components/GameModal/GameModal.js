@@ -69,6 +69,8 @@ export default function GameModal() {
       });
     },
     attack: (e) => {
+      console.log("attack")
+      console.log(e)
       let newPlayers = select.inputs.players.filter(
         (player) => player.role === "defense"
       );
@@ -89,6 +91,8 @@ export default function GameModal() {
       });
     },
     removeFromAttack: (id) => {
+      console.log("removeFromAttack")
+      console.log(id)
       let newPlayers = select.inputs.players.filter(
         (player) => player._id !== id
       );
@@ -205,69 +209,19 @@ export default function GameModal() {
                   </Box>
                 )}
               >
-                {select.players.map((player) => (
-                  <MenuItem key={player._id} value={player._id}>
-                    {player.status === "guest" ? (t("game.label.guest")) :(player.pseudo)}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            <FormControl variant="standard">
-              <Autocomplete
-                name="attack"
-                multiple
-                disableClearable
-                inputValue=""
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    variant="standard"
-                    label={
-                      t("game.input.attack") + " " + select.requirements.attack
-                    }
-                    error={select.errors.attack}
-                  />
-                )}
-                options={select.players.filter(
-                  (player) =>
-                    !select.inputs.players.find(
-                      (actualPlayer) => actualPlayer._id === player._id
-                    )
-                )}
-                getOptionLabel={(option) => {
-                  if (option.status === "guest") {
-                    return t("game.label.guest")
+                {select.players.map((player) => {
+                  if (select.inputs.players.filter((p) => p._id === player._id)) {
+                    // Already selected
+                    return null
                   } else {
-                    return option.pseudo
-                  }}}
-                defaultValue={[]}
-                value={select.inputs.players.filter(
-                  (player) => player.role === "attack"
-                )}
-                renderTags={(value, getTagProps) =>
-                  value.map((option, index) => (
-                    <Chip
-                      variant="outlined"
-                      label={option.status === "guest" ? (t("game.label.guest")) :(option.pseudo)}
-                      {...getTagProps({ index })}
-                    />
-                  ))
-                }
-                onChange={(event, newValue) => {
-                  event.target = {
-                    name: "attack",
-                    value: newValue,
-                  };
-                  changes.attack(event, newValue);
-                }}
-              >
-                {select.players.map((player) => (
-                  <MenuItem key={player._id} value={player._id}>
-                    {player.status === "guest" ? (t("game.label.guest")) :(player.pseudo)}
-                  </MenuItem>
-                ))}
-              </Autocomplete>
+                    return (
+                      <MenuItem key={player._id} value={player._id}>
+                        {player.status === "guest" ? (t("game.label.guest")) :(player.pseudo)}
+                      </MenuItem>
+                    )
+                  }
+                })}
+              </Select>
             </FormControl>
 
             <FormControl variant="standard">

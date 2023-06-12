@@ -67,38 +67,25 @@ export default function GameModal() {
       });
     },
     addToAttack: (id) => {
-      let newPlayers = {...select.inputs.players}
-      console.log("current selected players")
-      console.log(newPlayers)
       let selectedPlayer = select.players.filter(player => player._id === id)[0]
-      console.log("adding attackant")
-      console.log(selectedPlayer)
-      newPlayers.push({
-        _id: id,
-        pseudo: selectedPlayer.pseudo,
-        status: selectedPlayer.status,
-        role: "attack",
-      });
       appStore.dispatch({
-        type: "sliceGameModal/change",
+        type: "sliceGameModal/addplayer",
         payload: {
-          inputs: { players: newPlayers },
+          player: { 
+            _id: id,
+            pseudo: selectedPlayer.pseudo,
+            status: selectedPlayer.status,
+            role: "attack",
+          },
           errors: { attack: false },
         },
       });
     },
     removeFromAttack: (id) => {
-      console.log("current selected players")
-      console.log(select.inputs.players)
-      console.log("removing attackant")
-      console.log(id)
-      let newPlayers = select.inputs.players.filter(
-        (player) => player._id !== id
-      );
       appStore.dispatch({
-        type: "sliceGameModal/change",
+        type: "sliceGameModal/removeplayer",
         payload: {
-          inputs: { players: newPlayers },
+          player: id,
           errors: { attack: false },
         },
       });
@@ -226,37 +213,33 @@ export default function GameModal() {
               <Select
                 name="defense"
                 multiple
-                value={select.inputs.players.filter(
-                  (player) => player.role === "defense"
-                )}
-                onChange={changes.addToDefense}
+                value={ select.inputs.players.filter((player) => player.role === "defense").map(player => player._id) }
                 renderValue={(selected) => (
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                    {selected.map((player) => (
-                      <Chip 
-                        key={player._id} 
-                        label={player.status === "guest" ? (t("game.label.guest")) : (player.pseudo)} 
-                        clickable
-                        onClick={null}
-                        onDelete={() => changes.removeFromDefense(player._id)}
-                      />
-                    ))}
+                    {selected.map((playerid) => {
+                      let selectedPlayer = select.inputs.players.filter((player) => player._id === playerid)[0]
+                      return (
+                        <Chip 
+                          key={playerid} clickable onClick={null}
+                          label={selectedPlayer.status === "guest" ? (t("game.label.guest")) : (selectedPlayer.pseudo)} 
+                          onDelete={() => changes.removeFromDefense(playerid)}
+                        />
+                      )
+                    })}
                   </Box>
                 )}
-              >
-                {select.players.map((player) => {
-                  if (select.inputs.players.filter((p) => p._id === player._id).length > 0) {
-                    // Already selected
-                    return null
-                  } else {
-                    // Available for selection
-                    return (
-                      <MenuItem key={player._id} value={player._id}>
-                        {player.status === "guest" ? (t("game.label.guest")) :(player.pseudo)}
-                      </MenuItem>
-                    )
-                  }
-                })}
+              >                
+                {select.players.filter(potentialPlayer => 
+                  !select.inputs.players.map(selectedPlayer => selectedPlayer._id).includes(potentialPlayer._id)
+                  ).map(potentialPlayer => (
+                    <MenuItem 
+                      key={potentialPlayer._id} value={potentialPlayer._id}
+                      onClick={() => changes.addToDefense(potentialPlayer._id)}
+                    >
+                      {potentialPlayer.status === "guest" ? (t("game.label.guest")) :(potentialPlayer.pseudo)}
+                    </MenuItem>
+                  ))
+                }
               </Select>
             </FormControl>
 

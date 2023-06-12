@@ -151,6 +151,38 @@ const sliceGameModal = createSlice({
         state.loading = action.payload.loading;
       }
     },
+    addplayer: (state, action) => {
+      if (process.env.REACT_APP_DEBUG === "TRUE") {
+        console.log("sliceGameModal.addplayer");
+        //console.log(action.payload);
+      }
+      state.inputs.players.push(action.payload.player)
+      // Errors
+      if (action.payload.errors !== undefined) {
+        if (action.payload.errors.attack !== undefined) {
+          state.errors.attack = action.payload.errors.attack;
+        }
+        if (action.payload.errors.defense !== undefined) {
+          state.errors.defense = action.payload.errors.defense;
+        }
+      }
+    },
+    removeplayer: (state, action) => {
+      if (process.env.REACT_APP_DEBUG === "TRUE") {
+        console.log("sliceGameModal.removeplayer");
+        //console.log(action.payload);
+      }
+      state.inputs.players = state.inputs.players.filter(player => player._id !== action.payload.player)
+      // Errors
+      if (action.payload.errors !== undefined) {
+        if (action.payload.errors.attack !== undefined) {
+          state.errors.attack = action.payload.errors.attack;
+        }
+        if (action.payload.errors.defense !== undefined) {
+          state.errors.defense = action.payload.errors.defense;
+        }
+      }
+    },
     lock: (state, action) => {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
         console.log("sliceGameModal.lock");

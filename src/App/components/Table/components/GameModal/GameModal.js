@@ -32,7 +32,7 @@ export default function GameModal() {
 
   // Constants
   const componentHeight = window.innerHeight - 115;
-  const menuItemHeight = 55
+  const menuItemHeight = 54
 
   // Selects
   const select = {
@@ -51,7 +51,26 @@ export default function GameModal() {
 
   // Changes
   const changes = {
-    contract: (e) => {
+    contract: (e) => {      
+      // Auto open next menu ?
+      if (select.inputs.contract !== "" &&
+          select.inputs.players.length === 0 && 
+          select.inputs.outcome === 0) {
+        appStore.dispatch({
+          type: "sliceGameModal/openMenu",
+          payload: {
+            menu: "attack"
+          },
+        });
+      } else {
+        appStore.dispatch({
+          type: "sliceGameModal/closeMenu",
+          payload: {
+            menu: "contract"
+          },
+        });
+      }
+      // Select contract
       let contract = select.contracts.filter(
         (c) => c.key === e.target.value
       )[0];
@@ -67,17 +86,6 @@ export default function GameModal() {
           },
         },
       });
-      // Auto open next menu ?
-      if (select.inputs.contract !== "" &&
-          select.inputs.players.length === 0 && 
-          select.inputs.outcome === 0) {
-        appStore.dispatch({
-          type: "sliceGameModal/openMenu",
-          payload: {
-            menu: "attack"
-          },
-        });
-      }
     },
     addToAttack: (id) => {
       // Auto open next menu ?
@@ -213,7 +221,6 @@ export default function GameModal() {
                 MenuProps={{ style: {maxHeight: menuItemHeight * 6.5} }}  
                 open={select.focuses.contract}
                 onOpen={() => changes.openMenu("contract")}
-                onClose={() => changes.closeMenu("contract")}
               >
                 {select.contracts.map((contract) => (
                   <MenuItem key={contract.key} value={contract.key}>

@@ -91,30 +91,25 @@ export default function GameModal() {
       });
     },
     addToDefense: (id) => {
-      let newPlayers = {...select.inputs.players}
       let selectedPlayer = select.players.filter(player => player._id === id)[0]
-      newPlayers.push({
-        _id: id,
-        pseudo: selectedPlayer.pseudo,
-        status: selectedPlayer.status,
-        role: "attack",
-      });
       appStore.dispatch({
-        type: "sliceGameModal/change",
+        type: "sliceGameModal/addplayer",
         payload: {
-          inputs: { players: newPlayers },
+          player: { 
+            _id: id,
+            pseudo: selectedPlayer.pseudo,
+            status: selectedPlayer.status,
+            role: "defense",
+          },
           errors: { defense: false },
         },
       });
     },
     removeFromDefense: (id) => {
-      let newPlayers = select.inputs.players.filter(
-        (player) => player._id !== id
-      );
       appStore.dispatch({
-        type: "sliceGameModal/change",
+        type: "sliceGameModal/removeplayer",
         payload: {
-          inputs: { players: newPlayers },
+          player: id,
           errors: { defense: false },
         },
       });
@@ -174,8 +169,7 @@ export default function GameModal() {
                 {t("game.input.attack") + " " + select.requirements.attack}
               </InputLabel>
               <Select
-                name="attack"
-                multiple
+                name="attack" multiple
                 value={ select.inputs.players.filter((player) => player.role === "attack").map(player => player._id) }
                 renderValue={(selected) => (
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
@@ -183,7 +177,7 @@ export default function GameModal() {
                       let selectedPlayer = select.inputs.players.filter((player) => player._id === playerid)[0]
                       return (
                         <Chip 
-                          key={playerid} clickable onClick={null}
+                          key={playerid} clickable onClick={() => changes.removeFromAttack(playerid)}
                           label={selectedPlayer.status === "guest" ? (t("game.label.guest")) : (selectedPlayer.pseudo)} 
                           onDelete={() => changes.removeFromAttack(playerid)}
                         />
@@ -191,6 +185,7 @@ export default function GameModal() {
                     })}
                   </Box>
                 )}
+                error={select.errors.attack}
               >                
                 {select.players.filter(potentialPlayer => 
                    !select.inputs.players.map(selectedPlayer => selectedPlayer._id).includes(potentialPlayer._id)
@@ -211,8 +206,7 @@ export default function GameModal() {
                 {t("game.input.defense") + " " + select.requirements.defense}
               </InputLabel>
               <Select
-                name="defense"
-                multiple
+                name="defense" multiple
                 value={ select.inputs.players.filter((player) => player.role === "defense").map(player => player._id) }
                 renderValue={(selected) => (
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
@@ -220,7 +214,7 @@ export default function GameModal() {
                       let selectedPlayer = select.inputs.players.filter((player) => player._id === playerid)[0]
                       return (
                         <Chip 
-                          key={playerid} clickable onClick={null}
+                          key={playerid} clickable onClick={() => changes.removeFromDefense(playerid)}
                           label={selectedPlayer.status === "guest" ? (t("game.label.guest")) : (selectedPlayer.pseudo)} 
                           onDelete={() => changes.removeFromDefense(playerid)}
                         />
@@ -228,6 +222,7 @@ export default function GameModal() {
                     })}
                   </Box>
                 )}
+                error={select.errors.defense}
               >                
                 {select.players.filter(potentialPlayer => 
                   !select.inputs.players.map(selectedPlayer => selectedPlayer._id).includes(potentialPlayer._id)

@@ -75,19 +75,6 @@ export default function GameModal() {
         status: selectedPlayer.status,
         role: "attack",
       });
-      /*
-      let newPlayers = select.inputs.players.filter(
-        (player) => player.role === "defense"
-      );
-      e.target.value.forEach((attackant) => {
-        newPlayers.push({
-          _id: attackant._id,
-          pseudo: attackant.pseudo,
-          status: attackant.status,
-          role: "attack",
-        });
-      });
-      */
       appStore.dispatch({
         type: "sliceGameModal/change",
         payload: {
@@ -108,17 +95,14 @@ export default function GameModal() {
         },
       });
     },
-    addToDefense: (e) => {
-      let newPlayers = select.inputs.players.filter(
-        (player) => player.role === "attack"
-      );
-      e.target.value.forEach((defenser) => {
-        newPlayers.push({
-          _id: defenser._id,
-          pseudo: defenser.pseudo,
-          status: defenser.status,
-          role: "defense",
-        });
+    addToDefense: (id) => {
+      let newPlayers = select.inputs.players
+      let selectedPlayer = select.players.filter(player => player._id === id)[0]
+      newPlayers.push({
+        _id: id,
+        pseudo: selectedPlayer.pseudo,
+        status: selectedPlayer.status,
+        role: "attack",
       });
       appStore.dispatch({
         type: "sliceGameModal/change",
@@ -197,21 +181,26 @@ export default function GameModal() {
               <Select
                 name="attack"
                 multiple
-                value={select.inputs.players.filter(
-                  (player) => player.role === "attack"
-                )}
-                //onChange={changes.addToAttack}
+                value={
+                  select.inputs.players.filter(
+                    (player) => player.role === "attack"
+                  ).map(player => player._id)
+                }
                 renderValue={(selected) => (
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                    {selected.map((player) => (
-                      <Chip 
-                        key={player._id} 
-                        label={player.status === "guest" ? (t("game.label.guest")) : (player.pseudo)} 
-                        clickable
-                        onClick={null}
-                        onDelete={() => changes.removeFromAttack(player._id)}
-                      />
-                    ))}
+                    {selected.map((playerid) => {
+                      let selectedPlayer = select.inputs.players.filter((player) => player._id === playerid)[0]
+                      return (
+                        <Chip 
+                          key={playerid} 
+                          label={selectedPlayer.status === "guest" ? (t("game.label.guest")) : (selectedPlayer.pseudo)} 
+                          clickable
+                          onClick={null}
+                          onDelete={() => changes.removeFromAttack(playerid)}
+                        />
+                      )
+                    }
+                    )}
                   </Box>
                 )}
               >                

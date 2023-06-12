@@ -186,7 +186,8 @@ export default function GameModal() {
                       )
                     })}
                   </Box>
-                )}              
+                )}
+                PaperProps={{ style: {maxHeight: 48 * 4.5} }}          
               >                
                 {select.players.filter(potentialPlayer => 
                    !select.inputs.players.map(selectedPlayer => selectedPlayer._id).includes(potentialPlayer._id)
@@ -225,6 +226,7 @@ export default function GameModal() {
                     })}
                   </Box>
                 )}
+                MenuProps={{ style: {maxHeight: 48 * 4.5} }}     
               >                
                 {select.players.filter(potentialPlayer => 
                   !select.inputs.players.map(selectedPlayer => selectedPlayer._id).includes(potentialPlayer._id)

@@ -204,6 +204,8 @@ export default function GameModal() {
                     {selected.map((player) => (
                       <Chip 
                         key={player._id} 
+                        clickable
+                        onClick={null}
                         onDelete={() => changes.removeFromAttack(player._id)}
                         label={player.status === "guest" ? (t("game.label.guest")) : (player.pseudo)} 
                       />

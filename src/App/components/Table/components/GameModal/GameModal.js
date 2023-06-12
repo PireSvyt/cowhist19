@@ -91,9 +91,7 @@ export default function GameModal() {
         },
       });
     },
-    removeFromAttack: (e) => {
-      console.log("removeFromAttack")
-      console.log(e)
+    removeFromAttack: (id) => {
       let newPlayers = select.inputs.players.filter(
         (player) => player._id !== id
       );
@@ -105,7 +103,7 @@ export default function GameModal() {
         },
       });
     },
-    defense: (e) => {
+    addToDefense: (e) => {
       let newPlayers = select.inputs.players.filter(
         (player) => player.role === "attack"
       );
@@ -198,7 +196,6 @@ export default function GameModal() {
                   (player) => player.role === "attack"
                 )}
                 onChange={changes.addToAttack}
-                input={<TextField label="Chip" />}
                 renderValue={(selected) => (
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                     {selected.map((player) => (
@@ -207,7 +204,7 @@ export default function GameModal() {
                         label={player.status === "guest" ? (t("game.label.guest")) : (player.pseudo)} 
                         clickable
                         onClick={null}
-                        onDelete={changes.removeFromAttack}
+                        onDelete={() => changes.removeFromAttack(player._id)}
                       />
                     ))}
                   </Box>
@@ -230,62 +227,44 @@ export default function GameModal() {
             </FormControl>
 
             <FormControl variant="standard">
-              <Autocomplete
+              <InputLabel>
+                {t("game.input.defense") + " " + select.requirements.defense}
+              </InputLabel>
+              <Select
                 name="defense"
                 multiple
-                disableClearable
-                inputValue=""
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    variant="standard"
-                    label={
-                      t("game.input.defense") +
-                      " " +
-                      select.requirements.defense
-                    }
-                    error={select.errors.defense}
-                  />
-                )}
-                options={select.players.filter(
-                  (player) =>
-                    !select.inputs.players.find(
-                      (actualPlayer) => actualPlayer._id === player._id
-                    )
-                )}
-                getOptionLabel={(option) => {
-                  if (option.status === "guest") {
-                    return t("game.label.guest")
-                  } else {
-                    return option.pseudo
-                  }}}
-                defaultValue={[]}
                 value={select.inputs.players.filter(
                   (player) => player.role === "defense"
                 )}
-                renderTags={(value, getTagProps) =>
-                  value.map((option, index) => (
-                    <Chip
-                      variant="outlined"
-                      label={option.status === "guest" ? (t("game.label.guest")) :(option.pseudo)}
-                      {...getTagProps({ index })}
-                    />
-                  ))
-                }
-                onChange={(event, newValue) => {
-                  event.target = {
-                    name: "attack",
-                    value: newValue,
-                  };
-                  changes.defense(event, newValue);
-                }}
+                onChange={changes.addToDefense}
+                renderValue={(selected) => (
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                    {selected.map((player) => (
+                      <Chip 
+                        key={player._id} 
+                        label={player.status === "guest" ? (t("game.label.guest")) : (player.pseudo)} 
+                        clickable
+                        onClick={null}
+                        onDelete={() => changes.removeFromDefense(player._id)}
+                      />
+                    ))}
+                  </Box>
+                )}
               >
-                {select.players.map((player) => (
-                  <MenuItem key={player._id} value={player._id}>
-                   {player.status === "guest" ? (t("game.label.guest")) :(player.pseudo)}  
-                  </MenuItem>
-                ))}
-              </Autocomplete>
+                {select.players.map((player) => {
+                  if (select.inputs.players.filter((p) => p._id === player._id)) {
+                    // Already selected
+                    return null
+                  } else {
+                    // Available for selection
+                    return (
+                      <MenuItem key={player._id} value={player._id}>
+                        {player.status === "guest" ? (t("game.label.guest")) :(player.pseudo)}
+                      </MenuItem>
+                    )
+                  }
+                })}
+              </Select>
             </FormControl>
 
             <Typography variant="caption" gutterBottom>

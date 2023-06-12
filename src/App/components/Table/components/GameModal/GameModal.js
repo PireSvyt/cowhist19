@@ -198,7 +198,7 @@ export default function GameModal() {
                   (player) => player.role === "attack"
                 )}
                 onChange={changes.addToAttack}
-                input={<InputBase label="Chip" />}
+                input={<TextField label="Chip" />}
                 renderValue={(selected) => (
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                     {selected.map((player) => (
@@ -218,6 +218,7 @@ export default function GameModal() {
                     // Already selected
                     return null
                   } else {
+                    // Available for selection
                     return (
                       <MenuItem key={player._id} value={player._id}>
                         {player.status === "guest" ? (t("game.label.guest")) :(player.pseudo)}

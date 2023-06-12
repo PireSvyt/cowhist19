@@ -80,6 +80,19 @@ export default function GameModal() {
       }
     },
     addToAttack: (id) => {
+      // Auto open next menu ?
+      if (select.inputs.contract !== "" &&
+          select.inputs.players.filter(p => p.role === "attack").length +1 === select.requirements.attack && // Not yet stored
+          select.inputs.players.filter(p => p.role === "defense").length === 0 && 
+          select.inputs.outcome === 0) {
+        appStore.dispatch({
+          type: "sliceGameModal/openMenu",
+          payload: {
+            menu: "defense"
+          },
+        });
+      }
+      // Store selected attackant
       let selectedPlayer = select.players.filter(player => player._id === id)[0]
       appStore.dispatch({
         type: "sliceGameModal/addplayer",
@@ -93,18 +106,6 @@ export default function GameModal() {
           errors: { attack: false },
         },
       });
-      // Auto open next menu ?
-      if (select.inputs.contract !== "" &&
-          select.inputs.players.filter(p => p.role === "attack").length === select.requirements.attack && 
-          select.inputs.players.filter(p => p.role === "defense").length === 0 && 
-          select.inputs.outcome === 0) {
-        appStore.dispatch({
-          type: "sliceGameModal/openMenu",
-          payload: {
-            menu: "defense"
-          },
-        });
-      }
     },
     removeFromAttack: (id) => {
       appStore.dispatch({
@@ -116,6 +117,19 @@ export default function GameModal() {
       });
     },
     addToDefense: (id) => {
+      // Auto open next menu ?
+      if (select.inputs.contract !== "" &&
+          select.inputs.players.filter(p => p.role === "attack").length === select.requirements.attack && 
+          select.inputs.players.filter(p => p.role === "defense").length +1 === select.requirements.defense && // Not yet stored
+          select.inputs.outcome === 0) {
+        appStore.dispatch({
+          type: "sliceGameModal/closeMenu",
+          payload: {
+            menu: "defense"
+          },
+        });
+      }
+      // Store selected defenser
       let selectedPlayer = select.players.filter(player => player._id === id)[0]
       appStore.dispatch({
         type: "sliceGameModal/addplayer",
@@ -129,18 +143,6 @@ export default function GameModal() {
           errors: { defense: false },
         },
       });
-      // Auto open next menu ?
-      if (select.inputs.contract !== "" &&
-          select.inputs.players.filter(p => p.role === "attack").length === select.requirements.attack && 
-          select.inputs.players.filter(p => p.role === "defense").length === select.requirements.defense && 
-          select.inputs.outcome === 0) {
-        appStore.dispatch({
-          type: "sliceGameModal/closeMenu",
-          payload: {
-            menu: "defense"
-          },
-        });
-      }
     },
     removeFromDefense: (id) => {
       appStore.dispatch({

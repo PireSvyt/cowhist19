@@ -11,12 +11,9 @@ import {
   Typography,
   Slider,
   Select,
-  Autocomplete,
-  TextField,
   InputLabel,
   MenuItem,
   FormControl,
-  InputBase,
   Chip,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -211,7 +208,7 @@ export default function GameModal() {
                 )}
               >
                 {select.players.map((player) => {
-                  if (select.inputs.players.filter((p) => p._id === player._id)) {
+                  if (select.inputs.players.filter((p) => p._id === player._id) > 0) {
                     // Already selected
                     return null
                   } else {
@@ -252,7 +249,7 @@ export default function GameModal() {
                 )}
               >
                 {select.players.map((player) => {
-                  if (select.inputs.players.filter((p) => p._id === player._id)) {
+                  if (select.inputs.players.filter((p) => p._id === player._id) > 0) {
                     // Already selected
                     return null
                   } else {

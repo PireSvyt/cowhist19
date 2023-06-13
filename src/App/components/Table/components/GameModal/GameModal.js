@@ -17,6 +17,7 @@ import {
   Chip,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 // Services
 import serviceProceed from "./services/serviceProceed.js";
@@ -53,7 +54,7 @@ export default function GameModal() {
   const changes = {
     contract: (e) => {      
       // Auto open next menu ?
-      if (select.inputs.contract !== "" &&
+      if (select.inputs.contract === "" &&
           select.inputs.players.length === 0 && 
           select.inputs.outcome === 0) {
         appStore.dispatch({
@@ -185,6 +186,11 @@ export default function GameModal() {
           menu: menu
         },
       });
+    },
+    renew: () => {
+      appStore.dispatch({
+        type: "sliceGameModal/new"
+      });
     }
   };
 
@@ -198,7 +204,28 @@ export default function GameModal() {
         }}
         fullWidth={true}
       >
-        <DialogTitle>{t("game.label.title")}</DialogTitle>
+        <DialogTitle>
+          <Box 
+            sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}> 
+            {t("game.label.title")}
+            <IconButton
+              onClick={changes.renew}
+              sx={{
+                position: 'absolute',
+                right: 8,
+                top: 8,
+                color: (theme) => theme.palette.grey[500],
+              }}
+            >
+              <DeleteOutlineIcon />
+            </IconButton>
+        </Box>
+        </DialogTitle>
         <DialogContent
           sx={{
             height: componentHeight,

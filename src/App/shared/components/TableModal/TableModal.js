@@ -165,7 +165,8 @@ export default function TableModal() {
               onChange={changes.name}
               autoComplete="off"
               sx={{ mb: 1 }}
-              error={select.errors.name}
+              error={select.errors.name || select.errors.existingname}
+              helperText={ select.errors.existingname ? (t("table.error.existingname")) : (null) }
             />
 
             <FormControl variant="standard">

@@ -196,6 +196,7 @@
     },
     "error": {
       "missingname": "missing name",
+      "existingname" : "Already existing name",
       "missingguests": "missing guests",
       "creationwithoutplayers": "missing players to create a table",
       "creationwithoutuser": "table creation impossible without you among the players"

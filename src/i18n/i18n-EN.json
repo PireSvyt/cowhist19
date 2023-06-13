@@ -82,9 +82,11 @@
       "existingpseudo": "Already existing pseudo",
       "missinglogin": "missing email",
       "invalidlogin": "invalid email",
+      "existinglogin": "An account already exists with this login",
       "missingpassword": "missing password",
       "missingrepeatpassword": "missing repeated password",
-      "passwordmissmatch": "password missmatch"
+      "passwordmissmatch": "password missmatch",
+      "resetpassword": "Reset my password (unavailable)"
     },
     "snack": {
       "signedup": "Signed up!"
@@ -196,6 +198,7 @@
     },
     "error": {
       "missingname": "missing name",
+      "existingname" : "Already existing name",
       "missingguests": "missing guests",
       "creationwithoutplayers": "missing players to create a table",
       "creationwithoutuser": "table creation impossible without you among the players"

@@ -9,6 +9,8 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Link,
+  Paper
 } from "@mui/material";
 
 import { LoadingButton } from "@mui/lab";
@@ -57,7 +59,10 @@ export default function SignUpModal() {
         type: "sliceSignUpModal/change",
         payload: {
           inputs: { login: e.target.value },
-          errors: { login: false },
+          errors: { 
+            login: false,
+            existinglogin: false
+          },
         },
       });
     },
@@ -129,8 +134,26 @@ export default function SignUpModal() {
               onChange={changes.login}
               autoComplete="off"
               type="email"
-              error={select.errors.login}
+              error={select.errors.login || select.errors.existinglogin}
+              helperText={ select.errors.existinglogin ? (t("signup.error.existinglogin")) : (null) }
             />
+            {select.errors.existinglogin ? (
+              <Paper sx={{
+              m:2, 
+              p:1,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              textAlign: "center",
+              verticalAlign: "middle" }} >
+                <Link 
+                sx={{ typography: "body2", "& > :not(style) + :not(style)": { ml: 2 }, }} 
+                href={""} 
+                target="_blank" rel="noreferrer">
+                  {t("signup.error.resetpassword")}
+                </Link>
+              </Paper>
+            ) : (null)}
             <TextField
               data-testid="fieldPassword"
               name="password"

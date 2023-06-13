@@ -1,43 +1,42 @@
 // Services
-import apiPseudo from "./apiPseudo.js";
+import apiName from "./apiName.js";
 // Reducers
-import appStore from "../../store/appStore.js";
+import appStore from "../../../../store/appStore.js";
 
-async function serviceExistingPseudo(inputPseudo) {
+async function serviceExistingName(inputName) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("serviceExistingPseudo");
+    console.log("serviceExistingName");
   }
 
   try {
     // API call
-    const data = await apiPseudo(inputPseudo);
+    const data = await apiName(inputName);
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("data.type : " + data.type);
     }
 
     // Response management
     switch (data.type) {
-        case "auth.existingpseudo.true":
+        case "table.existingname.true":
             appStore.dispatch({
-                type: "sliceSignUpModal/change",
+                type: "sliceTableModal/change",
                 payload: {
                     errors : {
-                        existingpseudo : true
+                        existingname : true
                     }
                 },
             });
             break;
-        case "auth.existingpseudo.false":
+        case "table.existingname.false":
             appStore.dispatch({
-                type: "sliceSignUpModal/change",
+                type: "sliceTableModal/change",
                 payload: {
                     errors : {
-                        existingpseudo : false
+                        existingname : false
                     }
                 },
             });
-            break;
-        case "auth.existingpseudo.error.onfind":
+        case "table.existingname.error.onfind":
             null
             break;
         default:
@@ -66,4 +65,4 @@ async function serviceExistingPseudo(inputPseudo) {
   }
 }
 
-export default serviceExistingPseudo;
+export default serviceExistingName;

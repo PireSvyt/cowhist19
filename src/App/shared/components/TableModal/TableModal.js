@@ -32,6 +32,7 @@ import serviceProceed from "./services/serviceProceed.js";
 import serviceTableDelete from "./services/serviceTableDelete.js";
 // Shared
 import ConfirmModal from "../../../shared/components/ConfirmModal/ConfirmModal.js";
+import serviceExistingName from "./services/serviceExistingName.js";
 // Reducers
 import appStore from "../../../store/appStore.js";
 
@@ -63,6 +64,8 @@ export default function TableModal() {
           errors: { name: false },
         },
       });
+      // Check name existance
+      serviceExistingName({ name : e.target.value})
     },
     guests: (e) => {
       appStore.dispatch({
@@ -165,7 +168,8 @@ export default function TableModal() {
               onChange={changes.name}
               autoComplete="off"
               sx={{ mb: 1 }}
-              error={select.errors.name}
+              error={select.errors.name || select.errors.existingname}
+              helperText={ select.errors.existingname ? (t("table.error.existingname")) : (null) }
             />
 
             <FormControl variant="standard">

@@ -13,6 +13,7 @@ const sliceTableModal = createSlice({
     },
     errors: {
       name: false,
+      existingname: false,
       guests: false,
       players: false,
     },
@@ -34,6 +35,7 @@ const sliceTableModal = createSlice({
       };
       state.errors = {
         name: false,
+        existingname: false,
         guests: false,
         players: false,
       };
@@ -51,6 +53,7 @@ const sliceTableModal = createSlice({
       state.inputs.players = action.payload.players;
       state.errors = {
         name: false,
+        existingname: false,
         guests: false,
         players: false,
       };
@@ -63,6 +66,7 @@ const sliceTableModal = createSlice({
       state.errors = {
         _id: "",
         name: false,
+        existingname: false,
         guests: false,
         players: false,
       };
@@ -93,6 +97,9 @@ const sliceTableModal = createSlice({
       if (action.payload.errors !== undefined) {
         if (action.payload.errors.name !== undefined) {
           state.errors.name = action.payload.errors.name;
+        }
+        if (action.payload.errors.existingname !== undefined) {
+          state.errors.existingname = action.payload.errors.existingname;
         }
         if (action.payload.errors.guests !== undefined) {
           state.errors.guests = action.payload.errors.guests;

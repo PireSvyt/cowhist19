@@ -86,7 +86,7 @@
       "missingpassword": "missing password",
       "missingrepeatpassword": "missing repeated password",
       "passwordmissmatch": "password missmatch",
-      "resetpassword": "Reset my password"
+      "resetpassword": "Reset my password (unavailable)"
     },
     "snack": {
       "signedup": "Signed up!"

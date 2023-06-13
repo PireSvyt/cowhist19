@@ -73,13 +73,9 @@ async function serviceProceed() {
             payload: {
               disabled: false,
               loading: false,
-            },
-          });
-          appStore.dispatch({
-            type: "sliceSnack/change",
-            payload: {
-              uid: random_id(),
-              id: "signup.snack.signedup",
+              errors: {
+                existinglogin: true
+              }
             },
           });
           break;

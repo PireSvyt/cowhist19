@@ -9,6 +9,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Typography
 } from "@mui/material";
 
 import { LoadingButton } from "@mui/lab";
@@ -57,7 +58,10 @@ export default function SignUpModal() {
         type: "sliceSignUpModal/change",
         payload: {
           inputs: { login: e.target.value },
-          errors: { login: false },
+          errors: { 
+            login: false,
+            existinglogin: false
+          },
         },
       });
     },
@@ -155,6 +159,12 @@ export default function SignUpModal() {
               type="password"
               error={select.errors.repeatpassword}
             />
+
+            {select.errors.existinglogin ? (
+              <Typography error>
+                {t("signup.error.existinglogin")}
+              </Typography>
+            ) : (null)}
           </Box>
         </DialogContent>
 

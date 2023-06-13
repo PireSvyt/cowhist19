@@ -14,6 +14,7 @@ const sliceSignUpModal = createSlice({
       pseudo: false,
       existingpseudo: false,
       login: false,
+      existinglogin: false,
       password: false,
       repeatpassword: false,
     },
@@ -36,6 +37,7 @@ const sliceSignUpModal = createSlice({
         pseudo: false,
         existingpseudo: false,
         login: false,
+        existinglogin: false,
         password: false,
         repeatpassword: false,
       };
@@ -57,6 +59,7 @@ const sliceSignUpModal = createSlice({
         pseudo: false,
         existingpseudo: false,
         login: false,
+        existinglogin: false,
         password: false,
         repeatpassword: false,
       };
@@ -96,6 +99,9 @@ const sliceSignUpModal = createSlice({
         }
         if (action.payload.errors.login !== undefined) {
           state.errors.login = action.payload.errors.login;
+        }
+        if (action.payload.errors.existinglogin !== undefined) {
+          state.errors.existinglogin = action.payload.errors.existinglogin;
         }
         if (action.payload.errors.password !== undefined) {
           state.errors.password = action.payload.errors.password;

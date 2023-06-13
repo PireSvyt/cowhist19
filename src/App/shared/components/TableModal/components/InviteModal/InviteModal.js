@@ -16,6 +16,8 @@ import LoadingButton from "@mui/lab/LoadingButton";
 
 // Services
 import serviceProceed from "./services/serviceProceed.js";
+// Shared
+import serviceExistingPseudo from "../../../../services/serviceExistingPseudo.js";
 // Reducers
 import appStore from "../../../../../store/appStore.js";
 
@@ -45,6 +47,9 @@ export default function InviteModal() {
           errors: { pseudo: false },
         },
       });
+      // Check pseudo existance
+      // serviceExistingPseudo({ pseudo : e.target.value})
+      // TODO error on create but not typing
     },
     login: (e) => {
       appStore.dispatch({
@@ -102,7 +107,8 @@ export default function InviteModal() {
               autoComplete="off"
               sx={{ mb: 1 }}
               required
-              error={select.errors.pseudo}
+              error={select.errors.pseudo || select.errors.existingpseudo}              
+              helperText={ select.errors.existingpseudo ? (t("signup.error.existingpseudo")) : (null) }
             />
             <TextField
               name="login"

@@ -16,11 +16,9 @@ import { LoadingButton } from "@mui/lab";
 // Services
 import serviceProceed from "./services/serviceProceed.js";
 // Shared
-import serviceModalChange from "../../../../../../shared/services/serviceModalChange.js";
-import { random_id } from "../../../../../../shared/services/toolkit.js";
+import serviceExistingPseudo from "../../../../../../shared/services/serviceExistingPseudo.js";
 // Reducers
 import appStore from "../../../../../../store/appStore.js";
-import sliceSignUpModal from "../../../../../../store/sliceSignUpModal.js";
 
 export default function SignUpModal() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -51,6 +49,8 @@ export default function SignUpModal() {
           errors: { pseudo: false },
         },
       });
+      // Check pseudo existance
+      serviceExistingPseudo({ pseudo : e.target.value})
     },
     login: (e) => {
       appStore.dispatch({
@@ -116,7 +116,8 @@ export default function SignUpModal() {
               value={select.inputs.pseudo || ""}
               onChange={changes.pseudo}
               autoComplete="off"
-              error={select.errors.pseudo}
+              error={select.errors.pseudo || select.errors.existingpseudo}
+              helperText={ select.errors.existingpseudo ? (t("signup.error.existingpseudo")) : (null) }
             />
             <TextField
               data-testid="fieldLogin"

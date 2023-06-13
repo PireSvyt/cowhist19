@@ -46,7 +46,8 @@
         "unknown": "Unknown error :/",
         "withdetails": "Error :",
         "invalidchange": "invalid change",
-        "wip": "We are working on it..."
+        "wip": "We are working on it...",
+        "existingpseudo" : "Already existing pseudo"
       },
       "feedback": {
         "wip": "Work in progress...",
@@ -78,6 +79,7 @@
     },
     "error": {
       "missingpseudo": "missing pseudo",
+      "existingpseudo": "Already existing pseudo",
       "missinglogin": "missing email",
       "invalidlogin": "invalid email",
       "missingpassword": "missing password",

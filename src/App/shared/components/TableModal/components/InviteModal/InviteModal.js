@@ -48,7 +48,7 @@ export default function InviteModal() {
         },
       });
       // Check pseudo existance
-      serviceExistingPseudo(e.target.value)
+      serviceExistingPseudo({ pseudo : e.target.value})
     },
     login: (e) => {
       appStore.dispatch({

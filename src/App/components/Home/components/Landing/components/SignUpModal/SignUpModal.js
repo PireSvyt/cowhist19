@@ -9,7 +9,8 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Link
+  Link,
+  Paper
 } from "@mui/material";
 
 import { LoadingButton } from "@mui/lab";

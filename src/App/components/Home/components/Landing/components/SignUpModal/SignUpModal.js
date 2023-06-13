@@ -138,9 +138,16 @@ export default function SignUpModal() {
               helperText={ select.errors.existinglogin ? (t("signup.error.existinglogin")) : (null) }
             />
             {select.errors.existinglogin ? (
-              <Paper sx={{m:2}}>
+              <Paper sx={{
+              m:2, 
+              p:1,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              textAlign: "center",
+              verticalAlign: "middle" }} >
                 <Link 
-                sx={{ typography: "body1", "& > :not(style) + :not(style)": { ml: 2 }, }} 
+                sx={{ typography: "body2", "& > :not(style) + :not(style)": { ml: 2 }, }} 
                 href={""} 
                 target="_blank" rel="noreferrer">
                   {t("signup.error.resetpassword")}

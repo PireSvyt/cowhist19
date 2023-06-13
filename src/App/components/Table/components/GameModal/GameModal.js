@@ -15,8 +15,10 @@ import {
   MenuItem,
   FormControl,
   Chip,
+  IconButton 
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 // Services
 import serviceProceed from "./services/serviceProceed.js";
@@ -32,6 +34,7 @@ export default function GameModal() {
 
   // Constants
   const componentHeight = window.innerHeight - 115;
+  const menuItemHeight = 54
 
   // Selects
   const select = {
@@ -39,6 +42,7 @@ export default function GameModal() {
     id: useSelector((state) => state.sliceGameModal.id),
     inputs: useSelector((state) => state.sliceGameModal.inputs),
     errors: useSelector((state) => state.sliceGameModal.errors),
+    focuses: useSelector((state) => state.sliceGameModal.focuses),
     requirements: useSelector((state) => state.sliceGameModal.requirements),
     disabled: useSelector((state) => state.sliceGameModal.disabled),
     loading: useSelector((state) => state.sliceGameModal.loading),
@@ -49,7 +53,26 @@ export default function GameModal() {
 
   // Changes
   const changes = {
-    contract: (e) => {
+    contract: (e) => {      
+      // Auto open next menu ?
+      if (select.inputs.contract === "" &&
+          select.inputs.players.length === 0 && 
+          select.inputs.outcome === 0) {
+        appStore.dispatch({
+          type: "sliceGameModal/openMenu",
+          payload: {
+            menu: "attack"
+          },
+        });
+      } else {
+        appStore.dispatch({
+          type: "sliceGameModal/closeMenu",
+          payload: {
+            menu: "contract"
+          },
+        });
+      }
+      // Select contract
       let contract = select.contracts.filter(
         (c) => c.key === e.target.value
       )[0];
@@ -59,14 +82,27 @@ export default function GameModal() {
           inputs: { contract: e.target.value },
           errors: { contract: false },
           requirements: {
-            attack: "(" + contract.attack + ")",
-            defense: "(" + contract.defense + ")",
+            attack: contract.attack,
+            defense: contract.defense,
             outcome: "", //"(max. +" + (13 - contract.folds) + ")",
           },
         },
       });
     },
     addToAttack: (id) => {
+      // Auto open next menu ?
+      if (select.inputs.contract !== "" &&
+          select.inputs.players.filter(p => p.role === "attack").length +1 === select.requirements.attack && // Not yet stored
+          select.inputs.players.filter(p => p.role === "defense").length === 0 && 
+          select.inputs.outcome === 0) {
+        appStore.dispatch({
+          type: "sliceGameModal/openMenu",
+          payload: {
+            menu: "defense"
+          },
+        });
+      }
+      // Store selected attackant
       let selectedPlayer = select.players.filter(player => player._id === id)[0]
       appStore.dispatch({
         type: "sliceGameModal/addplayer",
@@ -91,6 +127,19 @@ export default function GameModal() {
       });
     },
     addToDefense: (id) => {
+      // Auto open next menu ?
+      if (select.inputs.contract !== "" &&
+          select.inputs.players.filter(p => p.role === "attack").length === select.requirements.attack && 
+          select.inputs.players.filter(p => p.role === "defense").length +1 === select.requirements.defense && // Not yet stored
+          select.inputs.outcome === 0) {
+        appStore.dispatch({
+          type: "sliceGameModal/closeMenu",
+          payload: {
+            menu: "defense"
+          },
+        });
+      }
+      // Store selected defenser
       let selectedPlayer = select.players.filter(player => player._id === id)[0]
       appStore.dispatch({
         type: "sliceGameModal/addplayer",
@@ -123,6 +172,35 @@ export default function GameModal() {
         },
       });
     },
+    openMenu: (menu) => {
+      appStore.dispatch({
+        type: "sliceGameModal/openMenu",
+        payload: {
+          menu: menu
+        },
+      });
+    },
+    closeMenu: (menu) => {
+      appStore.dispatch({
+        type: "sliceGameModal/closeMenu",
+        payload: {
+          menu: menu
+        },
+      });
+    },
+    renew: () => {
+      // Close all menus but contract one
+      appStore.dispatch({
+        type: "sliceGameModal/openMenu",
+        payload: {
+          menu: "contract"
+        },
+      });
+      // Reset to empty
+      appStore.dispatch({
+        type: "sliceGameModal/new"
+      });
+    }
   };
 
   return (
@@ -135,7 +213,23 @@ export default function GameModal() {
         }}
         fullWidth={true}
       >
-        <DialogTitle>{t("game.label.title")}</DialogTitle>
+        <DialogTitle>
+          <Box 
+            sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}> 
+            {t("game.label.title")}
+            <IconButton
+              onClick={changes.renew}
+              sx={{ color: (theme) => theme.palette.grey[500] }}
+            >
+              <DeleteOutlineIcon />
+            </IconButton>
+        </Box>
+        </DialogTitle>
         <DialogContent
           sx={{
             height: componentHeight,
@@ -155,6 +249,9 @@ export default function GameModal() {
                 value={select.inputs.contract}
                 onChange={changes.contract}
                 error={select.errors.contract}
+                MenuProps={{ style: {maxHeight: menuItemHeight * 6.5} }}  
+                open={select.focuses.contract}
+                onOpen={() => changes.openMenu("contract")}
               >
                 {select.contracts.map((contract) => (
                   <MenuItem key={contract.key} value={contract.key}>
@@ -166,7 +263,10 @@ export default function GameModal() {
 
             <FormControl variant="standard" error={select.errors.attack}>
               <InputLabel>
-                {t("game.input.attack") + " " + select.requirements.attack}
+                { select.requirements.attack !== 0 ? ( 
+                  t("game.input.attack") + " (" + select.requirements.attack + ")" ) : (
+                  t("game.input.attack")
+                )}
               </InputLabel>
               <Select
                 name="attack" 
@@ -186,7 +286,11 @@ export default function GameModal() {
                       )
                     })}
                   </Box>
-                )}              
+                )}
+                MenuProps={{ style: {maxHeight: menuItemHeight * 4.5} }}   
+                open={select.focuses.attack}     
+                onOpen={() => changes.openMenu("attack")}
+                onClose={() => changes.closeMenu("attack")}
               >                
                 {select.players.filter(potentialPlayer => 
                    !select.inputs.players.map(selectedPlayer => selectedPlayer._id).includes(potentialPlayer._id)
@@ -205,7 +309,10 @@ export default function GameModal() {
 
             <FormControl variant="standard" error={select.errors.defense}>
               <InputLabel>
-                {t("game.input.defense") + " " + select.requirements.defense}
+                { select.requirements.defense !== 0 ? ( 
+                  t("game.input.defense") + " (" + select.requirements.defense + ")" ) : (
+                  t("game.input.defense")
+                )}
               </InputLabel>
               <Select
                 name="defense" multiple
@@ -225,6 +332,10 @@ export default function GameModal() {
                     })}
                   </Box>
                 )}
+                MenuProps={{ style: {maxHeight: menuItemHeight * 4.5} }}    
+                open={select.focuses.defense}
+                onOpen={() => changes.openMenu("defense")}
+                onClose={() => changes.closeMenu("defense")}
               >                
                 {select.players.filter(potentialPlayer => 
                   !select.inputs.players.map(selectedPlayer => selectedPlayer._id).includes(potentialPlayer._id)

@@ -189,6 +189,14 @@ export default function GameModal() {
       });
     },
     renew: () => {
+      // Close all menus but contract one
+      appStore.dispatch({
+        type: "sliceGameModal/openMenu",
+        payload: {
+          menu: "contract"
+        },
+      });
+      // Reset to empty
       appStore.dispatch({
         type: "sliceGameModal/new"
       });

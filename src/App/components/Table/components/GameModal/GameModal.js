@@ -15,6 +15,7 @@ import {
   MenuItem,
   FormControl,
   Chip,
+  IconButton 
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
@@ -215,12 +216,7 @@ export default function GameModal() {
             {t("game.label.title")}
             <IconButton
               onClick={changes.renew}
-              sx={{
-                position: 'absolute',
-                right: 8,
-                top: 8,
-                color: (theme) => theme.palette.grey[500],
-              }}
+              sx={{ color: (theme) => theme.palette.grey[500] }}
             >
               <DeleteOutlineIcon />
             </IconButton>

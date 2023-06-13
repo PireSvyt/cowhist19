@@ -1,5 +1,7 @@
 // Services
 import apiPseudo from "./apiPseudo.js";
+// Reducers
+import appStore from "../../store/appStore.js";
 
 async function serviceExistingPseudo() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

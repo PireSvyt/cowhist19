@@ -48,7 +48,8 @@ export default function InviteModal() {
         },
       });
       // Check pseudo existance
-      serviceExistingPseudo({ pseudo : e.target.value})
+      // serviceExistingPseudo({ pseudo : e.target.value})
+      // TODO error on create but not typing
     },
     login: (e) => {
       appStore.dispatch({

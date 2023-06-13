@@ -9,7 +9,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Typography
+  Link
 } from "@mui/material";
 
 import { LoadingButton } from "@mui/lab";
@@ -133,8 +133,19 @@ export default function SignUpModal() {
               onChange={changes.login}
               autoComplete="off"
               type="email"
-              error={select.errors.login}
+              error={select.errors.login || select.errors.existinglogin}
+              helperText={ select.errors.existinglogin ? (t("signup.error.existinglogin")) : (null) }
             />
+            {select.errors.existinglogin ? (
+              <Paper sx={{m:2}}>
+                <Link 
+                sx={{ typography: "body1", "& > :not(style) + :not(style)": { ml: 2 }, }} 
+                href={""} 
+                target="_blank" rel="noreferrer">
+                  {t("signup.error.resetpassword")}
+                </Link>
+              </Paper>
+            ) : (null)}
             <TextField
               data-testid="fieldPassword"
               name="password"
@@ -159,12 +170,6 @@ export default function SignUpModal() {
               type="password"
               error={select.errors.repeatpassword}
             />
-
-            {select.errors.existinglogin ? (
-              <Typography error>
-                {t("signup.error.existinglogin")}
-              </Typography>
-            ) : (null)}
           </Box>
         </DialogContent>
 

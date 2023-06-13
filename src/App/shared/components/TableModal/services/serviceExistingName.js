@@ -17,7 +17,7 @@ async function serviceExistingName(inputName) {
 
     // Response management
     switch (data.type) {
-        case "auth.existingname.true":
+        case "table.existingname.true":
             appStore.dispatch({
                 type: "sliceTableModal/change",
                 payload: {
@@ -27,7 +27,7 @@ async function serviceExistingName(inputName) {
                 },
             });
             break;
-        case "auth.existingname.false":
+        case "table.existingname.false":
             appStore.dispatch({
                 type: "sliceTableModal/change",
                 payload: {
@@ -36,7 +36,7 @@ async function serviceExistingName(inputName) {
                     }
                 },
             });
-        case "auth.existingname.error.onfind":
+        case "table.existingname.error.onfind":
             null
             break;
         default:

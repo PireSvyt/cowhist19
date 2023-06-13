@@ -85,7 +85,8 @@
       "existinglogin": "An account already exists with this login",
       "missingpassword": "missing password",
       "missingrepeatpassword": "missing repeated password",
-      "passwordmissmatch": "password missmatch"
+      "passwordmissmatch": "password missmatch",
+      "resetpassword": "Reset my password"
     },
     "snack": {
       "signedup": "Signed up!"

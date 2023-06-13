@@ -3,14 +3,14 @@ import apiName from "./apiName.js";
 // Reducers
 import appStore from "../../store/appStore.js";
 
-async function serviceExistingName(inputPseudo) {
+async function serviceExistingName(inputName) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("serviceExistingName");
   }
 
   try {
     // API call
-    const data = await apiName(inputPseudo);
+    const data = await apiName(inputName);
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("data.type : " + data.type);
     }

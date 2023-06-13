@@ -3,14 +3,14 @@ import apiPseudo from "./apiPseudo.js";
 // Reducers
 import appStore from "../../store/appStore.js";
 
-async function serviceExistingPseudo() {
+async function serviceExistingPseudo(inputPseudo) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("serviceExistingPseudo");
   }
 
   try {
     // API call
-    const data = await apiPseudo();
+    const data = await apiPseudo(inputPseudo);
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("data.type : " + data.type);
     }

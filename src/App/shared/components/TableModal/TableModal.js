@@ -56,7 +56,7 @@ export default function TableModal() {
   };
 
   // Debouncing
-  const deboundedExistingName = debounce(serviceExistingName({ name : e.target.value}), 150)
+  const deboundedExistingName = (e) => debounce(serviceExistingName({ name : e.target.value}), 150)
 
   // Changes
   const changes = {
@@ -69,7 +69,7 @@ export default function TableModal() {
         },
       });
       // Check name existance
-      deboundedExistingName()
+      deboundedExistingName(e)
     },
     guests: (e) => {
       appStore.dispatch({

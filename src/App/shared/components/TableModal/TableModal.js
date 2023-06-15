@@ -55,6 +55,9 @@ export default function TableModal() {
     openInviteModal: useSelector((state) => state.sliceInviteModal.open),
   };
 
+  // Debouncing
+  const deboundedExistingName = debounce(() => serviceExistingName({ name : e.target.value}), 150)
+
   // Changes
   const changes = {
     name: (e) => {
@@ -66,7 +69,7 @@ export default function TableModal() {
         },
       });
       // Check name existance
-      debounce(() => serviceExistingName({ name : e.target.value}), 150)
+      deboundedExistingName()
     },
     guests: (e) => {
       appStore.dispatch({

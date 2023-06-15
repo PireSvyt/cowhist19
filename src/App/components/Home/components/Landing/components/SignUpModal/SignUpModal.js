@@ -41,7 +41,11 @@ export default function SignUpModal() {
     disabled: useSelector((state) => state.sliceSignUpModal.disabled),
     loading: useSelector((state) => state.sliceSignUpModal.loading),
     snackData: useSelector((state) => state.sliceSignUpModal.snackData),
-  };
+  };  
+
+  // Debouncing
+  const deboundedExistingPseudo = debounce(() => serviceExistingPseudo({ pseudo : e.target.value}), 150)
+
   // Changes
   const changes = {
     pseudo: (e) => {
@@ -53,7 +57,7 @@ export default function SignUpModal() {
         },
       });
       // Check pseudo existance
-      debounce(() => serviceExistingPseudo({ pseudo : e.target.value}), 150)
+      deboundedExistingPseudo()
       
     },
     login: (e) => {

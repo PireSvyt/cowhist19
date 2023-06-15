@@ -56,7 +56,7 @@ export default function TableModal() {
   };
 
   // Debouncing
-  function deboundedExistingName (e) { debounce(() => serviceExistingName({ name : e.target.value}), 150) }
+  const deboundedExistingName = debounce((e) => serviceExistingName({ name : e.target.value}), 150)
 
   // Changes
   const changes = {

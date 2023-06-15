@@ -33,6 +33,7 @@ import serviceTableDelete from "./services/serviceTableDelete.js";
 // Shared
 import ConfirmModal from "../../../shared/components/ConfirmModal/ConfirmModal.js";
 import serviceExistingName from "./services/serviceExistingName.js";
+import { debounce } from "../../services/toolkit.js";
 // Reducers
 import appStore from "../../../store/appStore.js";
 
@@ -65,7 +66,7 @@ export default function TableModal() {
         },
       });
       // Check name existance
-      serviceExistingName({ name : e.target.value})
+      debounce(() => serviceExistingName({ name : e.target.value}), 150)
     },
     guests: (e) => {
       appStore.dispatch({

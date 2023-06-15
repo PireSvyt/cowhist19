@@ -19,3 +19,18 @@ export function validateEmail(email) {
   */
   return email.match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
 }
+
+export function debounce(func, timeout = 150){
+  /*
+
+  Allows to to debounce a function
+
+  Source : https://www.freecodecamp.org/news/javascript-debounce-example/
+
+  */
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => { func.apply(this, args); }, timeout);
+  };
+}

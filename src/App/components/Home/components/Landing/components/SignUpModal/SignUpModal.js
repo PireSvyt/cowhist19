@@ -44,7 +44,7 @@ export default function SignUpModal() {
   };  
 
   // Debouncing
-  const deboundedExistingPseudo = debounce((e) => serviceExistingPseudo({ pseudo : e.target.value}), 150)
+  const debouncedExistingPseudo = debounce((e) => serviceExistingPseudo({ pseudo : e.target.value}), 300)
 
   // Changes
   const changes = {
@@ -57,7 +57,7 @@ export default function SignUpModal() {
         },
       });
       // Check pseudo existance
-      deboundedExistingPseudo(e)
+      debouncedExistingPseudo(e)
       
     },
     login: (e) => {

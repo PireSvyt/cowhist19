@@ -19,6 +19,7 @@ import { LoadingButton } from "@mui/lab";
 import serviceProceed from "./services/serviceProceed.js";
 // Shared
 import serviceExistingPseudo from "../../../../../../shared/services/serviceExistingPseudo.js";
+import { debounce } from "../../../../../../shared/services/toolkit.js";
 // Reducers
 import appStore from "../../../../../../store/appStore.js";
 
@@ -40,7 +41,11 @@ export default function SignUpModal() {
     disabled: useSelector((state) => state.sliceSignUpModal.disabled),
     loading: useSelector((state) => state.sliceSignUpModal.loading),
     snackData: useSelector((state) => state.sliceSignUpModal.snackData),
-  };
+  };  
+
+  // Debouncing
+  const debouncedExistingPseudo = debounce((e) => serviceExistingPseudo({ pseudo : e.target.value}), 300)
+
   // Changes
   const changes = {
     pseudo: (e) => {
@@ -52,7 +57,8 @@ export default function SignUpModal() {
         },
       });
       // Check pseudo existance
-      serviceExistingPseudo({ pseudo : e.target.value})
+      debouncedExistingPseudo(e)
+      
     },
     login: (e) => {
       appStore.dispatch({

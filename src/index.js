@@ -8,7 +8,7 @@ import App from "./App/App.js";
 import "./i18n/i18n-config.js";
 import appStore from "./App/store/appStore.js";
 
-ReactGA.initialize(process.env.GA_MEASUREMENT_ID)
+ReactGA.initialize([{ trackingId: process.env.GA_MEASUREMENT_ID }])
 
 const root = createRoot(document.getElementById("root"));
 root.render(

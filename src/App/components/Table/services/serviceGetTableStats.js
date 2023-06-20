@@ -15,15 +15,12 @@ async function serviceGetTableStats(need) {
     appStore.dispatch({ type: "sliceTableStats/lock" });
 
     // Initialize
+    let parameters = {
+      need: "ranking",
+    };
     let id = window.location.href.split("/table/")[1];
-    if (need === undefined) {
-      let parameters = {
-        need: "ranking",
-      };
-    } else {      
-      let parameters = {
-        need: need,
-      };
+    if (need !== undefined) {   
+      parameters.need = need
     }
 
     // API call

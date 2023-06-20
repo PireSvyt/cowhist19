@@ -32,7 +32,6 @@ async function serviceGetTableStats(need) {
     // Response management
     switch (data.type) {
       case "table.stats.success":
-        console.log(data)
         let stats = data.data.stats;
         let playerids = appStore
           .getState()

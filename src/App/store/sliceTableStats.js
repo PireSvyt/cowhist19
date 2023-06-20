@@ -14,7 +14,7 @@ const sliceTableStats = createSlice({
     set: (state, action) => {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
         console.log("sliceTableStats.set");
-        //console.log(action.payload);
+        console.log(action.payload);
       }
       state.loaded = true;
       if (action.payload.ranking !== undefined) {

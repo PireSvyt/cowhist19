@@ -18,10 +18,10 @@ const sliceTableStats = createSlice({
       }
       state.loaded = true;
       if (action.payload.ranking !== undefined) {
-        state.stats = action.payload.ranking;
+        state.stats.ranking = action.payload.ranking;
       }
       if (action.payload.graph !== undefined) {
-        state.graph = action.payload.graph;
+        state.stats.graph = action.payload.graph;
       }
       state.state = "available";
     },

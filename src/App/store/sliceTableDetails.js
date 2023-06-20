@@ -13,6 +13,7 @@ const sliceTableDetails = createSlice({
     players: [],
     contracts: [],
     state: "available",
+    view: "ranking"
   },
   reducers: {
     set: (state, action) => {
@@ -37,6 +38,9 @@ const sliceTableDetails = createSlice({
     },
     unload: (state) => {
       state.loaded = false;
+    },
+    view: (state, action) => {
+      state.view = action.payload.view;
     },
   },
 });

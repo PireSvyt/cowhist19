@@ -1,12 +1,15 @@
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Box, List, ListItem, Typography } from "@mui/material";
+import { Box, List, ListItem, Typography,ToggleButtonGroup,ToggleButton } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
 import SmsFailedIcon from "@mui/icons-material/SmsFailed";
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+import SsidChartIcon from '@mui/icons-material/SsidChart';
 
 // Components
 import RankingCard from "./components/RankingCard/RankingCard.js";
+import StatGraph from "./components/StatGraph/StatGraph.js";
 // Service
 import serviceGetTableStats from "../../services/serviceGetTableStats.js";
 
@@ -23,12 +26,25 @@ export default function TableStats() {
     loadedStats: useSelector((state) => state.sliceTableStats.loaded),
     stats: useSelector((state) => state.sliceTableStats.stats),
     players: useSelector((state) => state.sliceTableDetails.players),
+    view: useSelector((state) => state.sliceTableDetails.view),
   };
 
   // Load
   if (select.loadedDetails && !select.loadedStats) {
     serviceGetTableStats();
   }
+
+  // Changes
+  const changes = {
+    view: (e) => {    
+      appStore.dispatch({
+        type: "sliceTableDetails/view",
+        payload: {
+          view: e.target.value
+        },
+      });
+    }
+  };
 
   return (
     <Box>
@@ -68,7 +84,18 @@ export default function TableStats() {
           </Typography>
         </Box>
       ) : (
-        <List dense={true}>
+        <Box>
+        <ToggleButtonGroup value={select.view} onChange={changes.view} >
+          <ToggleButton value="ranking" >
+            <StarBorderIcon />
+          </ToggleButton>
+          <ToggleButton value="graph" >
+            <SsidChartIcon />
+          </ToggleButton>
+        </ToggleButtonGroup>
+
+        {select.view === "ranking"? (
+          <List dense={true}>
           {select.stats.ranking.map((player) => {
             let rankingPlayer = { ...player };
             let pseudoPlayer = select.players.filter((tablePlayer) => {
@@ -86,6 +113,13 @@ export default function TableStats() {
             );
           })}
         </List>
+        ) : (null)}
+
+        {select.view === "graph"? (
+          <StatGraph />
+        ) : (null)}
+        
+        </Box>
       )}
     </Box>
   );

@@ -6,6 +6,7 @@ const sliceTableStats = createSlice({
     loaded: false,
     stats: {
       ranking: [],
+      graph: []
     },
     state: "available",
   },

@@ -12,6 +12,8 @@ import RankingCard from "./components/RankingCard/RankingCard.js";
 import StatGraph from "./components/StatGraph/StatGraph.js";
 // Service
 import serviceGetTableStats from "../../services/serviceGetTableStats.js";
+// Store
+import appStore from "../../../../store/appStore.js";
 
 export default function TableStats() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -36,7 +38,10 @@ export default function TableStats() {
 
   // Changes
   const changes = {
-    view: (e) => {    
+    view: (e) => { 
+      // Fire loading
+      serviceGetTableStats(e.target.value);
+      // Change view   
       appStore.dispatch({
         type: "sliceTableDetails/view",
         payload: {

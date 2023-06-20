@@ -5,7 +5,7 @@ import { random_id } from "../../../shared/services/toolkit.js";
 // Reducers
 import appStore from "../../../store/appStore.js";
 
-async function serviceGetTableStats() {
+async function serviceGetTableStats(need) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("serviceGetTableStats");
   }
@@ -16,9 +16,15 @@ async function serviceGetTableStats() {
 
     // Initialize
     let id = window.location.href.split("/table/")[1];
-    let parameters = {
-      need: "ranking",
-    };
+    if (need === undefined) {
+      let parameters = {
+        need: "ranking",
+      };
+    } else {      
+      let parameters = {
+        need: need,
+      };
+    }
 
     // API call
     const data = await apiTableStats(id, parameters);

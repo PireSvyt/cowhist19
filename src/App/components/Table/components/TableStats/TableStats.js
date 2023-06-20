@@ -90,39 +90,40 @@ export default function TableStats() {
         </Box>
       ) : (
         <Box>
-        <ToggleButtonGroup value={select.view} onChange={changes.view} >
-          <ToggleButton value="ranking" >
-            <StarBorderIcon />
-          </ToggleButton>
-          <ToggleButton value="graph" >
-            <SsidChartIcon />
-          </ToggleButton>
-        </ToggleButtonGroup>
+          
+          <ToggleButtonGroup value={select.view} onChange={changes.view} >
+            <ToggleButton value="ranking" >
+              <StarBorderIcon />
+            </ToggleButton>
+            <ToggleButton value="graph" >
+              <SsidChartIcon />
+            </ToggleButton>
+          </ToggleButtonGroup>
 
-        {select.view === "ranking"? (
-          <List dense={true}>
-          {select.stats.ranking.map((player) => {
-            let rankingPlayer = { ...player };
-            let pseudoPlayer = select.players.filter((tablePlayer) => {
-              return tablePlayer._id === player._id;
-            });
-            if (pseudoPlayer.length > 0) {
-              rankingPlayer.pseudo = pseudoPlayer[0].pseudo;
-            } else {
-              rankingPlayer.pseudo = "A PLAYER";
-            }
-            return (
-              <ListItem key={"ranking-" + rankingPlayer._id}>
-                <RankingCard player={rankingPlayer} />
-              </ListItem>
-            );
-          })}
-        </List>
-        ) : (null)}
+          {select.view === "ranking"? (
+            <List dense={true}>
+            {select.stats.ranking.map((player) => {
+              let rankingPlayer = { ...player };
+              let pseudoPlayer = select.players.filter((tablePlayer) => {
+                return tablePlayer._id === player._id;
+              });
+              if (pseudoPlayer.length > 0) {
+                rankingPlayer.pseudo = pseudoPlayer[0].pseudo;
+              } else {
+                rankingPlayer.pseudo = "A PLAYER";
+              }
+              return (
+                <ListItem key={"ranking-" + rankingPlayer._id}>
+                  <RankingCard player={rankingPlayer} />
+                </ListItem>
+              );
+            })}
+          </List>
+          ) : (null)}
 
-        {select.view === "graph"? (
-          <StatGraph />
-        ) : (null)}
+          {select.view === "graph"? (
+            <StatGraph />
+          ) : (null)}
         
         </Box>
       )}

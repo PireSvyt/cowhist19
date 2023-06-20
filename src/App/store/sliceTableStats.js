@@ -17,7 +17,12 @@ const sliceTableStats = createSlice({
         //console.log(action.payload);
       }
       state.loaded = true;
-      state.stats = action.payload;
+      if (action.payload.ranking !== undefined) {
+        state.stats = action.payload.ranking;
+      }
+      if (action.payload.graph !== undefined) {
+        state.graph = action.payload.graph;
+      }
       state.state = "available";
     },
     lock: (state) => {

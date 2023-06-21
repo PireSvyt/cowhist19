@@ -90,14 +90,7 @@ export default function TableStats() {
         </Box>
       ) : (
         <Box>
-          
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
+          <Box textAlign="center" >
             <ToggleButtonGroup value={select.view} >
               <ToggleButton value="ranking" onClick={() => changes.view("ranking")} >
                 <StarBorderIcon />

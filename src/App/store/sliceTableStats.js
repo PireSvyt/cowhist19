@@ -9,6 +9,7 @@ const sliceTableStats = createSlice({
       graph: []
     },
     state: "available",
+    view: "ranking"
   },
   reducers: {
     set: (state, action) => {
@@ -30,6 +31,9 @@ const sliceTableStats = createSlice({
     },
     unload: (state) => {
       state.loaded = false;
+    },
+    view: (state, action) => {
+      state.view = action.payload.view;
     },
   },
 });

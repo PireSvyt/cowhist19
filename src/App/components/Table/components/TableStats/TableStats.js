@@ -28,7 +28,7 @@ export default function TableStats() {
     loadedStats: useSelector((state) => state.sliceTableStats.loaded),
     stats: useSelector((state) => state.sliceTableStats.stats),
     players: useSelector((state) => state.sliceTableDetails.players),
-    view: useSelector((state) => state.sliceTableDetails.view),
+    view: useSelector((state) => state.sliceTableStats.view),
   };
 
   // Load
@@ -39,11 +39,13 @@ export default function TableStats() {
   // Changes
   const changes = {
     view: (e) => { 
+      console.log("change.view")
+      console.log(e.target)
       // Fire loading
       serviceGetTableStats(e.target.value);
       // Change view   
       appStore.dispatch({
-        type: "sliceTableDetails/view",
+        type: "sliceTableStats/view",
         payload: {
           view: e.target.value
         },
@@ -91,14 +93,22 @@ export default function TableStats() {
       ) : (
         <Box>
           
-          <ToggleButtonGroup value={select.view} onChange={changes.view} >
-            <ToggleButton value="ranking" >
-              <StarBorderIcon />
-            </ToggleButton>
-            <ToggleButton value="graph" >
-              <SsidChartIcon />
-            </ToggleButton>
-          </ToggleButtonGroup>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <ToggleButtonGroup value={select.view} onChange={changes.view} >
+              <ToggleButton value="ranking" >
+                <StarBorderIcon />
+              </ToggleButton>
+              <ToggleButton value="graph" >
+                <SsidChartIcon />
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </Box>
 
           {select.view === "ranking"? (
             <List dense={true}>

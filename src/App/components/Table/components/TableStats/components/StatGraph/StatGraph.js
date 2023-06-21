@@ -19,10 +19,10 @@ export default function StatGraph(props) {
 
     // Process
     let data = []
-    select.players.forEach(player => {
+    Object.keys(select.players).forEach(playerid => {
       // Create curves
       let dates = select.stats.graph.map(game => game.date)
-      let stats = select.stats.graph.map(game => game.players[player._id].averagepoints)
+      let stats = select.stats.graph.map(game => game.players[playerid].averagepoints)
       // Adjust curve beginning
       if (dates.length !== stats.length) {
         for (let d = 0; d < dates.length - stats.length; d++) {
@@ -41,23 +41,7 @@ export default function StatGraph(props) {
 
     return (
     <Plot
-    data={[
-        {
-          x: [1, 2, 3], y: [2, 6, 3],
-          type: 'scatter',
-          mode: 'lines',
-        },
-        {
-          x: [1, 2, 3], y: [2, 2, 4],
-          type: 'scatter',
-          mode: 'lines',
-        },
-        {
-          x: [1, 2, 3], y: [1, 2, 5],
-          type: 'scatter',
-          mode: 'lines',
-        }
-    ]}
+    data={data}
     layout={ {} }
     />
     );

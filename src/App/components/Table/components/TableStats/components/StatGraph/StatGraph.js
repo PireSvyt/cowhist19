@@ -30,7 +30,8 @@ export default function StatGraph(props) {
       }
       // Add curve to data to be displayed
       data.push({
-        x: dates, y: stats,
+        x: dates, 
+        y: stats,
         type: 'scatter',
         mode: 'lines',
       })
@@ -40,9 +41,9 @@ export default function StatGraph(props) {
 
     return (
     <Plot
-    data={data}
-    layout={ {} }
-    config={ {staticPlot: true} }
+      data={data}
+      layout={ {} }
+      config={ {displayModeBar: false} }
     />
     );
   }

@@ -12,8 +12,7 @@ const sliceTableDetails = createSlice({
     guests: 0,
     players: [],
     contracts: [],
-    state: "available",
-    view: "ranking"
+    state: "available"
   },
   reducers: {
     set: (state, action) => {
@@ -38,9 +37,6 @@ const sliceTableDetails = createSlice({
     },
     unload: (state) => {
       state.loaded = false;
-    },
-    view: (state, action) => {
-      state.view = action.payload.view;
     },
   },
 });

@@ -19,9 +19,7 @@ export default function StatGraph(props) {
     playerids.forEach(playerid => {
       // Create curve
       let dates = select.stats.graph.map(game => game.date)
-      let stats = select.stats.graph.map(game => {
-        return game.players[playerid].averagepoints
-      })
+      let stats = select.stats.graph.map(game => game.players[playerid].averagepoints)
       // Adjust curve beginning
       if (dates.length !== stats.length) {
         for (let d = 0; d < dates.length - stats.length; d++) {

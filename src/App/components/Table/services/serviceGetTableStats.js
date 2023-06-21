@@ -32,8 +32,8 @@ async function serviceGetTableStats(need) {
     // Response management
     switch (data.type) {
       case "table.stats.success":
+        console.log(data.data)
         let stats = data.data.stats;
-        console.log(stats)
         let playerids = appStore
           .getState()
           .sliceTableDetails.players.map((p) => p._id);

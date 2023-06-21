@@ -20,6 +20,8 @@ export default function StatGraph(props) {
     // Process
     let data = []
     Object.keys(select.players).forEach(playerid => {
+      console.log(playerid)
+      console.log(game.players[playerid])
       // Create curves
       let dates = select.stats.graph.map(game => game.date)
       let stats = select.stats.graph.map(game => game.players[playerid].averagepoints)

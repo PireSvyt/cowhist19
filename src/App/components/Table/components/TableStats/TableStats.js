@@ -38,16 +38,16 @@ export default function TableStats() {
 
   // Changes
   const changes = {
-    view: (e) => { 
+    view: (e,newView) => { 
       console.log("change.view")
-      console.log(e.target)
+      console.log(newView)
       // Fire loading
-      serviceGetTableStats(e.target.value);
+      serviceGetTableStats(newView);
       // Change view   
       appStore.dispatch({
         type: "sliceTableStats/view",
         payload: {
-          view: e.target.value
+          view: newView
         },
       });
     }

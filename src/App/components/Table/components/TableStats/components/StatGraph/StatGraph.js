@@ -12,13 +12,23 @@ export default function StatGraph(props) {
   
     // Selects
     const select = {
-      loadedDetails: useSelector((state) => state.sliceTableDetails.loaded),
-      loadedStats: useSelector((state) => state.sliceTableStats.loaded),
       stats: useSelector((state) => state.sliceTableStats.stats),
       players: useSelector((state) => state.sliceTableDetails.players),
       view: useSelector((state) => state.sliceTableStats.view),
     };
 
+    // Process
+    let data = []
+    select.players.array.forEach(element => {
+      // Create curves
+      let dates = select.stats.graph
+      // Add curve
+      data.push({
+        x: dates, y: stat,
+        type: 'scatter',
+        mode: 'lines',
+      })
+    });
 
     return (
     <Plot
@@ -27,13 +37,19 @@ export default function StatGraph(props) {
           x: [1, 2, 3], y: [2, 6, 3],
           type: 'scatter',
           mode: 'lines',
-          marker: {color: 'red'},
         },
         {
-          type: 'bar', x: [1, 2, 3], y: [2, 5, 3]
+          x: [1, 2, 3], y: [2, 2, 4],
+          type: 'scatter',
+          mode: 'lines',
         },
+        {
+          x: [1, 2, 3], y: [1, 2, 5],
+          type: 'scatter',
+          mode: 'lines',
+        }
     ]}
-    layout={ {width: 320, height: 240, title: 'A Fancy Plot'} }
+    layout={ {} }
     />
     );
   }

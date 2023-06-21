@@ -38,9 +38,7 @@ export default function TableStats() {
 
   // Changes
   const changes = {
-    view: (e,newView) => { 
-      console.log("change.view")
-      console.log(newView)
+    view: (newView) => { 
       // Fire loading
       serviceGetTableStats(newView);
       // Change view   
@@ -100,11 +98,11 @@ export default function TableStats() {
               alignItems: "center",
             }}
           >
-            <ToggleButtonGroup value={select.view} onChange={changes.view} >
-              <ToggleButton value="ranking" >
+            <ToggleButtonGroup value={select.view} >
+              <ToggleButton value="ranking" onClick={() => changes.view("ranking")} >
                 <StarBorderIcon />
               </ToggleButton>
-              <ToggleButton value="graph" >
+              <ToggleButton value="graph" onClick={() => changes.view("graph")} >
                 <SsidChartIcon />
               </ToggleButton>
             </ToggleButtonGroup>

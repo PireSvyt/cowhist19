@@ -33,6 +33,7 @@ async function serviceGetTableStats(need) {
     switch (data.type) {
       case "table.stats.success":
         let stats = data.data.stats;
+        console.log(stats)
         let playerids = appStore
           .getState()
           .sliceTableDetails.players.map((p) => p._id);

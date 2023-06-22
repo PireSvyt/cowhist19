@@ -33,7 +33,7 @@ export default function StatGraph(props) {
         />
         <Stack  direction="row" spacing={1}>
           {select.players.map(player => {
-            return (<Chip label={player.pseudo}  color={player._id === select.userid ? "" : "#e0e0e0"}/>)
+            return (<Chip label={player.pseudo}  color={player._id === select.userid ? "primary" : "#e0e0e0"}/>)
           })}
         </Stack>
       </Box>

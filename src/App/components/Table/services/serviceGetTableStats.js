@@ -1,5 +1,7 @@
 // Services
 import apiTableStats from "./apiTableStats.js";
+import serviceProcessCurves from "./serviceProcessCurves.js";
+// Shared
 import { random_id } from "../../../shared/services/toolkit.js";
 
 // Reducers
@@ -39,6 +41,10 @@ async function serviceGetTableStats(need) {
         stats.ranking = stats.ranking.filter((rank) =>
           playerids.includes(rank._id)
         );
+        if (parameters.need === "graph") {
+          serviceProcessCurves(stats.graph)
+          delete stats.graph
+        }
         // Outcome
         appStore.dispatch({
           type: "sliceTableStats/set",

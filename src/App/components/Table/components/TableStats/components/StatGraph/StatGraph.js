@@ -1,6 +1,7 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
 import { useSelector } from "react-redux";
+import {Box, Chip} from '@mui/material';
 
 // Store
 import appStore from '../../../../../../store/appStore';
@@ -13,20 +14,26 @@ export default function StatGraph(props) {
     // Selects
     const select = {
       curves: useSelector((state) => state.sliceTableStats.curves),
+      userid: useSelector((state) => state.sliceUserDetails.id),
+      players: useSelector((state) => state.sliceTableDetails.players),
     };
 
     return (
-      <Plot
-        data={ Object.values(select.curves) }
-        layout={ {
-          autosize: false,
-          width: window.innerWidth * 0.9,
-        } }
-        config={ {
-          displayModeBar: false, 
-          showlegend: false
-        } }
-      />
+      <Box>
+        <Plot
+          data={ Object.values(select.curves) }
+          layout={ {
+            autosize: false,
+            width: window.innerWidth * 0.9,
+          } }
+          config={ {
+            displayModeBar: false, 
+            showlegend: false
+          } }
+        />
+        <Box>
+        </Box>
+      </Box>
     );
   }
   

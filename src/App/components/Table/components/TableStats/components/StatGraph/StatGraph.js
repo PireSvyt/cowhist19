@@ -43,8 +43,6 @@ export default function StatGraph(props) {
       })
     });
 
-    console.log(data)
-
     return (
       <Plot
         data={data}

@@ -1,7 +1,7 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
 import { useSelector } from "react-redux";
-import {Box, Chip} from '@mui/material';
+import {Box, Stack, Chip} from '@mui/material';
 
 // Store
 import appStore from '../../../../../../store/appStore';
@@ -31,8 +31,11 @@ export default function StatGraph(props) {
             showlegend: false
           } }
         />
-        <Box>
-        </Box>
+        <Stack  direction="row" spacing={1}>
+          {select.players.map(player => {
+            return (<Chip label={player.pseudo}  color={player._id === select.userid ? "" : "#e0e0e0"}/>)
+          })}
+        </Stack>
       </Box>
     );
   }

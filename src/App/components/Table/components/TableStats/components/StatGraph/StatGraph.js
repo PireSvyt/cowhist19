@@ -15,10 +15,9 @@ export default function StatGraph(props) {
     const select = {
       userid: useSelector((state) => state.sliceUserDetails.id),
       players: useSelector((state) => state.sliceTableDetails.players),
+      ranking: useSelector((state) => state.sliceTableStats.stats.ranking),
       curves: useSelector((state) => state.sliceTableStats.curves),
     };
-
-    console.log(select.curves)
 
     return (
       <Box>
@@ -28,8 +27,10 @@ export default function StatGraph(props) {
             autosize: false,
             width: window.innerWidth * 0.9,
             margin: {
-              l: 20,
-              r: 20,
+              l: 10,
+              r: 10,
+              t: 10,
+              b: 10
             },
             datarevision: true
           } }
@@ -39,13 +40,24 @@ export default function StatGraph(props) {
           } }
         />
         <Box>
-          {select.players.map(player => {
-            return (<Chip 
-              label={player.pseudo} 
-              size="small" 
-              color={player._id === select.userid ? "primary" : "default" }
-              margin="5"
-            />)
+          {select.ranking.map((player) => {
+            let rankingPlayer = { ...player };
+            let pseudoPlayer = select.players.filter((tablePlayer) => {
+              return tablePlayer._id === player._id;
+            });
+            if (pseudoPlayer.length > 0) {
+              rankingPlayer.pseudo = pseudoPlayer[0].pseudo;
+            } else {
+              rankingPlayer.pseudo = "A PLAYER";
+            }
+            return (
+              <Chip 
+                label={player.pseudo} 
+                size="small" 
+                color={player._id === select.userid ? "primary" : "default" }
+                padding="5"
+              />
+            );
           })}
         </Box>
       </Box>

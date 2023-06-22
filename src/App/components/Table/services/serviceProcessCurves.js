@@ -18,7 +18,7 @@ async function serviceProcessCurves(graph) {
         // Create curve
         let stats = graph.map(game => {
         if (game.players[playerid] !== undefined) {
-            return game.players[playerid].averagepoints
+            return game.players[playerid]
         } else {
             return null
         }

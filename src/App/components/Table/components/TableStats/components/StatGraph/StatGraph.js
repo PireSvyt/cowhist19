@@ -13,9 +13,9 @@ export default function StatGraph(props) {
   
     // Selects
     const select = {
-      curves: useSelector((state) => state.sliceTableStats.curves),
       userid: useSelector((state) => state.sliceUserDetails.id),
       players: useSelector((state) => state.sliceTableDetails.players),
+      curves: useSelector((state) => state.sliceTableStats.curves),
     };
 
     console.log(select.curves)
@@ -27,6 +27,10 @@ export default function StatGraph(props) {
           layout={ {
             autosize: false,
             width: window.innerWidth * 0.9,
+            margin: {
+              l: 20,
+              r: 20,
+            },
           } }
           config={ {
             displayModeBar: false, 

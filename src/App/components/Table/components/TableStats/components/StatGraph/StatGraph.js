@@ -18,6 +18,8 @@ export default function StatGraph(props) {
       players: useSelector((state) => state.sliceTableDetails.players),
     };
 
+    console.log(select.curves)
+
     return (
       <Box>
         <Plot
@@ -31,11 +33,15 @@ export default function StatGraph(props) {
             showlegend: false
           } }
         />
-        <Stack  direction="row" spacing={1}>
+        <Box>
           {select.players.map(player => {
-            return (<Chip label={player.pseudo} />)
+            return (<Chip 
+              label={player.pseudo} 
+              size="small" 
+              color={player._id === select.userid ? "primary" : "default" }
+            />)
           })}
-        </Stack>
+        </Box>
       </Box>
     );
   }

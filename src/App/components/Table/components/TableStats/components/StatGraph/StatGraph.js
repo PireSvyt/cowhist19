@@ -40,14 +40,24 @@ export default function StatGraph(props) {
         y: playerstats[playerid],
         type: 'scatter',
         mode: 'lines',
+        line: {
+          color: 'rgb(55, 128, 191)',
+          width: 2
+        }
       })
     });
 
     return (
       <Plot
-        data={data}
-        layout={ {} }
-        config={ {displayModeBar: false} }
+        data={ data }
+        layout={ {
+          autosize: false,
+          width: window.innerWidth * 0.9,
+        } }
+        config={ {
+          displayModeBar: false, 
+          showlegend: false
+        } }
       />
     );
   }

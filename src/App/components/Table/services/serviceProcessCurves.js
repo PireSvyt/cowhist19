@@ -14,7 +14,6 @@ async function serviceProcessCurves(graph) {
     // Process
     let dates = graph.map(game => game.date)
     let playerids = players.map(player => player._id)
-    let playerstats = {}
     playerids.forEach(playerid => {
         // Create curve
         let stats = graph.map(game => {
@@ -31,17 +30,15 @@ async function serviceProcessCurves(graph) {
         }
         }
         // Add curve to data to be displayed
-        playerstats[playerid] = stats
-        if (playerid === userid) {
-        let linelayout = {
-            color: 'rgb(55, 128, 191)',
-            width: 2.5
-        }
-        } else {
         let linelayout = {
             color: 'rgb(211, 211, 211)',
             width: 1.5
         }
+        if (playerid === userid) {
+            linelayout = {
+                color: 'rgb(55, 128, 191)',
+                width: 2.5
+            }
         }
         appStore.dispatch({
         type: "sliceTableStats/setcurve",

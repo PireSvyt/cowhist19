@@ -31,6 +31,7 @@ export default function StatGraph(props) {
               l: 20,
               r: 20,
             },
+            datarevision: true
           } }
           config={ {
             displayModeBar: false, 
@@ -43,6 +44,7 @@ export default function StatGraph(props) {
               label={player.pseudo} 
               size="small" 
               color={player._id === select.userid ? "primary" : "default" }
+              margin="5"
             />)
           })}
         </Box>

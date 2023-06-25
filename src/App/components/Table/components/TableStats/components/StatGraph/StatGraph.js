@@ -5,6 +5,9 @@ import {Box, Chip} from '@mui/material';
 class StatGraph extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      revision: 0
+    }
   }
 
   render() {
@@ -20,14 +23,18 @@ class StatGraph extends React.Component {
     let layout = {
       autosize: false,
       width: window.innerWidth * 0.9,
+      height: window.innerWidth * 0.9,
       margin: {
         l: 10,
         r: 10,
         t: 10,
         b: 10
       },
-      datarevision: true
+      datarevision: true,
+      uirevision: this.state.revision
     }
+    // Revision
+    this.state = {revision: this.state.revision +1};
     
     return (
       <Box>

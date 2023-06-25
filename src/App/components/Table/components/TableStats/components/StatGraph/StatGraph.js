@@ -30,14 +30,14 @@ class StatGraph extends React.Component {
     return (
       <Box>
         <Plot
-          data={ Object.values(props.curves) }
+          data={ Object.values(this.props.curves) }
           layout={ layout }
           config={ config }
         />
         <Box>
-          {props.ranking.map((player) => {
+          {this.props.ranking.map((player) => {
             let rankingPlayer = { ...player };
-            let pseudoPlayer = props.players.filter((tablePlayer) => {
+            let pseudoPlayer = this.props.players.filter((tablePlayer) => {
               return tablePlayer._id === player._id;
             });
             if (pseudoPlayer.length > 0) {
@@ -49,7 +49,7 @@ class StatGraph extends React.Component {
               <Chip 
                 label={rankingPlayer.pseudo} 
                 size="small" 
-                color={rankingPlayer._id === props.userid ? "primary" : "default" }
+                color={rankingPlayer._id === this.props.userid ? "primary" : "default" }
                 padding="5"
               />
             );

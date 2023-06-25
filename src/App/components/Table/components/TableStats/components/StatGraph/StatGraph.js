@@ -1,16 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Plot from 'react-plotly.js';
 import { useSelector } from "react-redux";
 import {Box, Stack, Chip} from '@mui/material';
-
-// Store
-import appStore from '../../../../../../store/appStore';
 
 export default function StatGraph(props) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("StatGraph");
     }
-  
+
     // Selects
     const select = {
       userid: useSelector((state) => state.sliceUserDetails.id),
@@ -18,11 +15,17 @@ export default function StatGraph(props) {
       ranking: useSelector((state) => state.sliceTableStats.stats.ranking),
       curves: useSelector((state) => state.sliceTableStats.curves),
     };
+    
+    // State
+    const [curves, setCurves] = useState([]);
+    useEffect(() => {
+      setCurves(select.curves);
+    });
 
     return (
       <Box>
         <Plot
-          data={ Object.values(select.curves) }
+          data={ Object.values(curves) }
           layout={ {
             autosize: false,
             width: window.innerWidth * 0.9,

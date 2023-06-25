@@ -1,36 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Plot from 'react-plotly.js';
-import { useSelector } from "react-redux";
-import {Box, Stack, Chip} from '@mui/material';
+import {Box, Chip} from '@mui/material';
 
 class StatGraph extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-    };
   }
 
   render() {
+    // Layout
+    let config = {
+      displayModeBar: false, 
+      showlegend: false
+    }
+
+    // Config
+    let layout = {
+      autosize: false,
+      width: window.innerWidth * 0.9,
+      margin: {
+        l: 10,
+        r: 10,
+        t: 10,
+        b: 10
+      },
+      datarevision: true
+    }
+    
     return (
-      
       <Box>
         <Plot
           data={ Object.values(props.curves) }
-          layout={ {
-            autosize: false,
-            width: window.innerWidth * 0.9,
-            margin: {
-              l: 10,
-              r: 10,
-              t: 10,
-              b: 10
-            },
-            datarevision: true
-          } }
-          config={ {
-            displayModeBar: false, 
-            showlegend: false
-          } }
+          layout={ layout }
+          config={ config }
         />
         <Box>
           {props.ranking.map((player) => {
@@ -45,9 +47,9 @@ class StatGraph extends React.Component {
             }
             return (
               <Chip 
-                label={player.pseudo} 
+                label={rankingPlayer.pseudo} 
                 size="small" 
-                color={player._id === props.userid ? "primary" : "default" }
+                color={rankingPlayer._id === props.userid ? "primary" : "default" }
                 padding="5"
               />
             );

@@ -92,7 +92,7 @@ export default function TableStats() {
         </Box>
       ) : (
         <Box>
-          <Box textAlign="center" >
+          <Box textAlign="right" >
             <ToggleButtonGroup value={select.view} >
               <ToggleButton value="ranking" onClick={() => changes.view("ranking")} >
                 <StarBorderIcon />

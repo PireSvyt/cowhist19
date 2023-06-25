@@ -164,10 +164,10 @@ export default function Table() {
               />
             </Tabs>
           </Box>
-          <TabPanel value={tab} index={0}>
+          <TabPanel value={tab} index={0} sx={{pl: "0", pr: "0"}}>
             <TableStats />
           </TabPanel>
-          <TabPanel value={tab} index={1}>
+          <TabPanel value={tab} index={1} sx={{pl: "0", pr: "0"}}>
             <TableHistory />
           </TabPanel>
           <Fab

@@ -25,16 +25,22 @@ class StatGraph extends React.Component {
       width: window.innerWidth * 0.9,
       height: window.innerWidth * 0.9,
       margin: {
-        l: 10,
-        r: 10,
-        t: 10,
-        b: 10
+        l: 15,
+        r: 15,
+        t: 15,
+        b: 15
       },
       datarevision: true,
       uirevision: this.state.revision
     }
     // Revision
     this.state = {revision: this.state.revision +1};
+
+    debug.log("this.state.revision")
+    debug.log(this.state.revision)
+
+    debug.log("this.props.curves")
+    debug.log(this.props.curves)
     
     return (
       <Box>
@@ -59,7 +65,7 @@ class StatGraph extends React.Component {
                 label={rankingPlayer.pseudo} 
                 size="small" 
                 color={rankingPlayer._id === this.props.userid ? "primary" : "default" }
-                margin="5"
+                margin={"5px"}
               />
             );
           })}

@@ -26,9 +26,11 @@ export default function TableStats() {
   const select = {
     loadedDetails: useSelector((state) => state.sliceTableDetails.loaded),
     loadedStats: useSelector((state) => state.sliceTableStats.loaded),
-    stats: useSelector((state) => state.sliceTableStats.stats),
     players: useSelector((state) => state.sliceTableDetails.players),
     view: useSelector((state) => state.sliceTableStats.view),
+    userid: useSelector((state) => state.sliceUserDetails.id),
+    ranking: useSelector((state) => state.sliceTableStats.stats.ranking),
+    curves: useSelector((state) => state.sliceTableStats.curves),
   };
 
   // Load
@@ -57,7 +59,7 @@ export default function TableStats() {
         <Box sx={{ left: "10%", right: "10%" }}>
           <LinearProgress />
         </Box>
-      ) : select.stats.ranking.length === 0 ? (
+      ) : select.ranking.length === 0 ? (
         <Box
           sx={{
             m: 2,
@@ -103,7 +105,7 @@ export default function TableStats() {
 
           {select.view === "ranking"? (
             <List dense={true}>
-            {select.stats.ranking.map((player) => {
+            {select.ranking.map((player) => {
               let rankingPlayer = { ...player };
               let pseudoPlayer = select.players.filter((tablePlayer) => {
                 return tablePlayer._id === player._id;
@@ -123,7 +125,12 @@ export default function TableStats() {
           ) : (null)}
 
           {select.view === "graph"? (
-            <StatGraph />
+            <StatGraph 
+              userid={select.userid}
+              players={select.players}
+              ranking={select.ranking}
+              curves={select.curves}
+            />
           ) : (null)}
         
         </Box>

@@ -3,29 +3,19 @@ import Plot from 'react-plotly.js';
 import { useSelector } from "react-redux";
 import {Box, Stack, Chip} from '@mui/material';
 
-export default function StatGraph(props) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("StatGraph");
-    }
-
-    // Selects
-    const select = {
-      userid: useSelector((state) => state.sliceUserDetails.id),
-      players: useSelector((state) => state.sliceTableDetails.players),
-      ranking: useSelector((state) => state.sliceTableStats.stats.ranking),
-      curves: useSelector((state) => state.sliceTableStats.curves),
+class StatGraph extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
     };
-    
-    // State
-    const [curves, setCurves] = useState([]);
-    useEffect(() => {
-      setCurves(select.curves);
-    });
+  }
 
+  render() {
     return (
+      
       <Box>
         <Plot
-          data={ Object.values(curves) }
+          data={ Object.values(props.curves) }
           layout={ {
             autosize: false,
             width: window.innerWidth * 0.9,
@@ -43,9 +33,9 @@ export default function StatGraph(props) {
           } }
         />
         <Box>
-          {select.ranking.map((player) => {
+          {props.ranking.map((player) => {
             let rankingPlayer = { ...player };
-            let pseudoPlayer = select.players.filter((tablePlayer) => {
+            let pseudoPlayer = props.players.filter((tablePlayer) => {
               return tablePlayer._id === player._id;
             });
             if (pseudoPlayer.length > 0) {
@@ -57,7 +47,7 @@ export default function StatGraph(props) {
               <Chip 
                 label={player.pseudo} 
                 size="small" 
-                color={player._id === select.userid ? "primary" : "default" }
+                color={player._id === props.userid ? "primary" : "default" }
                 padding="5"
               />
             );
@@ -66,4 +56,5 @@ export default function StatGraph(props) {
       </Box>
     );
   }
-  
+}
+export default StatGraph

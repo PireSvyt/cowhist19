@@ -129,7 +129,7 @@ export default function TableStats() {
               userid={select.userid}
               players={select.players}
               ranking={select.ranking}
-              curves={select.curves}
+              curves={Object.values(select.curves)}
             />
           ) : (null)}
         

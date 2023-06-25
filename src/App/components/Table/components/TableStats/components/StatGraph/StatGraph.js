@@ -8,12 +8,14 @@ class StatGraph extends React.Component {
   }
 
   render() {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+      console.log("StatGraph.render");
+    }
     // Layout
     let config = {
       displayModeBar: false, 
       showlegend: false
     }
-
     // Config
     let layout = {
       autosize: false,
@@ -30,7 +32,7 @@ class StatGraph extends React.Component {
     return (
       <Box>
         <Plot
-          data={ Object.values(this.props.curves) }
+          data={ this.props.curves }
           layout={ layout }
           config={ config }
         />
@@ -50,7 +52,7 @@ class StatGraph extends React.Component {
                 label={rankingPlayer.pseudo} 
                 size="small" 
                 color={rankingPlayer._id === this.props.userid ? "primary" : "default" }
-                padding="5"
+                margin="5"
               />
             );
           })}

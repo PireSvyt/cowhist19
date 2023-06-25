@@ -36,11 +36,11 @@ class StatGraph extends React.Component {
     // Revision
     this.state = {revision: this.state.revision +1};
 
-    debug.log("this.state.revision")
-    debug.log(this.state.revision)
+    console.log("this.state.revision")
+    console.log(this.state.revision)
 
-    debug.log("this.props.curves")
-    debug.log(this.props.curves)
+    console.log("this.props.curves")
+    console.log(this.props.curves)
     
     return (
       <Box>

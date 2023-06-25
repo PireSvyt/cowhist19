@@ -33,14 +33,11 @@ export default function RankingCard(props) {
             }}
           >
             <Typography sx={{ fontWeight: "bold" }}>
-              {t("table.label.score") +
+              {
+                t("table.label.averagepoints") +
                 " " +
-                parseFloat(props.player.scorev0).toFixed(1)}
-            </Typography>
-            <Typography sx={{ pl: 1 }}>
-              {"(av.pts " +
-                parseFloat(props.player.averagepoints).toFixed(1) +
-                ")"}
+                parseFloat(props.player.averagepoints).toFixed(1)
+              }
             </Typography>
           </Box>
         </Box>

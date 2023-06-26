@@ -70,6 +70,7 @@ export default function MyStats() {
           </Typography>
           <Box
             sx={{
+              mt: 1,
               display: "flex",
               flexDirection: "row",
               justifyContent: "space-evenly",
@@ -78,13 +79,12 @@ export default function MyStats() {
           >
             <Box
               sx={{
-                m: 1,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
               }}
             >
-              <CircularProgressWithLabel value={select.stats.rateattack || 0} />
+              <CircularProgressWithLabel value={select.stats.rateattack*100 || 0} />
               <Typography
                 variant="body1"
                 component="span"
@@ -96,13 +96,12 @@ export default function MyStats() {
 
             <Box
               sx={{
-                m: 1,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
               }}
             >
-              <CircularProgressWithLabel value={select.stats.ratevictory || 0} />
+              <CircularProgressWithLabel value={select.stats.ratevictory*100 || 0} />
               <Typography
                 variant="body1"
                 component="span"
@@ -115,7 +114,7 @@ export default function MyStats() {
 
           <Box
               sx={{
-                m: 1,
+                mb: 2,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",

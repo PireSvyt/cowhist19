@@ -11,16 +11,7 @@ async function serviceGetUserStats(need) {
 
   try {
     // Lock UI
-    appStore.dispatch({ type: "sliceTableStats/lock" });
-
-    // Initialize
-    let parameters = {
-      need: "ranking",
-    };
-    let id = window.location.href.split("/table/")[1];
-    if (need !== undefined) {   
-      parameters.need = need
-    }
+    appStore.dispatch({ type: "sliceUserStats/lock" });
 
     // API call
     const data = await apiUserStats();
@@ -30,25 +21,14 @@ async function serviceGetUserStats(need) {
 
     // Response management
     switch (data.type) {
-      case "table.stats.success":
-        let stats = data.data.stats;
-        let playerids = appStore
-          .getState()
-          .sliceTableDetails.players.map((p) => p._id);
-        stats.ranking = stats.ranking.filter((rank) =>
-          playerids.includes(rank._id)
-        );
-        if (parameters.need === "graph") {
-          serviceProcessCurves(stats.graph)
-          delete stats.graph
-        }
+      case "user.stats.success":
         // Outcome
         appStore.dispatch({
-          type: "sliceTableStats/set",
-          payload: stats,
+          type: "sliceUserStats/set",
+          payload: data.data.stats,
         });
         break;
-      case "table.stats.error":
+      case "user.stats.error":
         appStore.dispatch({
           type: "sliceSnack/change",
           payload: {

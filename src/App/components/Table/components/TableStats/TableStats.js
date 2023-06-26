@@ -92,6 +92,8 @@ export default function TableStats() {
         </Box>
       ) : (
         <Box>
+
+          {/**      
           <Box textAlign="right" >
             <ToggleButtonGroup value={select.view} >
               <ToggleButton value="ranking" onClick={() => changes.view("ranking")} >
@@ -101,7 +103,8 @@ export default function TableStats() {
                 <SsidChartIcon />
               </ToggleButton>
             </ToggleButtonGroup>
-          </Box>
+          </Box>      
+          */}
 
           {select.view === "ranking"? (
             <List dense={true}>
@@ -124,6 +127,7 @@ export default function TableStats() {
           </List>
           ) : (null)}
 
+          {/**
           {select.view === "graph"? (
             <StatGraph 
               userid={select.userid}
@@ -132,6 +136,7 @@ export default function TableStats() {
               curves={Object.values(select.curves)}
             />
           ) : (null)}
+           */}
         
         </Box>
       )}

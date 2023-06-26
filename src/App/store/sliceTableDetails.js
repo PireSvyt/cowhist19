@@ -12,7 +12,7 @@ const sliceTableDetails = createSlice({
     guests: 0,
     players: [],
     contracts: [],
-    state: "available",
+    state: "available"
   },
   reducers: {
     set: (state, action) => {

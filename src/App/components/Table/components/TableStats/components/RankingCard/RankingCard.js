@@ -22,7 +22,7 @@ export default function RankingCard(props) {
             alignItems: "center",
           }}
         >
-          <Typography sx={{ fontWeight: "bold" }} gutterBottom>
+          <Typography gutterBottom>
             {props.player.pseudo}
           </Typography>
           <Box
@@ -32,15 +32,12 @@ export default function RankingCard(props) {
               alignItems: "center",
             }}
           >
-            <Typography sx={{ fontWeight: "bold" }}>
-              {t("table.label.score") +
+            <Typography >
+              {
+                t("table.label.averagepoints") +
                 " " +
-                parseFloat(props.player.scorev0).toFixed(1)}
-            </Typography>
-            <Typography sx={{ pl: 1 }}>
-              {"(av.pts " +
-                parseFloat(props.player.averagepoints).toFixed(1) +
-                ")"}
+                parseFloat(props.player.averagepoints).toFixed(1)
+              }
             </Typography>
           </Box>
         </Box>

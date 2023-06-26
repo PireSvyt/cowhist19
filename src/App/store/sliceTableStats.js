@@ -5,9 +5,11 @@ const sliceTableStats = createSlice({
   initialState: {
     loaded: false,
     stats: {
-      ranking: [],
+      ranking: []
     },
     state: "available",
+    view: "ranking",
+    curves: {}
   },
   reducers: {
     set: (state, action) => {
@@ -16,7 +18,7 @@ const sliceTableStats = createSlice({
         //console.log(action.payload);
       }
       state.loaded = true;
-      state.stats = action.payload;
+      state.stats.ranking = action.payload.ranking;
       state.state = "available";
     },
     lock: (state) => {
@@ -24,6 +26,12 @@ const sliceTableStats = createSlice({
     },
     unload: (state) => {
       state.loaded = false;
+    },
+    view: (state, action) => {
+      state.view = action.payload.view;
+    },
+    setcurve: (state, action) => {
+      state.curves[action.payload._id] = action.payload.curve;
     },
   },
 });

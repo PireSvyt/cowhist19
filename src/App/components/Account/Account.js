@@ -30,7 +30,7 @@ export default function Account() {
   return (
     <div>
       <Appbar route="account" title={t("generic.menu.account")} />
-      <Box sx={{ height: 48 }} />
+      <Box sx={{ height: 55 }} />
       {select.authLoaded === false || select.detailsLoaded === false ? (
         <Box sx={{ left: "10%", right: "10%" }}>
           <LinearProgress />

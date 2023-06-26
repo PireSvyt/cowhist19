@@ -35,7 +35,7 @@ export default function Activation() {
   return (
     <Box>
       <Appbar route="activation" title={t("generic.label.product")} />
-      <Box sx={{ height: 48 }} />
+      <Box sx={{ height: 55 }} />
 
       {outcome !== "inprogress" ? null : (
         <Box

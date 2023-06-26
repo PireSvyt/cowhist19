@@ -1,11 +1,13 @@
 // Services
 import apiTableStats from "./apiTableStats.js";
+import serviceProcessCurves from "./serviceProcessCurves.js";
+// Shared
 import { random_id } from "../../../shared/services/toolkit.js";
 
 // Reducers
 import appStore from "../../../store/appStore.js";
 
-async function serviceGetTableStats() {
+async function serviceGetTableStats(need) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("serviceGetTableStats");
   }
@@ -15,10 +17,13 @@ async function serviceGetTableStats() {
     appStore.dispatch({ type: "sliceTableStats/lock" });
 
     // Initialize
-    let id = window.location.href.split("/table/")[1];
     let parameters = {
       need: "ranking",
     };
+    let id = window.location.href.split("/table/")[1];
+    if (need !== undefined) {   
+      parameters.need = need
+    }
 
     // API call
     const data = await apiTableStats(id, parameters);
@@ -36,6 +41,10 @@ async function serviceGetTableStats() {
         stats.ranking = stats.ranking.filter((rank) =>
           playerids.includes(rank._id)
         );
+        if (parameters.need === "graph") {
+          serviceProcessCurves(stats.graph)
+          delete stats.graph
+        }
         // Outcome
         appStore.dispatch({
           type: "sliceTableStats/set",

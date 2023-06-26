@@ -107,7 +107,7 @@ export default function HistoryCard(props) {
       >
         <Box>
           <Typography variant="caption">{stringifyDate()}</Typography>
-          <Typography sx={{ fontWeight: "bold" }}>
+          <Typography >
             {t("game.label.contract." + props.game.contract) +
               " " +
               stringifyOutcome()}

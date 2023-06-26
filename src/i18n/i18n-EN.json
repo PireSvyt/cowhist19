@@ -164,7 +164,12 @@
       "mystats": "My stats",
       "mytables": "My tables",
       "notables": "No tables so far...",
-      "notablesexplanation": "You are not playing at any table so far...\n\nCreate a new table with using the \"+\" icon and invite your friends to play!"
+      "notablesexplanation": "You are not playing at any table so far...\n\nCreate a new table with using the \"+\" icon and invite your friends to play!",
+      "attack": "Attack",
+      "victory": "Victory",
+      "games": "games",
+      "nogames": "No games so far...",
+      "nogamesstatsexplanation": "You haven't played any game so far?\n\nPlay and save games to access to your stats here!"
     },
     "input": {},
     "button": {},
@@ -178,6 +183,7 @@
       "stats": "Stats",
       "history": "History",
       "score": "score",
+      "averagepoints" : "av. points",
       "games": "games",
       "victory": "victory",
       "attack": "attack",
@@ -192,7 +198,9 @@
       "nousersdeleteexplanation": "You have removed all players from the table.\n\nSaving a table without any player will delete the table."
     },
     "input": {
-      "guests": "Guests"},
+      "guests": "Guests",
+      "data": "Data"
+    },
     "button": {
       "newgame": "New game"
     },

@@ -70,7 +70,7 @@ export default function MyStats() {
           </Typography>
           <Box
             sx={{
-              mt: 1,
+              mt: 2,
               display: "flex",
               flexDirection: "row",
               justifyContent: "space-evenly",
@@ -115,7 +115,9 @@ export default function MyStats() {
           <Box
               sx={{
                 mt: 1,
-                mb: 2,
+                mb: 1.5,
+                left: "20%", 
+                right: "20%",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -139,7 +141,6 @@ function CircularProgressWithLabel(props) {
       alignItems='center'
     >
       <CircularProgress 
-        position='absolute' 
         variant="determinate" 
         value={100} 
         size={60} 
@@ -147,10 +148,12 @@ function CircularProgressWithLabel(props) {
         color='grey.200'
       />
       <CircularProgress 
+        position='absolute' 
         variant="determinate" 
         {...props} 
         size={60} 
         thickness={5} 
+        sx={{zIndex: 10}}
       />
       <Typography 
         variant="body1" 

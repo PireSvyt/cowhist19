@@ -86,8 +86,7 @@ export default function MyStats() {
             >
               <CircularProgressWithLabel value={select.stats.rateattack || 0} />
               <Typography
-                sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }}
-                variant="h5"
+                variant="body1"
                 component="span"
                 align="center"
               >
@@ -105,8 +104,7 @@ export default function MyStats() {
             >
               <CircularProgressWithLabel value={select.stats.ratevictory || 0} />
               <Typography
-                sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }}
-                variant="h5"
+                variant="body1"
                 component="span"
                 align="center"
               >
@@ -124,12 +122,12 @@ export default function MyStats() {
               }}
             >
               <Typography
-                sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }}
-                variant="h6"
+                variant="body1"
                 component="span"
                 align="center"
+                color="text.secondary"
               >
-                {select.stats.games + " " + t("home.label.victgamesory")}
+                {select.stats.games + " " + t("home.label.victory")}
               </Typography>
             </Box>
         </Box>
@@ -140,24 +138,15 @@ export default function MyStats() {
 
 function CircularProgressWithLabel(props) {
   return (
-    <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+    <Box display='flex' justifyContent='center' alignItems='center'>
       <CircularProgress variant="determinate" {...props} size="60" thickness="5" />
-      <Box
-        sx={{
-          top: 0,
-          left: 0,
-          bottom: 0,
-          right: 0,
-          position: 'absolute',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Typography variant="h5" component="div" color="text.secondary" sx={{ fontWeight: 'bold' }}>
-          {`${Math.round(props.value)}%`}
-        </Typography>
-      </Box>
+      <Typography 
+        variant="body1" 
+        position='absolute'
+        color="text.secondary" 
+        sx={{ fontWeight: 'bold' }}>
+        {`${Math.round(props.value)}%`}
+      </Typography>
     </Box>
   );
 }

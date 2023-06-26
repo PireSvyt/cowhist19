@@ -5,7 +5,7 @@ import appStore from "../../../../../store/appStore.js";
 
 async function apiUserStats() {
   try {
-    const res = await axios.post(
+    const res = await axios.get(
       process.env.REACT_APP_SERVER_URL + "/user/v1/stats",
       {
         headers: {

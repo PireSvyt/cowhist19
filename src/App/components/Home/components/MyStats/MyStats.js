@@ -123,7 +123,7 @@ export default function MyStats() {
                 alignItems: "center"
               }}
             >
-              <Typography variant="body1"  sx={{ color: 'text.secondary' }} >
+              <Typography variant="body2" >
                 {select.stats.games + " " + t("home.label.games")}
               </Typography>
             </Box>

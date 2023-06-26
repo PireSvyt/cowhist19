@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Typography, Box, Divider  } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import LinearProgress from "@mui/material/LinearProgress";
 import { grey } from '@mui/material/colors';
@@ -72,7 +72,7 @@ export default function MyStats() {
         <Box>
           <Box
             sx={{
-              mt: 1,
+              mt: 2,
               display: "flex",
               flexDirection: "row",
               justifyContent: "space-evenly",
@@ -124,11 +124,7 @@ export default function MyStats() {
                 alignItems: "center"
               }}
             >
-              <Divider 
-                variant="middle" 
-                sx={{ bgcolor: grey[200] }}
-              />
-              <Typography variant="body1" >
+              <Typography variant="body1" color={grey[200]} >
                 {select.stats.games + " " + t("home.label.games")}
               </Typography>
             </Box>

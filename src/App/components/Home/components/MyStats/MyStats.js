@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Typography, Box, CircularProgress } from "@mui/material";
+import { Typography, Box } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
+import LinearProgress from "@mui/material/LinearProgress";
 
 // Service
 import serviceGetUserStats from "./services/serviceGetUserStats.js";
-// Reducers
-import appStore from "../../../../store/appStore.js";
 
 export default function MyStats() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -65,6 +65,9 @@ export default function MyStats() {
         </Box>
       ) : (
         <Box>
+          <Typography sx={{ p: 2 }} variant="h6" component="span">
+            {t("home.label.mystats")}
+          </Typography>
           <Box
             sx={{
               display: "flex",

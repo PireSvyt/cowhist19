@@ -65,7 +65,7 @@ export default function MyStats() {
         </Box>
       ) : (
         <Box>
-          <Typography sx={{ mt: 2, mb: 1 }} variant="h6" component="span">
+          <Typography sx={{ p: 2 }} variant="h6" component="span">
             {t("home.label.mystats")}
           </Typography>
           <Box

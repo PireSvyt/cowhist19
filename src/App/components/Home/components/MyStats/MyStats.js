@@ -114,7 +114,7 @@ export default function MyStats() {
 
           <Box
               sx={{
-                mb: 2,
+                mb: 1,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -126,7 +126,7 @@ export default function MyStats() {
                 align="center"
                 color="text.secondary"
               >
-                {select.stats.games + " " + t("home.label.victory")}
+                {select.stats.games + " " + t("home.label.games")}
               </Typography>
             </Box>
         </Box>
@@ -138,7 +138,7 @@ export default function MyStats() {
 function CircularProgressWithLabel(props) {
   return (
     <Box display='flex' justifyContent='center' alignItems='center'>
-      <CircularProgress variant="determinate" {...props} size="60" thickness="5" />
+      <CircularProgress variant="determinate" {...props} />
       <Typography 
         variant="body1" 
         position='absolute'

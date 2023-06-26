@@ -138,7 +138,7 @@ export default function MyStats() {
 function CircularProgressWithLabel(props) {
   return (
     <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-      <CircularProgress variant="determinate" {...props} />
+      <CircularProgress variant="determinate" {...props} size="60" thickness="5" />
       <Box
         sx={{
           top: 0,
@@ -151,7 +151,7 @@ function CircularProgressWithLabel(props) {
           justifyContent: 'center',
         }}
       >
-        <Typography variant="caption" component="div" color="text.secondary">
+        <Typography variant="h5" component="div" color="text.secondary" sx={{ fontWeight: 'bold' }}>
           {`${Math.round(props.value)}%`}
         </Typography>
       </Box>

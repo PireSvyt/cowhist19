@@ -2,7 +2,7 @@
 import apiUserStats from "./apiUserStats.js";
 
 // Reducers
-import appStore from "../../../store/appStore.js";
+import appStore from "../../../../../store/appStore.js";
 
 async function serviceGetUserStats(need) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

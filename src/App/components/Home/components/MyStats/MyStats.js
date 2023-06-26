@@ -114,7 +114,6 @@ export default function MyStats() {
 
           <Box
               sx={{
-                mt: 1,
                 mb: 1.5,
                 left: "20%", 
                 right: "20%",
@@ -123,9 +122,10 @@ export default function MyStats() {
                 alignItems: "center",
               }}
             >
-              <Divider>
+              <Divider/>
+              <Typography variant="body1" >
                 {select.stats.games + " " + t("home.label.games")}
-              </Divider>
+              </Typography>
             </Box>
         </Box>
       )}
@@ -149,7 +149,8 @@ function CircularProgressWithLabel(props) {
       <Typography 
         variant="body1" 
         position='absolute'
-        sx={{ fontWeight: 'bold' }}>
+        sx={{ fontWeight: 'bold' }}
+      >
         {`${Math.round(props.value)}%`}
       </Typography>
     </Box>

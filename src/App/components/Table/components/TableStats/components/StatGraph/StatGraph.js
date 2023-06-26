@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import Plot, { Config, Data, Layout } from 'react-plotly.js';
 import {Box, Chip} from '@mui/material';
 

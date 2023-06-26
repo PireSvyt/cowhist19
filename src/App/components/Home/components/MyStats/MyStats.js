@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, Divider  } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import LinearProgress from "@mui/material/LinearProgress";
 
@@ -114,20 +114,16 @@ export default function MyStats() {
 
           <Box
               sx={{
-                mb: 1,
+                mt: 1,
+                mb: 2,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
               }}
             >
-              <Typography
-                variant="body1"
-                component="span"
-                align="center"
-                color="text.secondary"
-              >
+              <Divider>
                 {select.stats.games + " " + t("home.label.games")}
-              </Typography>
+              </Divider>
             </Box>
         </Box>
       )}
@@ -137,12 +133,28 @@ export default function MyStats() {
 
 function CircularProgressWithLabel(props) {
   return (
-    <Box display='flex' justifyContent='center' alignItems='center'>
-      <CircularProgress variant="determinate" {...props} size={60} thickness={6} />
+    <Box 
+      display='flex' 
+      justifyContent='center' 
+      alignItems='center'
+    >
+      <CircularProgress 
+        position='absolute' 
+        variant="determinate" 
+        value={100} 
+        size={60} 
+        thickness={5}
+        color='grey.200'
+      />
+      <CircularProgress 
+        variant="determinate" 
+        {...props} 
+        size={60} 
+        thickness={5} 
+      />
       <Typography 
         variant="body1" 
         position='absolute'
-        color="text.secondary" 
         sx={{ fontWeight: 'bold' }}>
         {`${Math.round(props.value)}%`}
       </Typography>

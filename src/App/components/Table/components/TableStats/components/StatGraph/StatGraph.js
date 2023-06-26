@@ -1,77 +1,82 @@
-import React from 'react';
-import Plot from 'react-plotly.js';
+import React, {useEffect} from 'react';
+import Plot, { Config, Data, Layout } from 'react-plotly.js';
 import {Box, Chip} from '@mui/material';
 
-class StatGraph extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      revision: 0
-    }
+
+export default function StatGraph({ curves, ranking, players, userid }) {
+  if (process.env.REACT_APP_DEBUG === "TRUE") {
+    console.log("StatGraph");
   }
 
-  render() {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("StatGraph.render");
-    }
-    // Layout
-    let config = {
-      displayModeBar: false, 
-      showlegend: false
-    }
-    // Config
-    let layout = {
-      autosize: false,
-      width: window.innerWidth * 0.9,
-      height: window.innerWidth * 0.9,
-      margin: {
-        l: 15,
-        r: 15,
-        t: 15,
-        b: 15
-      },
-      datarevision: true,
-      uirevision: this.state.revision
-    }
-    // Revision
-    this.state = {revision: this.state.revision +1};
+  // Layout
+  let config = {
+    displayModeBar: false, 
+    showlegend: false
+  }
+  // Config
+  let layout = {
+    autosize: false,
+    width: window.innerWidth * 0.9,
+    height: window.innerWidth * 0.9,
+    margin: {
+      l: 15,
+      r: 15,
+      t: 15,
+      b: 15
+    },
+    datarevision: true
+  }
 
-    console.log("this.state.revision")
-    console.log(this.state.revision)
+  const [chartData, setChartData] = useState(curves);
+  useEffect(() => {
+    if (curves.length) {
+        setChartData(() => {
+          return curves
+        });
+    } else {
+      setChartData(() => {
+        return []
+      });
+    }
+  }, [curves]);
 
-    console.log("this.props.curves")
-    console.log(this.props.curves)
-    
-    return (
+  console.log("curves")
+  console.log(curves)
+  console.log("ranking")
+  console.log(ranking)
+  console.log("players")
+  console.log(players)
+  console.log("userid")
+  console.log(userid)
+
+  return (
+    <Box>
+      <Plot
+        data={ chartData || []}
+        layout={ layout }
+        config={ config }
+      />
       <Box>
-        <Plot
-          data={ this.props.curves }
-          layout={ layout }
-          config={ config }
-        />
-        <Box>
-          {this.props.ranking.map((player) => {
-            let rankingPlayer = { ...player };
-            let pseudoPlayer = this.props.players.filter((tablePlayer) => {
-              return tablePlayer._id === player._id;
-            });
-            if (pseudoPlayer.length > 0) {
-              rankingPlayer.pseudo = pseudoPlayer[0].pseudo;
-            } else {
-              rankingPlayer.pseudo = "A PLAYER";
-            }
-            return (
-              <Chip 
-                label={rankingPlayer.pseudo} 
-                size="small" 
-                color={rankingPlayer._id === this.props.userid ? "primary" : "default" }
-                margin={"5px"}
-              />
-            );
-          })}
-        </Box>
+        {ranking.map((player) => {
+          let rankingPlayer = { ...player };
+          let pseudoPlayer = players.filter((tablePlayer) => {
+            return tablePlayer._id === player._id;
+          });
+          if (pseudoPlayer.length > 0) {
+            rankingPlayer.pseudo = pseudoPlayer[0].pseudo;
+          } else {
+            rankingPlayer.pseudo = "A PLAYER";
+          }
+          return (
+            <Chip 
+              label={rankingPlayer.pseudo} 
+              size="small" 
+              color={rankingPlayer._id === userid ? "primary" : "default" }
+              margin={"5px"}
+            />
+          );
+        })}
       </Box>
-    );
-  }
-}
-export default StatGraph
+    </Box>
+  )
+} 

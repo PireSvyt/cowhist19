@@ -142,18 +142,9 @@ function CircularProgressWithLabel(props) {
     >
       <CircularProgress 
         variant="determinate" 
-        value={100} 
-        size={60} 
-        thickness={5}
-        color='grey.200'
-      />
-      <CircularProgress 
-        position='absolute' 
-        variant="determinate" 
         {...props} 
         size={60} 
         thickness={5} 
-        sx={{zIndex: 10}}
       />
       <Typography 
         variant="body1" 

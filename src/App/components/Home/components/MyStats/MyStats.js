@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { Typography, Box, Divider  } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import LinearProgress from "@mui/material/LinearProgress";
+import { grey } from '@mui/material/colors';
 
 // Service
 import serviceGetUserStats from "./services/serviceGetUserStats.js";
@@ -31,7 +32,7 @@ export default function MyStats() {
       <Typography sx={{ p: 2 }} variant="h6" component="span">
         {t("home.label.mystats")}
       </Typography>
-      
+
       {!(select.loadedStats === true) ? (
         <Box sx={{ left: "10%", right: "10%" }}>
           <LinearProgress />
@@ -120,11 +121,13 @@ export default function MyStats() {
                 right: "20%",
                 display: "flex",
                 flexDirection: "column",
-                alignItems: "center",
-                bgcolor: 'background.paper'
+                alignItems: "center"
               }}
             >
-              <Divider variant="middle" />
+              <Divider 
+                variant="middle" 
+                sx={{ bgcolor: grey[200] }}
+              />
               <Typography variant="body1" >
                 {select.stats.games + " " + t("home.label.games")}
               </Typography>
@@ -145,7 +148,7 @@ function CircularProgressWithLabel(props) {
       <CircularProgress 
         variant="determinate" 
         {...props} 
-        size={60} 
+        size={70} 
         thickness={5} 
       />
       <Typography 

@@ -16,7 +16,7 @@ export default function About() {
   return (
     <Box>
       <Appbar route="about" title={t("generic.label.about")} />
-      <Box sx={{ height: 48 }} />
+      <Box sx={{ height: 55 }} />
 
       <Accordion sx={{ mt: 2}}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>

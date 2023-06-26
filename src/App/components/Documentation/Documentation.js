@@ -19,7 +19,7 @@ export default function Documentation() {
   return (
     <Box>
       <Appbar route="documentation" title={t("generic.label.documentation")} />
-      <Box sx={{ height: 48 }} />
+      <Box sx={{ height: 55 }} />
 
       <Typography variant="h6" sx={{ mt: 2, mb: 1 }}>
         Frequently asked questions (FAQ)

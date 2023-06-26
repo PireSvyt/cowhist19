@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import { Typography, Box } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import LinearProgress from "@mui/material/LinearProgress";
-import { grey } from '@mui/material/colors';
 
 // Service
 import serviceGetUserStats from "./services/serviceGetUserStats.js";
@@ -124,7 +123,7 @@ export default function MyStats() {
                 alignItems: "center"
               }}
             >
-              <Typography variant="body1" color={grey[200]} >
+              <Typography variant="body1"  sx={{ color: 'text.secondary' }} >
                 {select.stats.games + " " + t("home.label.games")}
               </Typography>
             </Box>

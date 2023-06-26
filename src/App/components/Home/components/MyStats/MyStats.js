@@ -138,7 +138,7 @@ export default function MyStats() {
 function CircularProgressWithLabel(props) {
   return (
     <Box display='flex' justifyContent='center' alignItems='center'>
-      <CircularProgress variant="determinate" {...props} />
+      <CircularProgress variant="determinate" {...props} size={60} thickness={6} />
       <Typography 
         variant="body1" 
         position='absolute'

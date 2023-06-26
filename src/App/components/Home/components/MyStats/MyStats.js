@@ -65,12 +65,12 @@ export default function MyStats() {
         </Box>
       ) : (
         <Box>
-          <Typography sx={{ p: 2 }} variant="h6" component="span">
+          <Typography sx={{ mt: 2, mb: 1 }} variant="h6" component="span">
             {t("home.label.mystats")}
           </Typography>
           <Box
             sx={{
-              mt: 2,
+              mt: 1,
               display: "flex",
               flexDirection: "row",
               justifyContent: "space-evenly",
@@ -149,7 +149,6 @@ function CircularProgressWithLabel(props) {
       <Typography 
         variant="body1" 
         position='absolute'
-        sx={{ fontWeight: 'bold' }}
       >
         {`${Math.round(props.value)}%`}
       </Typography>

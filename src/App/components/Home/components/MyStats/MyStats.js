@@ -120,9 +120,10 @@ export default function MyStats() {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
+                bgcolor: 'background.paper'
               }}
             >
-              <Divider/>
+              <Divider variant="middle" />
               <Typography variant="body1" >
                 {select.stats.games + " " + t("home.label.games")}
               </Typography>

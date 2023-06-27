@@ -9,7 +9,10 @@ const sliceTableStats = createSlice({
     },
     state: "available",
     view: "ranking",
-    curves: {}
+    graph: {
+      dates: [],
+      series: {}
+    }
   },
   reducers: {
     set: (state, action) => {
@@ -30,8 +33,18 @@ const sliceTableStats = createSlice({
     view: (state, action) => {
       state.view = action.payload.view;
     },
-    setcurve: (state, action) => {
-      state.curves[action.payload._id] = action.payload.curve;
+    setdates: (state, action) => {
+      if (process.env.REACT_APP_DEBUG === "TRUE") {
+        console.log("sliceTableStats.setdates");
+      }
+      state.graph.dates = action.payload.dates;
+    },
+    setserie: (state, action) => {
+      if (process.env.REACT_APP_DEBUG === "TRUE") {
+        console.log("sliceTableStats.setserie");
+        //console.log(action.payload);
+      }
+      state.graph.series[action.payload._id] = action.payload.serie;
     },
   },
 });

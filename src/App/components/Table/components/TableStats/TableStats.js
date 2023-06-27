@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Box, List, ListItem, Typography,ToggleButtonGroup,ToggleButton, FormControl, InputLabel, Select } from "@mui/material";
+import { Box, List, ListItem, Typography,ToggleButtonGroup,ToggleButton, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
 import SmsFailedIcon from "@mui/icons-material/SmsFailed";
 import StarBorderIcon from '@mui/icons-material/StarBorder';
@@ -30,7 +30,6 @@ export default function TableStats() {
     view: useSelector((state) => state.sliceTableStats.view),
     userid: useSelector((state) => state.sliceUserDetails.id),
     ranking: useSelector((state) => state.sliceTableStats.stats.ranking),
-    curves: useSelector((state) => state.sliceTableStats.curves),
   };
 
   // Load
@@ -92,7 +91,29 @@ export default function TableStats() {
         </Box>
       ) : (
         <Box>     
-          <Box textAlign="right" >
+          <Box 
+            sx={{
+              display: "flex",
+              flexDirection: 'row' ,
+              justifyContent: 'flex-end',
+              alignItems: "center",
+              mt: 2, mb: 2
+            }} 
+          >
+
+            <FormControl variant="standard" sx={{ mr: 2 }}>
+              <InputLabel>{t("table.label.data")}</InputLabel>
+              <Select
+                name="contract"
+                value={"averagepoints"}
+                disabled
+              >
+                <MenuItem key={"contract.key"} value={"averagepoints"}>
+                  {t("table.label.averagepoints")}
+                </MenuItem>
+              </Select>
+            </FormControl>
+
             <ToggleButtonGroup value={select.view} >
               <ToggleButton value="ranking" onClick={() => changes.view("ranking")} >
                 <StarBorderIcon />
@@ -112,25 +133,21 @@ export default function TableStats() {
               });
               if (pseudoPlayer.length > 0) {
                 rankingPlayer.pseudo = pseudoPlayer[0].pseudo;
+                return (
+                  <ListItem key={"ranking-" + rankingPlayer._id}>
+                    <RankingCard player={rankingPlayer} />
+                  </ListItem>
+                );
               } else {
-                rankingPlayer.pseudo = "A PLAYER";
+                return (null);
               }
-              return (
-                <ListItem key={"ranking-" + rankingPlayer._id}>
-                  <RankingCard player={rankingPlayer} />
-                </ListItem>
-              );
+              
             })}
           </List>
           ) : (null)}
 
           {select.view === "graph"? (
-            <StatGraph 
-              userid={select.userid}
-              players={select.players}
-              ranking={select.ranking}
-              curves={Object.values(select.curves)}
-            />
+            <StatGraph/>
           ) : (null)}
         
         </Box>

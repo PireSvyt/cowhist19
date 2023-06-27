@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import Plot, { Config, Data, Layout } from 'react-plotly.js';
-import ReactECharts, { EChartsInstance } from 'echarts-for-react';
+import React from 'react';
+import ReactECharts from 'echarts-for-react';
 import {Box, Chip, Stack} from '@mui/material';
 import { useSelector } from "react-redux";
 

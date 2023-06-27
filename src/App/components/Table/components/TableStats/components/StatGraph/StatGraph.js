@@ -1,82 +1,83 @@
-import React, {useEffect, useState} from 'react';
-import Plot, { Config, Data, Layout } from 'react-plotly.js';
-import {Box, Chip} from '@mui/material';
+import React from 'react';
+import ReactECharts from 'echarts-for-react';
+import {Box, Chip, Stack} from '@mui/material';
+import { useSelector } from "react-redux";
 
-
-export default function StatGraph({ curves, ranking, players, userid }) {
+export default function StatGraph() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("StatGraph");
   }
 
-  // Layout
-  let config = {
-    displayModeBar: false, 
-    showlegend: false
-  }
-  // Config
-  let layout = {
-    autosize: false,
-    width: window.innerWidth * 0.9,
-    height: window.innerWidth * 0.9,
-    margin: {
-      l: 15,
-      r: 15,
-      t: 15,
-      b: 15
+  // Selects
+  const select = {
+    userid: useSelector((state) => state.sliceUserDetails.id),
+    players: useSelector((state) => state.sliceTableDetails.players),
+    ranking: useSelector((state) => state.sliceTableStats.stats.ranking),
+    graph: useSelector((state) => state.sliceTableStats.graph),
+  };
+  const chartStyle = {
+    height: window.innerWidth * 0.95,
+    width: window.innerWidth * 0.95,
+  };
+
+  let chartOption = {
+    animationDuration: 500,
+    grid: {
+      left: '4%',
+      right: '4%',
+      bottom: '4%',
+      top: '4%',
+      containLabel: true
     },
-    datarevision: true
+    xAxis: {
+      type: 'category',
+      boundaryGap: false,
+      data: select.graph.dates
+    },
+    yAxis: {
+      type: 'value',
+      splitLine: { show: true }
+    },
+    series: Object.values(select.graph.series)
   }
 
-  const [chartData, setChartData] = useState(curves);
-  useEffect(() => {
-    if (curves.length) {
-        setChartData(() => {
-          return curves
-        });
-    } else {
-      setChartData(() => {
-        return []
-      });
-    }
-  }, [curves]);
-
-  console.log("curves")
-  console.log(curves)
-  console.log("ranking")
-  console.log(ranking)
-  console.log("players")
-  console.log(players)
-  console.log("userid")
-  console.log(userid)
+console.log("dates", select.graph.dates)
 
   return (
-    <Box>
-      <Plot
-        data={ chartData || []}
-        layout={ layout }
-        config={ config }
-      />
-      <Box>
-        {ranking.map((player) => {
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center"
+      }}
+    >
+      <Box sx={{mt: 2, mb: 2}}>
+        <ReactECharts 
+          style={chartStyle} 
+          option={chartOption} 
+        />
+      </Box>
+      <Stack spacing={1} direction="row" sx={{ maxWidth: window.innerWidth * 0.95 }}>
+        {select.ranking.map((player) => {
           let rankingPlayer = { ...player };
-          let pseudoPlayer = players.filter((tablePlayer) => {
+          let pseudoPlayer = select.players.filter((tablePlayer) => {
             return tablePlayer._id === player._id;
           });
           if (pseudoPlayer.length > 0) {
             rankingPlayer.pseudo = pseudoPlayer[0].pseudo;
+            return (
+              <Chip 
+                label={rankingPlayer.pseudo} 
+                size="small" 
+                color={rankingPlayer._id === select.userid ? "primary" : "default" }
+                margin={5}
+              />
+            );
           } else {
-            rankingPlayer.pseudo = "A PLAYER";
+            return (null);
           }
-          return (
-            <Chip 
-              label={rankingPlayer.pseudo} 
-              size="small" 
-              color={rankingPlayer._id === userid ? "primary" : "default" }
-              margin={"5px"}
-            />
-          );
         })}
-      </Box>
+      </Stack>
     </Box>
   )
 } 

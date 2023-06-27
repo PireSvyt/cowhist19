@@ -1,5 +1,7 @@
 // Reducers
 import appStore from "../../../store/appStore.js";
+// Shared
+import { random_id } from "../../../shared/services/toolkit.js";
 
 async function serviceProcessCurves(graph) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -11,8 +13,21 @@ async function serviceProcessCurves(graph) {
     let userid = appStore.getState().sliceUserDetails.id
     let players = appStore.getState().sliceTableDetails.players
 
+    // Dates
+    let dates = graph.map(game => {
+        let date = new Date(game.date)
+        let mm = date.getMonth() + 1; // Months start at 0!
+        let dd = date.getDate();
+        return ( dd + "/" + mm )
+    })
+    appStore.dispatch({
+        type: "sliceTableStats/setdates",
+        payload: {
+            dates: dates
+        },
+    });
+
     // Process
-    let dates = graph.map(game => game.date)
     let playerids = players.map(player => player._id)
     playerids.forEach(playerid => {
         // Create curve
@@ -25,33 +40,34 @@ async function serviceProcessCurves(graph) {
         })
         // Adjust in case of null
         for (let p = 1; p < stats.length; p++) {
-        if (stats[p] === null) {
-            stats[p] = stats[p-1]
+            if (stats[p] === null) {
+                stats[p] = stats[p-1]
+            }
         }
-        }
-        // Add curve to data to be displayed
-        let linelayout = {
-            color: 'rgb(211, 211, 211)',
-            width: 1.5
+        // Style
+        let style = {
+            color: '#9E9E9E',
+            width: 1
         }
         if (playerid === userid) {
-            linelayout = {
-                color: 'rgb(55, 128, 191)',
-                width: 2.5
+            style = {
+                color: '#1976d2',
+                width: 3
             }
         }
+        // Dispatch outcome
         appStore.dispatch({
-        type: "sliceTableStats/setcurve",
-        payload: {
-            _id: playerid,
-            curve: {
-            x: dates, 
-            y: stats,
-            type: 'scatter',
-            mode: 'lines',
-            line: linelayout
-            }
-        },
+            type: "sliceTableStats/setserie",
+            payload: {
+                _id: playerid,
+                serie: {
+                    type: 'line',
+                    step: 'end',
+                    data: stats,
+                    lineStyle: style,
+                    showSymbol: false
+                }
+            },
         });
     });
     } catch (err) {

@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { Typography, Box } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import LinearProgress from "@mui/material/LinearProgress";
+import SmsFailedIcon from "@mui/icons-material/SmsFailed";
 
 // Service
 import serviceGetUserStats from "./services/serviceGetUserStats.js";

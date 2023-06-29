@@ -6,7 +6,7 @@ import appStore from "../../../store/appStore.js";
 async function apiTableHistory(id, parameters) {
   try {
     const res = await axios.post(
-      process.env.REACT_APP_SERVER_URL + "/table/v2/history/" + id,
+      process.env.REACT_APP_SERVER_URL + "/table/v3/history/" + id,
       parameters,
       {
         headers: {

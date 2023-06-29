@@ -203,7 +203,8 @@
       "data": "Data"
     },
     "button": {
-      "newgame": "New game"
+      "newgame": "New game",
+      "loadmore": "Load more"
     },
     "error": {
       "missingname": "missing name",

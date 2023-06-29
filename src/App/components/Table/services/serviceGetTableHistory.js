@@ -5,9 +5,9 @@ import { random_id } from "../../../shared/services/toolkit.js";
 // Reducers
 import appStore from "../../../store/appStore.js";
 
-async function serviceGetTableHistory() {
+async function serviceGetTableHistory(lastid) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("serviceGetTableHistory");
+    console.log("serviceGetTableHistory lastid : " + lastid);
   }
 
   try {
@@ -16,11 +16,12 @@ async function serviceGetTableHistory() {
 
     // Initialize
     let id = window.location.href.split("/table/")[1];
+    if (!lastid) {lastid = null}
     let parameters = {
       need: "list",
       games: {
-        index: 0,
-        number: 20,
+        lastid: lastid,
+        number: 15,
       },
     };
 
@@ -35,7 +36,7 @@ async function serviceGetTableHistory() {
       case "table.history.success":
         appStore.dispatch({
           type: "sliceTableHistory/set",
-          payload: data.data.games,
+          payload: data.data,
         });
         break;
       case "table.history.accessdenied.noneed":

@@ -5,7 +5,7 @@ import {
   Box,
   List,
   ListItem,
-  Typography,
+  Typography, Button
 } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
 import SmsFailedIcon from "@mui/icons-material/SmsFailed";
@@ -29,11 +29,17 @@ export default function TableHistory() {
     loadedDetails: useSelector((state) => state.sliceTableDetails.loaded),
     loadedHistory: useSelector((state) => state.sliceTableHistory.loaded),
     history: useSelector((state) => state.sliceTableHistory.games),
+    more: useSelector((state) => state.sliceTableHistory.more),
   };
 
   // Load
   if (select.loadedDetails && !select.loadedHistory) {
     serviceGetTableHistory();
+  }
+
+  function loadmore () {
+    let lastgame = select.history.slice(-1)[0]
+    serviceGetTableHistory(lastgame._id);
   }
 
   return (
@@ -76,12 +82,28 @@ export default function TableHistory() {
           </Typography>
         </Box>
       ) : (
-        <List dense={true}>
-          {select.history.map((game) => (
-            <ListItem key={"game-" + game._id}>
-              <HistoryCard game={game} />
-            </ListItem>))}
-        </List>
+        <Box>
+          <List dense={true}>
+            {select.history.map((game) => (
+              <ListItem key={"game-" + game._id}>
+                <HistoryCard game={game} />
+              </ListItem>))}
+          </List>
+          {select.more ? (
+            <Box textAlign="center">
+              <Button
+                variant="outlined"
+                sx={{
+                  width: "80%",
+                  m: 1,
+                }}
+                onClick={loadmore}
+              >
+                {t("table.button.loadmore")}
+              </Button>
+            </Box>
+          ) : (null) }
+        </Box>
       )}
     </Box>
   );

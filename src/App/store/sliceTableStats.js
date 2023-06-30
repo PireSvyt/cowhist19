@@ -11,7 +11,8 @@ const sliceTableStats = createSlice({
     view: "ranking",
     graph: {
       dates: [],
-      series: {}
+      series: {},
+      focus: ""
     }
   },
   reducers: {
@@ -45,6 +46,34 @@ const sliceTableStats = createSlice({
         //console.log(action.payload);
       }
       state.graph.series[action.payload._id] = action.payload.serie;
+    },
+    setfocus: (state, action) => {
+      if (process.env.REACT_APP_DEBUG === "TRUE") {
+        console.log("sliceTableStats.setfocus");
+        //console.log(action.payload);
+      }
+      if (state.graph.focus === action.payload.focus) {
+        // Unfocus
+        state.graph.focus = ""
+        state.graph.series[action.payload.focus].lineStyle = {
+          color: '#9E9E9E',
+          width: 1
+        }
+      } else {
+        if (state.graph.focus !== "") {
+          // Remove previous focus
+          state.graph.series[state.graph.focus].lineStyle = {
+            color: '#9E9E9E',
+            width: 1
+          }
+        }
+        // Focus
+        state.graph.focus = action.payload.focus;
+        state.graph.series[action.payload.focus].lineStyle = {
+          color: '#9c27b0', // Secondary
+          width: 3
+        }
+      }
     },
   },
 });

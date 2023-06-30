@@ -12,7 +12,7 @@ const sliceTableHistory = createSlice({
     set: (state, action) => {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
         console.log("sliceTableHistory.set");
-        console.log(action.payload);
+        //console.log(action.payload);
       }
       if (action.payload.action !== "error") {
         if (action.payload.action === "new") {

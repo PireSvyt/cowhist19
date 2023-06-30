@@ -30,6 +30,7 @@ export default function TableHistory() {
     loadedHistory: useSelector((state) => state.sliceTableHistory.loaded),
     history: useSelector((state) => state.sliceTableHistory.games),
     more: useSelector((state) => state.sliceTableHistory.more),
+    state: useSelector((state) => state.sliceTableHistory.state),
   };
 
   // Load
@@ -93,6 +94,7 @@ export default function TableHistory() {
             <Box textAlign="center">
               <Button
                 variant="outlined"
+                disabled={select.state !== "available"}
                 sx={{
                   width: "80%",
                   m: 1,

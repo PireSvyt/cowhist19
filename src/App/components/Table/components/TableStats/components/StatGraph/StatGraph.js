@@ -3,6 +3,8 @@ import ReactECharts from 'echarts-for-react';
 import {Box, Chip, Stack} from '@mui/material';
 import { useSelector } from "react-redux";
 
+import appStore from '../../../../../../store/appStore';
+
 export default function StatGraph() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("StatGraph");
@@ -15,11 +17,27 @@ export default function StatGraph() {
     ranking: useSelector((state) => state.sliceTableStats.stats.ranking),
     graph: useSelector((state) => state.sliceTableStats.graph),
   };
-  const chartStyle = {
-    height: window.innerWidth * 0.95,
-    width: window.innerWidth * 0.95,
+  
+  // Changes
+  const changes = {
+    focus: (id) => {
+      if (id !== select.userid) {
+        appStore.dispatch({
+          type: "sliceTableStats/setfocus",
+          payload: {
+            focus: id
+          },
+        });
+      }
+    },
   };
 
+  // Size
+  const chartStyle = {
+    height: window.innerHeight -350,
+    width: window.innerWidth * 0.95,
+  };
+  // Options
   let chartOption = {
     animationDuration: 500,
     grid: {
@@ -40,8 +58,6 @@ export default function StatGraph() {
     },
     series: Object.values(select.graph.series)
   }
-
-console.log("dates", select.graph.dates)
 
   return (
     <Box
@@ -68,9 +84,11 @@ console.log("dates", select.graph.dates)
             return (
               <Chip 
                 label={rankingPlayer.pseudo} 
-                size="small" 
-                color={rankingPlayer._id === select.userid ? "primary" : "default" }
+                //size="small" 
+                color={rankingPlayer._id === select.userid ? "primary" : 
+                ( rankingPlayer._id === select.graph.focus ? "secondary" : "default" ) }
                 margin={5}
+                onClick={() => changes.focus(rankingPlayer._id)}
               />
             );
           } else {

@@ -12,6 +12,7 @@ async function serviceProcessCurves(graph) {
     // getState
     let userid = appStore.getState().sliceUserDetails.id
     let players = appStore.getState().sliceTableDetails.players
+    let focus = appStore.getState().sliceTableStats.graph.focus
 
     // Dates
     let dates = graph.map(game => {
@@ -46,12 +47,18 @@ async function serviceProcessCurves(graph) {
         }
         // Style
         let style = {
-            color: '#9E9E9E',
+            color: '#BDBDBD',
             width: 1
         }
         if (playerid === userid) {
             style = {
                 color: '#1976d2',
+                width: 3
+            }
+        }
+        if (playerid === focus) {
+            style = {
+                color: '#9c27b0',
                 width: 3
             }
         }
@@ -62,7 +69,7 @@ async function serviceProcessCurves(graph) {
                 _id: playerid,
                 serie: {
                     type: 'line',
-                    step: 'end',
+                    //step: 'end',
                     data: stats,
                     lineStyle: style,
                     showSymbol: false

@@ -73,7 +73,11 @@ export default function StatGraph() {
           option={chartOption} 
         />
       </Box>
-      <Stack spacing={1} direction="row" sx={{ maxWidth: window.innerWidth * 0.95 }}>
+      <Box 
+        sx={{
+          width: window.innerWidth * 0.95
+        }}  
+      >
         {select.ranking.map((player) => {
           let rankingPlayer = { ...player };
           let pseudoPlayer = select.players.filter((tablePlayer) => {
@@ -83,6 +87,9 @@ export default function StatGraph() {
             rankingPlayer.pseudo = pseudoPlayer[0].pseudo;
             return (
               <Chip 
+                sx={{
+                  m: 0.5
+                }} 
                 label={rankingPlayer.pseudo} 
                 //size="small" 
                 color={rankingPlayer._id === select.userid ? "primary" : 
@@ -95,7 +102,7 @@ export default function StatGraph() {
             return (null);
           }
         })}
-      </Stack>
+      </Box>
     </Box>
   )
 } 

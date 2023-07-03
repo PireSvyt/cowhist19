@@ -15,9 +15,8 @@ import serviceGetTableStats from "./services/serviceGetTableStats.js";
 import serviceGetTableHistory from "./services/serviceGetTableHistory.js";
 
 // Shared
-import Appbar from "../../shared/components/Appbar/Appbar.js";
-import TableModal from "../../shared/components/TableModal/TableModal.js";
-import Snack from "../../shared/components/Snack/Snack2.js";
+import Appbar from "../_shared/components/Appbar/Appbar.js";
+import TableModal from "../_shared/components/Appbar/components/TableModal/TableModal.js";
 // Reducers
 import appStore from "../../store/appStore.js";
 
@@ -184,8 +183,6 @@ export default function Table() {
 
           {select.openTableModal === true ? <TableModal /> : null}
           {select.openGameModal === true ? <GameModal /> : null}
-
-          <Snack data-testid="componentSnack" data={select.snackData} />
         </Box>
       )}
     </Box>

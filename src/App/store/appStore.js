@@ -13,9 +13,10 @@ import sliceTableModal from "./sliceTableModal.js";
 import sliceInviteModal from "./sliceInviteModal.js";
 import sliceGameModal from "./sliceGameModal.js";
 import sliceSnack from "./sliceSnack.js";
-import sliceToComeModal from "./sliceToComeModal.js";
+import sliceFeedbackModal from "./sliceFeedbackModal.js";
 // Admin
 import sliceAdminStats from "./sliceAdminStats.js";
+import sliceAdminFeedbacks from "./sliceAdminFeedbacks.js";
 
 export default configureStore({
   reducer: {
@@ -31,7 +32,8 @@ export default configureStore({
     sliceInviteModal: sliceInviteModal,
     sliceGameModal: sliceGameModal,
     sliceSnack: sliceSnack,
-    sliceToComeModal: sliceToComeModal,
+    sliceFeedbackModal: sliceFeedbackModal,
     sliceAdminStats: sliceAdminStats,
+    sliceAdminFeedbacks: sliceAdminFeedbacks,
   },
 });

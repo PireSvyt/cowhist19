@@ -15,8 +15,6 @@ export default function AdminStats() {
 
   // Selects
   const select = {
-    authLoaded: useSelector((state) => state.sliceUserAuth.loaded),
-    signedin: useSelector((state) => state.sliceUserAuth.signedin),
     priviledges: useSelector((state) => state.sliceUserDetails.priviledges),
     statsLoaded: useSelector((state) => state.sliceAdminStats.loaded),
     stats: useSelector((state) => state.sliceAdminStats.stats),
@@ -47,7 +45,6 @@ export default function AdminStats() {
 
   return (
     <Box>
-      <Paper sx={{ p: 2, g: 2, m: 2 }}>
         <Typography variant="h5" gutterBottom>
           {"Current stats"}
         </Typography>
@@ -88,7 +85,6 @@ export default function AdminStats() {
             );
           })}
         </List>
-      </Paper>
     </Box>
   );
 }

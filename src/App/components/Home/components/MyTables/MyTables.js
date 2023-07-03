@@ -16,7 +16,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 // Components
 import TableCard from "./components/TableCard/TableCard.js";
 // Shared
-import TableModal from "../../../../shared/components/TableModal/TableModal.js";
+import TableModal from "../../../_shared/components/Appbar/components/TableModal/TableModal.js";
 // Reducers
 import appStore from "../../../../store/appStore.js";
 

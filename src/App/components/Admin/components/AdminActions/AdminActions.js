@@ -9,24 +9,32 @@ export default function AdminActions() {
     console.log("AdminActions");
   }
 
-  return (
-    <Box>
-      <Paper sx={{ p: 2, g: 2, m: 2 }}>
+  return (      
+    <Box> 
         <Typography variant="h5" gutterBottom>
           {"Actions"}
         </Typography>
-        <Button
-                  color="error"
-          variant="outlined"
+        
+        <Box
           sx={{
-            width: "80%",
-            m: 1,
+            m: 2,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
-          onClick={() => servicePopulate()}
         >
-          {"Populate DB"}
-        </Button>
-      </Paper>
+          <Button
+                    color="error"
+            variant="outlined"
+            sx={{
+              width: "80%",
+              m: 1,
+            }}
+            onClick={() => servicePopulate()}
+          >
+            {"Populate DB"}
+          </Button>
+      </Box>        
     </Box>
   );
 }

@@ -5,8 +5,7 @@ import { Paper, Button, Typography, Box } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
 
 // Shared
-import Appbar from "../../shared/components/Appbar/Appbar.js";
-import ToComeModal from "../../shared/components/ToComeModal/ToComeModal.js";
+import Appbar from "../_shared/components/Appbar/Appbar.js";
 // Reducers
 import appStore from "../../store/appStore.js";
 
@@ -24,7 +23,94 @@ export default function Account() {
     detailsLoaded: useSelector((state) => state.sliceUserDetails.loaded),
     login: useSelector((state) => state.sliceUserDetails.login),
     pseudo: useSelector((state) => state.sliceUserDetails.pseudo),
-    tocomeData: useSelector((state) => state.sliceToComeModal.tocomeData),
+  };
+
+  // Changes
+  const toComePayload = {
+    title: "feedback.label.tocome",
+    contents: [
+      {
+        type: "typography",
+        variant: "h6",
+        text: "feedback.label.tocomeintro",
+        gutterbottom: true,
+        sx:{
+          whiteSpace: "pre-line",
+        }
+      },
+      {
+        type: "typography",
+        text: "feedback.label.tocomedetails",
+        gutterbottom: true,
+        sx:{
+          whiteSpace: "pre-line",
+        }
+      },
+      {
+        type: "typography",
+        variant: "caption",
+        text: "feedback.label.addmessage",
+        gutterbottom: true,
+        sx:{
+          whiteSpace: "pre-line",
+        }
+      }
+    ],
+    inputs: {
+      source: "teaser",
+      tag: "",
+      text: ""
+    }
+  }
+  const changes = {
+    feedback_changepseudo: () => {
+      let payload = toComePayload
+      payload.inputs.tag = "changepseudo"
+      appStore.dispatch({ 
+        type: "sliceFeedbackModal/change",
+        payload: payload
+      });
+    },
+    feedback_changeemail: () => {
+      let payload = toComePayload
+      payload.inputs.tag = "changeemail"
+      appStore.dispatch({ 
+        type: "sliceFeedbackModal/change",
+        payload: payload
+      });
+    },
+    feedback_changepassword: () => {
+      let payload = toComePayload
+      payload.inputs.tag = "changepassword"
+      appStore.dispatch({ 
+        type: "sliceFeedbackModal/change",
+        payload: payload
+      });
+    },
+    feedback_mergeaccounts: () => {
+      let payload = toComePayload
+      payload.inputs.tag = "mergeaccounts"
+      appStore.dispatch({ 
+        type: "sliceFeedbackModal/change",
+        payload: payload
+      });
+    },
+    feedback_anonymizeaccount: () => {
+      let payload = toComePayload
+      payload.inputs.tag = "anonymizeaccount"
+      appStore.dispatch({ 
+        type: "sliceFeedbackModal/change",
+        payload: payload
+      });
+    },
+    feedback_closeaccount: () => {
+      let payload = toComePayload
+      payload.inputs.tag = "closeaccount"
+      appStore.dispatch({ 
+        type: "sliceFeedbackModal/change",
+        payload: payload
+      });
+    }
   };
 
   return (
@@ -69,9 +155,7 @@ export default function Account() {
                     width: "80%",
                     m: 1,
                   }}
-                  onClick={() => {
-                    appStore.dispatch({ type: "sliceToComeModal/open" });
-                  }}
+                  onClick={changes.feedback_changepseudo}
                 >
                   {t("account.button.changepseudo")}
                 </Button>
@@ -95,9 +179,7 @@ export default function Account() {
                     width: "80%",
                     m: 1,
                   }}
-                  onClick={() => {
-                    appStore.dispatch({ type: "sliceToComeModal/open" });
-                  }}
+                  onClick={changes.feedback_changeemail}
                 >
                   {t("account.button.changeemail")}
                 </Button>
@@ -118,9 +200,7 @@ export default function Account() {
                     width: "80%",
                     m: 1,
                   }}
-                  onClick={() => {
-                    appStore.dispatch({ type: "sliceToComeModal/open" });
-                  }}
+                  onClick={changes.feedback_changepassword}
                 >
                   {t("account.button.changepassword")}
                 </Button>
@@ -158,9 +238,7 @@ export default function Account() {
                     width: "80%",
                     m: 1,
                   }}
-                  onClick={() => {
-                    appStore.dispatch({ type: "sliceToComeModal/open" });
-                  }}
+                  onClick={changes.feedback_mergeaccounts}
                 >
                   {t("account.button.merge")}
                 </Button>
@@ -185,9 +263,7 @@ export default function Account() {
                     width: "80%",
                     m: 1,
                   }}
-                  onClick={() => {
-                    appStore.dispatch({ type: "sliceToComeModal/open" });
-                  }}
+                  onClick={changes.feedback_anonymizeaccount}
                 >
                   {t("account.button.anonymize")}
                 </Button>
@@ -212,17 +288,13 @@ export default function Account() {
                     width: "80%",
                     m: 1,
                   }}
-                  onClick={() => {
-                    appStore.dispatch({ type: "sliceToComeModal/open" });
-                  }}
+                  onClick={changes.feedback_closeaccount}
                 >
                   {t("account.button.close")}
                 </Button>
               </Box>
             </Box>
           </Paper>
-
-          <ToComeModal data={select.tocomeData} />
         </Box>
       )}
     </div>

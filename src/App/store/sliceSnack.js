@@ -22,12 +22,18 @@ const sliceSnack = createSlice({
         console.log("sliceSnack.close");
       }
       state.open = false;
+      state.snackData= {
+        id: "",
+        uid: undefined,
+        details: [],
+      }
     },
     change: (state, action) => {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
         console.log("sliceSnack.change");
         //console.log(action.payload);
       }
+      state.open = true;
       state.snackData.id = action.payload.id;
       state.snackData.uid = action.payload.uid;
       if (action.payload.details !== undefined) {

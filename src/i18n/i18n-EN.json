@@ -4,10 +4,7 @@
       "product": "CoWhist 19",
       "account": "Account",
       "documentation": "Documentation",
-      "about": "About",
-      "tocome": "To come...",
-      "tocomeintro": "This functionality is not available yet.",
-      "tocomedetails": "We are delighted by your interest and propose to record it for the team to prioritize for this! \n This is anonymous ;)"
+      "about": "About"
     },
     "menu": {
       "home": "Home",
@@ -15,6 +12,7 @@
       "table": "Table",
       "documentation": "Documentation",
       "about": "About",
+      "contact": "Contact",
       "signout": "Sign out"
     },
     "input": {
@@ -34,7 +32,6 @@
       "view": "View",
       "edit": "Edit",
       "proceed": "Proceed",
-      "tocome": "To come...",
       "tohome": "To home"
     },
     "snack": {
@@ -301,6 +298,30 @@
     "snack": {
       "saved": "Game saved!",
       "deleted": "Game deleted"
+    }
+  },
+  "feedback":{
+    "label": {
+      "tocome": "To come...",
+      "tocomeintro": "This functionality is not available yet.",
+      "tocomedetails": "We are delighted by your interest and propose to record it for the team to prioritize for this! \n This is anonymous ;)",
+      "addmessage": "You can add message to make your point",
+      "contact": "Contact",
+      "leavemessage": "Leave us a message!"
+    },
+    "input":{
+      "message": "Message",
+      "consent": "I accept the use of this feedback to improve the product"
+    },
+    "button": {
+      "send": "Send"
+    },
+    "error":{
+      "missingmessage": "missing message",
+      "missingconsent": "missing consent"
+    },
+    "snack":{      
+      "created" : "Feedback sent!"
     }
   }
 }

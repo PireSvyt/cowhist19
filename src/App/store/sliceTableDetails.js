@@ -1,6 +1,6 @@
 import { TramOutlined } from "@mui/icons-material";
 import { createSlice } from "@reduxjs/toolkit";
-import { random_id } from "../shared/services/toolkit.js";
+import { random_id } from "../services/_shared/toolkit";
 
 const sliceTableDetails = createSlice({
   name: "sliceTableDetails",

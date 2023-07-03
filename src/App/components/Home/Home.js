@@ -9,9 +9,7 @@ import Landing from "./components/Landing/Landing.js";
 import MyStats from "./components/MyStats/MyStats.js";
 import MyTables from "./components/MyTables/MyTables.js";
 // Shared
-import Appbar from "../../shared/components/Appbar/Appbar.js";
-import Snack from "../../shared/components/Snack/Snack2.js";
-import ToComeModal from "../../shared/components/ToComeModal/ToComeModal.js";
+import Appbar from "../_shared/components/Appbar/Appbar.js";
 
 export default function Home() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -24,8 +22,8 @@ export default function Home() {
   const select = {
     authLoaded: useSelector((state) => state.sliceUserAuth.loaded),
     signedin: useSelector((state) => state.sliceUserAuth.signedin),
+    snackOpen: useSelector((state) => state.sliceSnack.open),
     snackData: useSelector((state) => state.sliceSnack.snackData),
-    tocomeData: useSelector((state) => state.sliceToComeModal.tocomeData),
   };
 
   return (
@@ -44,8 +42,6 @@ export default function Home() {
           <MyTables />
         </Box>
       )}
-      <Snack data-testid="componentSnack" data={select.snackData} />
-      <ToComeModal data={select.tocomeData} />
     </Box>
   );
 }

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Cookies from "js-cookie";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import {
@@ -23,9 +22,10 @@ import { random_id } from "../../../../services/_shared/toolkit.js";
 // Shared
 import serviceAccessDeny from "../../../../services/_shared/serviceAccessDeny.js";
 import Snack from "./components/Snack/Snack2.js";
-import FeedbackModal from "./components/FeedbackModal/FeedbackModal.js"
-import ConfirmModal from "./components/ConfirmModal/ConfirmModal.js";
+import FeedbackModal from "./components/FeedbackModal/FeedbackModal.js";
 import TableModal from "./components/TableModal/TableModal.js";
+// Store
+import appStore from "../../../../store/appStore.js";
 
 export default function Appbar(props) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -50,37 +50,63 @@ export default function Appbar(props) {
   };
 
   // Handles
-  const openMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-    setMenuOpen(true);
-  };
-  function closeMenu() {
-    setMenuOpen(false);
-  }
-  function toHome() {
-    setMenuOpen(false);
-    window.location = "/";
-  }
-  function toDocumentation() {
-    setMenuOpen(false);
-    window.location = "/documentation";
-  }
-  function toAbout() {
-    setMenuOpen(false);
-    window.location = "/about";
-  }
-  function toAccount() {
-    setMenuOpen(false);
-    window.location = "/account";
-  }
-  function toAdmin() {
-    setMenuOpen(false);
-    window.location = "/admin";
-  }
-  function signOut() {
-    setMenuOpen(false);
-    serviceAccessDeny();
-    window.location = "/";
+  const action = {
+    openMenu: (event) => {
+      setAnchorEl(event.currentTarget);
+      setMenuOpen(true);
+    },
+    closeMenu: () => {
+      setMenuOpen(false);
+    },
+    toHome: () => {
+      setMenuOpen(false);
+      window.location = "/";
+    },
+    toDocumentation: () => {
+      setMenuOpen(false);
+      window.location = "/documentation";
+    },
+    toAbout: () => {
+      setMenuOpen(false);
+      window.location = "/about";
+    },
+    toAccount: () => {
+      setMenuOpen(false);
+      window.location = "/account";
+    },
+    toAdmin: () => {
+      setMenuOpen(false);
+      window.location = "/admin";
+    },
+    signOut: () => {
+      setMenuOpen(false);
+      serviceAccessDeny();
+      window.location = "/";
+    },
+    toContact: () => {
+      setMenuOpen(false);
+      appStore.dispatch({ 
+        type: "sliceFeedbackModal/change",
+        payload: {
+          title: "feedback.label.contact",
+          contents: [
+            {
+              type: "typography",
+              text: "feedback.label.leavemessage",
+              gutterbottom: true,
+              sx:{
+                whiteSpace: "pre-line",
+              }
+            }
+          ],
+          inputs: {
+            source: "open",
+            tag: "",
+            text: ""
+          }
+        }
+      });
+    }
   }
 
   // MenuItems
@@ -89,39 +115,45 @@ export default function Appbar(props) {
       item: "signout",
       label: "generic.menu.signout",
       onclick: () => {
-        signOut();
-        closeMenu();
+        action.signOut();
+        action.closeMenu();
       },
       signed: true,
     },
     toAccount: {
       item: "account",
       label: "generic.menu.account",
-      onclick: toAccount,
+      onclick: action.toAccount,
       signed: true,
     },
     toHome: {
       item: "home",
       label: "generic.menu.home",
-      onclick: toHome,
+      onclick: action.toHome,
       signed: true,
     },
     toDocumentation: {
       item: "documentation",
       label: "generic.menu.documentation",
-      onclick: toDocumentation,
+      onclick: action.toDocumentation,
       signed: false,
     },
     toAbout: {
       item: "about",
       label: "generic.menu.about",
-      onclick: toAbout,
+      onclick: action.toAbout,
       signed: false,
+    },
+    toContact: {
+      item: "contact",
+      label: "generic.menu.contact",
+      onclick: action.toContact,
+      signed: true,
     },
     toAdmin: {
       item: "admin",
       label: "Admin",
-      onclick: toAdmin,
+      onclick: action.toAdmin,
       signed: true,
     },
   };
@@ -137,6 +169,7 @@ export default function Appbar(props) {
       if (select.priviledges.includes("admin")) {
         menuItems.push(potentialMenuItems.toAdmin);
       }
+      menuItems.push(potentialMenuItems.toContact);
       menuItems.push(potentialMenuItems.signOut);
       showLanguageSwitcher = true;
       break;
@@ -148,6 +181,7 @@ export default function Appbar(props) {
       if (select.priviledges.includes("admin")) {
         menuItems.push(potentialMenuItems.toAdmin);
       }
+      menuItems.push(potentialMenuItems.toContact);
       menuItems.push(potentialMenuItems.signOut);
       showLanguageSwitcher = false;
       break;
@@ -225,13 +259,13 @@ export default function Appbar(props) {
 
               {menuItems.length === 0 ? null : (
                 <Box>
-                  <IconButton size="large" onClick={openMenu}>
+                  <IconButton size="large" onClick={action.openMenu}>
                     <MenuIcon sx={{ color: "white" }} />
                   </IconButton>
 
                   <Menu
                     open={menuOpen}
-                    onClose={closeMenu}
+                    onClose={action.closeMenu}
                     anchorEl={anchorEl}
                     MenuListProps={{
                       "aria-labelledby": "basic-button",

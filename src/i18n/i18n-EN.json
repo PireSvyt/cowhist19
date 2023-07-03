@@ -12,6 +12,7 @@
       "table": "Table",
       "documentation": "Documentation",
       "about": "About",
+      "contact": "Contact",
       "signout": "Sign out"
     },
     "input": {
@@ -305,6 +306,7 @@
       "tocomeintro": "This functionality is not available yet.",
       "tocomedetails": "We are delighted by your interest and propose to record it for the team to prioritize for this! \n This is anonymous ;)",
       "addmessage": "You can add message to make your point",
+      "contact": "Contact",
       "leavemessage": "Leave us a message!"
     },
     "input":{

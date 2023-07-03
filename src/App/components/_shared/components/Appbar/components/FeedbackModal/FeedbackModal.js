@@ -16,7 +16,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 
 // Shared
 import { random_id } from "../../../../../../services/_shared/toolkit";
-import serviceProceed from "../TableModal/services/serviceProceed";
+import serviceProceed from "./services/serviceProceed";
 // Components
 import FeedbackContent from "./components/FeedbackContent/FeedbackContent";
 // Store 

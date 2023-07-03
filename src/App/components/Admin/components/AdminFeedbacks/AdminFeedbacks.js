@@ -37,10 +37,15 @@ export default function AdminFeedbacks() {
   useEffect(() => {
     structureFeedbacks()
   }, [select.feedbacks]);
+  const [openFeedback, setOpenFeedback] = useState([]);
+  useEffect(() => {
+    openFeedbacks()
+  }, [select.feedbacks]);
+
   function structureFeedbacks () {
     let structuredFeedbackDict = {}
     select.feedbacks.forEach(feedback => {
-        if (feedback.type !== "open" && feedback.status === "open") {
+        if (feedback.source !== "open" && feedback.status === "open") {
             // Create key
             if (structuredFeedbackDict[feedback.tag] === undefined) {
                 structuredFeedbackDict[feedback.tag] = {
@@ -63,7 +68,11 @@ export default function AdminFeedbacks() {
     structuredFeedbackTemp.sort((a,b) => {return  b.count - a.count})
     // Update structure
     setStructuredFeedback(structuredFeedbackTemp)
-    console.log(structuredFeedbackTemp)
+  }
+  function openFeedbacks () {
+    let openFeedbackTemp =select.feedbacks.filter(feedback => feedback.source === "open")
+    // Update structure
+    setOpenFeedback(openFeedbackTemp)
   }
 
   // Formating
@@ -78,7 +87,9 @@ export default function AdminFeedbacks() {
           {"Current feedbacks"}
         </Typography>
         
-        <Typography>{"Structured feedbacks"}</Typography>
+        <Typography>
+          {"Structured feedbacks"}
+        </Typography>
         {structuredFeedback.map(feedback => {
             return (
                 <Accordion>
@@ -110,18 +121,16 @@ export default function AdminFeedbacks() {
             )
         })}
 
-        <Typography sx={{mt: 1}}>{"Open feedbacks"}</Typography>
+        <Typography sx={{mt: 1}}>
+          {"Open feedbacks"}
+        </Typography>
         <List dense={true}>
-          {select.feedbacks.map((feedback) => {
-            if (feedback.type === "open") {
-                return (
-                    <ListItem key={"feedback-" + feedback._id}>
-                        <FeedbackCard feedback={feedback} />
-                    </ListItem>
-                );
-            } else {
-                return null
-            }
+          {openFeedback.map((feedback) => {
+            return (
+              <ListItem key={"feedback-" + feedback._id}>
+                <FeedbackCard feedback={feedback} />
+              </ListItem>
+            );
           })}
         </List>
     </Box>

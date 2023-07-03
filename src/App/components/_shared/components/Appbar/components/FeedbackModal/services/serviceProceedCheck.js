@@ -13,24 +13,24 @@ function serviceProceedCheck(feedback) {
         feedback.source === undefined ||
         feedback.source === ""
     ) {
-      proceed = false;
-      errors.push("feedback.error.missingsource");
+        proceed = false;
+        errors.push("feedback.error.missingsource");
     }
     // Is tag missing?
     if (
-        feedback.tag === undefined ||
-        feedback.tag === ""
+        !(feedback.tag === undefined ||
+        feedback.tag === "") && feedback.source === "open"
     ) {
-    proceed = false;
-    errors.push("feedback.error.missingtag");
+        proceed = false;
+        errors.push("feedback.error.missingtag");
     }
     // Is userid missing?
     if (
         feedback.userid === undefined ||
         feedback.userid === ""
     ) {
-    proceed = false;
-    errors.push("feedback.error.missinguserid");
+        proceed = false;
+        errors.push("feedback.error.missinguserid");
     }
     
     

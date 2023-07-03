@@ -44,7 +44,7 @@ export default function Home() {
           <MyTables />
         </Box>
       )}
-      <Snack data-testid="componentSnack" data={select.snackData} />
+      <Snack data={select.snackData} />
       <ToComeModal data={select.tocomeData} />
     </Box>
   );

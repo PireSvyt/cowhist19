@@ -21,5 +21,7 @@
   "table.snack.deleted": { "severity": "warning" },
 
   "game.snack.saved": { "severity": "success" },
-  "game.snack.deleted": { "severity": "warning" }
+  "game.snack.deleted": { "severity": "warning" },
+
+  "feedback.snack.created": { "severity": "success" }
 }

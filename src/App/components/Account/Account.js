@@ -7,6 +7,8 @@ import LinearProgress from "@mui/material/LinearProgress";
 // Shared
 import Appbar from "../../shared/components/Appbar/Appbar.js";
 import ToComeModal from "../../shared/components/ToComeModal/ToComeModal.js";
+import Snack from "../../shared/components/Snack/Snack2.js";
+import FeedbackModal from "../_shared/FeedbackModal/FeedbackModal.js";
 // Reducers
 import appStore from "../../store/appStore.js";
 
@@ -25,6 +27,54 @@ export default function Account() {
     login: useSelector((state) => state.sliceUserDetails.login),
     pseudo: useSelector((state) => state.sliceUserDetails.pseudo),
     tocomeData: useSelector((state) => state.sliceToComeModal.tocomeData),
+    feedbackOpen: useSelector((state) => state.sliceFeedbackModal.open),
+    snackOpen: useSelector((state) => state.sliceSnack.open),
+    snackData: useSelector((state) => state.sliceSnack.snackData),
+  };
+
+  // Changes
+  const changes = {
+    feedback_changepseudo: () => {
+      appStore.dispatch({ 
+        type: "sliceFeedbackModal/change",
+        payload: {
+          title: "feedback.label.tocome",
+          contents: [
+            {
+              type: "typography",
+              variant: "h6",
+              text: "feedback.label.tocomeintro",
+              gutterbottom: true,
+              sx:{
+                whiteSpace: "pre-line",
+              }
+            },
+            {
+              type: "typography",
+              text: "feedback.label.tocomedetails",
+              gutterbottom: true,
+              sx:{
+                whiteSpace: "pre-line",
+              }
+            },
+            {
+              type: "typography",
+              variant: "caption",
+              text: "feedback.label.leavemessage",
+              gutterbottom: true,
+              sx:{
+                whiteSpace: "pre-line",
+              }
+            }
+          ],
+          inputs: {
+            source: "teaser",
+            tag: "changepseudo",
+            text: ""
+          }
+        }
+      });
+    }
   };
 
   return (
@@ -69,9 +119,7 @@ export default function Account() {
                     width: "80%",
                     m: 1,
                   }}
-                  onClick={() => {
-                    appStore.dispatch({ type: "sliceToComeModal/open" });
-                  }}
+                  onClick={changes.feedback_changepseudo}
                 >
                   {t("account.button.changepseudo")}
                 </Button>
@@ -223,6 +271,11 @@ export default function Account() {
           </Paper>
 
           <ToComeModal data={select.tocomeData} />
+
+          {select.feedbackOpen ? (<FeedbackModal/>) : (null)}
+
+          {select.snackOpen ? (<Snack data={select.snackData}/>) : (null)}
+
         </Box>
       )}
     </div>

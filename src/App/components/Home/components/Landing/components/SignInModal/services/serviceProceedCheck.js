@@ -1,5 +1,5 @@
 // Share
-import { validateEmail } from "../../../../../../../shared/services/toolkit.js";
+import { validateEmail } from "../../../../../../../services/_shared/toolkit";
 
 function serviceProceedCheck(signin) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

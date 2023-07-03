@@ -45,7 +45,6 @@ export default function AdminStats() {
 
   return (
     <Box>
-      <Paper sx={{ p: 2, g: 2, m: 2 }}>
         <Typography variant="h5" gutterBottom>
           {"Current stats"}
         </Typography>
@@ -86,7 +85,6 @@ export default function AdminStats() {
             );
           })}
         </List>
-      </Paper>
     </Box>
   );
 }

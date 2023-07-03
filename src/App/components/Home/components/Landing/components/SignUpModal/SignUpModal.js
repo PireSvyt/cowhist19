@@ -18,8 +18,8 @@ import { LoadingButton } from "@mui/lab";
 // Services
 import serviceProceed from "./services/serviceProceed.js";
 // Shared
-import serviceExistingPseudo from "../../../../../../shared/services/serviceExistingPseudo.js";
-import { debounce } from "../../../../../../shared/services/toolkit.js";
+import serviceExistingPseudo from "../../../../../../services/_shared/serviceExistingPseudo.js";
+import { debounce } from "../../../../../../services/_shared/toolkit.js";
 // Reducers
 import appStore from "../../../../../../store/appStore.js";
 

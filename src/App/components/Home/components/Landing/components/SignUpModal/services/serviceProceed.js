@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs-react";
 import apiSignUp from "./apiSignUp.js";
 import serviceProceedCheck from "./serviceProceedCheck.js";
 // Shared
-import { random_id } from "../../../../../../../shared/services/toolkit.js";
+import { random_id } from "../../../../../../../services/_shared/toolkit.js";
 // Reducers
 import appStore from "../../../../../../../store/appStore.js";
 

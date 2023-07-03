@@ -80,7 +80,8 @@ const sliceFeedbackModal = createSlice({
         state.inputs = {
             text: "",
             source: "",
-            tag: ""
+            tag: "",
+            consent: false
         };
         state.errors = {
             text: false,

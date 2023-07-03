@@ -4,7 +4,7 @@ import { Box, Typography, Accordion, AccordionSummary, AccordionDetails, Link  }
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 // Shared
-import Appbar from "../../shared/components/Appbar/Appbar.js";
+import Appbar from "../_shared/components/Appbar/Appbar.js";
 
 export default function About() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

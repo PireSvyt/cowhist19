@@ -15,7 +15,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import serviceGameDelete from "./services/serviceGameDelete.js";
 import serviceGetTableHistory from "../../../../services/serviceGetTableHistory.js";
 // Shared
-import ConfirmModal from "../../../../../../shared/components/ConfirmModal/ConfirmModal.js";
+import ConfirmModal from "../../../../../_shared/components/Appbar/components/ConfirmModal/ConfirmModal.js";
 
 export default function HistoryCard(props) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

@@ -16,12 +16,8 @@ import { LoadingButton } from "@mui/lab";
 
 // Services
 import serviceProceed from "./services/serviceProceed.js";
-// Shared
-import serviceModalChange from "../../../../../../shared/services/serviceModalChange.js";
-import { random_id } from "../../../../../../shared/services/toolkit.js";
 // Reducers
 import appStore from "../../../../../../store/appStore.js";
-import sliceSignInModal from "../../../../../../store/sliceSignInModal.js";
 
 export default function SignInModal() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

@@ -7,7 +7,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import serviceGetFeedbacks from "./services/serviceGetFeedbacks.js";
 // Components
 import FeedbackCard from "./components/FeedbackCard/FeedbackCard.js";
-import { random_id } from "../../../../shared/services/toolkit.js";
+import { random_id } from "../../../../services/_shared/toolkit.js";
 
 export default function AdminFeedbacks() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -42,8 +42,8 @@ export default function AdminFeedbacks() {
     select.feedbacks.forEach(feedback => {
         if (feedback.type !== "open" && feedback.status === "open") {
             // Create key
-            if (structuredFeedbackDict[feedback.source] === undefined) {
-                structuredFeedbackDict[feedback.source] = {
+            if (structuredFeedbackDict[feedback.tag] === undefined) {
+                structuredFeedbackDict[feedback.tag] = {
                     source: feedback.source,
                     tag: feedback.tag,
                     count: 0,
@@ -51,8 +51,8 @@ export default function AdminFeedbacks() {
                 }
             }
             // Account for feedback
-            structuredFeedbackDict[feedback.source].count += 1
-            structuredFeedbackDict[feedback.source].messages.push({
+            structuredFeedbackDict[feedback.tag].count += 1
+            structuredFeedbackDict[feedback.tag].messages.push({
                 date: feedback.date,
                 text: feedback.text
             })
@@ -60,15 +60,20 @@ export default function AdminFeedbacks() {
     });
     // Sort by count
     let structuredFeedbackTemp = Object.values(structuredFeedbackDict)
-    structuredFeedbackTemp.sort((a,b) => {return a.count - b.count})
+    structuredFeedbackTemp.sort((a,b) => {return  b.count - a.count})
     // Update structure
     setStructuredFeedback(structuredFeedbackTemp)
     console.log(structuredFeedbackTemp)
   }
 
+  // Formating
+  function stringifyDate(stringDate) {
+    let date = new Date(stringDate);
+    return date.toLocaleString("fr-FR");
+  }
+
   return (
     <Box>
-      <Paper sx={{ p: 2, g: 2, m: 2 }}>
         <Typography variant="h5" gutterBottom>
           {"Current feedbacks"}
         </Typography>
@@ -87,8 +92,15 @@ export default function AdminFeedbacks() {
                         {feedback.messages.map((message) => {
                             return (
                                 <ListItem key={"message-" + random_id()}>
-                                    <Typography variant="caption" >{message.date}</Typography>
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      flexDirection: "column",
+                                    }}
+                                  >
+                                    <Typography variant="caption" >{stringifyDate(message.date)}</Typography>
                                     <Typography variant="body2" >{message.text}</Typography>
+                                  </Box>
                                 </ListItem>
                             );
                         })}
@@ -112,7 +124,6 @@ export default function AdminFeedbacks() {
             }
           })}
         </List>
-      </Paper>
     </Box>
   );
 }

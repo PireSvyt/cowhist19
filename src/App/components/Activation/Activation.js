@@ -9,7 +9,7 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline.js";
 // Services
 import serviceActivate from "./services/serviceActivate.js";
 // Shared
-import Appbar from "../../shared/components/Appbar/Appbar.js";
+import Appbar from "../_shared/components/Appbar/Appbar.js";
 
 export default function Activation() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

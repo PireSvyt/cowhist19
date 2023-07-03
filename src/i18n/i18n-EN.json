@@ -4,10 +4,7 @@
       "product": "CoWhist 19",
       "account": "Account",
       "documentation": "Documentation",
-      "about": "About",
-      "tocome": "To come...",
-      "tocomeintro": "This functionality is not available yet.",
-      "tocomedetails": "We are delighted by your interest and propose to record it for the team to prioritize for this! \n This is anonymous ;)"
+      "about": "About"
     },
     "menu": {
       "home": "Home",
@@ -34,7 +31,6 @@
       "view": "View",
       "edit": "Edit",
       "proceed": "Proceed",
-      "tocome": "To come...",
       "tohome": "To home"
     },
     "snack": {
@@ -308,6 +304,7 @@
       "tocome": "To come...",
       "tocomeintro": "This functionality is not available yet.",
       "tocomedetails": "We are delighted by your interest and propose to record it for the team to prioritize for this! \n This is anonymous ;)",
+      "addmessage": "You can add message to make your point",
       "leavemessage": "Leave us a message!"
     },
     "input":{

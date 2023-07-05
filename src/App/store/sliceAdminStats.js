@@ -9,11 +9,13 @@ const sliceAdminStats = createSlice({
       tablesbyplayers: false,
       tablesbygames: false,
       usersbystatus: false,
+      objectcount: false
     },
     stats: {
       tablesbyplayers: [],
       tablesbygames: [],
       usersbystatus: [],
+      objectcount: {}
     },
   },
   reducers: {
@@ -35,6 +37,11 @@ const sliceAdminStats = createSlice({
       if (action.payload.usersbystatus !== undefined) {
         state.loaded.usersbystatus = true;
         state.stats.usersbystatus = action.payload.usersbystatus;
+        state.state = "available";
+      }
+      if (action.payload.objectcount !== undefined) {
+        state.loaded.objectcount = true;
+        state.stats.objectcount = action.payload.objectcount;
         state.state = "available";
       }
     },

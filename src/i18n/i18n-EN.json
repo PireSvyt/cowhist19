@@ -158,7 +158,10 @@
   },
   "home": {
     "label": {
-      "valueprop": "Play cards, store games...\nGet analytics & history!",
+      "valueprop": "Play cards, store games...\nGet history and analytics!",
+      "carousel1": "Record your Whist games,\naccess history and analytics",
+      "carousel2": "Create as many table you want\nand invite your friends",
+      "carousel3": "Sign up!\nIt's free and easy",
       "mystats": "My stats",
       "mytables": "My tables",
       "notables": "No tables so far...",

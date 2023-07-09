@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { ButtonGroup, Button, Box, Typography } from "@mui/material";
 
 // Components
-import Carousel from "./components/Carousel/Carousel.js";
+import WelcomeCarousel from "./components/WelcomeCarousel/WelcomeCarousel.js";
 import SignUpModal from "./components/SignUpModal/SignUpModal.js";
 import SignInModal from "./components/SignInModal/SignInModal.js";
 // Reducers
@@ -42,7 +42,7 @@ export default function Landing() {
           >{t("home.label.valueprop")}</Typography>
         </Box>
 
-        <Carousel />
+        <WelcomeCarousel />
 
         <ButtonGroup variant="contained" size="large">
           <Button

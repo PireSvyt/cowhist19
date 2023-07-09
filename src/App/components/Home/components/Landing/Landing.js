@@ -1,9 +1,10 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { ButtonGroup, Button, Box } from "@mui/material";
+import { ButtonGroup, Button, Box, Typography } from "@mui/material";
 
 // Components
+import Carousel from "./components/Carousel/Carousel.js";
 import SignUpModal from "./components/SignUpModal/SignUpModal.js";
 import SignInModal from "./components/SignInModal/SignInModal.js";
 // Reducers
@@ -27,10 +28,22 @@ export default function Landing() {
     <Box>
       <Box
         textAlign="center"
-        sx={{
-          p: 4,
-        }}
       >
+        
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="h6" 
+            sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }}
+          >{t("home.label.valueprop")}</Typography>
+        </Box>
+
+        <Carousel />
+
         <ButtonGroup variant="contained" size="large">
           <Button
             onClick={() => {

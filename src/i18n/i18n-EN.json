@@ -1,7 +1,7 @@
 {
   "generic": {
     "label": {
-      "product": "CoWhist 19",
+      "product": "CoWhist19",
       "account": "Account",
       "documentation": "Documentation",
       "about": "About"
@@ -158,6 +158,7 @@
   },
   "home": {
     "label": {
+      "valueprop": "Play cards, store games...\nGet analytics & history!",
       "mystats": "My stats",
       "mytables": "My tables",
       "notables": "No tables so far...",

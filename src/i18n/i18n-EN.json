@@ -154,7 +154,9 @@
       "close": "Close account"
     },
     "error": {},
-    "snack": {}
+    "snack": {
+      "changedpassword" : "Password changed"
+    }
   },
   "home": {
     "label": {
@@ -326,6 +328,19 @@
     },
     "snack":{      
       "created" : "Feedback sent!"
+    }
+  },
+  "changepassword": {
+    "input":{
+      "current" : "Current password",
+      "new": "New password",
+      "repeat": "Repeat new password"
+    },
+    "error": {
+      "missingcurrent": "missing current password",
+      "missingnew": "missing new password",
+      "missingrepeat": "missing repeated password",
+      "missmatch": "password missmatch"
     }
   }
 }

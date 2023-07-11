@@ -130,21 +130,6 @@ async function serviceProceed() {
           });
           break;
         case "auth.signin.error.onpasswordcompare":
-          appStore.dispatch({
-            type: "sliceSignInModal/change",
-            payload: {
-              disabled: false,
-              loading: false,
-            },
-          });
-          appStore.dispatch({
-            type: "sliceSnack/change",
-            payload: {
-              uid: random_id(),
-              id: "generic.snack.error.wip",
-            },
-          });
-          break;
         case "auth.signin.error.onfind":
           appStore.dispatch({
             type: "sliceSignInModal/change",

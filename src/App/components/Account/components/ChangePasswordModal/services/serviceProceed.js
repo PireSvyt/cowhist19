@@ -59,7 +59,7 @@ async function serviceProceed() {
                     type: "sliceSnack/change",
                     payload: {
                         uid: random_id(),
-                        id: "account.snack.changedpassword",
+                        id: "changepassword.snack.saved",
                     },
                 });
                 break;

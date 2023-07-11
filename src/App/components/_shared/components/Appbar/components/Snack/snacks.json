@@ -23,5 +23,7 @@
   "game.snack.saved": { "severity": "success" },
   "game.snack.deleted": { "severity": "warning" },
 
-  "feedback.snack.created": { "severity": "success" }
+  "feedback.snack.created": { "severity": "success" },
+
+  "changepassword.snack.saved": { "severity": "success" }
 }

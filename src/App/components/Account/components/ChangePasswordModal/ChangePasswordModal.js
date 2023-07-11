@@ -79,7 +79,7 @@ export default function ChangePasswordModal() {
         }}
         fullWidth={true}
       >
-        <DialogTitle>{t("account.button.changepassword")}</DialogTitle>
+        <DialogTitle>{t("changepassword.label.modaltitle")}</DialogTitle>
         <DialogContent
           sx={{
             height: componentHeight,

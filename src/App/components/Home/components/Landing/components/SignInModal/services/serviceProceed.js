@@ -17,7 +17,20 @@ async function serviceProceed() {
 
   try {
     // Lock UI
-    appStore.dispatch({ type: "sliceSignInModal/lock" });
+    appStore.dispatch({ 
+      type: "sliceSignInModal/lock"
+    });
+    appStore.dispatch({ 
+      type: "sliceSignInModal/change",
+      payload: {
+        errors: {
+          login: false,
+          password: false,
+          inactivated: false,
+          notfound: false
+        }
+      }
+    });
     let signInInputs = { ...appStore.getState().sliceSignInModal.inputs };
 
     // Check inputs
@@ -28,7 +41,7 @@ async function serviceProceed() {
     });
 
     if (proceedCheckOutcome.proceed === true) {
-      // Password encryption
+      // Encryption
       if (process.env.NODE_ENV === "_production") {
         signInInputs.password = AES.encrypt(
           signInInputs.password,
@@ -69,23 +82,15 @@ async function serviceProceed() {
                 type: "sliceSnack/change",
                 payload: {
                   uid: random_id(),
-                  id: "generic.snack.error.wip",
+                  id: "generic.snack.error.withdetails",
+                  details: proceedOutcome.errors,
                 },
               });
             } else {
               // https://medium.com/how-to-react/how-to-use-js-cookie-to-store-data-in-cookies-in-react-js-aab47f8a45c3
               Cookies.set("cowhist19_token", data.data.token);
               appStore.dispatch({
-                type: "sliceSignInModal/change",
-                payload: {
-                  open: false,
-                  inputs: {
-                    login: "",
-                    password: "",
-                  },
-                  disabled: false,
-                  loading: false,
-                },
+                type: "sliceSignInModal/close"
               });
               appStore.dispatch({
                 type: "sliceSnack/change",
@@ -97,28 +102,30 @@ async function serviceProceed() {
             }
           });
           break;
+        case "auth.signin.error.onfind":
         case "auth.signin.error.notfound":
           appStore.dispatch({
             type: "sliceSignInModal/change",
             payload: {
               disabled: false,
               loading: false,
-            },
-          });
-          appStore.dispatch({
-            type: "sliceSnack/change",
-            payload: {
-              uid: random_id(),
-              id: "signin.snack.notfound",
+              errors: {
+                login: true,
+                notfound: true
+              }
             },
           });
           break;
         case "auth.signin.error.invalidpassword":
+        case "auth.signin.error.onpasswordcompare":
           appStore.dispatch({
             type: "sliceSignInModal/change",
             payload: {
               disabled: false,
               loading: false,
+              errors: {
+                password: true
+              }
             },
           });
           appStore.dispatch({
@@ -129,23 +136,19 @@ async function serviceProceed() {
             },
           });
           break;
-        case "auth.signin.error.onpasswordcompare":
-        case "auth.signin.error.onfind":
+        case "auth.signin.error.statussignedup":
+        case "auth.signin.error.statusunknown":
           appStore.dispatch({
             type: "sliceSignInModal/change",
             payload: {
               disabled: false,
               loading: false,
+              errors: {
+                inactivated: true
+              }
             },
           });
-          appStore.dispatch({
-            type: "sliceSnack/change",
-            payload: {
-              uid: random_id(),
-              id: "generic.snack.error.wip",
-            },
-          });
-          break;
+          break
         default:
           appStore.dispatch({
             type: "sliceSignInModal/change",

@@ -14,6 +14,8 @@
   "signin.snack.signedin": { "severity": "success" },
   "signin.snack.notfound": { "severity": "error" },
   "signin.snack.unauthorized": { "severity": "error" },
+  "signin.snack.successresendingactivation": { "severity": "success" },
+  "signin.snack.errorresendingactivation": { "severity": "error" },
 
   "invite.snack.invited": { "severity": "success" },
 

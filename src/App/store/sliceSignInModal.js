@@ -11,6 +11,8 @@ const sliceSignInModal = createSlice({
     errors: {
       login: false,
       password: false,
+      inactivated: false,
+      notfound: false
     },
     disabled: false,
     loading: false,
@@ -28,6 +30,8 @@ const sliceSignInModal = createSlice({
       state.errors = {
         login: false,
         password: false,
+        inactivated: false,
+        notfound: false
       };
     },
     close: (state) => {
@@ -42,6 +46,8 @@ const sliceSignInModal = createSlice({
       state.errors = {
         login: false,
         password: false,
+        inactivated: false,
+        notfound: false
       };
       state.disabled = false;
       state.loading = false;
@@ -70,6 +76,12 @@ const sliceSignInModal = createSlice({
         }
         if (action.payload.errors.password !== undefined) {
           state.errors.password = action.payload.errors.password;
+        }
+        if (action.payload.errors.inactivated !== undefined) {
+          state.errors.inactivated = action.payload.errors.inactivated;
+        }
+        if (action.payload.errors.notfound !== undefined) {
+          state.errors.notfound = action.payload.errors.notfound;
         }
       }
       // Lock

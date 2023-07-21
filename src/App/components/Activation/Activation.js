@@ -19,18 +19,23 @@ export default function Activation() {
   const { t } = useTranslation();
 
   // States
-  const [outcome, setOutcome] = useState("inprogress");
+  const [request, setRequest] = useState("tofire");
+  const [outcome, setOutcome] = useState("spawn");
 
   // Fire activation
-  serviceActivate().then((activateOutcome) => {
-    if (activateOutcome.errors.length !== 0) {
-      if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("activateOutcome errors");
-        console.log(activateOutcome.errors);
+  if (request === "tofire") {
+    setRequest("inprogress")
+    setOutcome("inprogress")
+    serviceActivate().then((activateOutcome) => {
+      if (activateOutcome.errors.length !== 0) {
+        if (process.env.REACT_APP_DEBUG === "TRUE") {
+          console.log("activateOutcome errors");
+          console.log(activateOutcome.errors);
+        }
       }
-    }
-    setOutcome(activateOutcome.stateChanges.outcome);
-  });
+      setOutcome(activateOutcome.stateChanges.outcome);
+    });
+  }
 
   return (
     <Box>

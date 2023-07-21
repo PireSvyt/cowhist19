@@ -10,12 +10,15 @@ import {
   DialogContent,
   DialogTitle,
   FormControl,
+  Paper,
+  Typography
 } from "@mui/material";
 
 import { LoadingButton } from "@mui/lab";
 
 // Services
 import serviceProceed from "./services/serviceProceed.js";
+import serviceResendActivation from "./services/serviceResendActivation.js";
 // Reducers
 import appStore from "../../../../../../store/appStore.js";
 
@@ -38,8 +41,14 @@ export default function SignInModal() {
     loading: useSelector((state) => state.sliceSignInModal.loading),
     snackData: useSelector((state) => state.sliceSignInModal.snackData),
   };
+
   // Changes
   const changes = {
+    closemodal: () => {
+      appStore.dispatch({ 
+        type: "sliceSignInModal/close" 
+      });
+    },
     login: (e) => {
       appStore.dispatch({
         type: "sliceSignInModal/change",
@@ -58,7 +67,28 @@ export default function SignInModal() {
         },
       });
     },
+    gotosignup: () => {
+      // Open sign up modal
+      appStore.dispatch({
+        type: "sliceSignUpModal/open"
+      });
+      appStore.dispatch({
+        type: "sliceSignUpModal/change",
+        payload: {
+          inputs: { login: select.inputs.login }
+        },
+      });
+      // Close sign in modal
+      appStore.dispatch({
+        type: "sliceSignInModal/close"
+      });
+    },
+    resetpassword: () => {
+
+    }
   };
+
+  console.log(select.errors)
 
   // Render
   return (
@@ -67,9 +97,7 @@ export default function SignInModal() {
         data-testid="componentSignInModal"
         id="dialog_signin"
         open={select.open}
-        onClose={() => {
-          appStore.dispatch({ type: "sliceSignInModal/close" });
-        }}
+        onClose={changes.closemodal}
         fullWidth={true}
       >
         <DialogTitle>{t("signin.label.title")}</DialogTitle>
@@ -111,6 +139,81 @@ export default function SignInModal() {
                 type="password"
                 error={select.errors.password}
               />
+              <Button
+                variant="outlined"
+                onClick={changes.resetpassword}
+                sx={{mt:2,mb:1}}
+                disabled
+              >
+                {t("signin.button.resetpassword")}
+              </Button>
+
+              {select.errors.notfound ? (
+                <Paper 
+                  sx={{
+                    mt:1, 
+                    mb:1, 
+                    p:1,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    textAlign: "center",
+                    verticalAlign: "middle" 
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-evenly",
+                    }}
+                  >
+                    <Typography variant="body1" gutterBottom sx={{ whiteSpace: "pre-line" }}>
+                      {t("signin.label.notfoundaccount")}
+                    </Typography>
+                    <Button
+                      variant="contained"
+                      onClick={changes.gotosignup}
+                    >
+                      {t("signin.button.gotosignup")}
+                    </Button>
+                  </Box>
+                </Paper>
+              ) : (null)}
+
+              {select.errors.inactivated ? (
+                <Paper 
+                  sx={{
+                    mt:1, 
+                    mb:1, 
+                    p:1,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    textAlign: "center",
+                    verticalAlign: "middle" 
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-evenly",
+                    }}
+                  >
+                    <Typography variant="body1" gutterBottom sx={{ whiteSpace: "pre-line" }}>
+                      {t("signin.label.inactiveaccount")}
+                    </Typography>
+                    <Button
+                      variant="contained"
+                      onClick={serviceResendActivation}
+                    >
+                      {t("signin.button.resendactivationemail")}
+                    </Button>
+                  </Box>
+                </Paper>
+              ) : (null)}
+
             </FormControl>
           </Box>
         </DialogContent>
@@ -118,9 +221,7 @@ export default function SignInModal() {
         <DialogActions>
           <Button
             data-testid="buttonClose"
-            onClick={() => {
-              appStore.dispatch({ type: "sliceSignInModal/close" });
-            }}
+            onClick={changes.closemodal}
           >
             {t("generic.button.cancel")}
           </Button>

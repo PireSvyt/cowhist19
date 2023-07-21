@@ -86,16 +86,21 @@
       "resetpassword": "Reset my password (unavailable)"
     },
     "snack": {
-      "signedup": "Signed up!"
+      "signedup": "Signed up!\nCheck your emails to activate your account (including the spams)"
     }
   },
   "signin": {
     "label": {
-      "title": "Sign in"
+      "title": "Sign in",
+      "notfoundaccount": "Account not found :/\nWilling to create an account?",
+      "inactiveaccount": "Haven't you activated your account yet?"
     },
     "input": {},
     "button": {
-      "signin": "Sign in"
+      "signin": "Sign in",
+      "resetpassword": "Reset password",
+      "gotosignup": "Sign up now!",
+      "resendactivationemail": "Resend activation email"
     },
     "error": {
       "emptytoken": "empty token",
@@ -108,7 +113,9 @@
     "snack": {
       "signedin": "Signed in!",
       "unauthorized": "Wrong password",
-      "notfound": "Account not found"
+      "notfound": "Account not found",
+      "successresendingactivation": "Activation email sent, check your emails (including the spams)",
+      "errorresendingactivation": "Could not resend account activation email"
     }
   },
   "activation": {

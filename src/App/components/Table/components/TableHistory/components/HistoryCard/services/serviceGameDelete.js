@@ -23,7 +23,7 @@ async function serviceGameDelete(gamieid) {
           },
         });
         break;
-      case "game.delete.errorondelete":
+      case "game.delete.error.ondelete":
         appStore.dispatch({
           type: "sliceSnack/change",
           payload: {

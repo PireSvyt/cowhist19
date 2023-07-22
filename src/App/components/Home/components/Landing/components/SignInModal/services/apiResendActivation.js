@@ -3,7 +3,7 @@ import axios from "axios";
 async function apiResendActivation(resendActivationInputs) {
   try {
     const res = await axios.post(
-      process.env.REACT_APP_SERVER_URL + "/auth/v1/resentactivation",
+      process.env.REACT_APP_SERVER_URL + "/auth/v1/sendactivation",
       resendActivationInputs
     );
     return res.data;

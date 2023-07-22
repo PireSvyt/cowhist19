@@ -121,8 +121,10 @@
   "activation": {
     "label": {
       "title": "Account activation",
+      "laststep": "One last step...\nand then you're all set!",
       "inprogress": "Account activation in progress",
       "error": "Error during activation",
+      "tokenerror" : "Invalid token",
       "errorexplanation": "Sincere apologies for the inconvenience.\n\nPlease try again later.",
       "activatedtitle": "Account activated!",
       "activatedaccountexplanations": "Your account has been successfully activated.\n\nYou can now sign in!",
@@ -131,7 +133,8 @@
     },
     "input": {},
     "button": {
-      "tohome": "To home to sign in"
+      "activate": "Activate",
+      "resend": "Send a new activation email"
     },
     "error": {},
     "snack": {}

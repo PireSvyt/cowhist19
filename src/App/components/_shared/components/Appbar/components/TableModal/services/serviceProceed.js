@@ -93,6 +93,23 @@ async function serviceProceed(table) {
           });
           return { type: "error" };
           break;
+        case "table.save.error.emptyid":
+          appStore.dispatch({
+            type: "sliceTableModal/change",
+            payload: {
+              disabled: false,
+              loading: false,
+            },
+          });
+          appStore.dispatch({
+            type: "sliceSnack/change",
+            payload: {
+              uid: random_id(),
+              id: "generic.snack.error.wip",
+            },
+          });
+          return { type: "error" };
+          break;
         default:
           appStore.dispatch({
             type: "sliceTableModal/change",

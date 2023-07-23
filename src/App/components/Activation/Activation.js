@@ -2,9 +2,6 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Box, Typography, Button, CircularProgress, TextField, Paper } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
-
-import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAlt.js";
-import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied.js";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline.js";
 
 // Services
@@ -24,7 +21,6 @@ export default function Activation() {
   // States
   const [login, setLogin] = useState("");
   const [loginerror, setLoginError] = useState(false);
-  const [tokenerror, setTokenError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("onhold");
 
@@ -32,6 +28,7 @@ export default function Activation() {
   const changes = {
     login: (e) => {
       setLogin(e.target.value)
+      setLoginError(false)
     },
     send: () => { 
       setLoading(true)
@@ -49,9 +46,6 @@ export default function Activation() {
               break
             case "loginerror" :
               setLoginError(outcome.stateChanges[c])
-              break
-            case "tokenerror" :
-              setTokenError(outcome.stateChanges[c])
               break
             case "loading" :
               setLoading(outcome.stateChanges[c])
@@ -75,10 +69,7 @@ export default function Activation() {
     },
     resend: () => {},
     signin: () => {
-      // Open sign in modal
       appStore.dispatch({ type: "sliceSignInModal/open" });
-      // To home
-      window.location = "/";
     }
   };
 
@@ -106,137 +97,78 @@ export default function Activation() {
         <TextField
           label={t("generic.input.email")}
           value={login}
+          required
           onChange={changes.login}
-          error={loginerror ? "error" : null}
-          sx={{mt:1, mb:1}}
+          error={loginerror}
+          sx={{mt:1, mb:1, width: "80%"}}
         />
         <LoadingButton 
           onClick={changes.send} 
           variant="contained"
-          disabled={loading || tokenerror}
+          disabled={loading || status === "activated"}
           loading={loading}
+          sx={{mt:1, mb:1, width: "80%"}}
         >
             {t("activation.button.activate")}
         </LoadingButton>
       </Box>
-      
-      {tokenerror ? (
-        <Paper 
-          sx={{
-            mt:1, 
-            mb:1,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            textAlign: "center",
-            verticalAlign: "middle" 
-          }}
-        >
-          <Typography
-            sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }}
-            variant="h6"
-            component="span"
-            align="center"
-          >
-            {t("activation.label.tokenerror")}
-          </Typography>
-          <ErrorOutlineIcon
-            sx={{ mt: 2, mb: 2 }}
-            fontSize="large"
-            color="error"
-          />
-          <Button
-            variant="outlined"
-            sx={{ width: "80%", m: 1 }}
-            onClick={changes.resend}
-            disabled
-          >
-            {t("activation.button.resend")}
-          </Button>
-        </Paper>
-      ) : (null)}
 
       {status === "inprogress" ? (
-        <Paper 
+        <Box
           sx={{
-            mt:1, 
-            mb:1,
             display: "flex",
-            justifyContent: "center",
+            flexDirection: "column",
             alignItems: "center",
-            textAlign: "center",
-            verticalAlign: "middle" 
           }}
         >
           <Typography
-            sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }}
+            sx={{ mt: 2, mb: 1, whiteSpace: "pre-line" }}
             variant="h6"
             component="span"
             align="center"
           >
             {t("activation.label.inprogress")}
           </Typography>
-          <CircularProgress sx={{ mt: 2, mb: 2 }} />
-        </Paper>
+          <CircularProgress sx={{ mt: 1, mb: 1 }} />
+        </Box>
       ) : (null)}
 
       {status === "activated" ? (
-        <Paper 
+        <Box
           sx={{
-            mt:1, 
-            mb:1,
             display: "flex",
-            justifyContent: "center",
+            flexDirection: "column",
             alignItems: "center",
-            textAlign: "center",
-            verticalAlign: "middle" 
           }}
         >
           <Typography
-            sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }}
+            sx={{ mt: 2, mb: 1, whiteSpace: "pre-line" }}
             variant="h6"
             component="span"
             align="center"
           >
             {t("activation.label.activatedtitle")}
           </Typography>
-          <SentimentSatisfiedAltIcon
-            sx={{ mt: 2, mb: 2 }}
-            fontSize="large"
-            color="success"
-          />
-          <Typography
-            sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }}
-            variant="body1"
-            component="span"
-            align="center"
-          >
-            {t("activation.label.activatedaccountexplanations")}
-          </Typography>
           <Button
-            variant="outlined"
+            variant="contained"
             sx={{ width: "80%", m: 1 }}
             onClick={changes.signin}
           >
             {t("generic.button.signin")}
           </Button>
-        </Paper>
+        </Box>
       ) : (null)}
 
       {status === "error" ? (
-        <Paper 
+        <Box
           sx={{
-            mt:1, 
-            mb:1,
             display: "flex",
-            justifyContent: "center",
+            flexDirection: "column",
             alignItems: "center",
-            textAlign: "center",
-            verticalAlign: "middle" 
           }}
         >
           <Typography
-            sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }}
+            sx={{ mt: 2, mb: 1, whiteSpace: "pre-line" }}
             variant="h6"
             component="span"
             align="center"
@@ -244,12 +176,12 @@ export default function Activation() {
             {t("activation.label.error")}
           </Typography>
           <ErrorOutlineIcon
-            sx={{ mt: 2, mb: 2 }}
+            sx={{ mt: 1, mb: 1 }}
             fontSize="large"
             color="error"
           />
           <Typography
-            sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }}
+            sx={{ mt: 1, mb: 1, whiteSpace: "pre-line" }}
             variant="body1"
             component="span"
             align="center"
@@ -264,7 +196,7 @@ export default function Activation() {
           >
             {t("activation.button.resend")}
           </Button>
-        </Paper>
+        </Box>
       ) : (null)}
     </Box>
   );

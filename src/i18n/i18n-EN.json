@@ -22,6 +22,7 @@
       "password": "Password"
     },
     "button": {
+      "signin": "Sign in",
       "add": "Add",
       "save": "Save",
       "delete": "Delete",
@@ -33,6 +34,11 @@
       "edit": "Edit",
       "proceed": "Proceed",
       "tohome": "To home"
+    },
+    "error": {
+      "missinglogin": "missing email",
+      "invalidlogin": "invalid email",
+      "missingpassword": "missing password"
     },
     "snack": {
       "api": {
@@ -77,10 +83,7 @@
     "error": {
       "missingpseudo": "missing pseudo",
       "existingpseudo": "Already existing pseudo",
-      "missinglogin": "missing email",
-      "invalidlogin": "invalid email",
       "existinglogin": "An account already exists with this login",
-      "missingpassword": "missing password",
       "missingrepeatpassword": "missing repeated password",
       "passwordmissmatch": "password missmatch",
       "resetpassword": "Reset my password (unavailable)"
@@ -97,7 +100,6 @@
     },
     "input": {},
     "button": {
-      "signin": "Sign in",
       "resetpassword": "Reset password",
       "gotosignup": "Sign up now!",
       "resendactivationemail": "Resend activation email"
@@ -105,10 +107,7 @@
     "error": {
       "emptytoken": "empty token",
       "invalidtoken": "invalid token",
-      "invalidstatus": "invalid status",
-      "missinglogin": "missing email",
-      "invalidlogin": "invalid email",
-      "missingpassword": "missing password"
+      "invalidstatus": "invalid status"
     },
     "snack": {
       "signedin": "Signed in!",
@@ -122,14 +121,10 @@
     "label": {
       "title": "Account activation",
       "laststep": "One last step...\nand then you're all set!",
-      "inprogress": "Account activation in progress",
+      "inprogress": "Activation in progress...",
       "error": "Error during activation",
-      "tokenerror" : "Invalid token",
-      "errorexplanation": "Sincere apologies for the inconvenience.\n\nPlease try again later.",
-      "activatedtitle": "Account activated!",
-      "activatedaccountexplanations": "Your account has been successfully activated.\n\nYou can now sign in!",
-      "notfoundaccount": "Account activation impossible",
-      "notfoundaccountexplanations": "It seems the token from the url is not valid.\n\nYou may have already activated this account?"
+      "errorexplanation": "Sincere apologies for the inconvenience.\nPlease try again later.",
+      "activatedtitle": "Account activated!"
     },
     "input": {},
     "button": {

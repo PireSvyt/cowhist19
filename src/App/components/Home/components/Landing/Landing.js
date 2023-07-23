@@ -6,7 +6,6 @@ import { ButtonGroup, Button, Box, Typography } from "@mui/material";
 // Components
 import WelcomeCarousel from "./components/WelcomeCarousel/WelcomeCarousel.js";
 import SignUpModal from "./components/SignUpModal/SignUpModal.js";
-import SignInModal from "./components/SignInModal/SignInModal.js";
 // Reducers
 import appStore from "../../../../store/appStore.js";
 
@@ -19,7 +18,6 @@ export default function Landing() {
 
   // Selects
   const select = {
-    openSignInModal: useSelector((state) => state.sliceSignInModal.open),
     openSignUpModal: useSelector((state) => state.sliceSignUpModal.open),
   };
 
@@ -59,12 +57,11 @@ export default function Landing() {
             }}
             size="large"
           >
-            {t("signin.button.signin")}
+            {t("generic.button.signin")}
           </Button>
         </ButtonGroup>
       </Box>
 
-      {select.openSignInModal === true ? <SignInModal /> : null}
       {select.openSignUpModal === true ? <SignUpModal /> : null}
     </Box>
   );

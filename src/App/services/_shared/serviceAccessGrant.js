@@ -25,7 +25,7 @@ async function serviceGrantAccess(token) {
     let decodedtoken = jwt_decode(token);
     // User status tollgate
     if (
-      decodedtoken.status === "registered" ||
+      decodedtoken.status === "activated" ||
       decodedtoken.status === "signedup"
     ) {
       // Then update variables to signed in
@@ -40,7 +40,7 @@ async function serviceGrantAccess(token) {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
         console.log("invalid status");
       }
-      errors.push("generic.error.invalidstatus");
+      errors.push("signin.error.invalidstatus");
       serviceAccessDeny();
     }
   }

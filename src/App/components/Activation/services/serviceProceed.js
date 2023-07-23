@@ -16,11 +16,7 @@ async function serviceProceed(activationInputs) {
 
     // Check inputs
     let proceedCheckOutcome = serviceProceedCheck(activationInputs);
-    if (proceedCheckOutcome.stateChanges.length > 0) {
-      Object.keys(proceedCheckOutcome.stateChanges).forEach(c => {
-        stateChanges[c] = proceedCheckOutcome.stateChanges[c]
-      });
-    }
+    stateChanges = proceedCheckOutcome.stateChanges
 
     if (proceedCheckOutcome.proceed === true) {
 
@@ -53,17 +49,15 @@ async function serviceProceed(activationInputs) {
       
     } else {
       if (proceedCheckOutcome.errors.length > 0) {
+        stateChanges.loading = false
+        stateChanges.openSnack = true
+        stateChanges.snack = {
+          uid: random_id(),
+          id: "generic.snack.error.withdetails",
+          details: proceedCheckOutcome.errors,
+        }
         return {
-          stateChanges: {
-            loading: false,
-            status: "error",
-            openSnack: true,
-            snack: {
-              uid: random_id(),
-              id: "generic.snack.error.withdetails",
-              details: proceedCheckOutcome.errors,
-            },
-          },
+          stateChanges: stateChanges,
           callbacks: [],
           errors: proceedCheckOutcome.errors,
         };
@@ -72,7 +66,7 @@ async function serviceProceed(activationInputs) {
   } catch (err) {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("service caught error");
-      console.log(err);
+      console.error(err);
     }
     // Error network
     return {

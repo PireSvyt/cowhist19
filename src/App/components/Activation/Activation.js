@@ -5,109 +5,111 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline.js";
 
 // Services
-import serviceProceed from "./services/serviceProceed.js";
+import serviceActivate from "../../services/Activation/serviceActivate.js";
+import serviceActivateCheck from "../../services/Activation/serviceActivateCheck.js";
 import serviceSendActivation from "../../services/Activation/serviceSendActivation.js";
-// Shared
+import serviceSendActivationCheck from "../../services/Activation/serviceSendActivationCheck.js";
+// Components
 import Appbar from "../_shared/components/Appbar/Appbar.js";
 // Reducers
 import appStore from "../../store/appStore.js";
-import { FlashOffRounded } from "@mui/icons-material";
 
 export default function Activation() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("Activation");
+    //console.log("Activation");
   }
   // i18n
   const { t } = useTranslation();
 
   // States
-  const [login, setLogin] = useState("");
-  const [loginerror, setLoginError] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState("onhold");
+  const [activationStatus, setActivationStatus] = useState("onhold")
+  const [loadingActivate, setLoadingActivate] = useState(false)
+  const [loadingResend, setLoadingResend] = useState(false)
+  const [loginValue, setLoginValue] = useState("")
+  const [loginError, setLoginError] = useState(false)
 
-  const [inputs, setInputs] = useState({
-    login: {
-      value: "",
-      error: false
-    }
-  });
+  function setStates (stateChanges) {
+    Object.keys(stateChanges).forEach(change => {
+      switch (change) {
+        case "activationStatus" :
+          setActivationStatus(stateChanges[change])
+          break
+        case "loadingActivate" :
+          setLoadingActivate(stateChanges[change])
+          break
+        case "loadingResend" :
+          setLoadingResend(stateChanges[change])
+          break
+        case "loginValue" :
+          setLoginValue(stateChanges[change])
+          break
+        case "loginError" :
+          setLoginError(stateChanges[change])
+          break
+        default :
+          console.error("Activation.setStates unknown change ", change, stateChanges[change])
+      }
+    })
+  }
 
   // Changes
   const changes = {
-    // Lock UI
-    lock: () => {
-      setLoading(true)
+    // Inputs
+    login: (e) => {
+      setStates({
+        loginValue: e.target.value,
+        loginError: false
+      })
     },
-    // Unock UI
-    unlock: () => {
-      setLoading(false)
-    },
-    // Set input field
-    input: (e) => {
-      console.log("changes.input " +  e.name)
-      switch (e.name) {
-        case "login":
-          let currentInputs = inputs
-          currentInputs.login = {
-            value: e.target.value,
-            error: false
-          }
-          setInputs(currentInputs)
-          break
-        default:
-          console.error("changes.input unknown field "+ e.name)
+    send: () => {
+      console.log("Activation.send")
+      setStates({loadingActivate: true})
+      let inputs = {
+        login: loginValue,
+        token: window.location.href.split("/activation/")[1]
       }
-    },
-    // Commands
-    action: {
-      send: () => {
-        console.log("changes.action send")
-        changes.lock()
-        serviceProceed({
-          login: login,
-          token: window.location.href.split("/activation/")[1]
-        })
-        .then(outcome => {
-          //console.log("outcome", outcome)
-          Object.keys(outcome.stateChanges).forEach(c => {
-            //console.log("outcome.stateChanges " + c)
-            switch (c) {
-              case "login" :
-                setLogin(outcome.stateChanges[c])
-                break
-              case "loginerror" :
-                setLoginError(outcome.stateChanges[c])
-                break
-              case "loading" :
-                setLoading(outcome.stateChanges[c])
-                break
-              case "status" :
-                setStatus(outcome.stateChanges[c])
-                break
-                case "openSnack" :
-                  if (outcome.stateChanges.openSnack && outcome.stateChanges.snack) {
-                    appStore.dispatch({
-                      type: "sliceSnack/change",
-                      payload: outcome.stateChanges.snack,
-                    });
-                  }
-                  break
-              default:
-                // NA
-            }
+      serviceActivateCheck(inputs)
+      .then(checkOutcome => {
+        setStates(checkOutcome.stateChanges)
+        if (checkOutcome.proceed) {
+          setStates({activationStatus: "inprogress"})
+          serviceActivate(inputs)
+          .then(outcome => {
+            setStates(outcome.stateChanges)
+            setStates({loadingActivate: false})
           })
-        })
-      },
-      resend: () => {
-        changes.lock()
-        serviceSendActivation({ ...appStore.getState().sliceSignInModal.inputs })
-      },
-      signin: () => {
-        appStore.dispatch({ type: "sliceSignInModal/open" });
+        } else {
+          setStates({loadingActivate: false})
+        }
+      })
+    },
+    resend: () => {
+      console.log("Activation.resend")
+      setStates({loadingResend: true})
+      let inputs = {
+        login: loginValue
       }
+      serviceSendActivationCheck(inputs)
+      .then(checkOutcome => {
+        setStates(checkOutcome.stateChanges)
+        if (checkOutcome.proceed) {
+          serviceSendActivation(inputs)
+          .then(outcome => {
+            setStates(outcome.stateChanges)
+            setStates({loadingResend: false})
+          })
+        } else {
+          setStates({loadingResend: false})
+        }
+      })
+    },
+    signin: () => {
+      console.log("Activation.signin")
+      appStore.dispatch({ type: "sliceModals/open", payload: "SignIn" });
     }
+    
   }
+
 
 
   return (
@@ -132,25 +134,24 @@ export default function Activation() {
         </Typography>
         <TextField
           label={t("generic.input.email")}
-          value={login}
+          value={loginValue}
           required
-          name="activation.login"
-          onChange={changes.input}
-          error={loginerror}
+          onChange={changes.login}
+          error={loginError}
           sx={{mt:1, mb:1, width: "80%"}}
         />
         <LoadingButton 
-          onClick={changes.action.send} 
+          onClick={changes.send} 
           variant="contained"
-          disabled={loading || status === "activated"}
-          loading={loading}
+          disabled={loadingActivate || activationStatus === "activated"}
+          loading={loadingActivate}
           sx={{mt:1, mb:1, width: "80%"}}
         >
             {t("activation.button.activate")}
         </LoadingButton>
       </Box>
 
-      {status === "inprogress" ? (
+      {activationStatus === "inprogress" ? (
         <Box
           sx={{
             display: "flex",
@@ -170,7 +171,7 @@ export default function Activation() {
         </Box>
       ) : (null)}
 
-      {status === "activated" ? (
+      {activationStatus === "activated" ? (
         <Box
           sx={{
             display: "flex",
@@ -189,14 +190,14 @@ export default function Activation() {
           <Button
             variant="contained"
             sx={{ width: "80%", m: 1 }}
-            onClick={changes.action.signin}
+            onClick={changes.signin}
           >
             {t("generic.button.signin")}
           </Button>
         </Box>
       ) : (null)}
 
-      {status === "error" ? (
+      {activationStatus === "error" ? (
         <Box
           sx={{
             display: "flex",
@@ -225,14 +226,15 @@ export default function Activation() {
           >
             {t("activation.label.errorexplanation")}
           </Typography>
-          <Button
+          <LoadingButton
             variant="outlined"
             sx={{ width: "80%", m: 1 }}
-            onClick={changes.action.resend}
-            disabled={loading}
+            onClick={changes.resend}
+            disabled={loadingResend}
+            loading={loadingResend}
           >
             {t("activation.button.resend")}
-          </Button>
+          </LoadingButton>
         </Box>
       ) : (null)}
     </Box>

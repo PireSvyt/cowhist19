@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import {
@@ -13,19 +13,21 @@ import {
   Paper,
   Typography
 } from "@mui/material";
-
 import { LoadingButton } from "@mui/lab";
 
 // Services
-import serviceProceed from "./services/serviceProceed.js";
+import serviceSignIn from "./services/serviceSignIn.js";
+import serviceSignInCheck from "./services/serviceSignInCheck.js";
 import serviceSendActivation from "../../../../../../services/Activation/serviceSendActivation.js";
+import serviceSendActivationCheck from "../../../../../../services/Activation/serviceSendActivationCheck.js";
 import serviceSendPassword from "./services/serviceSendPassword.js";
+import serviceSendPasswordCheck from "./services/serviceSendPasswordCheck.js";
 // Reducers
 import appStore from "../../../../../../store/appStore.js";
 
 export default function SignInModal() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("SignInModal");
+    //console.log("SignInModal");
   }
   // i18n
   const { t } = useTranslation();
@@ -35,61 +37,140 @@ export default function SignInModal() {
 
   // Selects
   const select = {
-    open: useSelector((state) => state.sliceSignInModal.open),
-    inputs: useSelector((state) => state.sliceSignInModal.inputs),
-    errors: useSelector((state) => state.sliceSignInModal.errors),
-    disabled: useSelector((state) => state.sliceSignInModal.disabled),
-    loading: useSelector((state) => state.sliceSignInModal.loading),
-    sendingmail : useSelector((state) => state.sliceSignInModal.sendingmail),
-    snackData: useSelector((state) => state.sliceSignInModal.snackData),
+    open: useSelector((state) => state.sliceModals.openSignInModal),
   };
+  
+  // States
+  const [signInStatus, setSignInStatus] = useState("onhold")
+  const [loadingSignIn, setLoadingSignIn] = useState(false)
+  const [loadingSendActivation, setLoadingSendActivation] = useState(false)
+  const [loadingPasswordReset, setLoadingPasswordReset] = useState(false)
+  const [loginValue, setLoginValue] = useState("")
+  const [loginError, setLoginError] = useState(false)
+  const [passwordValue, setPasswordValue] = useState("")
+  const [passwordError, setPasswordError] = useState(false)
+
+  function setStates (stateChanges) {
+    Object.keys(stateChanges).forEach(change => {
+      switch (change) {
+        case "signInStatus" :
+          setSignInStatus(stateChanges[change])
+          break
+        case "loadingSignIn" :
+          setLoadingSignIn(stateChanges[change])
+          break
+        case "loadingPasswordReset" :
+          setLoadingPasswordReset(stateChanges[change])
+          break
+        case "loadingSendActivation" :
+          setLoadingSendActivation(stateChanges[change])
+          break
+        case "loginValue" :
+          setLoginValue(stateChanges[change])
+          break
+        case "loginError" :
+          setLoginError(stateChanges[change])
+          break
+        case "passwordValue" :
+          setPasswordValue(stateChanges[change])
+          break
+        case "passwordError" :
+          setPasswordError(stateChanges[change])
+          break
+        default :
+          console.error("SignInModal.setStates unknown change ", change, stateChanges[change])
+      }
+    })
+  }
 
   // Changes
   const changes = {
-    closemodal: () => {
+    close: () => {
       appStore.dispatch({ 
-        type: "sliceSignInModal/close" 
+        type: "sliceModals/close",
+        payload: "SignIn" 
       });
     },
     login: (e) => {
-      appStore.dispatch({
-        type: "sliceSignInModal/change",
-        payload: {
-          inputs: { login: e.target.value },
-          errors: { login: false },
-        },
-      });
+      setStates({
+        loginValue: e.target.value,
+        loginError: false
+      })
     },
     password: (e) => {
-      appStore.dispatch({
-        type: "sliceSignInModal/change",
-        payload: {
-          inputs: { password: e.target.value },
-          errors: { password: false },
-        },
-      });
+      setStates({
+        passwordValue: e.target.value,
+        passwordError: false
+      })
+    },
+    signin: () => {
+      console.log("SignInModal.signin")
+      setStates({loadingSignIn: true})
+      let inputs = {
+        login: loginValue,
+        password: passwordValue
+      }
+      serviceSignInCheck(inputs)
+      .then(checkOutcome => {
+        setStates(checkOutcome.stateChanges)
+        if (checkOutcome.proceed) {
+          serviceSignIn(inputs)
+          .then(outcome => {
+            console.log("outcome", outcome)
+            setStates(outcome.stateChanges)
+            setStates({loadingSignIn: false})
+          })
+        } else {
+          setStates({loadingSignIn: false})
+        }
+      })
     },
     gotosignup: () => {
-      // Open sign up modal
       appStore.dispatch({
-        type: "sliceSignUpModal/open"
+        type: "sliceModals/open",
+        payload: "SignUp"
       });
-      appStore.dispatch({
-        type: "sliceSignUpModal/change",
-        payload: {
-          inputs: { login: select.inputs.login }
-        },
-      });
-      // Close sign in modal
-      appStore.dispatch({
-        type: "sliceSignInModal/close"
-      });
+      changes.close()
     },
     sendactivation: () => {
-      serviceSendActivation()
+      console.log("SignInModal.sendactivation")
+      setStates({loadingSendActivation: true})
+      let inputs = {
+        login: loginValue,
+      }
+      serviceSendActivationCheck(inputs)
+      .then(checkOutcome => {
+        setStates(checkOutcome.stateChanges)
+        if (checkOutcome.proceed) {
+          serviceSendActivation(inputs)
+          .then(outcome => {
+            setStates(outcome.stateChanges)
+            setStates({loadingSendActivation: false})
+          })
+        } else {
+          setStates({loadingSendActivation: false})
+        }
+      })
     },
     resetpassword: () => {
-      serviceSendPassword()
+      console.log("SignInModal.resetpassword")
+      setStates({loadingPasswordReset: true})
+      let inputs = {
+        login: loginValue,
+      }
+      serviceSendPasswordCheck(inputs)
+      .then(checkOutcome => {
+        setStates(checkOutcome.stateChanges)
+        if (checkOutcome.proceed) {
+          serviceSendPassword(inputs)
+          .then(outcome => {
+            setStates(outcome.stateChanges)
+            setStates({loadingPasswordReset: false})
+          })
+        } else {
+          setStates({loadingPasswordReset: false})
+        }
+      })
     }
   };
 
@@ -100,7 +181,7 @@ export default function SignInModal() {
         data-testid="componentSignInModal"
         id="dialog_signin"
         open={select.open}
-        onClose={changes.closemodal}
+        onClose={changes.close}
         fullWidth={true}
       >
         <DialogTitle>{t("signin.label.title")}</DialogTitle>
@@ -124,11 +205,11 @@ export default function SignInModal() {
                 required
                 label={t("generic.input.email")}
                 variant="standard"
-                value={select.inputs.login}
+                value={loginValue}
                 onChange={changes.login}
                 autoComplete="off"
                 type="email"
-                error={select.errors.login}
+                error={loginError}
               />
               <TextField
                 data-testid="fieldPassword"
@@ -136,23 +217,23 @@ export default function SignInModal() {
                 required
                 label={t("generic.input.password")}
                 variant="standard"
-                value={select.inputs.password}
+                value={passwordValue}
                 onChange={changes.password}
                 autoComplete="off"
                 type="password"
-                error={select.errors.password}
+                error={passwordError}
               />
-              <Button
+              <LoadingButton
                 variant="outlined"
                 onClick={changes.resetpassword}
                 sx={{mt:2,mb:1}}
-                disabled={select.sendingmail}
-                loading={select.sendingmail}
+                disabled={loadingPasswordReset}
+                loading={loadingPasswordReset}
               >
                 {t("signin.button.resetpassword")}
-              </Button>
+              </LoadingButton>
 
-              {select.errors.notfound ? (
+              {signInStatus === "notfound" ? (
                 <Paper 
                   sx={{
                     mt:1, 
@@ -185,7 +266,7 @@ export default function SignInModal() {
                 </Paper>
               ) : (null)}
 
-              {select.errors.inactivated ? (
+              {signInStatus === "inactivated" ? (
                 <Paper 
                   sx={{
                     mt:1, 
@@ -211,8 +292,8 @@ export default function SignInModal() {
                     <LoadingButton
                       variant="contained"
                       onClick={changes.sendactivation}
-                      disabled={select.sendingmail}
-                      loading={select.sendingmail}
+                      disabled={loadingSendActivation}
+                      loading={loadingSendActivation}
                     >
                       {t("signin.button.resendactivationemail")}
                     </LoadingButton>
@@ -227,16 +308,16 @@ export default function SignInModal() {
         <DialogActions>
           <Button
             data-testid="buttonClose"
-            onClick={changes.closemodal}
+            onClick={changes.close}
           >
             {t("generic.button.cancel")}
           </Button>
           <LoadingButton
             data-testid="buttonProceed"
             variant="contained"
-            onClick={serviceProceed}
-            disabled={select.disabled || select.errors.inactivated}
-            loading={select.loading}
+            onClick={changes.signin}
+            disabled={loadingSignIn || signInStatus === "inactivated"}
+            loading={loadingSignIn}
           >
             {t("generic.button.proceed")}
           </LoadingButton>

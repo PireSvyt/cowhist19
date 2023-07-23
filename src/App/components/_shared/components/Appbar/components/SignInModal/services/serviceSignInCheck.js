@@ -1,9 +1,9 @@
 // Share
-import { validateEmail } from "../toolkit.js"
+import { validateEmail } from "../../../../../../../services/toolkit";
 
-async function serviceSendActivationCheck(sendActivationInputs) {
+async function serviceSignInCheck(signin) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("serviceSendActivationCheck");
+    console.log("serviceSignInCheck");
   }
 
   let proceed = true;
@@ -14,17 +14,24 @@ async function serviceSendActivationCheck(sendActivationInputs) {
   try {
 
     // Login is empty?
-    if (sendActivationInputs.login === "" || sendActivationInputs.login === undefined) {
+    if (signin.login === "" || signin.login === undefined) {
       proceed = false;
       errors.push("generic.error.missinglogin");
       stateChanges.loginError = true;
     } else {
       // Login is an email?
-      if (!validateEmail(sendActivationInputs.login)) {
+      if (!validateEmail(signin.login)) {
         proceed = false;
         errors.push("generic.error.invalidlogin");
         stateChanges.loginError = true;
       }
+    }
+
+    // Password is empty?
+    if (signin.password === "" || signin.password === undefined) {
+      proceed = false;
+      errors.push("generic.error.missingpassword");
+      stateChanges.passwordError = true;
     }
 
     // Outcome
@@ -33,9 +40,9 @@ async function serviceSendActivationCheck(sendActivationInputs) {
       proceed: proceed,
       errors: errors,
     };
-    
+
   } catch (err) {
-    console.error("serviceSendActivationCheck", err);
+    console.error("serviceSignInCheck", err);
     // Snack
     appStore.dispatch({
       type: "sliceSnack/change",
@@ -53,4 +60,4 @@ async function serviceSendActivationCheck(sendActivationInputs) {
   }
 }
 
-export default serviceSendActivationCheck;
+export default serviceSignInCheck;

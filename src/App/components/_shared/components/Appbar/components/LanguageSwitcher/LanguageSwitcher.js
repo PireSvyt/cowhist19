@@ -9,7 +9,7 @@ import { random_id } from "../../../../../../services/toolkit.js"
 
 export default function LanguageSwitcher() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("LanguageSwitcher");
+    //console.log("LanguageSwitcher");
   }
   // i18n
   const { t } = useTranslation();

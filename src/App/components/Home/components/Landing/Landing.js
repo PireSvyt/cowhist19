@@ -53,7 +53,10 @@ export default function Landing() {
           </Button>
           <Button
             onClick={() => {
-              appStore.dispatch({ type: "sliceSignInModal/open" });
+              appStore.dispatch({ 
+                type: "sliceModals/open",
+                payload: "SignIn"
+              });
             }}
             size="large"
           >

@@ -22,7 +22,7 @@ success
 
 export default function Snack(props) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("Snack 2.0");
+    //console.log("Snack 2.0");
   }
   // i18n
   const { t } = useTranslation();
@@ -40,8 +40,6 @@ export default function Snack(props) {
       setOpen(false);
     }
   };
-
-  console.log("props",props)
 
   // Effects
   React.useEffect(() => {

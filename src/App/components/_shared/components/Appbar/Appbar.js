@@ -29,7 +29,7 @@ import appStore from "../../../../store/appStore.js";
 
 export default function Appbar(props) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("Appbar");
+    //console.log("Appbar");
   }
   // i18n
   const { t } = useTranslation();
@@ -47,7 +47,7 @@ export default function Appbar(props) {
     snackOpen: useSelector((state) => state.sliceSnack.open),
     snackData: useSelector((state) => state.sliceSnack.snackData),
     tableOpen:  useSelector((state) => state.sliceTableModal.open),
-    signInModal: useSelector((state) => state.sliceSignInModal.open)
+    signInModal: useSelector((state) => state.sliceModals.openSignInModal)
   };
 
   // Handles

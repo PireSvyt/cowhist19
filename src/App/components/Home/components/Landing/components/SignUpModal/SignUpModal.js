@@ -104,7 +104,7 @@ export default function SignUpModal() {
         }}
         fullWidth={true}
       >
-        <DialogTitle>{t("signin.label.title")}</DialogTitle>
+        <DialogTitle>{t("signup.label.title")}</DialogTitle>
         <DialogContent
           sx={{
             height: componentHeight,

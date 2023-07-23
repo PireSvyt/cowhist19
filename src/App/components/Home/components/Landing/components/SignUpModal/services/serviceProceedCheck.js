@@ -23,13 +23,13 @@ function serviceProceedCheck(signup) {
   // Login is empty?
   if (signup.login === null || signup.login === "") {
     proceed = false;
-    errors.push("signup.error.missinglogin");
+    errors.push("generic.error.missinglogin");
     stateChanges.errors.login = true;
   } else {
     // Login is an email?
     if (!validateEmail(signup.login)) {
       proceed = false;
-      errors.push("signup.error.invalidlogin");
+      errors.push("generic.error.invalidlogin");
       stateChanges.errors.login = true;
     }
   }
@@ -37,7 +37,7 @@ function serviceProceedCheck(signup) {
   // Password is empty?
   if (signup.password === null || signup.password === "") {
     proceed = false;
-    errors.push("signup.error.missingpassword");
+    errors.push("generic.error.missingpassword");
     stateChanges.errors.password = true;
   }
 

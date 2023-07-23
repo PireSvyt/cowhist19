@@ -82,21 +82,6 @@ async function serviceProceed() {
           });
           break;
         case "user.invite.error.oncreate":
-          appStore.dispatch({
-            type: "sliceInviteModal/change",
-            payload: {
-              disabled: false,
-              loading: false,
-            },
-          });
-          appStore.dispatch({
-            type: "sliceSnack/change",
-            payload: {
-              uid: random_id(),
-              id: "generic.snack.error.wip",
-            },
-          });
-          break;
         case "user.invite.error.onfind":
           appStore.dispatch({
             type: "sliceInviteModal/change",

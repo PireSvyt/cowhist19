@@ -11,9 +11,12 @@ const sliceSignInModal = createSlice({
     errors: {
       login: false,
       password: false,
+      inactivated: false,
+      notfound: false
     },
     disabled: false,
     loading: false,
+    sendingmail: false,
   },
   reducers: {
     open: (state) => {
@@ -28,6 +31,8 @@ const sliceSignInModal = createSlice({
       state.errors = {
         login: false,
         password: false,
+        inactivated: false,
+        notfound: false
       };
     },
     close: (state) => {
@@ -42,9 +47,12 @@ const sliceSignInModal = createSlice({
       state.errors = {
         login: false,
         password: false,
+        inactivated: false,
+        notfound: false
       };
       state.disabled = false;
       state.loading = false;
+      state.sendingmail = false;
     },
     change: (state, action) => {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -71,6 +79,12 @@ const sliceSignInModal = createSlice({
         if (action.payload.errors.password !== undefined) {
           state.errors.password = action.payload.errors.password;
         }
+        if (action.payload.errors.inactivated !== undefined) {
+          state.errors.inactivated = action.payload.errors.inactivated;
+        }
+        if (action.payload.errors.notfound !== undefined) {
+          state.errors.notfound = action.payload.errors.notfound;
+        }
       }
       // Lock
       if (action.payload.disabled !== undefined) {
@@ -78,6 +92,9 @@ const sliceSignInModal = createSlice({
       }
       if (action.payload.loading !== undefined) {
         state.loading = action.payload.loading;
+      }
+      if (action.payload.sendingmail !== undefined) {
+        state.sendingmail = action.payload.sendingmail;
       }
     },
     lock: (state, action) => {

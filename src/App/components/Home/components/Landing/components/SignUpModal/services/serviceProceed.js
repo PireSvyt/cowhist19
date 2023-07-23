@@ -1,4 +1,3 @@
-import axios from "axios";
 import bcrypt from "bcryptjs-react";
 // BCRYPT https://www.makeuseof.com/nodejs-bcrypt-hash-verify-salt-password/
 // Services
@@ -80,37 +79,7 @@ async function serviceProceed() {
           });
           break;
         case "auth.signup.error.savingoncreate":
-          appStore.dispatch({
-            type: "sliceSignUpModal/change",
-            payload: {
-              disabled: false,
-              loading: false,
-            },
-          });
-          appStore.dispatch({
-            type: "sliceSnack/change",
-            payload: {
-              uid: random_id(),
-              id: "generic.snack.error.wip",
-            },
-          });
-          break;
         case "auth.signup.error.savingfrominvited":
-          appStore.dispatch({
-            type: "sliceSignUpModal/change",
-            payload: {
-              disabled: false,
-              loading: false,
-            },
-          });
-          appStore.dispatch({
-            type: "sliceSnack/change",
-            payload: {
-              uid: random_id(),
-              id: "generic.snack.error.wip",
-            },
-          });
-          break;
         case "auth.signup.error.notfound":
           appStore.dispatch({
             type: "sliceSignUpModal/change",

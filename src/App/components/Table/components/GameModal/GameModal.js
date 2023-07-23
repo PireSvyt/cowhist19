@@ -252,6 +252,7 @@ export default function GameModal() {
                 MenuProps={{ style: {maxHeight: menuItemHeight * 6.5} }}  
                 open={select.focuses.contract}
                 onOpen={() => changes.openMenu("contract")}
+                onClose={() => changes.closeMenu("contract")}
               >
                 {select.contracts.map((contract) => (
                   <MenuItem key={contract.key} value={contract.key}>

@@ -15,15 +15,15 @@ import MenuIcon from "@mui/icons-material/Menu.js";
 import CloseIcon from "@mui/icons-material/Close.js";
 import EditIcon from "@mui/icons-material/Edit.js";
 
-// Components
-import LanguageSwitcher from "./components/LanguageSwitcher/LanguageSwitcher.js";
 // Services
 import { random_id } from "../../../../services/_shared/toolkit.js";
-// Shared
 import serviceAccessDeny from "../../../../services/_shared/serviceAccessDeny.js";
+// Components
+import LanguageSwitcher from "./components/LanguageSwitcher/LanguageSwitcher.js";
 import Snack from "./components/Snack/Snack2.js";
 import FeedbackModal from "./components/FeedbackModal/FeedbackModal.js";
 import TableModal from "./components/TableModal/TableModal.js";
+import SignInModal from "./components/SignInModal/SignInModal.js";
 // Store
 import appStore from "../../../../store/appStore.js";
 
@@ -46,7 +46,8 @@ export default function Appbar(props) {
     feedbackOpen: useSelector((state) => state.sliceFeedbackModal.open),
     snackOpen: useSelector((state) => state.sliceSnack.open),
     snackData: useSelector((state) => state.sliceSnack.snackData),
-    tableOpen:  useSelector((state) => state.sliceTableModal.open)
+    tableOpen:  useSelector((state) => state.sliceTableModal.open),
+    signInModal: useSelector((state) => state.sliceSignInModal.open)
   };
 
   // Handles
@@ -199,8 +200,6 @@ export default function Appbar(props) {
       break;
     case "admin":
       showLanguageSwitcher = false;
-      menuItems.push(potentialMenuItems.toHome);
-      menuItems.push(potentialMenuItems.signOut);
       break;
     default:
   }
@@ -257,7 +256,7 @@ export default function Appbar(props) {
             >
               {showLanguageSwitcher === true ? <LanguageSwitcher /> : null}
 
-              {menuItems.length === 0 ? null : (
+              {menuItems.length !== 0 ? (
                 <Box>
                   <IconButton size="large" onClick={action.openMenu}>
                     <MenuIcon sx={{ color: "white" }} />
@@ -300,11 +299,7 @@ export default function Appbar(props) {
                     })}
                   </Menu>
                 </Box>
-              )}
-
-              {!(props.route === "account" 
-              || props.route === "documentation" 
-              || props.route === "about") ? null : (
+              ) : (
                 <IconButton
                   size="large"
                   color="inherit"
@@ -318,6 +313,7 @@ export default function Appbar(props) {
         </Toolbar>
       </AppBar>
 
+      {select.signInModal === true ? <SignInModal /> : null}
       {select.snackOpen ? (<Snack data={select.snackData}/>) : (null)}
       {select.feedbackOpen ? (<FeedbackModal/>) : (null)}
       {select.tableOpen ? (<TableModal/>) : (null)}

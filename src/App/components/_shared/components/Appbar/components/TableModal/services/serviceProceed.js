@@ -1,4 +1,5 @@
 // Services
+import apiTableCreate from "./apiTableCreate.js";
 import apiTableSave from "./apiTableSave.js";
 import serviceProceedCheck from "./serviceProceedCheck.js";
 // Shared
@@ -31,14 +32,19 @@ async function serviceProceed(table) {
       delete tableInputs.players
 
       // API call
-      const data = await apiTableSave(tableInputs);
+      let data = null
+      if (tableInputs._id === "") {
+        data = await apiTableCreate(tableInputs);
+      } else {
+        data = await apiTableSave(tableInputs);
+      }
       if (process.env.REACT_APP_DEBUG === "TRUE") {
         console.log("data.type : " + data.type);
       }
 
       // Response management
       switch (data.type) {
-        case "table.save.success.created":
+        case "table.create.success.created":
           appStore.dispatch({
             type: "sliceSnack/change",
             payload: {
@@ -76,7 +82,11 @@ async function serviceProceed(table) {
           });
           return { type: "success" };
           break;
-        case "table.save.error.oncreate":
+        case "table.create.error.idprovided":
+        case "table.create.error.oncreate":
+        case "table.save.error.emptyid":
+        case "table.save.error.onfind":
+        case "table.save.error.onmodify":
           appStore.dispatch({
             type: "sliceTableModal/change",
             payload: {

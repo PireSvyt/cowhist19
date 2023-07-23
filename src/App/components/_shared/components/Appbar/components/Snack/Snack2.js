@@ -41,6 +41,8 @@ export default function Snack(props) {
     }
   };
 
+  console.log("props",props)
+
   // Effects
   React.useEffect(() => {
     if (props.data !== undefined) {
@@ -67,13 +69,15 @@ export default function Snack(props) {
           }
           if (props.data.details !== undefined && props.data.details !== []) {
             let detailedErrors = "";
-            props.data.details.forEach((detail) => {
-              detailedErrors = detailedErrors + t(detail) + ", ";
-            });
-            newSnack.message =
-              newSnack.message +
-              " " +
-              detailedErrors.slice(0, detailedErrors.length - 2);
+            if (typeof props.data.details === 'string' || props.data.details instanceof String) {
+              newSnack.message += " " + props.data.details
+            } else {
+              props.data.details.forEach((detail) => {
+                detailedErrors = detailedErrors + t(detail) + ", ";
+              });
+              newSnack.message += " " +
+                detailedErrors.slice(0, detailedErrors.length - 2);
+            }
           }
           // Set state
           setUid(newSnack.uid);

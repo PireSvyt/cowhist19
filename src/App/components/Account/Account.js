@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 import { Paper, Button, Typography, Box } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
 
+// Components
+import ChangePasswordModal from "./components/ChangePasswordModal/ChangePasswordModal.js"
 // Shared
 import Appbar from "../_shared/components/Appbar/Appbar.js";
 // Reducers
@@ -23,6 +25,7 @@ export default function Account() {
     detailsLoaded: useSelector((state) => state.sliceUserDetails.loaded),
     login: useSelector((state) => state.sliceUserDetails.login),
     pseudo: useSelector((state) => state.sliceUserDetails.pseudo),
+    openChangePasswordModal: useSelector((state) => state.sliceChangePasswordModal.open),
   };
 
   // Changes
@@ -63,6 +66,11 @@ export default function Account() {
     }
   }
   const changes = {
+    changepassword: () => {
+      appStore.dispatch({ 
+        type: "sliceChangePasswordModal/open"
+      });
+    },
     feedback_changepseudo: () => {
       let payload = toComePayload
       payload.inputs.tag = "changepseudo"
@@ -74,14 +82,6 @@ export default function Account() {
     feedback_changeemail: () => {
       let payload = toComePayload
       payload.inputs.tag = "changeemail"
-      appStore.dispatch({ 
-        type: "sliceFeedbackModal/change",
-        payload: payload
-      });
-    },
-    feedback_changepassword: () => {
-      let payload = toComePayload
-      payload.inputs.tag = "changepassword"
       appStore.dispatch({ 
         type: "sliceFeedbackModal/change",
         payload: payload
@@ -200,7 +200,7 @@ export default function Account() {
                     width: "80%",
                     m: 1,
                   }}
-                  onClick={changes.feedback_changepassword}
+                  onClick={changes.changepassword}
                 >
                   {t("account.button.changepassword")}
                 </Button>
@@ -295,6 +295,9 @@ export default function Account() {
               </Box>
             </Box>
           </Paper>
+          
+          {select.openChangePasswordModal ? (<ChangePasswordModal />) : (null)}
+          
         </Box>
       )}
     </div>

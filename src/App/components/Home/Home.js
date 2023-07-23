@@ -30,6 +30,7 @@ export default function Home() {
     <Box>
       <Appbar route="home" title={t("generic.label.product")} />
       <Box sx={{ height: 55 }} />
+
       {select.authLoaded === false ? (
         <Box sx={{ left: "10%", right: "10%" }}>
           <LinearProgress />
@@ -42,6 +43,7 @@ export default function Home() {
           <MyTables />
         </Box>
       )}
+      
     </Box>
   );
 }

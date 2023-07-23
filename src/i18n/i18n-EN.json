@@ -2,14 +2,12 @@
   "generic": {
     "label": {
       "product": "CoWhist19",
-      "account": "Account",
       "documentation": "Documentation",
       "about": "About"
     },
     "menu": {
       "home": "Home",
       "account": "My account",
-      "table": "Table",
       "documentation": "Documentation",
       "about": "About",
       "contact": "Contact",
@@ -22,17 +20,17 @@
       "password": "Password"
     },
     "button": {
-      "add": "Add",
+      "signin": "Sign in",
       "save": "Save",
-      "delete": "Delete",
-      "select": "Select",
-      "confirm": "Confirm",
       "cancel": "Cancel",
       "close": "Close",
-      "view": "View",
-      "edit": "Edit",
       "proceed": "Proceed",
       "tohome": "To home"
+    },
+    "error": {
+      "missinglogin": "missing email",
+      "invalidlogin": "invalid email",
+      "missingpassword": "missing password"
     },
     "snack": {
       "api": {
@@ -42,26 +40,17 @@
       "error": {
         "unknown": "Unknown error :/",
         "withdetails": "Error :",
-        "invalidchange": "invalid change",
-        "wip": "We are working on it...",
-        "existingpseudo" : "Already existing pseudo"
-      },
-      "feedback": {
-        "wip": "Work in progress...",
-        "languagechange": "Refresh the page to enjoy this language..."
+        "wip": "We are working on it..."
       }
     },
     "language": {
       "enGB": {
-        "short": "EN",
         "long": "English"
       },
       "frFR": {
-        "short": "FR",
         "long": "French"
       },
       "nlNL": {
-        "short": "NL",
         "long": "Dutch"
       }
     }
@@ -77,61 +66,52 @@
     "error": {
       "missingpseudo": "missing pseudo",
       "existingpseudo": "Already existing pseudo",
-      "missinglogin": "missing email",
-      "invalidlogin": "invalid email",
       "existinglogin": "An account already exists with this login",
-      "missingpassword": "missing password",
       "missingrepeatpassword": "missing repeated password",
       "passwordmissmatch": "password missmatch",
       "resetpassword": "Reset my password (unavailable)"
     },
     "snack": {
-      "signedup": "Signed up!"
+      "signedup": "Signed up!\nCheck your emails to activate your account (including the spams)"
     }
   },
   "signin": {
     "label": {
-      "title": "Sign in"
+      "title": "Sign in",
+      "notfoundaccount": "Account not found :/\nWilling to create an account?",
+      "inactiveaccount": "Haven't you activated your account yet?"
     },
     "input": {},
     "button": {
-      "signin": "Sign in"
-    },
-    "error": {
-      "emptytoken": "empty token",
-      "invalidtoken": "invalid token",
-      "invalidstatus": "invalid status",
-      "missinglogin": "missing email",
-      "invalidlogin": "invalid email",
-      "missingpassword": "missing password"
+      "resetpassword": "Reset password",
+      "gotosignup": "Sign up now!",
+      "resendactivationemail": "Resend activation email"
     },
     "snack": {
       "signedin": "Signed in!",
       "unauthorized": "Wrong password",
-      "notfound": "Account not found"
+      "successresendingactivation": "Activation email sent, check your emails (including the spams)",
+      "errorresendingactivation": "Could not resend account activation email"
     }
   },
   "activation": {
     "label": {
-      "title": "Account activation",
-      "inprogress": "Account activation in progress",
+      "laststep": "One last step...\nand then you're all set!",
+      "inprogress": "Activation in progress...",
       "error": "Error during activation",
-      "errorexplanation": "Sincere apologies for the inconvenience.\n\nPlease try again later.",
-      "activatedtitle": "Account activated!",
-      "activatedaccountexplanations": "Your account has been successfully activated.\n\nYou can now sign in!",
-      "notfoundaccount": "Account activation impossible",
-      "notfoundaccountexplanations": "It seems the token from the url is not valid.\n\nYou may have already activated this account?"
+      "errorexplanation": "Sincere apologies for the inconvenience.\nPlease try again later.",
+      "activatedtitle": "Account activated!"
     },
     "input": {},
     "button": {
-      "tohome": "To home to sign in"
+      "activate": "Activate",
+      "resend": "Send a new activation email"
     },
     "error": {},
     "snack": {}
   },
   "account": {
     "label": {
-      "title": "My account",
       "mydata": "My data",
       "mypseudo": "My pseudo",
       "myemail": "My email",
@@ -183,7 +163,6 @@
       "players": "Players",
       "stats": "Stats",
       "history": "History",
-      "score": "score",
       "averagepoints" : "av. points",
       "data": "Data",
       "games": "games",
@@ -200,8 +179,7 @@
       "nousersdeleteexplanation": "You have removed all players from the table.\n\nSaving a table without any player will delete the table."
     },
     "input": {
-      "guests": "Guests",
-      "data": "Data"
+      "guests": "Guests"
     },
     "button": {
       "newgame": "New game",
@@ -215,17 +193,9 @@
       "creationwithoutuser": "table creation impossible without you among the players"
     },
     "confirm": {
-      "delete": {
-        "title": "Sure to delete table?",
-        "content": "You're about to delete the table.\n\nThis will delete the table and all associated games."
-      },
       "deletenoeusers": {
         "title": "No more player here!",
         "content": "All players have been deleted from this table.\nA table can't exist without any player...\n\nProceeding will delete the table and all associated games."
-      },
-      "deleteuser": {
-        "title": "Sure to remove this player?",
-        "content": "You're about to remove a player from the table.\n\nIf you proceed and save the table, the player won't have access anymore to this table, the player name will be removed from the table history and statistics."
       }
     },
     "snack": {
@@ -282,7 +252,6 @@
     },
     "input": {
       "contract": "Contract",
-      "date": "Date",
       "attack": "Attack",
       "defense": "Defense",
       "outcome": "Outcome"
@@ -326,6 +295,25 @@
     },
     "snack":{      
       "created" : "Feedback sent!"
+    }
+  },
+  "changepassword": {
+    "label": {
+      "modaltitle": "Change password"
+    },
+    "input":{
+      "current" : "Current password",
+      "new": "New password",
+      "repeat": "Repeat new password"
+    },
+    "error": {
+      "missingcurrent": "missing current password",
+      "missingnew": "missing new password",
+      "missingrepeat": "missing repeated password",
+      "missmatch": "password missmatch"
+    },
+    "snack": {
+      "saved" : "Password saved"
     }
   }
 }

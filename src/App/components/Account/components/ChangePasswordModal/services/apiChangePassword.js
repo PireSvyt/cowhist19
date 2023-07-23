@@ -1,13 +1,13 @@
 import axios from "axios";
 
 // Reducers
-import appStore from "../../../../../../../store/appStore";
+import appStore from "../../../../../store/appStore";
 
-async function apiTableSave(table) {
+async function apiChangePassword(changePasswordInputs) {
   try {
     const res = await axios.post(
-      process.env.REACT_APP_SERVER_URL + "/table/v2/save",
-      table,
+      process.env.REACT_APP_SERVER_URL + "/user/v1/changepassword",
+      changePasswordInputs,
       {
         headers: {
           Authorization: "Bearer " + appStore.getState().sliceUserAuth.token,
@@ -20,4 +20,4 @@ async function apiTableSave(table) {
   }
 }
 
-export default apiTableSave;
+export default apiChangePassword;

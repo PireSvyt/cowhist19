@@ -2,7 +2,7 @@
 import apiActivate from "./apiActivate";
 
 import serviceProceedCheck from "./serviceProceedCheck";
-import { random_id } from "../../../services/_shared/toolkit";
+import { random_id } from "../../../services/toolkit";
 
 async function serviceProceed(activationInputs) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

@@ -1,7 +1,7 @@
 // Reducers
 import appStore from "../../../store/appStore.js";
 // Shared
-import { random_id } from "../../../services/_shared/toolkit.js";
+import { random_id } from "../../../services/toolkit.js";
 
 async function serviceProcessCurves(graph) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

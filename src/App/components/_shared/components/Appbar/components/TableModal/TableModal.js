@@ -33,7 +33,7 @@ import serviceTableDelete from "./services/serviceTableDelete.js";
 // Shared
 import ConfirmModal from "../ConfirmModal/ConfirmModal.js";
 import serviceExistingName from "./services/serviceExistingName.js";
-import { debounce } from "../../../../../../services/_shared/toolkit.js";
+import { debounce } from "../../../../../../services/toolkit.js";
 // Reducers
 import appStore from "../../../../../../store/appStore.js";
 

@@ -15,7 +15,7 @@ import {
 import LoadingButton from "@mui/lab/LoadingButton";
 
 // Shared
-import { random_id } from "../../../../../../services/_shared/toolkit";
+import { random_id } from "../../../../../../services/toolkit";
 import serviceProceed from "./services/serviceProceed";
 // Components
 import FeedbackContent from "./components/FeedbackContent/FeedbackContent";

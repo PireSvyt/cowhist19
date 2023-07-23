@@ -6,10 +6,12 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline.js";
 
 // Services
 import serviceProceed from "./services/serviceProceed.js";
+import serviceSendActivation from "../../services/Activation/serviceSendActivation.js";
 // Shared
 import Appbar from "../_shared/components/Appbar/Appbar.js";
 // Reducers
 import appStore from "../../store/appStore.js";
+import { FlashOffRounded } from "@mui/icons-material";
 
 export default function Activation() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -24,54 +26,88 @@ export default function Activation() {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("onhold");
 
+  const [inputs, setInputs] = useState({
+    login: {
+      value: "",
+      error: false
+    }
+  });
+
   // Changes
   const changes = {
-    login: (e) => {
-      setLogin(e.target.value)
-      setLoginError(false)
-    },
-    send: () => { 
+    // Lock UI
+    lock: () => {
       setLoading(true)
-      serviceProceed({
-        login: login,
-        token: window.location.href.split("/activation/")[1]
-      })
-      .then(outcome => {
-        console.log("outcome", outcome)
-        Object.keys(outcome.stateChanges).forEach(c => {
-          console.log("outcome.stateChanges " + c)
-          switch (c) {
-            case "login" :
-              setLogin(outcome.stateChanges[c])
-              break
-            case "loginerror" :
-              setLoginError(outcome.stateChanges[c])
-              break
-            case "loading" :
-              setLoading(outcome.stateChanges[c])
-              break
-            case "status" :
-              setStatus(outcome.stateChanges[c])
-              break
-              case "openSnack" :
-                if (outcome.stateChanges.openSnack && outcome.stateChanges.snack) {
-                  appStore.dispatch({
-                    type: "sliceSnack/change",
-                    payload: outcome.stateChanges.snack,
-                  });
-                }
-                break
-            default:
-              // NA
-          }
-        });
-      })
     },
-    resend: () => {},
-    signin: () => {
-      appStore.dispatch({ type: "sliceSignInModal/open" });
+    // Unock UI
+    unlock: () => {
+      setLoading(false)
+    },
+    // Set input field
+    input: (e) => {
+      console.log("changes.input " +  e.name)
+      switch (e.name) {
+        case "login":
+          let currentInputs = inputs
+          currentInputs.login = {
+            value: e.target.value,
+            error: false
+          }
+          setInputs(currentInputs)
+          break
+        default:
+          console.error("changes.input unknown field "+ e.name)
+      }
+    },
+    // Commands
+    action: {
+      send: () => {
+        console.log("changes.action send")
+        changes.lock()
+        serviceProceed({
+          login: login,
+          token: window.location.href.split("/activation/")[1]
+        })
+        .then(outcome => {
+          //console.log("outcome", outcome)
+          Object.keys(outcome.stateChanges).forEach(c => {
+            //console.log("outcome.stateChanges " + c)
+            switch (c) {
+              case "login" :
+                setLogin(outcome.stateChanges[c])
+                break
+              case "loginerror" :
+                setLoginError(outcome.stateChanges[c])
+                break
+              case "loading" :
+                setLoading(outcome.stateChanges[c])
+                break
+              case "status" :
+                setStatus(outcome.stateChanges[c])
+                break
+                case "openSnack" :
+                  if (outcome.stateChanges.openSnack && outcome.stateChanges.snack) {
+                    appStore.dispatch({
+                      type: "sliceSnack/change",
+                      payload: outcome.stateChanges.snack,
+                    });
+                  }
+                  break
+              default:
+                // NA
+            }
+          })
+        })
+      },
+      resend: () => {
+        changes.lock()
+        serviceSendActivation({ ...appStore.getState().sliceSignInModal.inputs })
+      },
+      signin: () => {
+        appStore.dispatch({ type: "sliceSignInModal/open" });
+      }
     }
-  };
+  }
 
 
   return (
@@ -98,12 +134,13 @@ export default function Activation() {
           label={t("generic.input.email")}
           value={login}
           required
-          onChange={changes.login}
+          name="activation.login"
+          onChange={changes.input}
           error={loginerror}
           sx={{mt:1, mb:1, width: "80%"}}
         />
         <LoadingButton 
-          onClick={changes.send} 
+          onClick={changes.action.send} 
           variant="contained"
           disabled={loading || status === "activated"}
           loading={loading}
@@ -152,7 +189,7 @@ export default function Activation() {
           <Button
             variant="contained"
             sx={{ width: "80%", m: 1 }}
-            onClick={changes.signin}
+            onClick={changes.action.signin}
           >
             {t("generic.button.signin")}
           </Button>
@@ -191,8 +228,8 @@ export default function Activation() {
           <Button
             variant="outlined"
             sx={{ width: "80%", m: 1 }}
-            onClick={changes.resend}
-            disabled
+            onClick={changes.action.resend}
+            disabled={loading}
           >
             {t("activation.button.resend")}
           </Button>

@@ -16,8 +16,8 @@ import CloseIcon from "@mui/icons-material/Close.js";
 import EditIcon from "@mui/icons-material/Edit.js";
 
 // Services
-import { random_id } from "../../../../services/_shared/toolkit.js";
-import serviceAccessDeny from "../../../../services/_shared/serviceAccessDeny.js";
+import { random_id } from "../../../../services/toolkit.js";
+import serviceAccessDeny from "../../../../services/Access/serviceAccessDeny.js";
 // Components
 import LanguageSwitcher from "./components/LanguageSwitcher/LanguageSwitcher.js";
 import Snack from "./components/Snack/Snack2.js";

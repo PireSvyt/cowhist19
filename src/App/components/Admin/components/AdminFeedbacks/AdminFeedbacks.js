@@ -7,7 +7,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import serviceGetFeedbacks from "./services/serviceGetFeedbacks.js";
 // Components
 import FeedbackCard from "./components/FeedbackCard/FeedbackCard.js";
-import { random_id } from "../../../../services/_shared/toolkit.js";
+import { random_id } from "../../../../services/toolkit.js";
 
 export default function AdminFeedbacks() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

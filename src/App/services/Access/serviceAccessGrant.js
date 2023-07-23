@@ -3,7 +3,7 @@ import jwt_decode from "jwt-decode";
 // Services
 import serviceAccessDeny from "./serviceAccessDeny.js";
 // Shared
-import serviceGetUserDetails from "./serviceGetUserDetails.js";
+import serviceGetUserDetails from "../UserDetails/serviceGetUserDetails.js";
 // Reducers
 import appStore from "../../store/appStore.js";
 

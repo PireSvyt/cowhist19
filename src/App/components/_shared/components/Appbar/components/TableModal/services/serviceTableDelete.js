@@ -1,7 +1,7 @@
 // Services
 import apiTableDelete from "./apiTableDelete.js";
 // Shared
-import { random_id } from "../../../../../../../services/_shared/toolkit.js";
+import { random_id } from "../../../../../../../services/toolkit.js";
 // Reducers
 import appStore from "../../../../../../../store/appStore.js";
 

@@ -3,7 +3,7 @@ import apiTableCreate from "./apiTableCreate.js";
 import apiTableSave from "./apiTableSave.js";
 import serviceProceedCheck from "./serviceProceedCheck.js";
 // Shared
-import { random_id } from "../../../../../../../services/_shared/toolkit.js";
+import { random_id } from "../../../../../../../services/toolkit.js";
 import serviceGetTableDetails from "../../../../../../Table/services/serviceGetTableDetails.js"
 // Reducers
 import appStore from "../../../../../../../store/appStore.js";

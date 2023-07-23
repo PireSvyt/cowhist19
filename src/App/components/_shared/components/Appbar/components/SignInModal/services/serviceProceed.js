@@ -5,8 +5,8 @@ import { AES } from "crypto-js";
 import apiSignIn from "./apiSignIn.js";
 import serviceProceedCheck from "./serviceProceedCheck.js";
 // Shared
-import { random_id } from "../../../../../../../services/_shared/toolkit.js";
-import serviceAccessGrant from "../../../../../../../services/_shared/serviceAccessGrant.js"
+import { random_id } from "../../../../../../../services/toolkit.js";
+import serviceAccessGrant from "../../../../../../../services/Access/serviceAccessGrant.js"
 // Reducers
 import appStore from "../../../../../../../store/appStore.js";
 

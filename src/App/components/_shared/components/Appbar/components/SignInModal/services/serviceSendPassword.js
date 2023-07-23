@@ -4,7 +4,7 @@ import { AES } from "crypto-js";
 import apiSendPassword from "./apiSendPassword.js";
 import serviceSendPasswordCheck from "./serviceSendPasswordCheck.js";
 // Shared
-import { random_id } from "../../../../../../../services/_shared/toolkit.js";
+import { random_id } from "../../../../../../../services/toolkit.js";
 // Reducers
 import appStore from "../../../../../../../store/appStore.js";
 

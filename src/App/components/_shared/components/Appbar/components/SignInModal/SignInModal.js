@@ -18,7 +18,7 @@ import { LoadingButton } from "@mui/lab";
 
 // Services
 import serviceProceed from "./services/serviceProceed.js";
-import serviceSendActivation from "./services/serviceSendActivation.js";
+import serviceSendActivation from "../../../../../../services/Activation/serviceSendActivation.js";
 import serviceSendPassword from "./services/serviceSendPassword.js";
 // Reducers
 import appStore from "../../../../../../store/appStore.js";

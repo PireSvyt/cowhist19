@@ -17,7 +17,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 // Services
 import serviceProceed from "../../services/serviceProceed.js";
 // Shared
-import serviceExistingPseudo from "../../../../../../../../services/_shared/serviceExistingPseudo.js";
+import serviceExistingPseudo from "../../../../../../../../services/TO_REWORK/serviceExistingPseudo.js";
 // Reducers
 import appStore from "../../../../../../../../store/appStore.js";
 

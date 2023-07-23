@@ -91,7 +91,9 @@
       "signedin": "Signed in!",
       "unauthorized": "Wrong password",
       "successresendingactivation": "Activation email sent, check your emails (including the spams)",
-      "errorresendingactivation": "Could not resend account activation email"
+      "errorresendingactivation": "Could not send account activation email",
+      "successsendingpassword": "Password reset email sent, check your emails (including the spams)",
+      "errorsendingpassword": "Could not send password reset email"
     }
   },
   "activation": {

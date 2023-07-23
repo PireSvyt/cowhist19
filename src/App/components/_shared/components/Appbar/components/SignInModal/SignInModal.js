@@ -18,7 +18,8 @@ import { LoadingButton } from "@mui/lab";
 
 // Services
 import serviceProceed from "./services/serviceProceed.js";
-import serviceResendActivation from "./services/serviceResendActivation.js";
+import serviceSendActivation from "./services/serviceSendActivation.js";
+import serviceSendPassword from "./services/serviceSendPassword.js";
 // Reducers
 import appStore from "../../../../../../store/appStore.js";
 
@@ -84,8 +85,11 @@ export default function SignInModal() {
         type: "sliceSignInModal/close"
       });
     },
+    sendactivation: () => {
+      serviceSendActivation()
+    },
     resetpassword: () => {
-
+      serviceSendPassword()
     }
   };
 
@@ -142,7 +146,8 @@ export default function SignInModal() {
                 variant="outlined"
                 onClick={changes.resetpassword}
                 sx={{mt:2,mb:1}}
-                disabled
+                disabled={select.sendingmail}
+                loading={select.sendingmail}
               >
                 {t("signin.button.resetpassword")}
               </Button>
@@ -205,7 +210,7 @@ export default function SignInModal() {
                     </Typography>
                     <LoadingButton
                       variant="contained"
-                      onClick={serviceResendActivation}
+                      onClick={changes.sendactivation}
                       disabled={select.sendingmail}
                       loading={select.sendingmail}
                     >

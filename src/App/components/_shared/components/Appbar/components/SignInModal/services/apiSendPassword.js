@@ -1,10 +1,10 @@
 import axios from "axios";
 
-async function apiResetPassword(resetPasswordInputs) {
+async function apiSendPassword(sendPasswordInputs) {
   try {
     const res = await axios.post(
       process.env.REACT_APP_SERVER_URL + "/auth/v1/sendpassword",
-      resetPasswordInputs
+      sendPasswordInputs
     );
     return res.data;
   } catch (err) {
@@ -12,4 +12,4 @@ async function apiResetPassword(resetPasswordInputs) {
   }
 }
 
-export default apiResetPassword;
+export default apiSendPassword;

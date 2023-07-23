@@ -1,9 +1,9 @@
 // Share
 import { validateEmail } from "../../../../../../../services/_shared/toolkit";
 
-function serviceResetPasswordCheck(signin) {
+function serviceSendActivationCheck(signin) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("serviceResetPasswordCheck");
+    console.log("serviceSendActivationCheck");
   }
 
   let proceed = true;
@@ -17,13 +17,13 @@ function serviceResetPasswordCheck(signin) {
   // Login is empty?
   if (signin.login === "" || signin.login === undefined) {
     proceed = false;
-    errors.push("signin.error.missinglogin");
+    errors.push("generic.error.missinglogin");
     stateChanges.errors.login = true;
   } else {
     // Login is an email?
     if (!validateEmail(signin.login)) {
       proceed = false;
-      errors.push("signin.error.invalidlogin");
+      errors.push("generic.error.invalidlogin");
       stateChanges.errors.login = true;
     }
   }
@@ -36,4 +36,4 @@ function serviceResetPasswordCheck(signin) {
   };
 }
 
-export default serviceResetPasswordCheck;
+export default serviceSendActivationCheck;

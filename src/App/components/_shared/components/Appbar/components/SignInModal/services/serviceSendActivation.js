@@ -1,16 +1,16 @@
 import { AES } from "crypto-js";
 
 // Services
-import apiResendActivation from "./apiResendActivation.js";
-import serviceResendActivationCheck from "./serviceResendActivationCheck.js";
+import apiSendActivation from "./apiSendActivation.js";
+import serviceSendActivationCheck from "./serviceSendActivationCheck.js";
 // Shared
 import { random_id } from "../../../../../../../services/_shared/toolkit.js";
 // Reducers
 import appStore from "../../../../../../../store/appStore.js";
 
-async function serviceResendActivation() {
+async function serviceSendActivation() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("serviceResendActivation");
+    console.log("serviceSendActivation");
   }
 
   try {
@@ -21,10 +21,10 @@ async function serviceResendActivation() {
         sendingmail: true
       }
     });
-    let resendActivationInputs = { ...appStore.getState().sliceSignInModal.inputs };
+    let sendActivationInputs = { ...appStore.getState().sliceSignInModal.inputs };
 
     // Check inputs
-    let proceedCheckOutcome = serviceResendActivationCheck(resendActivationInputs);
+    let proceedCheckOutcome = serviceSendActivationCheck(sendActivationInputs);
     appStore.dispatch({
       type: "sliceSignInModal/change",
       payload: proceedCheckOutcome.stateChanges,
@@ -33,18 +33,18 @@ async function serviceResendActivation() {
     if (proceedCheckOutcome.proceed === true) {
       // Encryption
       if (process.env.NODE_ENV === "_production") {
-        delete resendActivationInputs.password
-        resendActivationInputs.login = AES.encrypt(
-            resendActivationInputs.login,
+        delete sendActivationInputs.password
+        sendActivationInputs.login = AES.encrypt(
+            sendActivationInputs.login,
           process.env.REACT_APP_ENCRYPTION
         ).toString();
-        resendActivationInputs.encryption = true;
+        sendActivationInputs.encryption = true;
       } else {
-        resendActivationInputs.encryption = false;
+        sendActivationInputs.encryption = false;
       }
 
       // API call
-      const data = await apiResendActivation(resendActivationInputs);
+      const data = await apiSendActivation(sendActivationInputs);
       if (process.env.REACT_APP_DEBUG === "TRUE") {
         console.log("data.type : " + data.type);
       }
@@ -139,4 +139,4 @@ async function serviceResendActivation() {
   }
 }
 
-export default serviceResendActivation;
+export default serviceSendActivation;

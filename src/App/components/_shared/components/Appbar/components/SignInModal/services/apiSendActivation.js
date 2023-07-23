@@ -1,10 +1,10 @@
 import axios from "axios";
 
-async function apiResendActivation(resendActivationInputs) {
+async function apiSendActivation(sendActivationInputs) {
   try {
     const res = await axios.post(
       process.env.REACT_APP_SERVER_URL + "/auth/v1/sendactivation",
-      resendActivationInputs
+      sendActivationInputs
     );
     return res.data;
   } catch (err) {
@@ -12,4 +12,4 @@ async function apiResendActivation(resendActivationInputs) {
   }
 }
 
-export default apiResendActivation;
+export default apiSendActivation;

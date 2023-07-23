@@ -16,6 +16,7 @@ const sliceSignInModal = createSlice({
     },
     disabled: false,
     loading: false,
+    sendingmail: false,
   },
   reducers: {
     open: (state) => {
@@ -51,6 +52,7 @@ const sliceSignInModal = createSlice({
       };
       state.disabled = false;
       state.loading = false;
+      state.sendingmail = false;
     },
     change: (state, action) => {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -90,6 +92,9 @@ const sliceSignInModal = createSlice({
       }
       if (action.payload.loading !== undefined) {
         state.loading = action.payload.loading;
+      }
+      if (action.payload.sendingmail !== undefined) {
+        state.sendingmail = action.payload.sendingmail;
       }
     },
     lock: (state, action) => {

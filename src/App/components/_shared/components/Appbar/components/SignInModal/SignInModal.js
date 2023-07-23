@@ -17,8 +17,8 @@ import {
 import { LoadingButton } from "@mui/lab";
 
 // Services
-import serviceProceed from "../../../../../Home/components/Landing/components/SignInModal/services/serviceProceed.js";
-import serviceResendActivation from "../../../../../Home/components/Landing/components/SignInModal/services/serviceResendActivation.js";
+import serviceProceed from "./services/serviceProceed.js";
+import serviceResendActivation from "./services/serviceResendActivation.js";
 // Reducers
 import appStore from "../../../../../../store/appStore.js";
 
@@ -39,6 +39,7 @@ export default function SignInModal() {
     errors: useSelector((state) => state.sliceSignInModal.errors),
     disabled: useSelector((state) => state.sliceSignInModal.disabled),
     loading: useSelector((state) => state.sliceSignInModal.loading),
+    sendingmail : useSelector((state) => state.sliceSignInModal.sendingmail),
     snackData: useSelector((state) => state.sliceSignInModal.snackData),
   };
 
@@ -87,8 +88,6 @@ export default function SignInModal() {
 
     }
   };
-
-  console.log(select.errors)
 
   // Render
   return (
@@ -204,12 +203,14 @@ export default function SignInModal() {
                     <Typography variant="body1" gutterBottom sx={{ whiteSpace: "pre-line" }}>
                       {t("signin.label.inactiveaccount")}
                     </Typography>
-                    <Button
+                    <LoadingButton
                       variant="contained"
                       onClick={serviceResendActivation}
+                      disabled={select.sendingmail}
+                      loading={select.sendingmail}
                     >
                       {t("signin.button.resendactivationemail")}
-                    </Button>
+                    </LoadingButton>
                   </Box>
                 </Paper>
               ) : (null)}
@@ -229,7 +230,7 @@ export default function SignInModal() {
             data-testid="buttonProceed"
             variant="contained"
             onClick={serviceProceed}
-            disabled={select.disabled}
+            disabled={select.disabled || select.errors.inactivated}
             loading={select.loading}
           >
             {t("generic.button.proceed")}

@@ -16,7 +16,10 @@ async function serviceResendActivation() {
   try {
     // Lock UI
     appStore.dispatch({ 
-      type: "sliceSignInModal/lock"
+      type: "sliceSignInModal/change",
+      payload: {
+        sendingmail: true
+      }
     });
     let resendActivationInputs = { ...appStore.getState().sliceSignInModal.inputs };
 
@@ -45,33 +48,31 @@ async function serviceResendActivation() {
       if (process.env.REACT_APP_DEBUG === "TRUE") {
         console.log("data.type : " + data.type);
       }
-
+      
       // Response management
       switch (data.type) {
-        case "auth.resentactivation.success":
+        case "auth.sendactivation.success":
             appStore.dispatch({
               type: "sliceSignInModal/change",
               payload: {
-                disabled: false,
-                loading: false
+                sendingmail: false
               },
             });
             appStore.dispatch({
               type: "sliceSnack/change",
               payload: {
                 uid: random_id(),
-                id: "signin.snack.successresendingactivation",
+                id: "signin.snack.successresendingactivation"
               },
             });
             break;
-        case "auth.resentactivation.error.onfind":
-        case "auth.resentactivation.error.accountnotfound":
-        case "auth.resentactivation.error.updatingtoken":
+        case "auth.sendactivation.error.onfind":
+        case "auth.sendactivation.error.accountnotfound":
+        case "auth.sendactivation.error.updatingtoken":
           appStore.dispatch({
             type: "sliceSignInModal/change",
             payload: {
-              disabled: false,
-              loading: false
+              sendingmail: false
             },
           });
           appStore.dispatch({
@@ -86,8 +87,7 @@ async function serviceResendActivation() {
           appStore.dispatch({
             type: "sliceSignInModal/change",
             payload: {
-              disabled: false,
-              loading: false,
+              sendingmail: false,
             },
           });
           appStore.dispatch({
@@ -95,7 +95,7 @@ async function serviceResendActivation() {
             payload: {
               uid: random_id(),
               id: "generic.snack.api.unmanagedtype",
-              details: data.type,
+              details: [data.type],
             },
           });
       }
@@ -104,8 +104,7 @@ async function serviceResendActivation() {
         appStore.dispatch({
           type: "sliceSignInModal/change",
           payload: {
-            disabled: false,
-            loading: false,
+            sendingmail: false,
           },
         });
         appStore.dispatch({
@@ -127,8 +126,7 @@ async function serviceResendActivation() {
     appStore.dispatch({
       type: "sliceSignInModal/change",
       payload: {
-        disabled: false,
-        loading: false,
+        sendingmail: false,
       },
     });
     appStore.dispatch({

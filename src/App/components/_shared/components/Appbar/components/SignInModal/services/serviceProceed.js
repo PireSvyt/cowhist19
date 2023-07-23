@@ -99,6 +99,10 @@ async function serviceProceed() {
                   id: "signin.snack.signedin",
                 },
               });
+              // Redirection if not on home page
+              if (window.location.href.search("activation")) {
+                window.location = "/";
+              }
             }
           });
           break;
@@ -148,7 +152,7 @@ async function serviceProceed() {
               }
             },
           });
-          break
+          break;
         default:
           appStore.dispatch({
             type: "sliceSignInModal/change",

@@ -3,10 +3,10 @@ import axios from "axios";
 // Reducers
 import appStore from "../../../../../../../store/appStore";
 
-async function apiTableSave(table) {
+async function apiTableCreate(table) {
   try {
     const res = await axios.post(
-      process.env.REACT_APP_SERVER_URL + "/table/v2/save",
+      process.env.REACT_APP_SERVER_URL + "/table/v1/create",
       table,
       {
         headers: {
@@ -20,4 +20,4 @@ async function apiTableSave(table) {
   }
 }
 
-export default apiTableSave;
+export default apiTableCreate;

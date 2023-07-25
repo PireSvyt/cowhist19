@@ -13,7 +13,7 @@ import Appbar from "../_shared/components/Appbar/Appbar.js";
 
 export default function Home() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("Home");
+    //console.log("Home");
   }
   // i18n
   const { t } = useTranslation();

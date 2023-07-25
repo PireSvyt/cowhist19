@@ -8,8 +8,6 @@ import sliceTableHistory from "./sliceTableHistory.js";
 import sliceTableStats from "./sliceTableStats.js";
 // UI components
 import sliceModals from "./sliceModals.js";
-import sliceSignUpModal from "./sliceSignUpModal.js";
-import sliceSignInModal from "./sliceSignInModal.js";
 import sliceTableModal from "./sliceTableModal.js";
 import sliceInviteModal from "./sliceInviteModal.js";
 import sliceGameModal from "./sliceGameModal.js";
@@ -29,8 +27,6 @@ export default configureStore({
     sliceTableHistory: sliceTableHistory,
     sliceTableStats: sliceTableStats,
     sliceModals: sliceModals,
-    sliceSignUpModal: sliceSignUpModal,
-    sliceSignInModal: sliceSignInModal,
     sliceTableModal: sliceTableModal,
     sliceInviteModal: sliceInviteModal,
     sliceGameModal: sliceGameModal,

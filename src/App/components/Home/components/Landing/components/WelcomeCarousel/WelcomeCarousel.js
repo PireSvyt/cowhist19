@@ -17,7 +17,7 @@ import MystatsImage from './resources/MyStats.png'
 
 export default function WelcomeCarousel() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("WelcomeCarousel");
+    //console.log("WelcomeCarousel");
   }
   // i18n
   const { t } = useTranslation();

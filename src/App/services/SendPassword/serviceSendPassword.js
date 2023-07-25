@@ -1,15 +1,15 @@
 import { AES } from "crypto-js";
 
 // Services
-import apiSendActivation from "./apiSendActivation.js";
+import apiSendPassword from "./apiSendPassword.js";
 // Shared
 import { random_id } from "../toolkit.js";
 // Reducers
 import appStore from "../../store/appStore.js";
 
-async function serviceSendActivation(sendActivationInputs) {
+async function serviceSendPassword(sendPasswordInputs) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("serviceSendActivation");
+    console.log("serviceSendPassword");
   }
 
   try {
@@ -19,34 +19,41 @@ async function serviceSendActivation(sendActivationInputs) {
     
     // Encryption
     if (process.env.NODE_ENV === "_production") {
-      sendActivationInputs.login = AES.encrypt(
-          sendActivationInputs.login,
+      delete sendPasswordInputs.password
+      sendPasswordInputs.login = AES.encrypt(
+          sendPasswordInputs.login,
         process.env.REACT_APP_ENCRYPTION
       ).toString();
-      sendActivationInputs.encryption = true;
+      sendPasswordInputs.encryption = true;
     } else {
-      sendActivationInputs.encryption = false;
+      sendPasswordInputs.encryption = false;
     }
 
     // API call
-    const data = await apiSendActivation(sendActivationInputs);
+    const data = await apiSendPassword(sendPasswordInputs);
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("data.type : " + data.type);
     }
     
     // Response management
     switch (data.type) {
-      case "auth.sendactivation.success":
-        stateChanges.sendActivationStatus = "sent"
+      case "auth.sendpassword.success":
+        stateChanges.sendPasswordStatus = "sent"
         break;
-
-      case "auth.sendactivation.error.onfind":
-      case "auth.sendactivation.error.accountnotfound":
-      case "auth.sendactivation.error.updatingtoken":
-        stateChanges.sendActivationStatus = "error"
-
+      case "auth.sendpassword.error.onfind":
+      case "auth.sendpassword.error.accountnotfound":
+      case "auth.sendpassword.error.updatingtoken":
+        stateChanges.sendPasswordStatus = "notfound"
+        appStore.dispatch({
+          type: "sliceSnack/change",
+          payload: {
+            uid: random_id(),
+            id: "signin.snack.errorsendingpassword",
+          },
+        });
+        break;
       default:
-        stateChanges.sendActivationStatus = "error"
+        stateChanges.sendPasswordStatus = "error"
         appStore.dispatch({
           type: "sliceSnack/change",
           payload: {
@@ -64,7 +71,7 @@ async function serviceSendActivation(sendActivationInputs) {
     };
   
   } catch (err) {
-    console.error("serviceSendActivation", err);
+    console.error("serviceSendPassword", err);
     // Snack
     appStore.dispatch({
       type: "sliceSnack/change",
@@ -75,11 +82,11 @@ async function serviceSendActivation(sendActivationInputs) {
     });
     return {
       stateChanges: {
-        sendActivationStatus: "error",
+        sendPasswordStatus: "error",
       },
       errors: err,
     };
   }
 }
 
-export default serviceSendActivation;
+export default serviceSendPassword;

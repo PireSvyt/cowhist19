@@ -16,12 +16,12 @@ import {
 import { LoadingButton } from "@mui/lab";
 
 // Services
-import serviceSignIn from "./services/serviceSignIn.js";
-import serviceSignInCheck from "./services/serviceSignInCheck.js";
+import serviceSignIn from "../../../../../../services/SignIn/serviceSignIn.js";
+import serviceSignInCheck from "../../../../../../services/SignIn/serviceSignInCheck.js";
 import serviceSendActivation from "../../../../../../services/Activation/serviceSendActivation.js";
 import serviceSendActivationCheck from "../../../../../../services/Activation/serviceSendActivationCheck.js";
-import serviceSendPassword from "./services/serviceSendPassword.js";
-import serviceSendPasswordCheck from "./services/serviceSendPasswordCheck.js";
+import serviceSendPassword from "../../../../../../services/SendPassword/serviceSendPassword.js";
+import serviceSendPasswordCheck from "../../../../../../services/SendPassword/serviceSendPasswordCheck.js";
 // Reducers
 import appStore from "../../../../../../store/appStore.js";
 
@@ -43,8 +43,10 @@ export default function SignInModal() {
   // States
   const [signInStatus, setSignInStatus] = useState("onhold")
   const [loadingSignIn, setLoadingSignIn] = useState(false)
+  const [sendActivationStatus, setSendActivationStatus] = useState("onhold")
   const [loadingSendActivation, setLoadingSendActivation] = useState(false)
-  const [loadingPasswordReset, setLoadingPasswordReset] = useState(false)
+  const [sendPasswordStatus, setSendPasswordStatus] = useState("onhold")
+  const [loadingSendPassword, setLoadingSendPassword] = useState(false)
   const [loginValue, setLoginValue] = useState("")
   const [loginError, setLoginError] = useState(false)
   const [passwordValue, setPasswordValue] = useState("")
@@ -59,8 +61,14 @@ export default function SignInModal() {
         case "loadingSignIn" :
           setLoadingSignIn(stateChanges[change])
           break
-        case "loadingPasswordReset" :
-          setLoadingPasswordReset(stateChanges[change])
+        case "sendPasswordStatus" :
+          setSendPasswordStatus(stateChanges[change])
+          break
+        case "loadingSendPassword" :
+          setLoadingSendPassword(stateChanges[change])
+          break
+        case "sendActivationStatus" :
+          setSendActivationStatus(stateChanges[change])
           break
         case "loadingSendActivation" :
           setLoadingSendActivation(stateChanges[change])
@@ -90,6 +98,16 @@ export default function SignInModal() {
         type: "sliceModals/close",
         payload: "SignIn" 
       });
+      // Clean
+      setSignInStatus("hold")
+      setLoadingSignIn(false)
+      setLoadingSendActivation(false)
+      setSendPasswordStatus("hold")
+      setLoadingSendPassword(false)
+      setLoginValue("")
+      setLoginError(false)
+      setPasswordValue("")
+      setPasswordError(false)
     },
     login: (e) => {
       setStates({
@@ -116,7 +134,6 @@ export default function SignInModal() {
         if (checkOutcome.proceed) {
           serviceSignIn(inputs)
           .then(outcome => {
-            console.log("outcome", outcome)
             setStates(outcome.stateChanges)
             setStates({loadingSignIn: false})
           })
@@ -154,7 +171,10 @@ export default function SignInModal() {
     },
     resetpassword: () => {
       console.log("SignInModal.resetpassword")
-      setStates({loadingPasswordReset: true})
+      setStates({
+        sendPasswordStatus: "hold",
+        loadingSendPassword: true
+      })
       let inputs = {
         login: loginValue,
       }
@@ -165,10 +185,10 @@ export default function SignInModal() {
           serviceSendPassword(inputs)
           .then(outcome => {
             setStates(outcome.stateChanges)
-            setStates({loadingPasswordReset: false})
+            setStates({loadingSendPassword: false})
           })
         } else {
-          setStates({loadingPasswordReset: false})
+          setStates({loadingSendPassword: false})
         }
       })
     }
@@ -178,8 +198,6 @@ export default function SignInModal() {
   return (
     <Box>
       <Dialog
-        data-testid="componentSignInModal"
-        id="dialog_signin"
         open={select.open}
         onClose={changes.close}
         fullWidth={true}
@@ -200,7 +218,6 @@ export default function SignInModal() {
           >
             <FormControl>
               <TextField
-                data-testid="fieldLogin"
                 name="login"
                 required
                 label={t("generic.input.email")}
@@ -212,7 +229,6 @@ export default function SignInModal() {
                 error={loginError}
               />
               <TextField
-                data-testid="fieldPassword"
                 name="password"
                 required
                 label={t("generic.input.password")}
@@ -227,78 +243,102 @@ export default function SignInModal() {
                 variant="outlined"
                 onClick={changes.resetpassword}
                 sx={{mt:2,mb:1}}
-                disabled={loadingPasswordReset}
-                loading={loadingPasswordReset}
+                disabled={loadingSendPassword || sendPasswordStatus === "sent"}
+                loading={loadingSendPassword}
               >
                 {t("signin.button.resetpassword")}
               </LoadingButton>
 
-              {signInStatus === "notfound" ? (
-                <Paper 
-                  sx={{
-                    mt:1, 
-                    mb:1, 
-                    p:1,
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    textAlign: "center",
-                    verticalAlign: "middle" 
-                  }}
+              {signInStatus === "notfound" ? (                
+                <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
                 >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "space-evenly",
-                    }}
+                  <Typography
+                    sx={{ mt: 2, mb: 1, whiteSpace: "pre-line" }}
+                    variant="body1"
+                    component="span"
+                    align="center"
                   >
-                    <Typography variant="body1" gutterBottom sx={{ whiteSpace: "pre-line" }}>
-                      {t("signin.label.notfoundaccount")}
-                    </Typography>
-                    <Button
-                      variant="contained"
-                      onClick={changes.gotosignup}
-                    >
-                      {t("signin.button.gotosignup")}
-                    </Button>
-                  </Box>
-                </Paper>
+                    {t("signin.label.notfoundaccount")}
+                  </Typography>
+                  <Button
+                    variant="contained"
+                    sx={{ mt: 1, width:"100%" }}
+                    onClick={changes.gotosignup}
+                  >
+                    {t("generic.button.signin")}
+                  </Button>
+                </Box>
               ) : (null)}
 
-              {signInStatus === "inactivated" ? (
-                <Paper 
-                  sx={{
-                    mt:1, 
-                    mb:1, 
-                    p:1,
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    textAlign: "center",
-                    verticalAlign: "middle" 
-                  }}
+              {sendPasswordStatus === "sent" ? (             
+                <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
                 >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "space-evenly",
-                    }}
+                  <Typography
+                    sx={{ mt: 2, mb: 1, whiteSpace: "pre-line" }}
+                    variant="body1"
+                    component="span"
+                    align="center"
                   >
-                    <Typography variant="body1" gutterBottom sx={{ whiteSpace: "pre-line" }}>
-                      {t("signin.label.inactiveaccount")}
-                    </Typography>
-                    <LoadingButton
-                      variant="contained"
-                      onClick={changes.sendactivation}
-                      disabled={loadingSendActivation}
-                      loading={loadingSendActivation}
-                    >
-                      {t("signin.button.resendactivationemail")}
-                    </LoadingButton>
-                  </Box>
-                </Paper>
+                    {t("signin.label.successsendingpassword")}
+                  </Typography>
+                </Box>
+              ) : (null)}
+
+              {signInStatus === "inactivated" ? (             
+                <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+                >
+                  <Typography
+                    sx={{ mt: 2, mb: 1, whiteSpace: "pre-line" }}
+                    variant="body1"
+                    component="span"
+                    align="center"
+                  >
+                    {t("signin.label.inactiveaccount")}
+                  </Typography>
+                  <LoadingButton
+                    variant="contained"
+                    sx={{ mt: 1, width:"100%" }}
+                    onClick={changes.sendactivation}
+                    disabled={loadingSendActivation || sendActivationStatus === "sent"}
+                    loading={loadingSendActivation}
+                  >
+                    {t("signin.button.resendactivationemail")}
+                  </LoadingButton>
+                </Box>
+              ) : (null)}
+
+              {sendActivationStatus === "sent" ? (             
+                <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+                >
+                  <Typography
+                    sx={{ mt: 2, mb: 1, whiteSpace: "pre-line" }}
+                    variant="body1"
+                    component="span"
+                    align="center"
+                  >
+                    {t("signin.label.successresendingactivation")}
+                  </Typography>
+                </Box>
               ) : (null)}
 
             </FormControl>
@@ -307,13 +347,11 @@ export default function SignInModal() {
 
         <DialogActions>
           <Button
-            data-testid="buttonClose"
             onClick={changes.close}
           >
             {t("generic.button.cancel")}
           </Button>
           <LoadingButton
-            data-testid="buttonProceed"
             variant="contained"
             onClick={changes.signin}
             disabled={loadingSignIn || signInStatus === "inactivated"}

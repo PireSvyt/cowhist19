@@ -23,10 +23,12 @@ async function serviceActivate(activationInputs) {
 
     // Response management
     switch (data.type) {
+      
       case "auth.activate.success.activated":
       case "auth.activate.success.alreadyctivated":
         stateChanges.activationStatus = "activated";
         break;
+
       case "auth.activate.error.notfound":
       case "auth.activate.error.onsave":
       default:

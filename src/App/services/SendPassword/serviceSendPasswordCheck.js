@@ -1,9 +1,9 @@
 // Share
-import { validateEmail } from "../../../../../../../services/toolkit";
+import { validateEmail } from "../toolkit";
 
-async function serviceSignInCheck(signin) {
+async function serviceSendPasswordCheck(sendPasswordInputs) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("serviceSignInCheck");
+    console.log("serviceSendPasswordCheck");
   }
 
   let proceed = true;
@@ -14,24 +14,17 @@ async function serviceSignInCheck(signin) {
   try {
 
     // Login is empty?
-    if (signin.login === "" || signin.login === undefined) {
+    if (sendPasswordInputs.login === "" || sendPasswordInputs.login === undefined) {
       proceed = false;
       errors.push("generic.error.missinglogin");
       stateChanges.loginError = true;
     } else {
       // Login is an email?
-      if (!validateEmail(signin.login)) {
+      if (!validateEmail(sendPasswordInputs.login)) {
         proceed = false;
         errors.push("generic.error.invalidlogin");
         stateChanges.loginError = true;
       }
-    }
-
-    // Password is empty?
-    if (signin.password === "" || signin.password === undefined) {
-      proceed = false;
-      errors.push("generic.error.missingpassword");
-      stateChanges.passwordError = true;
     }
 
     // Outcome
@@ -42,7 +35,7 @@ async function serviceSignInCheck(signin) {
     };
 
   } catch (err) {
-    console.error("serviceSignInCheck", err);
+    console.error("serviceSendPasswordCheck", err);
     // Snack
     appStore.dispatch({
       type: "sliceSnack/change",
@@ -60,4 +53,4 @@ async function serviceSignInCheck(signin) {
   }
 }
 
-export default serviceSignInCheck;
+export default serviceSendPasswordCheck;

@@ -1,24 +1,33 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import { ButtonGroup, Button, Box, Typography } from "@mui/material";
 
 // Components
 import WelcomeCarousel from "./components/WelcomeCarousel/WelcomeCarousel.js";
-import SignUpModal from "./components/SignUpModal/SignUpModal.js";
 // Reducers
 import appStore from "../../../../store/appStore.js";
 
 export default function Landing() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("Landing");
+    //console.log("Landing");
   }
   // i18n
   const { t } = useTranslation();
 
-  // Selects
-  const select = {
-    openSignUpModal: useSelector((state) => state.sliceSignUpModal.open),
+  // Changes
+  const changes = {
+    signup: () => {
+      appStore.dispatch({ 
+        type: "sliceModals/open",
+        payload: "SignUp" 
+      });
+    },
+    signin: () => {
+      appStore.dispatch({ 
+        type: "sliceModals/open",
+        payload: "SignIn" 
+      });
+    }
   };
 
   // Render
@@ -44,20 +53,13 @@ export default function Landing() {
 
         <ButtonGroup variant="contained" size="large">
           <Button
-            onClick={() => {
-              appStore.dispatch({ type: "sliceSignUpModal/open" });
-            }}
+            onClick={changes.signup}
             size="large"
           >
             {t("signup.button.signup")}
           </Button>
           <Button
-            onClick={() => {
-              appStore.dispatch({ 
-                type: "sliceModals/open",
-                payload: "SignIn"
-              });
-            }}
+            onClick={changes.signin}
             size="large"
           >
             {t("generic.button.signin")}
@@ -65,7 +67,6 @@ export default function Landing() {
         </ButtonGroup>
       </Box>
 
-      {select.openSignUpModal === true ? <SignUpModal /> : null}
     </Box>
   );
 }

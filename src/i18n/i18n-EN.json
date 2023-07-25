@@ -57,9 +57,10 @@
   },
   "signup": {
     "label": {
-      "title": "Sign up"
+      "title": "Sign up",
+      "existinglogin": "Don't you already created an account with this login?"
     },
-    "input": { "repeatpassword": "Repeat password" },
+    "input": { "passwordrepeat": "Repeat password" },
     "button": {
       "signup": "Sign up"
     },
@@ -67,7 +68,7 @@
       "missingpseudo": "missing pseudo",
       "existingpseudo": "Already existing pseudo",
       "existinglogin": "An account already exists with this login",
-      "missingrepeatpassword": "missing repeated password",
+      "missingpasswordrepeat": "missing repeated password",
       "passwordmissmatch": "password missmatch",
       "resetpassword": "Reset my password (unavailable)"
     },
@@ -79,7 +80,9 @@
     "label": {
       "title": "Sign in",
       "notfoundaccount": "Account not found :/\nWilling to create an account?",
-      "inactiveaccount": "Haven't you activated your account yet?"
+      "inactiveaccount": "Haven't you activated your account yet?",
+      "successresendingactivation": "Activation email sent, check your emails (including the spams)",
+      "successsendingpassword": "Password reset email sent, check your emails (including the spams)"
     },
     "input": {},
     "button": {
@@ -90,9 +93,7 @@
     "snack": {
       "signedin": "Signed in!",
       "unauthorized": "Wrong password",
-      "successresendingactivation": "Activation email sent, check your emails (including the spams)",
-      "errorresendingactivation": "Could not send account activation email",
-      "successsendingpassword": "Password reset email sent, check your emails (including the spams)",
+      "errorresendingactivation": "Could not send account activation email",      
       "errorsendingpassword": "Could not send password reset email"
     }
   },

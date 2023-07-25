@@ -2,12 +2,12 @@ import Cookies from "js-cookie";
 import { AES } from "crypto-js";
 
 // Services
-import apiSignIn from "./apiSignIn.js";
+import apiSignIn from "./apiSignIn.js"
 // Shared
-import { random_id } from "../../../../../../../services/toolkit.js";
-import serviceAccessGrant from "../../../../../../../services/Access/serviceAccessGrant.js"
+import { random_id } from "../toolkit.js";
+import serviceAccessGrant from "../Access/serviceAccessGrant.js"
 // Reducers
-import appStore from "../../../../../../../store/appStore.js";
+import appStore from "../../store/appStore.js";
 
 async function serviceSignIn(signInInputs) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -42,20 +42,19 @@ async function serviceSignIn(signInInputs) {
 
     // Response management
     switch (data.type) {
+
       case "auth.signin.success":
-        serviceAccessGrant(data.data.token).then((proceedOutcome) => {
-          if (proceedOutcome.errors.length > 0) {
-            if (process.env.REACT_APP_DEBUG === "TRUE") {
-              console.log("proceedOutcome errors", proceedOutcome.errors);
-            }
+        serviceAccessGrant(data.data.token).then((grantAccessOutcome) => {
+          if (grantAccessOutcome.errors.length > 0) {
+            console.error("grantAccessOutcome errors", grantAccessOutcome.errors);
             stateChanges.signInStatus = "error"
-            errors = proceedOutcome.errors;
+            errors = grantAccessOutcome.errors;
             appStore.dispatch({
               type: "sliceSnack/change",
               payload: {
                 uid: random_id(),
                 id: "generic.snack.error.withdetails",
-                details: proceedOutcome.errors,
+                details: errors,
               },
             });
           } else {
@@ -71,20 +70,24 @@ async function serviceSignIn(signInInputs) {
           }
         });
         break;
+
       case "auth.signin.error.onfind":
       case "auth.signin.error.notfound":
         stateChanges.loginError = true
         stateChanges.signInStatus = "notfound"
         break;
+
       case "auth.signin.error.invalidpassword":
       case "auth.signin.error.onpasswordcompare":
         stateChanges.passwordError = true
         stateChanges.signInStatus = "denied"
         break;
-      case "auth.signin.error.statussignedup":
+
       case "auth.signin.error.statusunknown":
+      case "auth.signin.error.statussignedup":
         stateChanges.signInStatus = "inactivated"
         break;
+
       default:
         stateChanges.signInStatus = "error"
         appStore.dispatch({
@@ -95,13 +98,14 @@ async function serviceSignIn(signInInputs) {
             details: data.type,
           },
         });
-
-      // Response
-      return {
-        stateChanges: stateChanges,
-        errors: errors,
-      };
     }
+
+    // Response
+    return {
+      stateChanges: stateChanges,
+      errors: errors,
+    };
+
   } catch (err) {
     console.error("serviceSignIn", err);
     // Snack
@@ -114,7 +118,7 @@ async function serviceSignIn(signInInputs) {
     });
     return {
       stateChanges: {
-        activationStatus: "error",
+        signInStatus: "error",
       },
       errors: err,
     };

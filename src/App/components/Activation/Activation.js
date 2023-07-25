@@ -145,7 +145,7 @@ export default function Activation() {
           variant="contained"
           disabled={loadingActivate || activationStatus === "activated"}
           loading={loadingActivate}
-          sx={{mt:1, mb:1, width: "80%"}}
+          sx={{ mt: 1,  mb:1, width:"100%" }}
         >
             {t("activation.button.activate")}
         </LoadingButton>
@@ -189,7 +189,7 @@ export default function Activation() {
           </Typography>
           <Button
             variant="contained"
-            sx={{ width: "80%", m: 1 }}
+            sx={{ mt: 1, width:"100%" }}
             onClick={changes.signin}
           >
             {t("generic.button.signin")}
@@ -228,7 +228,7 @@ export default function Activation() {
           </Typography>
           <LoadingButton
             variant="outlined"
-            sx={{ width: "80%", m: 1 }}
+            sx={{ mt: 1, width:"100%" }}
             onClick={changes.resend}
             disabled={loadingResend}
             loading={loadingResend}

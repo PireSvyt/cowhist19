@@ -24,6 +24,7 @@ import Snack from "./components/Snack/Snack2.js";
 import FeedbackModal from "./components/FeedbackModal/FeedbackModal.js";
 import TableModal from "./components/TableModal/TableModal.js";
 import SignInModal from "./components/SignInModal/SignInModal.js";
+import SignUpModal from "./components/SignUpModal/SignUpModal.js";
 // Store
 import appStore from "../../../../store/appStore.js";
 
@@ -47,7 +48,8 @@ export default function Appbar(props) {
     snackOpen: useSelector((state) => state.sliceSnack.open),
     snackData: useSelector((state) => state.sliceSnack.snackData),
     tableOpen:  useSelector((state) => state.sliceTableModal.open),
-    signInModal: useSelector((state) => state.sliceModals.openSignInModal)
+    signInModal: useSelector((state) => state.sliceModals.openSignInModal),
+    signUpModal: useSelector((state) => state.sliceModals.openSignUpModal),
   };
 
   // Handles
@@ -313,6 +315,7 @@ export default function Appbar(props) {
         </Toolbar>
       </AppBar>
 
+      {select.signUpModal === true ? <SignUpModal /> : null}
       {select.signInModal === true ? <SignInModal /> : null}
       {select.snackOpen ? (<Snack data={select.snackData}/>) : (null)}
       {select.feedbackOpen ? (<FeedbackModal/>) : (null)}

@@ -44,6 +44,7 @@ async function serviceSendActivation(sendActivationInputs) {
       case "auth.sendactivation.error.accountnotfound":
       case "auth.sendactivation.error.updatingtoken":
         stateChanges.sendActivationStatus = "error"
+        break
 
       default:
         stateChanges.sendActivationStatus = "error"

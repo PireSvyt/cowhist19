@@ -18,8 +18,8 @@ import { LoadingButton } from "@mui/lab";
 // Services
 import serviceSignIn from "../../../../../../services/SignIn/serviceSignIn.js";
 import serviceSignInCheck from "../../../../../../services/SignIn/serviceSignInCheck.js";
-import serviceSendActivation from "../../../../../../services/Activation/serviceSendActivation.js";
-import serviceSendActivationCheck from "../../../../../../services/Activation/serviceSendActivationCheck.js";
+import serviceSendActivation from "../../../../../../services/SendActivation/serviceSendActivation.js";
+import serviceSendActivationCheck from "../../../../../../services/SendActivation/serviceSendActivationCheck.js";
 import serviceSendPassword from "../../../../../../services/SendPassword/serviceSendPassword.js";
 import serviceSendPasswordCheck from "../../../../../../services/SendPassword/serviceSendPasswordCheck.js";
 // Reducers

@@ -9,8 +9,6 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  FormControlLabel,
-  Checkbox,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 

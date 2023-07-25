@@ -7,8 +7,8 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline.js";
 // Services
 import serviceActivate from "../../services/Activation/serviceActivate.js";
 import serviceActivateCheck from "../../services/Activation/serviceActivateCheck.js";
-import serviceSendActivation from "../../services/Activation/serviceSendActivation.js";
-import serviceSendActivationCheck from "../../services/Activation/serviceSendActivationCheck.js";
+import serviceSendActivation from "../../services/SendActivation/serviceSendActivation.js";
+import serviceSendActivationCheck from "../../services/SendActivation/serviceSendActivationCheck.js";
 // Components
 import Appbar from "../_shared/components/Appbar/Appbar.js";
 // Reducers
@@ -24,7 +24,8 @@ export default function Activation() {
   // States
   const [activationStatus, setActivationStatus] = useState("onhold")
   const [loadingActivate, setLoadingActivate] = useState(false)
-  const [loadingResend, setLoadingResend] = useState(false)
+  const [sendActivationStatus, setSendActivationStatus] = useState("onhold")
+  const [loadingSendActivation, setLoadingSendActivation] = useState(false)
   const [loginValue, setLoginValue] = useState("")
   const [loginError, setLoginError] = useState(false)
 
@@ -37,8 +38,11 @@ export default function Activation() {
         case "loadingActivate" :
           setLoadingActivate(stateChanges[change])
           break
-        case "loadingResend" :
-          setLoadingResend(stateChanges[change])
+        case "sendActivationStatus" :
+          setSendActivationStatus(stateChanges[change])
+          break
+        case "loadingSendActivation" :
+          setLoadingSendActivation(stateChanges[change])
           break
         case "loginValue" :
           setLoginValue(stateChanges[change])
@@ -58,7 +62,9 @@ export default function Activation() {
     login: (e) => {
       setStates({
         loginValue: e.target.value,
-        loginError: false
+        loginError: false,
+        activationStatus: "onhold",
+        sendActivationStatus: "onhold"
       })
     },
     send: () => {
@@ -85,7 +91,7 @@ export default function Activation() {
     },
     resend: () => {
       console.log("Activation.resend")
-      setStates({loadingResend: true})
+      setStates({loadingSendActivation: true})
       let inputs = {
         login: loginValue
       }
@@ -96,10 +102,10 @@ export default function Activation() {
           serviceSendActivation(inputs)
           .then(outcome => {
             setStates(outcome.stateChanges)
-            setStates({loadingResend: false})
+            setStates({loadingSendActivation: false})
           })
         } else {
-          setStates({loadingResend: false})
+          setStates({loadingSendActivation: false})
         }
       })
     },
@@ -143,33 +149,13 @@ export default function Activation() {
         <LoadingButton 
           onClick={changes.send} 
           variant="contained"
-          disabled={loadingActivate || activationStatus === "activated"}
+          disabled={loadingActivate || activationStatus === "activated" || activationStatus === "error"}
           loading={loadingActivate}
-          sx={{ mt: 1,  mb:1, width:"100%" }}
+          sx={{ mt: 1,  mb:1, width:"80%" }}
         >
             {t("activation.button.activate")}
         </LoadingButton>
       </Box>
-
-      {activationStatus === "inprogress" ? (
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Typography
-            sx={{ mt: 2, mb: 1, whiteSpace: "pre-line" }}
-            variant="h6"
-            component="span"
-            align="center"
-          >
-            {t("activation.label.inprogress")}
-          </Typography>
-          <CircularProgress sx={{ mt: 1, mb: 1 }} />
-        </Box>
-      ) : (null)}
 
       {activationStatus === "activated" ? (
         <Box
@@ -189,7 +175,7 @@ export default function Activation() {
           </Typography>
           <Button
             variant="contained"
-            sx={{ mt: 1, width:"100%" }}
+            sx={{ mt: 1, width:"80%" }}
             onClick={changes.signin}
           >
             {t("generic.button.signin")}
@@ -207,7 +193,7 @@ export default function Activation() {
         >
           <Typography
             sx={{ mt: 2, mb: 1, whiteSpace: "pre-line" }}
-            variant="h6"
+            variant="body1"
             component="span"
             align="center"
           >
@@ -228,15 +214,54 @@ export default function Activation() {
           </Typography>
           <LoadingButton
             variant="outlined"
-            sx={{ mt: 1, width:"100%" }}
+            sx={{ mt: 1, width:"80%" }}
             onClick={changes.resend}
-            disabled={loadingResend}
-            loading={loadingResend}
+            disabled={loadingSendActivation || sendActivationStatus === "sent" || sendActivationStatus === "error"}
+            loading={loadingSendActivation}
           >
             {t("activation.button.resend")}
           </LoadingButton>
         </Box>
       ) : (null)}
+      
+      {sendActivationStatus === "sent" ? (             
+        <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+        >
+          <Typography
+            sx={{ mt: 2, mb: 1, whiteSpace: "pre-line" }}
+            variant="body1"
+            component="span"
+            align="center"
+          >
+            {t("signin.label.successresendingactivation")}
+          </Typography>
+        </Box>
+      ) : (null)}
+      
+      {sendActivationStatus === "error" ? (             
+        <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+        >
+          <Typography
+            sx={{ mt: 2, mb: 1, whiteSpace: "pre-line" }}
+            variant="body1"
+            component="span"
+            align="center"
+          >
+            {t("signin.label.errorresendingactivation")}
+          </Typography>
+        </Box>
+      ) : (null)}
+
     </Box>
   );
 }

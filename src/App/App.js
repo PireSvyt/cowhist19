@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 // https://www.geeksforgeeks.org/how-to-create-a-multi-page-website-using-react-js/
 
 import Documentation from "./Navigation/Page_Documentation/Documentation.js";
-import About from "./Navigation/Page_About/About.js";
+import About from "./Navigation/page.About/page.About.js";
 import Home from "./Navigation/Page_Home/Home.js";
 import Table from "./Navigation/Page_Table/Table.js";
 import Account from "./Navigation/Page_Account/Account.js";

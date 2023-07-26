@@ -8,8 +8,8 @@ import StarBorderIcon from '@mui/icons-material/StarBorder';
 import SsidChartIcon from '@mui/icons-material/SsidChart';
 
 // Components
-import RankingCard from "../StatCard/RankingCard.js";
-import StatGraph from "../com.Stats/com.Graph/StatGraph.js";
+import RankingCard from "../../../../Core/Table/com.Stats/com.Card/RankingCard.js";
+import StatGraph from "./StatGraph/StatGraph.js";
 // Service
 import serviceGetTableStats from "../../services/serviceGetTableStats.js";
 // Store

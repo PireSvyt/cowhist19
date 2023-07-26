@@ -1,13 +1,12 @@
 import axios from "axios";
 
 // Reducers
-import appStore from "../../../store/appStore";
+import appStore from "../../../store/appStore.js";
 
-async function apiTableStats(id, parameters) {
+async function apiTableDetails(id) {
   try {
-    const res = await axios.post(
-      process.env.REACT_APP_SERVER_URL + "/table/v1/stats/" + id,
-      parameters,
+    const res = await axios.get(
+      process.env.REACT_APP_SERVER_URL + "/table/v2/" + id,
       {
         headers: {
           Authorization: "Bearer " + appStore.getState().sliceUserAuth.token,
@@ -20,4 +19,4 @@ async function apiTableStats(id, parameters) {
   }
 }
 
-export default apiTableStats;
+export default apiTableDetails;

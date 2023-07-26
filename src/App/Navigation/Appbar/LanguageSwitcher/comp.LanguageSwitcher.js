@@ -5,7 +5,7 @@ import { IconButton, Menu, MenuItem, Box } from "@mui/material";
 import LanguageIcon from "@mui/icons-material/Language.js";
 
 // Shared
-import { random_id } from  "../../../Miscelaneous/toolkit.js";
+import { random_id } from  "../../Miscelaneous/toolkit.js";
 
 export default function LanguageSwitcher() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

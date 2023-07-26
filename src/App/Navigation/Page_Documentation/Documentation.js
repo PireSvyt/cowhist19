@@ -7,7 +7,7 @@ import faqs from "../../Documentation/faqs.json";
 // Components
 import Faq from "../../Documentation/Faq.js";
 // Shared
-import Appbar from "../Appbar/Appbar.js";
+import Appbar from "../Appbar/comp.Appbar.js";
 
 export default function Documentation() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

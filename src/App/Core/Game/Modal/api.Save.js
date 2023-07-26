@@ -3,7 +3,7 @@ import axios from "axios";
 // Reducers
 import appStore from "../../../store/appStore.js";
 
-async function apiGameSave(game) {
+async function Save(game) {
   try {
     const res = await axios.post(
       process.env.REACT_APP_SERVER_URL + "/game/v1/save",
@@ -20,4 +20,4 @@ async function apiGameSave(game) {
   }
 }
 
-export default apiGameSave;
+export default Save;

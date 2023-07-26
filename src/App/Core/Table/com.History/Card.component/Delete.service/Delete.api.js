@@ -1,12 +1,12 @@
 import axios from "axios";
 
 // Reducers
-import appStore from "../../store/appStore.js";
+import appStore from "../../../../../store/appStore";
 
-async function apiTableDetails(id) {
+async function DeleteAPI(gamieid) {
   try {
-    const res = await axios.get(
-      process.env.REACT_APP_SERVER_URL + "/table/v2/" + id,
+    const res = await axios.delete(
+      process.env.REACT_APP_SERVER_URL + "/game/v1/" + gamieid,
       {
         headers: {
           Authorization: "Bearer " + appStore.getState().sliceUserAuth.token,
@@ -19,4 +19,4 @@ async function apiTableDetails(id) {
   }
 }
 
-export default apiTableDetails;
+export default DeleteAPI;

@@ -6,17 +6,17 @@ import LinearProgress from "@mui/material/LinearProgress";
 import ErrorIcon from "@mui/icons-material/Error";
 
 // Components
-import TableStats from "../../Core/Table/TableStats/TableStats.js";
-import TableHistory from "../../Core/Table/TableHistory/TableHistory.js";
-import GameModal from "../../Core/Game/Modal/GameModal.js"
+import TableStats from "../../Core/Table/com.Stats/TableStats.js";
+import TableHistory from "../../Core/Table/com.History/History.js";
+import GameModal from "../../Core/Game/Modal/modal.Game.js"
 // Services
-import serviceGetTableDetails from "../../Core/Table/serviceGetTableDetails.js";
-import serviceGetTableStats from "../../Core/Table/serviceGetTableStats.js";
-import serviceGetTableHistory from "../../Core/Table/serviceGetTableHistory.js";
+import serviceGetTableDetails from "../../Core/Table/ser.Details/serviceGetTableDetails.js";
+import serviceGetTableStats from "../../Core/Table/com.Stats/ser.GetStats/serviceGetTableStats.js";
+import serviceGetTableHistory from "../../Core/Table/com.History/GetHistory.service/GetHistory.service.js";
 
 // Shared
-import Appbar from "../Appbar/Appbar.js";
-import TableModal from "../../Core/Table/Modal/TableModal.js";
+import Appbar from "../Appbar/comp.Appbar.js";
+import TableModal from "../../Core/Table/mod.Table/Table.js";
 // Reducers
 import appStore from "../../store/appStore.js";
 

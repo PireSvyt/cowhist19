@@ -3,10 +3,11 @@ import axios from "axios";
 // Reducers
 import appStore from "../../../../../../../store/appStore";
 
-async function apiTableDelete(id) {
+async function CreateAPI(table) {
   try {
-    const res = await axios.delete(
-      process.env.REACT_APP_SERVER_URL + "/table/v1/" + id,
+    const res = await axios.post(
+      process.env.REACT_APP_SERVER_URL + "/table/v1/create",
+      table,
       {
         headers: {
           Authorization: "Bearer " + appStore.getState().sliceUserAuth.token,
@@ -19,4 +20,4 @@ async function apiTableDelete(id) {
   }
 }
 
-export default apiTableDelete;
+export default CreateAPI;

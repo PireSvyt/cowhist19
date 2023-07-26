@@ -7,7 +7,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 // Components
 import ChangePasswordModal from "../../components/Auth/ChangePassword/ChangePasswordModal.js"
 // Shared
-import Appbar from "../Appbar/Appbar.js";
+import Appbar from "../Appbar/comp.Appbar.js";
 // Reducers
 import appStore from "../../store/appStore.js";
 

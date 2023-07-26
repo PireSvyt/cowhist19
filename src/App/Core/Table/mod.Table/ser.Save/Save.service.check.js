@@ -1,9 +1,9 @@
 // Reducers
 import appStore from "../../../../../../../store/appStore";
 
-function serviceProceedCheck(table, callback) {
+function SaveServiceCheck(table, callback) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("serviceProceedCheck");
+    console.log("SaveServiceCheck");
   }
   let proceed = true;
   let errors = [];
@@ -77,4 +77,4 @@ function serviceProceedCheck(table, callback) {
   };
 }
 
-export default serviceProceedCheck;
+export default SaveServiceCheck;

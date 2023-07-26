@@ -1,13 +1,12 @@
 import axios from "axios";
 
 // Reducers
-import appStore from "../../../store/appStore.js";
+import appStore from "../../../../../../../store/appStore";
 
-async function apiTableHistory(id, parameters) {
+async function DeleteAPI(id) {
   try {
-    const res = await axios.post(
-      process.env.REACT_APP_SERVER_URL + "/table/v3/history/" + id,
-      parameters,
+    const res = await axios.delete(
+      process.env.REACT_APP_SERVER_URL + "/table/v1/" + id,
       {
         headers: {
           Authorization: "Bearer " + appStore.getState().sliceUserAuth.token,
@@ -20,4 +19,4 @@ async function apiTableHistory(id, parameters) {
   }
 }
 
-export default apiTableHistory;
+export default DeleteAPI;

@@ -1,13 +1,13 @@
 // Services
-import apiGameSave from "./apiGameSave.js";
-import serviceProceedCheck from "./serviceProceedCheck.js";
+import apiGameSave from "./api.Save.js";
+import serviceSaveCheck from "./serviceSaveCheck.js";
 // Shared
 import { random_id } from "../../../Miscelaneous/toolkit.js"
 import appStore from "../../../store/appStore.js";
 
-async function serviceProceed() {
+async function serviceSave() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("serviceProceed");
+    console.log("serviceSave");
   }
 
   try {
@@ -20,7 +20,7 @@ async function serviceProceed() {
     gameInputs.table = tableId;
 
     // Check inputs
-    let proceedCheckOutcome = serviceProceedCheck(
+    let proceedCheckOutcome = serviceSaveCheck(
       gameInputs,
       appStore.getState().sliceTableDetails.contracts
     );
@@ -214,4 +214,4 @@ async function serviceProceed() {
   }
 }
 
-export default serviceProceed;
+export default serviceSave;

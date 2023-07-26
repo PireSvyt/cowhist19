@@ -11,15 +11,15 @@ import LinearProgress from "@mui/material/LinearProgress";
 import SmsFailedIcon from "@mui/icons-material/SmsFailed";
 
 // Components
-import HistoryCard from "../HistoryCard/HistoryCard.js";
+import Card from "./Card.component/Card.js";
 // Services
-import serviceGetTableHistory from "../../services/serviceGetTableHistory.js";
+import GetHistoryService from "./GetHistory.service/GetHistoryService.js";
 // Reducers
 import appStore from "../../../../store/appStore.js";
 
-export default function TableHistory() {
+export default function History() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("TableHistory");
+    console.log("History");
   }
   // i18n
   const { t } = useTranslation();
@@ -27,20 +27,20 @@ export default function TableHistory() {
   // Selects
   const select = {
     loadedDetails: useSelector((state) => state.sliceTableDetails.loaded),
-    loadedHistory: useSelector((state) => state.sliceTableHistory.loaded),
-    history: useSelector((state) => state.sliceTableHistory.games),
-    more: useSelector((state) => state.sliceTableHistory.more),
-    state: useSelector((state) => state.sliceTableHistory.state),
+    loadedHistory: useSelector((state) => state.sliceHistory.loaded),
+    history: useSelector((state) => state.sliceHistory.games),
+    more: useSelector((state) => state.sliceHistory.more),
+    state: useSelector((state) => state.sliceHistory.state),
   };
 
   // Load
   if (select.loadedDetails && !select.loadedHistory) {
-    serviceGetTableHistory();
+    GetHistoryService();
   }
 
   function loadmore () {
     let lastgame = select.history.slice(-1)[0]
-    serviceGetTableHistory(lastgame._id);
+    GetHistoryService(lastgame._id);
   }
 
   return (
@@ -87,7 +87,7 @@ export default function TableHistory() {
           <List dense={true}>
             {select.history.map((game) => (
               <ListItem key={"game-" + game._id}>
-                <HistoryCard game={game} />
+                <Card game={game} />
               </ListItem>))}
           </List>
           {select.more ? (

@@ -5,7 +5,7 @@ import serviceProcessCurves from "./serviceProcessCurves.js";
 import { random_id } from "../../../services/toolkit.js";
 
 // Reducers
-import appStore from "../../../store/appStore.js";
+import appStore from "../../../../store/appStore.js";
 
 async function serviceGetTableStats(need) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

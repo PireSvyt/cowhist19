@@ -8,7 +8,7 @@ import AdminStats from "../../components/Admin/Stats/AdminStats.js";
 import AdminActions from "../../Admin/Actions/AdminActions.js";
 import AdminFeedbacks from "../../Admin/Feedback/AdminFeedbacks.js";
 // Shared
-import Appbar from "../Appbar/Appbar.js";
+import Appbar from "../Appbar/comp.Appbar.js";
 
 export default function Admin() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

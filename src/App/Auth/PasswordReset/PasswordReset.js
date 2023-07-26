@@ -7,7 +7,7 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline.js";
 // Services
 import serviceProceed from "./serviceProceed.js";
 // Shared
-import Appbar from "../../Navigation/Appbar/Appbar.js";
+import Appbar from "../../Navigation/Appbar/comp.Appbar.js";
 // Reducers
 import appStore from "../../store/appStore.js";
 

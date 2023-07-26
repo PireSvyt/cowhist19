@@ -1,5 +1,5 @@
 // Reducers
-import appStore from "../../../store/appStore.js";
+import appStore from "../../../../store/appStore.js";
 // Shared
 import { random_id } from "../../../services/toolkit.js";
 

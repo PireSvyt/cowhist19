@@ -3,10 +3,11 @@ import axios from "axios";
 // Reducers
 import appStore from "../../../../store/appStore";
 
-async function apiGameDelete(gamieid) {
+async function apiTableStats(id, parameters) {
   try {
-    const res = await axios.delete(
-      process.env.REACT_APP_SERVER_URL + "/game/v1/" + gamieid,
+    const res = await axios.post(
+      process.env.REACT_APP_SERVER_URL + "/table/v1/stats/" + id,
+      parameters,
       {
         headers: {
           Authorization: "Bearer " + appStore.getState().sliceUserAuth.token,
@@ -19,4 +20,4 @@ async function apiGameDelete(gamieid) {
   }
 }
 
-export default apiGameDelete;
+export default apiTableStats;

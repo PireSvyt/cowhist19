@@ -21,13 +21,13 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 // Services
-import serviceProceed from "./serviceProceed.js";
+import serviceProceed from "./service.Save.js";
 // Reducers
 import appStore from "../../../store/appStore.js";
 
-export default function GameModal() {
+export default function ModalGame() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("GameModal");
+    console.log("ModalGame");
   }
   // i18n
   const { t } = useTranslation();
@@ -38,14 +38,14 @@ export default function GameModal() {
 
   // Selects
   const select = {
-    open: useSelector((state) => state.sliceGameModal.open),
-    id: useSelector((state) => state.sliceGameModal.id),
-    inputs: useSelector((state) => state.sliceGameModal.inputs),
-    errors: useSelector((state) => state.sliceGameModal.errors),
-    focuses: useSelector((state) => state.sliceGameModal.focuses),
-    requirements: useSelector((state) => state.sliceGameModal.requirements),
-    disabled: useSelector((state) => state.sliceGameModal.disabled),
-    loading: useSelector((state) => state.sliceGameModal.loading),
+    open: useSelector((state) => state.sliceModalGame.open),
+    id: useSelector((state) => state.sliceModalGame.id),
+    inputs: useSelector((state) => state.sliceModalGame.inputs),
+    errors: useSelector((state) => state.sliceModalGame.errors),
+    focuses: useSelector((state) => state.sliceModalGame.focuses),
+    requirements: useSelector((state) => state.sliceModalGame.requirements),
+    disabled: useSelector((state) => state.sliceModalGame.disabled),
+    loading: useSelector((state) => state.sliceModalGame.loading),
     players: useSelector((state) => state.sliceTableDetails.players),
     guests: useSelector((state) => state.sliceTableDetails.guests),
     contracts: useSelector((state) => state.sliceTableDetails.contracts),
@@ -59,14 +59,14 @@ export default function GameModal() {
           select.inputs.players.length === 0 && 
           select.inputs.outcome === 0) {
         appStore.dispatch({
-          type: "sliceGameModal/openMenu",
+          type: "sliceModalGame/openMenu",
           payload: {
             menu: "attack"
           },
         });
       } else {
         appStore.dispatch({
-          type: "sliceGameModal/closeMenu",
+          type: "sliceModalGame/closeMenu",
           payload: {
             menu: "contract"
           },
@@ -77,7 +77,7 @@ export default function GameModal() {
         (c) => c.key === e.target.value
       )[0];
       appStore.dispatch({
-        type: "sliceGameModal/change",
+        type: "sliceModalGame/change",
         payload: {
           inputs: { contract: e.target.value },
           errors: { contract: false },
@@ -96,7 +96,7 @@ export default function GameModal() {
           select.inputs.players.filter(p => p.role === "defense").length === 0 && 
           select.inputs.outcome === 0) {
         appStore.dispatch({
-          type: "sliceGameModal/openMenu",
+          type: "sliceModalGame/openMenu",
           payload: {
             menu: "defense"
           },
@@ -105,7 +105,7 @@ export default function GameModal() {
       // Store selected attackant
       let selectedPlayer = select.players.filter(player => player._id === id)[0]
       appStore.dispatch({
-        type: "sliceGameModal/addplayer",
+        type: "sliceModalGame/addplayer",
         payload: {
           player: { 
             _id: id,
@@ -119,7 +119,7 @@ export default function GameModal() {
     },
     removeFromAttack: (id) => {
       appStore.dispatch({
-        type: "sliceGameModal/removeplayer",
+        type: "sliceModalGame/removeplayer",
         payload: {
           player: id,
           errors: { attack: false },
@@ -133,7 +133,7 @@ export default function GameModal() {
           select.inputs.players.filter(p => p.role === "defense").length +1 === select.requirements.defense && // Not yet stored
           select.inputs.outcome === 0) {
         appStore.dispatch({
-          type: "sliceGameModal/closeMenu",
+          type: "sliceModalGame/closeMenu",
           payload: {
             menu: "defense"
           },
@@ -142,7 +142,7 @@ export default function GameModal() {
       // Store selected defenser
       let selectedPlayer = select.players.filter(player => player._id === id)[0]
       appStore.dispatch({
-        type: "sliceGameModal/addplayer",
+        type: "sliceModalGame/addplayer",
         payload: {
           player: { 
             _id: id,
@@ -156,7 +156,7 @@ export default function GameModal() {
     },
     removeFromDefense: (id) => {
       appStore.dispatch({
-        type: "sliceGameModal/removeplayer",
+        type: "sliceModalGame/removeplayer",
         payload: {
           player: id,
           errors: { defense: false },
@@ -165,7 +165,7 @@ export default function GameModal() {
     },
     outcome: (e) => {
       appStore.dispatch({
-        type: "sliceGameModal/change",
+        type: "sliceModalGame/change",
         payload: {
           inputs: { outcome: e.target.value },
           errors: { outcome: false },
@@ -174,7 +174,7 @@ export default function GameModal() {
     },
     openMenu: (menu) => {
       appStore.dispatch({
-        type: "sliceGameModal/openMenu",
+        type: "sliceModalGame/openMenu",
         payload: {
           menu: menu
         },
@@ -182,7 +182,7 @@ export default function GameModal() {
     },
     closeMenu: (menu) => {
       appStore.dispatch({
-        type: "sliceGameModal/closeMenu",
+        type: "sliceModalGame/closeMenu",
         payload: {
           menu: menu
         },
@@ -191,14 +191,14 @@ export default function GameModal() {
     renew: () => {
       // Close all menus but contract one
       appStore.dispatch({
-        type: "sliceGameModal/openMenu",
+        type: "sliceModalGame/openMenu",
         payload: {
           menu: "contract"
         },
       });
       // Reset to empty
       appStore.dispatch({
-        type: "sliceGameModal/new"
+        type: "sliceModalGame/new"
       });
     }
   };
@@ -209,7 +209,7 @@ export default function GameModal() {
         id="dialog_transaction"
         open={select.open}
         onClose={() => {
-          appStore.dispatch({ type: "sliceGameModal/close" });
+          appStore.dispatch({ type: "sliceModalGame/close" });
         }}
         fullWidth={true}
       >
@@ -375,7 +375,7 @@ export default function GameModal() {
         <DialogActions>
           <Button
             onClick={() => {
-              appStore.dispatch({ type: "sliceGameModal/close" });
+              appStore.dispatch({ type: "sliceModalGame/close" });
             }}
           >
             {t("generic.button.close")}

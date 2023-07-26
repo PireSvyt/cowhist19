@@ -9,7 +9,7 @@ import Landing from "./Landing/Landing.js";
 import MyStats from "../../components/Core/User/MyStats/MyStats.js";
 import MyTables from "../../Core/User/MyTables/MyTables.js";
 // Shared
-import Appbar from "../Appbar/Appbar.js";
+import Appbar from "../Appbar/comp.Appbar.js";
 
 export default function Home() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

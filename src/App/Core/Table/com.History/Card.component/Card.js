@@ -12,14 +12,14 @@ import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline.js"
 import CircularProgress from "@mui/material/CircularProgress";
 
 // Services
-import serviceGameDelete from "../../../../Table/components/TableHistory/components/HistoryCard/services/serviceGameDelete.js";
-import serviceGetTableHistory from "../../../../services/serviceGetTableHistory.js";
+import DeleteService from "./Delete.service/DeleteService.js";
+import GetHistoryService from "../../../../services/GetHistoryService.js";
 // Shared
 import ConfirmModal from "../../../../Miscelaneous/ConfirmModal/ConfirmModal.js";
 
-export default function HistoryCard(props) {
+export default function Card(props) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("HistoryCard " + props.game._id);
+    console.log("Card " + props.game._id);
   }
   // i18n
   const { t } = useTranslation();
@@ -35,13 +35,13 @@ export default function HistoryCard(props) {
       case "delete":
         setConfirmOpen(false);
         setDeleting(true);
-        serviceGameDelete(props.game._id).then(() => {
+        DeleteService(props.game._id).then(() => {
           setDeleting(false);
-          serviceGetTableHistory();
+          GetHistoryService();
         });
         break;
       default:
-        console.error("HistoryCard.confirmCallback unmatched " + choice);
+        console.error("Card.confirmCallback unmatched " + choice);
     }
   }
 

@@ -3,17 +3,18 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // https://www.geeksforgeeks.org/how-to-create-a-multi-page-website-using-react-js/
 
-// Components
-import Home from "./components/Home/Home.js";
-import Activation from "./components/Activation/Activation.js";
-import PasswordReset from "./components/PasswordReset/PasswordReset.js";
-import Table from "./components/Table/Table.js";
-import Account from "./components/Account/Account.js";
-import Documentation from "./components/Documentation/Documentation.js";
-import About from "./components/About/About.js";
-import Admin from "./components/Admin/Admin.js";
+import Documentation from "./Navigation/Page_Documentation/Documentation.js";
+import About from "./Navigation/Page_About/About.js";
+import Home from "./Navigation/Page_Home/Home.js";
+import Table from "./Navigation/Page_Table/Table.js";
+import Account from "./Navigation/Page_Account/Account.js";
+import Admin from "./Navigation/Page_Admin/Admin.js";
+
+import Activation from "./Auth/Activation/Activation.js";
+import PasswordReset from "./Auth/PasswordReset/PasswordReset.js";
+
 // Services
-import serviceAssessCookie from "./services/Access/serviceAssessCookie.js";
+import serviceAssessCookie from "./Auth/Access/serviceAssessCookie.js"
 
 export default function App() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

@@ -25,11 +25,11 @@ import SmsFailedIcon from "@mui/icons-material/SmsFailed";
 import AddIcon from "@mui/icons-material/Add.js";
 
 // Components
-import InviteModal from "../../../../Core/User/ModalInvite/InviteModal.js";
-import PlayerCard from "./com.PlayerCard/PlayerCard.js";
+import Invite from "./Invite.modal/Invite.js";
+import Player from "./Player.component/Player.js";
 // Services
-import SaveService from "../../../_shared/components/Appbar/components/TableModal/services/SaveService.js";
-import DeleteService from "../../../_shared/components/Appbar/components/TableModal/services/DeleteService.js";
+import SaveService from "./Save.service/Save.service.js";
+import DeleteService from "./Delete.service/Delete.service.js";
 // Shared
 import ConfirmModal from "../../../../Miscelaneous/ConfirmModal/ConfirmModal.js";
 import serviceExistingName from "../../../_shared/components/Appbar/components/TableModal/services/serviceExistingName.js";
@@ -52,7 +52,7 @@ export default function TableModal() {
     errors: useSelector((state) => state.sliceTableModal.errors),
     disabled: useSelector((state) => state.sliceTableModal.disabled),
     loading: useSelector((state) => state.sliceTableModal.loading),
-    openInviteModal: useSelector((state) => state.sliceInviteModal.open),
+    openInvite: useSelector((state) => state.sliceInvite.open),
   };
 
   // Debouncing
@@ -204,7 +204,7 @@ export default function TableModal() {
               <IconButton
                 sx={{ p: 2 }}
                 onClick={() => {
-                  appStore.dispatch({ type: "sliceInviteModal/open" });
+                  appStore.dispatch({ type: "sliceInvite/open" });
                 }}
               >
                 <AddIcon />
@@ -281,7 +281,7 @@ export default function TableModal() {
                   } else {
                     return (
                       <ListItem key={"player-" + player._id}>
-                        <PlayerCard player={player} />
+                        <Player player={player} />
                       </ListItem>
                     )
                   }
@@ -317,7 +317,7 @@ export default function TableModal() {
         </DialogActions>
       </Dialog>
 
-      {select.openInviteModal === true ? <InviteModal /> : null}
+      {select.openInvite === true ? <Invite /> : null}
 
       {confirmOpen === true ? (
         <ConfirmModal

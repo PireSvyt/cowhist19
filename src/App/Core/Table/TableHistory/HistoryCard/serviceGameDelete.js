@@ -1,30 +1,29 @@
 // Services
-import apiTableDelete from "./apiTableDelete.js";
+import apiGameDelete from "./apiGameDelete.js";
 // Shared
 import { random_id } from "../../../../../../../services/toolkit.js";
 // Reducers
 import appStore from "../../../../../../../store/appStore.js";
 
-async function serviceTableDelete(tableid) {
+async function serviceGameDelete(gamieid) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("serviceTableDelete");
+    console.log("serviceGameDelete");
   }
 
   try {
     // API call
-    let data = await apiTableDelete(tableid);
+    let data = await apiGameDelete(gamieid);
     switch (data.type) {
-      case "table.delete.success":
-        /*appStore.dispatch({
+      case "game.delete.success":
+        appStore.dispatch({
           type: "sliceSnack/change",
           payload: {
             uid: random_id(),
-            id: "table.snack.deleted",
+            id: "game.snack.deleted",
           },
-        });*/
-        window.location = "/";
+        });
         break;
-      case "table.delete.errorondelete":
+      case "game.delete.error.ondelete":
         appStore.dispatch({
           type: "sliceSnack/change",
           payload: {
@@ -58,4 +57,4 @@ async function serviceTableDelete(tableid) {
   }
 }
 
-export default serviceTableDelete;
+export default serviceGameDelete;

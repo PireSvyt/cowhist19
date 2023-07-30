@@ -7,7 +7,11 @@ import faq from "../../Documentation/faq.json";
 // Components
 import GenereicFAQ from "./GenericFAQ.component/GenereicFAQ.js"
 // Shared
+<<<<<<< HEAD:src/App/Documentation.page/Documentation.js
 import Appbar from "../Navigation/Appbar/comp.Appbar.js";
+=======
+import Appbar from "../Appbar/Appbar.js";
+>>>>>>> parent of c4d8c38 (restruct):src/App/Navigation/Page_Documentation/Documentation.js
 
 export default function Documentation() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

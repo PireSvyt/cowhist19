@@ -7,7 +7,11 @@ import LinearProgress from "@mui/material/LinearProgress";
 // Components
 import ChangePassword from "./ChangePassword.modal/ChangePassword.js"
 // Shared
+<<<<<<< HEAD:src/App/Account.page/Account.js
 import Appbar from "../Navigation/Appbar/comp.Appbar.js";
+=======
+import Appbar from "../Appbar/Appbar.js";
+>>>>>>> parent of c4d8c38 (restruct):src/App/Navigation/Page_Account/Account.js
 // Reducers
 import appStore from "../store/appStore.js";
 

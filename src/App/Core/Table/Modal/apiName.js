@@ -1,12 +1,13 @@
 import axios from "axios";
 
 // Reducers
-import appStore from "../../../../../../../store/appStore";
+import appStore from "../../store/appStore";
 
-async function apiTableDelete(id) {
+async function PopulateAPI(inputs) {
   try {
-    const res = await axios.delete(
-      process.env.REACT_APP_SERVER_URL + "/table/v1/" + id,
+    const res = await axios.post(
+      process.env.REACT_APP_SERVER_URL + "/admin/v1/populate",
+      inputs,
       {
         headers: {
           Authorization: "Bearer " + appStore.getState().sliceUserAuth.token,
@@ -19,4 +20,4 @@ async function apiTableDelete(id) {
   }
 }
 
-export default apiTableDelete;
+export default PopulateAPI;

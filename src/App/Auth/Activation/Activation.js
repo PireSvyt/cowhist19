@@ -10,7 +10,7 @@ import serviceActivateCheck from "./serviceActivateCheck.js";
 import serviceSendActivation from "./SendActivation/serviceSendActivation.js";
 import serviceSendActivationCheck from "./SendActivation/serviceSendActivationCheck.js";
 // Components
-import Appbar from "../../Navigation/Appbar/comp.Appbar.js";
+import Appbar from "../../Navigation/Appbar/Appbar.js";
 // Reducers
 import appStore from "../../store/appStore.js";
 

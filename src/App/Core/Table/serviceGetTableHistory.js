@@ -1,57 +1,63 @@
 // Services
-import GetStatsAPI from "./GetStatsAPI.js";
-import ProcessCurvesService from "./ProcessCurves.service.js";
-// Shared
+import apiTableHistory from "./apiTableHistory.js";
 import { random_id } from "../../../services/toolkit.js";
 
 // Reducers
 import appStore from "../../../store/appStore.js";
 
-async function GetStatsService(need) {
+async function serviceGetTableHistory(lastid) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("GetStatsService");
+    console.log("serviceGetTableHistory lastid : " + lastid);
   }
 
   try {
     // Lock UI
-    appStore.dispatch({ type: "sliceTableStats/lock" });
+    appStore.dispatch({ type: "sliceTableHistory/lock" });
 
     // Initialize
-    let parameters = {
-      need: "ranking",
-    };
     let id = window.location.href.split("/table/")[1];
-    if (need !== undefined) {   
-      parameters.need = need
-    }
+    if (!lastid) {lastid = null}
+    let parameters = {
+      need: "list",
+      games: {
+        lastid: lastid,
+        number: 15,
+      },
+    };
 
     // API call
-    const data = await GetStatsAPI(id, parameters);
+    const data = await apiTableHistory(id, parameters);
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("data.type : " + data.type);
     }
 
     // Response management
     switch (data.type) {
-      case "table.stats.success":
-        let stats = data.data.stats;
-        let playerids = appStore
-          .getState()
-          .sliceTableDetails.players.map((p) => p._id);
-        stats.ranking = stats.ranking.filter((rank) =>
-          playerids.includes(rank._id)
-        );
-        if (parameters.need === "graph") {
-          ProcessCurvesService(stats.graph)
-          delete stats.graph
-        }
-        // Outcome
+      case "table.history.success":
         appStore.dispatch({
-          type: "sliceTableStats/set",
-          payload: stats,
+          type: "sliceTableHistory/set",
+          payload: data.data,
         });
         break;
-      case "table.stats.error":
+      case "table.history.accessdenied.noneed":
+        appStore.dispatch({
+          type: "sliceSnack/change",
+          payload: {
+            uid: random_id(),
+            id: "generic.snack.error.wip",
+          },
+        });
+        break;
+      case "table.history.accessdenied.needmissmatch":
+        appStore.dispatch({
+          type: "sliceSnack/change",
+          payload: {
+            uid: random_id(),
+            id: "generic.snack.error.wip",
+          },
+        });
+        break;
+      case "table.history.error.findinggames":
         appStore.dispatch({
           type: "sliceSnack/change",
           payload: {
@@ -84,4 +90,4 @@ async function GetStatsService(need) {
   }
 }
 
-export default GetStatsService;
+export default serviceGetTableHistory;

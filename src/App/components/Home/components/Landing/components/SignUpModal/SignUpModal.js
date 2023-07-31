@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import {
@@ -9,22 +9,20 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Paper,
+  Typography
 } from "@mui/material";
-
 import { LoadingButton } from "@mui/lab";
 
 // Services
-import serviceProceed from "./services/serviceProceed.js";
-// Shared
-import serviceModalChange from "../../../../../../shared/services/serviceModalChange.js";
-import { random_id } from "../../../../../../shared/services/toolkit.js";
+import serviceSignUp from "./services/SignUp/serviceSignUp.js";
+import serviceSignUpCheck from "./services/SignUp/serviceSignUpCheck.js";
 // Reducers
 import appStore from "../../../../../../store/appStore.js";
-import sliceSignUpModal from "../../../../../../store/sliceSignUpModal.js";
 
 export default function SignUpModal() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("SignUpModal");
+    //console.log("SignUpModal");
   }
   // i18n
   const { t } = useTranslation();
@@ -34,66 +32,153 @@ export default function SignUpModal() {
 
   // Selects
   const select = {
-    open: useSelector((state) => state.sliceSignUpModal.open),
-    inputs: useSelector((state) => state.sliceSignUpModal.inputs),
-    errors: useSelector((state) => state.sliceSignUpModal.errors),
-    disabled: useSelector((state) => state.sliceSignUpModal.disabled),
-    loading: useSelector((state) => state.sliceSignUpModal.loading),
-    snackData: useSelector((state) => state.sliceSignUpModal.snackData),
+    open: useSelector((state) => state.sliceModals.openSignUpModal),
   };
+  
+  // States
+  const [signUpStatus, setSignUpStatus] = useState("onhold")
+  const [loadingSignUp, setLoadingSignUp] = useState(false)
+  const [pseudoValue, setPseudoValue] = useState("")
+  const [pseudoError, setPseudoError] = useState(false)
+  const [existingPseudoError, setExistingPseudoError] = useState(false)  
+  const [loginValue, setLoginValue] = useState("")
+  const [loginError, setLoginError] = useState(false)
+  const [passwordValue, setPasswordValue] = useState("")
+  const [passwordError, setPasswordError] = useState(false)
+  const [passwordRepeatValue, setPasswordRepeatValue] = useState("")
+  const [passwordRepeatError, setPasswordRepeatError] = useState(false)
+
+  function setStates (stateChanges) {
+    Object.keys(stateChanges).forEach(change => {
+      switch (change) {
+        case "signUpStatus" :
+          setSignUpStatus(stateChanges[change])
+          break
+        case "loadingSignUp" :
+          setLoadingSignUp(stateChanges[change])
+          break
+        case "pseudoValue" :
+          setPseudoValue(stateChanges[change])
+          break
+        case "existingPseudoError" :
+          setExistingPseudoError(stateChanges[change])
+          break
+        case "pseudoError" :
+          setPseudoError(stateChanges[change])
+          break
+        case "loginValue" :
+          setLoginValue(stateChanges[change])
+          break
+        case "loginError" :
+          setLoginError(stateChanges[change])
+          break
+        case "passwordValue" :
+          setPasswordValue(stateChanges[change])
+          break
+        case "passwordError" :
+          setPasswordError(stateChanges[change])
+          break
+        case "passwordRepeatValue" :
+          setPasswordRepeatValue(stateChanges[change])
+          break
+        case "passwordRepeatError" :
+          setPasswordRepeatError(stateChanges[change])
+          break
+        default :
+          console.error("SignUpModal.setStates unknown change ", change, stateChanges[change])
+      }
+    })
+  }
+
   // Changes
   const changes = {
-    pseudo: (e) => {
-      appStore.dispatch({
-        type: "sliceSignUpModal/change",
-        payload: {
-          inputs: { pseudo: e.target.value },
-          errors: { pseudo: false },
-        },
+    close: () => {
+      appStore.dispatch({ 
+        type: "sliceModals/close",
+        payload: "SignUp" 
       });
+      // Clean
+      setSignUpStatus("hold")
+      setLoadingSignUp(false)
+      setPseudoValue("")
+      setPseudoError(false)
+      setExistingPseudoError(false)
+      setLoginValue("")
+      setLoginError(false)
+      setPasswordValue("")
+      setPasswordError(false)
+      setPasswordRepeatValue("")
+      setPasswordRepeatError(false)
+    },
+    pseudo: (e) => {
+      setStates({
+        pseudoValue: e.target.value,
+        pseudoError: false
+      })
     },
     login: (e) => {
-      appStore.dispatch({
-        type: "sliceSignUpModal/change",
-        payload: {
-          inputs: { login: e.target.value },
-          errors: { login: false },
-        },
-      });
+      setStates({
+        loginValue: e.target.value,
+        loginError: false,
+        signUpStatus: "hold"
+      })
     },
     password: (e) => {
-      appStore.dispatch({
-        type: "sliceSignUpModal/change",
-        payload: {
-          inputs: { password: e.target.value },
-          errors: { password: false },
-        },
-      });
+      setStates({
+        passwordValue: e.target.value,
+        passwordError: false
+      })
     },
-    repeatpassword: (e) => {
-      appStore.dispatch({
-        type: "sliceSignUpModal/change",
-        payload: {
-          inputs: { repeatpassword: e.target.value },
-          errors: { repeatpassword: false },
-        },
-      });
+    passwordRepeat: (e) => {
+      setStates({
+        passwordRepeatValue: e.target.value,
+        passwordRepeatError: false
+      })
     },
+    signup: () => {
+      console.log("SignUpModal.signup")
+      setStates({loadingSignUp: true})
+      let inputs = {
+        pseudo: pseudoValue,
+        login: loginValue,
+        password: passwordValue,
+        passwordRepeat: passwordRepeatValue,
+      }
+      serviceSignUpCheck(inputs)
+      .then(checkOutcome => {
+        setStates(checkOutcome.stateChanges)
+        if (checkOutcome.proceed) {
+          serviceSignUp(inputs)
+          .then(outcome => {
+            setStates(outcome.stateChanges)
+            setStates({loadingSignUp: false})
+          })
+        } else {
+          setStates({loadingSignUp: false})
+        }
+      })
+    },
+    signin: () => {
+      appStore.dispatch({ 
+        type: "sliceModals/open",
+        payload: "SignIn" 
+      });
+      appStore.dispatch({ 
+        type: "sliceModals/close",
+        payload: "SignUp" 
+      });
+    }
   };
 
   // Render
   return (
     <Box>
       <Dialog
-        data-testid="componentSignUpModal"
-        id="dialog_signup"
         open={select.open === true}
-        onClose={() => {
-          appStore.dispatch({ type: "sliceSignUpModal/close" });
-        }}
+        onClose={changes.close}
         fullWidth={true}
       >
-        <DialogTitle>{t("signin.label.title")}</DialogTitle>
+        <DialogTitle>{t("signup.label.title")}</DialogTitle>
         <DialogContent
           sx={{
             height: componentHeight,
@@ -108,70 +193,90 @@ export default function SignUpModal() {
             }}
           >
             <TextField
-              data-testid="fieldPseudo"
               name="pseudo"
               required
               label={t("generic.input.pseudo")}
               variant="standard"
-              value={select.inputs.pseudo || ""}
+              value={pseudoValue || ""}
               onChange={changes.pseudo}
               autoComplete="off"
-              error={select.errors.pseudo}
+              error={pseudoError || existingPseudoError}
+              helperText={ existingPseudoError ? (t("signup.error.existingpseudo")) : (null) }
             />
             <TextField
-              data-testid="fieldLogin"
               name="login"
               required
               label={t("generic.input.email")}
               variant="standard"
-              value={select.inputs.login}
+              value={loginValue}
               onChange={changes.login}
               autoComplete="off"
               type="email"
-              error={select.errors.login}
+              error={loginError || signUpStatus === "alreadysignedup"}
             />
             <TextField
-              data-testid="fieldPassword"
               name="password"
               required
               label={t("generic.input.password")}
               variant="standard"
-              value={select.inputs.password}
+              value={passwordValue}
               onChange={changes.password}
               autoComplete="off"
               type="password"
-              error={select.errors.password}
+              error={passwordError}
             />
             <TextField
-              data-testid="fieldRepeatPassword"
-              name="repeatpassword"
+              name="passwordRepeat"
               required
-              label={t("signup.input.repeatpassword")}
+              label={t("signup.input.passwordrepeat")}
               variant="standard"
-              value={select.inputs.repeatpassword || ""}
-              onChange={changes.repeatpassword}
+              value={passwordRepeatValue || ""}
+              onChange={changes.passwordRepeat}
               autoComplete="off"
               type="password"
-              error={select.errors.repeatpassword}
+              error={passwordRepeatError}
             />
+            
+            {signUpStatus === "alreadysignedup" ? (
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  sx={{ mt: 2, mb: 1, whiteSpace: "pre-line" }}
+                  variant="body1"
+                  component="span"
+                  align="center"
+                >
+                  {t("signup.label.existinglogin")}
+                </Typography>
+                <Button
+                  variant="contained"
+                  sx={{ mt: 1, width:"100%" }}
+                  onClick={changes.signin}
+                >
+                  {t("generic.button.signin")}
+                </Button>
+              </Box>
+            ) : (null)}
+
           </Box>
         </DialogContent>
 
         <DialogActions>
           <Button
-            data-testid="buttonClose"
-            onClick={() => {
-              appStore.dispatch({ type: "sliceSignUpModal/close" });
-            }}
+            onClick={changes.close}
           >
             {t("generic.button.cancel")}
           </Button>
           <LoadingButton
-            data-testid="buttonProceed"
             variant="contained"
-            onClick={serviceProceed}
-            disabled={select.disabled}
-            loading={select.loading}
+            onClick={changes.signup}
+            disabled={loadingSignUp || signUpStatus === "alreadysignedup"}
+            loading={loadingSignUp}
           >
             {t("generic.button.proceed")}
           </LoadingButton>

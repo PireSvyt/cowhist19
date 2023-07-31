@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import {
@@ -10,22 +10,24 @@ import {
   DialogContent,
   DialogTitle,
   FormControl,
+  Paper,
+  Typography
 } from "@mui/material";
-
 import { LoadingButton } from "@mui/lab";
 
 // Services
-import serviceProceed from "./services/serviceProceed.js";
-// Shared
-import serviceModalChange from "../../../../../../shared/services/serviceModalChange.js";
-import { random_id } from "../../../../../../shared/services/toolkit.js";
+import serviceSignIn from "./services/SignIn/serviceSignIn.js";
+import serviceSignInCheck from "./services/SignIn/serviceSignInCheck.js";
+import serviceSendActivation from "./services/Activation/serviceSendActivation.js";
+import serviceSendActivationCheck from "./services/Activation/serviceSendActivationCheck.js";
+import serviceSendPassword from "./services/SendPassword/serviceSendPassword.js";
+import serviceSendPasswordCheck from "./services/SendPassword/serviceSendPasswordCheck.js";
 // Reducers
 import appStore from "../../../../../../store/appStore.js";
-import sliceSignInModal from "../../../../../../store/sliceSignInModal.js";
 
 export default function SignInModal() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("SignInModal");
+    //console.log("SignInModal");
   }
   // i18n
   const { t } = useTranslation();
@@ -35,45 +37,169 @@ export default function SignInModal() {
 
   // Selects
   const select = {
-    open: useSelector((state) => state.sliceSignInModal.open),
-    inputs: useSelector((state) => state.sliceSignInModal.inputs),
-    errors: useSelector((state) => state.sliceSignInModal.errors),
-    disabled: useSelector((state) => state.sliceSignInModal.disabled),
-    loading: useSelector((state) => state.sliceSignInModal.loading),
-    snackData: useSelector((state) => state.sliceSignInModal.snackData),
+    open: useSelector((state) => state.sliceModals.openSignInModal),
   };
+  
+  // States
+  const [signInStatus, setSignInStatus] = useState("onhold")
+  const [loadingSignIn, setLoadingSignIn] = useState(false)
+  const [sendActivationStatus, setSendActivationStatus] = useState("onhold")
+  const [loadingSendActivation, setLoadingSendActivation] = useState(false)
+  const [sendPasswordStatus, setSendPasswordStatus] = useState("onhold")
+  const [loadingSendPassword, setLoadingSendPassword] = useState(false)
+  const [loginValue, setLoginValue] = useState("")
+  const [loginError, setLoginError] = useState(false)
+  const [passwordValue, setPasswordValue] = useState("")
+  const [passwordError, setPasswordError] = useState(false)
+
+  function setStates (stateChanges) {
+    Object.keys(stateChanges).forEach(change => {
+      switch (change) {
+        case "signInStatus" :
+          setSignInStatus(stateChanges[change])
+          break
+        case "loadingSignIn" :
+          setLoadingSignIn(stateChanges[change])
+          break
+        case "sendPasswordStatus" :
+          setSendPasswordStatus(stateChanges[change])
+          break
+        case "loadingSendPassword" :
+          setLoadingSendPassword(stateChanges[change])
+          break
+        case "sendActivationStatus" :
+          setSendActivationStatus(stateChanges[change])
+          break
+        case "loadingSendActivation" :
+          setLoadingSendActivation(stateChanges[change])
+          break
+        case "loginValue" :
+          setLoginValue(stateChanges[change])
+          break
+        case "loginError" :
+          setLoginError(stateChanges[change])
+          break
+        case "passwordValue" :
+          setPasswordValue(stateChanges[change])
+          break
+        case "passwordError" :
+          setPasswordError(stateChanges[change])
+          break
+        default :
+          console.error("SignInModal.setStates unknown change ", change, stateChanges[change])
+      }
+    })
+  }
+
   // Changes
   const changes = {
-    login: (e) => {
-      appStore.dispatch({
-        type: "sliceSignInModal/change",
-        payload: {
-          inputs: { login: e.target.value },
-          errors: { login: false },
-        },
+    close: () => {
+      appStore.dispatch({ 
+        type: "sliceModals/close",
+        payload: "SignIn" 
       });
+      // Clean
+      setSignInStatus("hold")
+      setLoadingSignIn(false)
+      setLoadingSendActivation(false)
+      setSendPasswordStatus("hold")
+      setLoadingSendPassword(false)
+      setLoginValue("")
+      setLoginError(false)
+      setPasswordValue("")
+      setPasswordError(false)
+    },
+    login: (e) => {
+      setStates({
+        loginValue: e.target.value,
+        loginError: false
+      })
     },
     password: (e) => {
-      appStore.dispatch({
-        type: "sliceSignInModal/change",
-        payload: {
-          inputs: { password: e.target.value },
-          errors: { password: false },
-        },
-      });
+      setStates({
+        passwordValue: e.target.value,
+        passwordError: false
+      })
     },
+    signin: () => {
+      console.log("SignInModal.signin")
+      setStates({loadingSignIn: true})
+      let inputs = {
+        login: loginValue,
+        password: passwordValue
+      }
+      serviceSignInCheck(inputs)
+      .then(checkOutcome => {
+        setStates(checkOutcome.stateChanges)
+        if (checkOutcome.proceed) {
+          serviceSignIn(inputs)
+          .then(outcome => {
+            setStates(outcome.stateChanges)
+            setStates({loadingSignIn: false})
+          })
+        } else {
+          setStates({loadingSignIn: false})
+        }
+      })
+    },
+    gotosignup: () => {
+      appStore.dispatch({
+        type: "sliceModals/open",
+        payload: "SignUp"
+      });
+      changes.close()
+    },
+    sendactivation: () => {
+      console.log("SignInModal.sendactivation")
+      setStates({loadingSendActivation: true})
+      let inputs = {
+        login: loginValue,
+      }
+      serviceSendActivationCheck(inputs)
+      .then(checkOutcome => {
+        setStates(checkOutcome.stateChanges)
+        if (checkOutcome.proceed) {
+          serviceSendActivation(inputs)
+          .then(outcome => {
+            setStates(outcome.stateChanges)
+            setStates({loadingSendActivation: false})
+          })
+        } else {
+          setStates({loadingSendActivation: false})
+        }
+      })
+    },
+    resetpassword: () => {
+      console.log("SignInModal.resetpassword")
+      setStates({
+        sendPasswordStatus: "hold",
+        loadingSendPassword: true
+      })
+      let inputs = {
+        login: loginValue,
+      }
+      serviceSendPasswordCheck(inputs)
+      .then(checkOutcome => {
+        setStates(checkOutcome.stateChanges)
+        if (checkOutcome.proceed) {
+          serviceSendPassword(inputs)
+          .then(outcome => {
+            setStates(outcome.stateChanges)
+            setStates({loadingSendPassword: false})
+          })
+        } else {
+          setStates({loadingSendPassword: false})
+        }
+      })
+    }
   };
 
   // Render
   return (
     <Box>
       <Dialog
-        data-testid="componentSignInModal"
-        id="dialog_signin"
         open={select.open}
-        onClose={() => {
-          appStore.dispatch({ type: "sliceSignInModal/close" });
-        }}
+        onClose={changes.close}
         fullWidth={true}
       >
         <DialogTitle>{t("signin.label.title")}</DialogTitle>
@@ -92,48 +218,144 @@ export default function SignInModal() {
           >
             <FormControl>
               <TextField
-                data-testid="fieldLogin"
                 name="login"
                 required
                 label={t("generic.input.email")}
                 variant="standard"
-                value={select.inputs.login}
+                value={loginValue}
                 onChange={changes.login}
                 autoComplete="off"
                 type="email"
-                error={select.errors.login}
+                error={loginError}
               />
               <TextField
-                data-testid="fieldPassword"
                 name="password"
                 required
                 label={t("generic.input.password")}
                 variant="standard"
-                value={select.inputs.password}
+                value={passwordValue}
                 onChange={changes.password}
                 autoComplete="off"
                 type="password"
-                error={select.errors.password}
+                error={passwordError}
               />
+              <LoadingButton
+                variant="outlined"
+                onClick={changes.resetpassword}
+                sx={{mt:2,mb:1}}
+                disabled={loadingSendPassword || sendPasswordStatus === "sent"}
+                loading={loadingSendPassword}
+              >
+                {t("signin.button.resetpassword")}
+              </LoadingButton>
+
+              {signInStatus === "notfound" ? (                
+                <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+                >
+                  <Typography
+                    sx={{ mt: 2, mb: 1, whiteSpace: "pre-line" }}
+                    variant="body1"
+                    component="span"
+                    align="center"
+                  >
+                    {t("signin.label.notfoundaccount")}
+                  </Typography>
+                  <Button
+                    variant="contained"
+                    sx={{ mt: 1, width:"100%" }}
+                    onClick={changes.gotosignup}
+                  >
+                    {t("generic.button.signin")}
+                  </Button>
+                </Box>
+              ) : (null)}
+
+              {sendPasswordStatus === "sent" ? (             
+                <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+                >
+                  <Typography
+                    sx={{ mt: 2, mb: 1, whiteSpace: "pre-line" }}
+                    variant="body1"
+                    component="span"
+                    align="center"
+                  >
+                    {t("signin.label.successsendingpassword")}
+                  </Typography>
+                </Box>
+              ) : (null)}
+
+              {signInStatus === "inactivated" ? (             
+                <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+                >
+                  <Typography
+                    sx={{ mt: 2, mb: 1, whiteSpace: "pre-line" }}
+                    variant="body1"
+                    component="span"
+                    align="center"
+                  >
+                    {t("signin.label.inactiveaccount")}
+                  </Typography>
+                  <LoadingButton
+                    variant="contained"
+                    sx={{ mt: 1, width:"100%" }}
+                    onClick={changes.sendactivation}
+                    disabled={loadingSendActivation || sendActivationStatus === "sent"}
+                    loading={loadingSendActivation}
+                  >
+                    {t("signin.button.resendactivationemail")}
+                  </LoadingButton>
+                </Box>
+              ) : (null)}
+
+              {sendActivationStatus === "sent" ? (             
+                <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+                >
+                  <Typography
+                    sx={{ mt: 2, mb: 1, whiteSpace: "pre-line" }}
+                    variant="body1"
+                    component="span"
+                    align="center"
+                  >
+                    {t("signin.label.successresendingactivation")}
+                  </Typography>
+                </Box>
+              ) : (null)}
+
             </FormControl>
           </Box>
         </DialogContent>
 
         <DialogActions>
           <Button
-            data-testid="buttonClose"
-            onClick={() => {
-              appStore.dispatch({ type: "sliceSignInModal/close" });
-            }}
+            onClick={changes.close}
           >
             {t("generic.button.cancel")}
           </Button>
           <LoadingButton
-            data-testid="buttonProceed"
             variant="contained"
-            onClick={serviceProceed}
-            disabled={select.disabled}
-            loading={select.loading}
+            onClick={changes.signin}
+            disabled={loadingSignIn || signInStatus === "inactivated"}
+            loading={loadingSignIn}
           >
             {t("generic.button.proceed")}
           </LoadingButton>

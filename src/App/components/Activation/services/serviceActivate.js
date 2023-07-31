@@ -1,21 +1,22 @@
 // Services
 import apiActivate from "./apiActivate";
 
-async function serviceActivate() {
+import { random_id } from "../toolkit.js"
+
+import appStore from "../../store/appStore";
+
+async function serviceActivate(activationInputs) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("serviceActivate");
   }
 
   try {
-    let callbacks = [];
-    let errors = [];
+    
     let stateChanges = {};
-
-    // Prep
-    let regToken = window.location.href.split("/activation/")[1];
+    let errors = [];
 
     // API call
-    let data = await apiActivate(regToken);
+    let data = await apiActivate(activationInputs);
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("data.type : " + data.type);
     }
@@ -23,45 +24,36 @@ async function serviceActivate() {
     // Response management
     switch (data.type) {
       case "auth.activate.success.activated":
-        stateChanges.outcome = "activated";
-        break;
       case "auth.activate.success.alreadyctivated":
-        stateChanges.outcome = "activated";
+        stateChanges.activationStatus = "activated";
         break;
       case "auth.activate.error.notfound":
-        stateChanges.outcome = "error";
-        break;
       case "auth.activate.error.onsave":
-        stateChanges.outcome = "error";
-        break;
       default:
-        stateChanges.outcome = "error";
+        stateChanges.activationStatus = "error";
     }
 
     // Response
     return {
       stateChanges: stateChanges,
-      callbacks: callbacks,
       errors: errors,
     };
+      
   } catch (err) {
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("service caught error");
-      console.log(err);
-    }
-    // Error network
+    console.error("serviceActivate", err);
+    // Snack
+    appStore.dispatch({
+      type: "sliceSnack/change",
+      payload: {
+        uid: random_id(),
+        id: "generic.snack.api.errornetwork",
+      },
+    });
     return {
       stateChanges: {
-        disabled: false,
-        loading: false,
-        openSnack: true,
-        snack: {
-          uid: random_id(),
-          id: "generic.snack.api.errornetwork",
-        },
+        activationStatus: "error",
       },
-      callbacks: [],
-      errors: [],
+      errors: err,
     };
   }
 }

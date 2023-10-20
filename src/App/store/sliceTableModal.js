@@ -16,6 +16,7 @@ const sliceTableModal = createSlice({
     },
     disabled: false,
     loading: false,
+    deleteConfirm: false
   },
   reducers: {
     new: (state, action) => {
@@ -94,6 +95,10 @@ const sliceTableModal = createSlice({
       }
       if (action.payload.loading !== undefined) {
         state.loading = action.payload.loading;
+      }
+      // Confirm
+      if (action.payload.deleteConfirm !== undefined) {
+        state.deleteConfirm = action.payload.deleteConfirm;
       }
     },
     adduser: (state, action) => {

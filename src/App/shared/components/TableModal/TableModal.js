@@ -24,7 +24,7 @@ import AddIcon from "@mui/icons-material/Add.js";
 import InviteModal from "./components/InviteModal/InviteModal.js";
 import PlayerCard from "./components/PlayerCard/PlayerCard.js";
 // Services
-import serviceProceed from "./services/serviceProceed.js";
+import serviceProceed from "../../../services/serviceProceed.js"
 import serviceTableDelete from "./services/serviceTableDelete.js";
 // Shared
 import ConfirmModal from "../../../shared/components/ConfirmModal/ConfirmModal.js";
@@ -47,6 +47,7 @@ export default function TableModal() {
     disabled: useSelector((state) => state.sliceTableModal.disabled),
     loading: useSelector((state) => state.sliceTableModal.loading),
     openInviteModal: useSelector((state) => state.sliceInviteModal.open),
+    openDeleteConfirmModal: useSelector((state) => state.sliceTableModal.deleteConfirm),
   };
 
   // Changes
@@ -74,42 +75,25 @@ export default function TableModal() {
   // Constants
   const componentHeight = window.innerHeight - 115;
 
-  // Services
-  function callServiceProceed() {
-    serviceProceed().then((serviceProceedOutcome) => {
-      switch (serviceProceedOutcome.type) {
-        case "error":
-          if (process.env.REACT_APP_DEBUG === "TRUE") {
-            console.log("TableModal.callServiceProceed error");
-          }
-          break;
-        case "success":
-          if (process.env.REACT_APP_DEBUG === "TRUE") {
-            console.log("TableModal.callServiceProceed error");
-          }
-          break;
-        case "confirmDelete":
-          setConfirmOpen(true);
-          break;
-        default:
-          console.error(
-            "TableModal.callServiceProceed unmatched type " +
-              serviceProceedOutcome.type
-          );
-      }
-    });
-  }
-
   // Confirm modal
-  const [confirmOpen, setConfirmOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
   function confirmCallback(choice) {
     switch (choice) {
       case "close":
-        setConfirmOpen(false);
+        appStore.dispatch({
+          type: "sliceTableModal/change",
+          payload: {
+              deleteConfirmOpen: false,
+          },
+        });
         break;
       case "delete":
-        setConfirmOpen(false);
+        appStore.dispatch({
+          type: "sliceTableModal/change",
+          payload: {
+              deleteConfirmOpen: false,
+          },
+        });
         setDeleting(true);
         serviceTableDelete(select.id).then(() => {
           setDeleting(false);
@@ -260,7 +244,13 @@ export default function TableModal() {
           </Button>
           <LoadingButton
             variant="contained"
-            onClick={callServiceProceed}
+            onClick={() => {
+              if (select.id === "") {
+                serviceProceed("tableCreate")
+              } else {
+                serviceProceed("tableSave")
+              }
+            }}
             disabled={select.disabled}
             loading={select.loading}
             color={
@@ -278,9 +268,9 @@ export default function TableModal() {
 
       {select.openInviteModal === true ? <InviteModal /> : null}
 
-      {confirmOpen === true ? (
+      {select.openDeleteConfirmModal === true ? (
         <ConfirmModal
-          open={confirmOpen}
+          open={select.openDeleteConfirmModal}
           data={{
             title: "table.confirm.deletenoeusers.title",
             content: "table.confirm.deletenoeusers.content",

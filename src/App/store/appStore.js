@@ -16,6 +16,9 @@ import sliceSnack from "./sliceSnack.js";
 import sliceToComeModal from "./sliceToComeModal.js";
 // Admin
 import sliceAdminStats from "./sliceAdminStats.js";
+// Test
+import sliceTests from "./sliceTests.js";
+
 
 export default configureStore({
   reducer: {
@@ -33,5 +36,6 @@ export default configureStore({
     sliceSnack: sliceSnack,
     sliceToComeModal: sliceToComeModal,
     sliceAdminStats: sliceAdminStats,
+    sliceTests: sliceTests,
   },
 });

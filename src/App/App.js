@@ -1,8 +1,6 @@
 import * as React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-// https://www.geeksforgeeks.org/how-to-create-a-multi-page-website-using-react-js/
-
 // Components
 import Home from "./components/Home/Home.js";
 import Activation from "./components/Activation/Activation.js";
@@ -11,6 +9,7 @@ import Table from "./components/Table/Table.js";
 import Account from "./components/Account/Account.js";
 import Help from "./components/Help/Help.js";
 import Admin from "./components/Admin/Admin.js";
+
 // Services
 import serviceAssessCookie from "./services/serviceAssessCookie.js";
 

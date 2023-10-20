@@ -16,8 +16,8 @@ import {
 import { LoadingButton } from "@mui/lab";
 
 // Services
-import serviceSignIn from "./services/SignIn/serviceSignIn.js";
-import serviceSignInCheck from "./services/SignIn/serviceSignInCheck.js";
+import serviceSignIn from "./services/serviceSignIn.js";
+import serviceSignInCheck from "./services/serviceSignInCheck.js";
 import serviceSendActivation from "./services/Activation/serviceSendActivation.js";
 import serviceSendActivationCheck from "./services/Activation/serviceSendActivationCheck.js";
 import serviceSendPassword from "./services/SendPassword/serviceSendPassword.js";

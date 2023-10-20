@@ -5,12 +5,12 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline.js";
 
 // Services
-import serviceActivate from "../../services/Activation/serviceActivate.js";
-import serviceActivateCheck from "../../services/Activation/serviceActivateCheck.js";
-import serviceSendActivation from "../../services/SendActivation/serviceSendActivation.js";
-import serviceSendActivationCheck from "../../services/SendActivation/serviceSendActivationCheck.js";
+import serviceActivate from "../../services/serviceActivate.js";
+import serviceActivateCheck from "../../services/serviceActivateCheck.js";
+import serviceSendActivation from "../../services/serviceSendActivation.js";
+import serviceSendActivationCheck from "../../services/serviceSendActivationCheck.js";
 // Components
-import Appbar from "../_shared/components/Appbar/Appbar.js";
+import Appbar from "../../shared/components/Appbar/Appbar.js"
 // Reducers
 import appStore from "../../store/appStore.js";
 

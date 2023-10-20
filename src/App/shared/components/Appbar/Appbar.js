@@ -20,10 +20,10 @@ import { random_id } from "../../../../services/toolkit.js";
 import serviceAccessDeny from "../../../../services/Access/serviceAccessDeny.js";
 // Components
 import LanguageSwitcher from "./components/LanguageSwitcher/LanguageSwitcher.js";
-import Snack from "./components/Snack/Snack2.js";
-import FeedbackModal from "./components/FeedbackModal/FeedbackModal.js";
-import TableModal from "./components/TableModal/TableModal.js";
-import SignInModal from "./components/SignInModal/SignInModal.js";
+import Snack from "../Snack/Snack2.js"
+//import FeedbackModal from "../../../components";
+import TableModal from "../TableModal/TableModal.js"
+import SignInModal from "../../../components/Home/components/Landing/components/SignInModal/SignInModal.js";
 import sliceSignUpModal from "../../../store/sliceSignUpModal.js";
 // Store
 import appStore from "../../../store/appStore.js";
@@ -318,7 +318,7 @@ export default function Appbar(props) {
       {select.signUpModal === true ? <SignUpModal /> : null}
       {select.signInModal === true ? <SignInModal /> : null}
       {select.snackOpen ? (<Snack data={select.snackData}/>) : (null)}
-      {select.feedbackOpen ? (<FeedbackModal/>) : (null)}
+      {/*select.feedbackOpen ? (<FeedbackModal/>) : (null)*/}
       {select.tableOpen ? (<TableModal/>) : (null)}
     </Box>
   );

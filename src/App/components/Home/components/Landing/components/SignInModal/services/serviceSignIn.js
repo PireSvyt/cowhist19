@@ -4,8 +4,8 @@ import { AES } from "crypto-js";
 // Services
 import apiSignIn from "./apiSignIn.js";
 // Shared
-import { random_id } from "../../../../../../../services/toolkit.js";
-import serviceAccessGrant from "../../../../../../../services/Access/serviceAccessGrant.js"
+import { random_id } from "../../../../../../../shared/services/toolkit.js"
+import serviceAccessGrant from "../../../../../../../shared/services/serviceAccessGrant.js"
 // Reducers
 import appStore from "../../../../../../../store/appStore.js";
 

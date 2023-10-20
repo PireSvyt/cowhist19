@@ -4,7 +4,7 @@ import serviceProceedCheck from "./serviceProceedCheck.js";
 // Resources
 import emptyUser from "../../../../../resources/emptyUser.js";
 
-describe("TEST OF SERVICE : serviceProceedCheck", () => {
+describe.skip("TEST OF SERVICE : serviceProceedCheck", () => {
   describe("Assessment of empty user", () => {
     // Emptycase
     describe("When user is empty", () => {

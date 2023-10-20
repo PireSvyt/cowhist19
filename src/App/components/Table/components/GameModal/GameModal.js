@@ -21,7 +21,7 @@ import {
 import LoadingButton from "@mui/lab/LoadingButton";
 
 // Services
-import serviceProceed from "./services/serviceProceed.js";
+import serviceProceed from "../../../../services/serviceProceed.js"
 // Reducers
 import appStore from "../../../../store/appStore.js";
 
@@ -290,7 +290,7 @@ export default function GameModal() {
           </Button>
           <LoadingButton
             variant="contained"
-            onClick={serviceProceed}
+            onClick={() => serviceProceed("gameSave")}
             disabled={select.disabled}
             loading={select.loading}
           >

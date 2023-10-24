@@ -15,7 +15,7 @@ import {
 import { random_id } from "./_miscelaneous/toolkit.js";
 import { serviceUserGetDetails } from "./user";
 // Reducers
-import appStore from "../../../../store/appStore.js";
+import appStore from "../store/appStore";
 
 export async function serviceAuthSignUp() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

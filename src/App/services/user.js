@@ -1,5 +1,5 @@
 // APIs
-import { apiUserDetails } from "../api/user.api";
+import { apiUserDetails } from "../api/user";
 // Services
 import { random_id } from "../services/_miscelaneous/toolkit.js";
 // Reducers
@@ -68,4 +68,16 @@ export async function serviceUserGetDetails() {
       },
     });
   }
+}
+
+export async function serviceUserInvite() {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+        console.log("serviceUserInvite");
+    }
+}
+
+export async function serviceUserInvite() {
+    if (process.env.REACT_APP_DEBUG === "TRUE") {
+        console.log("serviceUserInvite");
+    }
 }

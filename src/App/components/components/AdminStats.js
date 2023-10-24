@@ -4,9 +4,9 @@ import { Box, Paper, Typography, List, ListItem } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
 
 // Services
-import serviceGetTablesByPlayers from "../../services/Admin/serviceGetTablesByPlayers.js";
-import serviceGetTablesByGames from "../../services/Admin/serviceGetTablesByGames.js";
-import serviceGetUsersByStatus from "../../services/Admin/serviceGetUsersByStatus.js";
+import serviceGetTablesByPlayers from "../../services/OLD/serviceGetTablesByPlayers.js";
+import serviceGetTablesByGames from "../../services/OLD/serviceGetTablesByGames.js";
+import serviceGetUsersByStatus from "../../services/OLD/serviceGetUsersByStatus.js";
 
 export default function AdminStats() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

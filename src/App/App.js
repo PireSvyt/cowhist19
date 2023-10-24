@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 // Components
 import Home from "./components/Home/Home.js";
 import Activation from "./components/Activation/Activation.js";
-import PasswordReset from "./components/PasswordReset/PasswordReset.js";
+import PasswordReset from "./components/PasswordReset.js";
 import Table from "./components/Table/Table.js";
 import Account from "./components/Account/Account.js";
 import Help from "./components/Help/Help.js";

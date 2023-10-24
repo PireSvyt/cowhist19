@@ -7,9 +7,9 @@ import {
   tableGetHistoryInputs,
   tableGetStatsInputs,
   tableDeleteInputs,
-} from "./table.services.inputs.js";
+} from "./table/table.services.inputs.js";
 
-describe("TEST OF INPUTS : table.services.inputs", () => {
+describe("TEST OF INPUTS : services.inputs", () => {
     let inputs = [
         tableCreateInputs,
         tableSaveInputs,

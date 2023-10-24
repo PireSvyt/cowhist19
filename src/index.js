@@ -13,7 +13,7 @@ root.render(
     <Provider store={appStore}>
       <App />
     </Provider>
-  </React.StrictMode>,
+  </React.StrictMode>
 );
 
 //document.body.requestFullscreen();

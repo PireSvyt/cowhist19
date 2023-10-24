@@ -3,16 +3,16 @@ import { createSlice } from "@reduxjs/toolkit";
 const sliceTests = createSlice({
   name: "sliceTests",
   initialState: {
-    log: {}
+    log: {},
   },
   reducers: {
     log: (state, action) => {
-      console.log("sliceTests.log ", action)
-      state.log[new Date ()] = action.payload
+      console.log("sliceTests.log ", action);
+      state.log[new Date()] = action.payload;
     },
     trash: (state) => {
-      console.log("sliceTests.trash ")
-      state.log = {}
+      console.log("sliceTests.trash ");
+      state.log = {};
     },
   },
 });

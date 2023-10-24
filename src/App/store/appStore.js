@@ -19,7 +19,6 @@ import sliceAdminStats from "./sliceAdminStats.js";
 // Test
 import sliceTests from "./sliceTests.js";
 
-
 export default configureStore({
   reducer: {
     sliceUserAuth: sliceUserAuth,

@@ -1,0 +1,10 @@
+.alice-carousel__dots-item:not(.__custom) {
+  background-color: #bdbdbd;
+  height: 12px;
+  width: 12px;
+}
+.alice-carousel__dots-item:not(.__custom).__active {
+  background-color: #1976d2;
+  height: 12px;
+  width: 12px;
+}

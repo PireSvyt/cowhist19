@@ -11,7 +11,7 @@ import Help from "./components/Help/Help.js";
 import Admin from "./components/Admin/Admin.js";
 
 // Services
-import serviceAssessCookie from "./services/serviceAssessCookie.js";
+import serviceAssessCookie from "./services/Cookies/serviceAssessCookie.js";
 
 export default function App() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -24,7 +24,7 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        <Route exact path="/" element={<Home />} />        
+        <Route exact path="/" element={<Home />} />
         <Route path="/activation/:token" element={<Activation />} />
         <Route path="/passwordreset/:token" element={<PasswordReset />} />
         <Route path="/account" element={<Account />} />

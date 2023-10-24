@@ -16,7 +16,7 @@ const sliceTableModal = createSlice({
     },
     disabled: false,
     loading: false,
-    deleteConfirm: false
+    deleteConfirm: false,
   },
   reducers: {
     new: (state, action) => {
@@ -121,7 +121,7 @@ const sliceTableModal = createSlice({
         //console.log(action.payload);
       }
       state.inputs.players = state.inputs.players.filter(
-        (player) => player._id !== action.payload
+        (player) => player._id !== action.payload,
       );
     },
     lock: (state, action) => {

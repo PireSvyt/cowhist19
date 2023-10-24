@@ -5,7 +5,7 @@ const sliceUserAuth = createSlice({
   initialState: {
     loaded: false,
     signedin: false,
-    token: ""
+    token: "",
   },
   reducers: {
     signin: (state, action) => {
@@ -24,7 +24,7 @@ const sliceUserAuth = createSlice({
       state.loaded = true;
       state.signedin = false;
       state.token = "";
-    }
+    },
   },
 });
 

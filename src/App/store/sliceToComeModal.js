@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 // Services
-import { random_id } from "../shared/services/toolkit.js";
+import { random_id } from "../services/_miscelaneous/toolkit.js";
 
 const sliceToComeModal = createSlice({
   name: "sliceToComeModal",

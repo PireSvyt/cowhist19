@@ -1,7 +1,7 @@
 require("@jest/globals");
 import { render, fireEvent, screen } from "@testing-library/react";
 import Snack from "./Snack2.js";
-import { random_id } from "../../services/toolkit.js";
+import { random_id } from "../../../services/_miscelaneous/toolkit.js";
 
 describe.skip("TEST OF COMPONENT : Snack", () => {
   const newData = {

@@ -12,10 +12,10 @@ import {
   apiAuthExistingPseudo,
 } from "../api/game";
 // Services
-import { random_id } from "./_miscelaneous/toolkit.js";
+import { random_id } from "../_miscelaneous/toolkit.js";
 import { serviceUserGetDetails } from "./user";
 // Reducers
-import appStore from "../store/appStore";
+import appStore from "../../store/appStore";
 
 export async function serviceAuthSignUp() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

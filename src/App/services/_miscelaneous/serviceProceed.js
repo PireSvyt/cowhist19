@@ -1,103 +1,107 @@
-// Inputs
-import serviceProceedInputs from "./Miscelaneous/serviceProceed.inputs.js";
 // Services
 import serviceProceedCheck from "./serviceProceedCheck.js";
 // Shared
-import { random_id } from "./miscelaneous/toolkit.js";
+import { random_id } from "./toolkit.js";
 // Reducers
 import appStore from "../../store/appStore.js";
 
-async function serviceProceed(scope, log = []) {
+async function serviceProceed(serviceProceedInputs, log = []) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("serviceProceed");
   }
 
   try {
-    if (Object.keys(serviceProceedInputs).includes(scope)) {
-      // Lock UI
-      serviceProceedInputs[scope].lockuifunction(log);
+    // Lock UI
+    if (serviceProceedInputs.lockuifunction !== undefined) {
+      serviceProceedInputs.lockuifunction(log);
+    }
 
-      // Inputs management
-      let serviceInputs = serviceProceedInputs[scope].getinputsfunction(log);
-      if (serviceProceedInputs[scope].repackagingfunction !== undefined) {
-        serviceInputs = serviceProceedInputs[scope].repackagingfunction(
+    // Inputs management
+    let serviceInputs = undefined;
+    if (serviceProceedInputs.getinputsfunction !== undefined) {
+      serviceInputs = serviceProceedInputs.getinputsfunction(log);
+    }
+    if (serviceProceedInputs.repackagingfunction !== undefined) {
+      if (serviceProceedInputs.repackagingfunction !== undefined) {
+        serviceInputs = serviceProceedInputs.repackagingfunction(
           serviceInputs,
           log,
         );
       }
+    }
 
-      // Inputs checks
-      let proceedCheckOutcome = serviceProceedCheck(
+    // Inputs checks
+    let proceedCheckOutcome = undefined;
+    if (serviceProceedInputs.sercivechecks !== undefined) {
+      proceedCheckOutcome = serviceProceedCheck(
         serviceInputs,
-        serviceProceedInputs[scope].sercivechecks,
+        serviceProceedInputs.sercivechecks,
       );
+    }
+    if (serviceProceedInputs.getcheckoutcomedispatchfunction !== undefined) {
       if (proceedCheckOutcome.stateChanges !== undefined) {
         appStore.dispatch({
-          type: serviceProceedInputs[scope].getcheckoutcomedispatchfunction(
-            log,
-          ),
+          type: serviceProceedInputs.getcheckoutcomedispatchfunction(log),
           payload: proceedCheckOutcome.stateChanges,
         });
       }
-      if (proceedCheckOutcome.proceed === true) {
-        // Prep
+    } else {
+      proceedCheckOutcome = { proceed: true };
+    }
+    if (proceedCheckOutcome.proceed === true) {
+      // Prep
 
-        // API call
-        let proceedResponse = await serviceProceedInputs[scope].apicall(
-          serviceInputs.inputs,
+      // API call
+      let proceedResponse = await serviceProceedInputs.apicall(
+        serviceInputs.inputs,
+        log,
+      );
+
+      // Response management
+      let manageresponsefunction =
+        serviceProceedInputs.getmanageresponsefunction(
+          proceedResponse.type,
           log,
         );
-
-        // Response management
-        let manageresponsefunction = serviceProceedInputs[
-          scope
-        ].getmanageresponsefunction(proceedResponse.type, log);
-        //console.log("manageresponsefunction",manageresponsefunction)
-        if (manageresponsefunction !== undefined) {
-          manageresponsefunction(log);
-        } else {
-          serviceProceedInputs[scope].unlockuifunction(log);
-          // Generic snack for unsupported api response type
-          appStore.dispatch({
-            type: "sliceSnack/change",
-            payload: {
-              uid: random_id(),
-              id: "generic.snack.api.unmanagedtype",
-            },
-          });
-        }
-        return;
+      //console.log("manageresponsefunction",manageresponsefunction)
+      if (manageresponsefunction !== undefined) {
+        manageresponsefunction(log);
       } else {
-        // When proceed outcome is false
-        if (proceedCheckOutcome.errors.length > 0) {
-          serviceProceedInputs[scope].unlockuifunction(log);
-          // Generic snack with details
-          appStore.dispatch({
-            type: "sliceSnack/change",
-            payload: {
-              uid: random_id(),
-              id: "generic.snack.error.withdetails",
-              details: proceedCheckOutcome.errors,
-            },
-          });
+        if (serviceProceedInputs.unlockuifunction !== undefined) {
+          serviceProceedInputs.unlockuifunction(log);
         }
-        // Manage confirmation
-        if (proceedCheckOutcome.confirmation !== undefined) {
-          serviceProceedInputs[scope].manageconfirmation(
-            proceedCheckOutcome.confirmation,
-            log,
-          );
-        }
-        return;
+        // Generic snack for unsupported api response type
+        appStore.dispatch({
+          type: "sliceSnack/change",
+          payload: {
+            uid: random_id(),
+            id: "generic.snack.api.unmanagedtype",
+          },
+        });
       }
+      return;
     } else {
-      log.push({
-        date: new Date(),
-        message: "serviceProceed unrecognized scope : " + scope,
-        tags: ["out of scope"],
-      });
-      if (process.env.REACT_APP_DEBUG === "TRUE") {
-        console.log("serviceProceed.scope not recognized : ", scope);
+      // When proceed outcome is false
+      if (proceedCheckOutcome.errors.length > 0) {
+        if (serviceProceedInputs.unlockuifunction !== undefined) {
+          serviceProceedInputs.unlockuifunction(log);
+        }
+        // Generic snack with details
+        appStore.dispatch({
+          type: "sliceSnack/change",
+          payload: {
+            uid: random_id(),
+            id: "generic.snack.error.withdetails",
+            details: proceedCheckOutcome.errors,
+          },
+        });
+      }
+      // Manage confirmation
+      if (proceedCheckOutcome.confirmation !== undefined) {
+        serviceProceedInputs.manageconfirmation(
+          proceedCheckOutcome.confirmation,
+          log,
+        );
       }
       return;
     }
@@ -113,8 +117,11 @@ async function serviceProceed(scope, log = []) {
       console.log("service caught error");
       console.log(err);
     }
+    console.log(log);
     // Post error command
-    serviceProceedInputs[scope].unlockuifunction(log);
+    if (serviceProceedInputs.unlockuifunction !== undefined) {
+      serviceProceedInputs.unlockuifunction(log);
+    }
     // Generic error network snack
     appStore.dispatch({
       type: "sliceSnack/change",

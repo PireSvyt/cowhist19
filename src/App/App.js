@@ -2,16 +2,16 @@ import * as React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // Components
-import Home from "./components/Home.js";
-import Activation from "./components/Activation.js";
-import PasswordReset from "./components/PasswordReset.js";
-import Table from "./components/Table.js";
-import Account from "./components/Account.js";
-import Help from "./components/Help.js";
-import Admin from "./components/Admin.js";
+import Home from "./pages/Home.js";
+import Activation from "./pages/Activation.js";
+import PasswordReset from "./pages/PasswordReset.js";
+import Table from "./pages/Table.js";
+import Account from "./pages/Account.js";
+import Help from "./pages/Help.js";
+import Admin from "./pages/Admin.js";
 
 // Services
-import { serviceAuthAssessCookie } from "./services/auth.js";
+import { serviceAuthAssessCookie } from "./services/auth/auth.services.js";
 
 export default function App() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -24,7 +24,7 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        <Route exact path="/" element={<Home />} />        
+        <Route exact path="/" element={<Home />} />
         <Route path="/activation/:token" element={<Activation />} />
         <Route path="/passwordreset/:token" element={<PasswordReset />} />
         <Route path="/account" element={<Account />} />

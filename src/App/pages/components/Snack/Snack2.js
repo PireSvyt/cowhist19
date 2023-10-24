@@ -4,9 +4,7 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 
 // Resources
-import snacks from "./snacks.json";
-// Shared
-import { random_id } from "../../../services/miscelaneous/toolkit.js";
+import snacks from "../../../resources/snacks.json";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;

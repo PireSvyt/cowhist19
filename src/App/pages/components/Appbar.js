@@ -20,7 +20,7 @@ import { random_id } from "../../../../services/toolkit.js";
 import serviceAccessDeny from "../../../../services/Access/serviceAccessDeny.js";
 // Components
 import LanguageSwitcher from "./components/LanguageSwitcher/LanguageSwitcher.js";
-import Snack from "./Snack/Snack2.js"
+import Snack from "./Snack/Snack2.js";
 //import FeedbackModal from "../../../components";
 import TableModal from "../Modal/TableModal/TableModal.js";
 import SignInModal from "../../Home/components/Landing/components/SignInModal/SignInModal.js";

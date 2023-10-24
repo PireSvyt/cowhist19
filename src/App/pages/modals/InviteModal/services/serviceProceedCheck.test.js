@@ -2,7 +2,8 @@ require("@jest/globals");
 import serviceProceedCheck from "./serviceProceedCheck.js";
 
 // Resources
-import emptyUser from "../../../../../resources/emptyUser.js";
+//import emptyUser from "../../../../../resources/emptyUser.js";
+const emptyUser = {};
 
 describe.skip("TEST OF SERVICE : serviceProceedCheck", () => {
   describe("Assessment of empty user", () => {

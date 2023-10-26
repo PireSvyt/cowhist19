@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Reducers
-import appStore from "../../store/appStore.js";
+import appStore from "../../../store/appStore";
 
 async function apiTablesByPlayers() {
   try {

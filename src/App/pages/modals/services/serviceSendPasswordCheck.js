@@ -1,5 +1,5 @@
 // Share
-import { validateEmail } from "../toolkit";
+import { validateEmail } from "../../../services/_miscelaneous/toolkit.js"
 
 async function serviceSendPasswordCheck(sendPasswordInputs) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

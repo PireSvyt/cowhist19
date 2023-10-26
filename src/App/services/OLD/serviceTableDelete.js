@@ -3,7 +3,7 @@ import apiTableDelete from "./apis/apiTableDelete.js";
 // Shared
 import { random_id } from "../../services/_miscelaneous/toolkit.js";
 // Reducers
-import appStore from "../../../../store/appStore.js";
+import appStore from "../../store/appStore.js";
 
 async function serviceTableDelete(tableid) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

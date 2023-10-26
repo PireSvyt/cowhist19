@@ -22,12 +22,12 @@ import AddIcon from "@mui/icons-material/Add.js";
 
 // Components
 import InviteModal from "../InviteModal/InviteModal.js";
-import PlayerCard from "./components/PlayerCard/PlayerCard.js";
+import PlayerCard from "../../components/PlayerCard.js";
 // Services
 import serviceProceed from "../../../services/_miscelaneous/serviceProceed.js";
 import serviceTableDelete from "../../../services/OLD/serviceTableDelete.js";
 // Shared
-import ConfirmModal from "../../ConfirmModal/ConfirmModal.js";
+import ConfirmModal from "../ConfirmModal/ConfirmModal.js";
 // Reducers
 import appStore from "../../../store/appStore.js";
 

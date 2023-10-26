@@ -16,14 +16,14 @@ import {
 import { LoadingButton } from "@mui/lab";
 
 // Services
-import serviceSignIn from "../../../../../Modal/services/serviceSignIn.js";
-import serviceSignInCheck from "../../../../../Modal/services/serviceSignInCheck.js";
-import serviceSendActivation from "../../../../../Modal/services/Activation/serviceSendActivation.js";
-import serviceSendActivationCheck from "../../../../../Modal/services/Activation/serviceSendActivationCheck.js";
-import serviceSendPassword from "../../../../../Modal/services/SendPassword/serviceSendPassword.js";
-import serviceSendPasswordCheck from "../../../../../Modal/services/SendPassword/serviceSendPasswordCheck.js";
+import serviceSignIn from "../services/serviceSignIn.js";
+import serviceSignInCheck from "../services/serviceSignInCheck.js";
+import serviceSendActivation from "../services/serviceSendActivation.js";
+import serviceSendActivationCheck from "../services/serviceSendActivationCheck.js";
+import serviceSendPassword from "../services/serviceSendPassword.js";
+import serviceSendPasswordCheck from "../services/serviceSendPasswordCheck.js";
 // Reducers
-import appStore from "../../../../../../store/appStore.js";
+import appStore from "../../../store/appStore.js";
 
 export default function SignInModal() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

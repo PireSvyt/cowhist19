@@ -10,10 +10,10 @@ import {
   apiAuthAssess,
   apiAuthSendPassword,
   apiAuthExistingPseudo,
-} from "../api/game";
+} from "./auth.api.js";
 // Services
 import { random_id } from "../_miscelaneous/toolkit.js";
-import { serviceUserGetDetails } from "./user";
+import { serviceUserGetDetails } from "../user/user.services.js";
 // Reducers
 import appStore from "../../store/appStore";
 

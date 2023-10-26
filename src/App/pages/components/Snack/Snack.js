@@ -3,7 +3,7 @@ import { withTranslation } from "react-i18next";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 
-import snacks from "./snacks.json";
+import snacks from "../../../resources/snacks.json";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -95,7 +95,7 @@ class Snack extends React.Component {
             }
             if (
               this.props.snack.details !== undefined &&
-              this.props.snack.details !== []
+              this.props.snack.details.length !== 0 
             ) {
               let detailedErrors = "";
               this.props.snack.details.forEach((detail) => {

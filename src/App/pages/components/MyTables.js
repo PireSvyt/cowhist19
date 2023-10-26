@@ -14,9 +14,9 @@ import AddIcon from "@mui/icons-material/Add.js";
 import LinearProgress from "@mui/material/LinearProgress";
 
 // Components
-import TableCard from "./TableCard/TableCard.js";
+import TableCard from "./TableCard.js";
 // Shared
-import TableModal from "../Modal/TableModal/TableModal.js";
+import TableModal from "../modals/TableModal/TableModal.js";
 // Reducers
 import appStore from "../../store/appStore.js";
 

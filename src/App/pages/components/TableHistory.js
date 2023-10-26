@@ -6,11 +6,9 @@ import LinearProgress from "@mui/material/LinearProgress";
 import SmsFailedIcon from "@mui/icons-material/SmsFailed";
 
 // Components
-import HistoryCard from "./components/HistoryCard/HistoryCard.js";
+import HistoryCard from "./HistoryCard.js";
 // Services
-import serviceGetTableHistory from "../../../../services/Table/serviceGetTableHistory.js";
-// Reducers
-import appStore from "../../store/appStore.js";
+import {serviceTableGetHistory} from "../../services/table/table.services.js"
 
 export default function TableHistory() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -29,7 +27,7 @@ export default function TableHistory() {
 
   // Load
   if (select.loadedDetails && !select.loadedHistory) {
-    serviceGetTableHistory();
+    serviceTableGetHistory();
   }
 
   return (

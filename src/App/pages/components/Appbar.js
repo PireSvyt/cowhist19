@@ -16,15 +16,14 @@ import CloseIcon from "@mui/icons-material/Close.js";
 import EditIcon from "@mui/icons-material/Edit.js";
 
 // Services
-import { random_id } from "../../../../services/toolkit.js";
-import serviceAccessDeny from "../../../../services/Access/serviceAccessDeny.js";
+import { random_id } from "../../services/_miscelaneous/toolkit.js";
+import {serviceAuthAccessDeny} from "../../services/auth/auth.services.js"
 // Components
-import LanguageSwitcher from "./components/LanguageSwitcher/LanguageSwitcher.js";
+import LanguageSwitcher from "./LanguageSwitcher.js";
 import Snack from "./Snack/Snack2.js";
 //import FeedbackModal from "../../../components";
-import TableModal from "../Modal/TableModal/TableModal.js";
-import SignInModal from "../../Home/components/Landing/components/SignInModal/SignInModal.js";
-import sliceSignUpModal from "../../store/sliceSignUpModal.js";
+import TableModal from "../modals/TableModal/TableModal.js";
+import SignInModal from "../modals/SignInModal/SignInModal.js";
 // Store
 import appStore from "../../store/appStore.js";
 
@@ -83,7 +82,7 @@ export default function Appbar(props) {
     },
     signOut: () => {
       setMenuOpen(false);
-      serviceAccessDeny();
+      serviceAuthAccessDeny();
       window.location = "/";
     },
     toContact: () => {

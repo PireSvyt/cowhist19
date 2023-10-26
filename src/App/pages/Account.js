@@ -6,7 +6,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 
 // Shared
 import Appbar from "./components/Appbar.js";
-import ToComeModal from "./Modal/ToComeModal/ToComeModal.js";
+import ToComeModal from "./modals/ToComeModal/ToComeModal.js";
 // Reducers
 import appStore from "../store/appStore.js";
 

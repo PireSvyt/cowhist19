@@ -1,5 +1,5 @@
 // Share
-import { validateEmail } from "../_miscelaneous/toolkit.js";
+import { validateEmail } from "../../services/_miscelaneous/toolkit.js";
 
 async function serviceActivateCheck(activate) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

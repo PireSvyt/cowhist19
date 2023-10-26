@@ -3,9 +3,9 @@ import bcrypt from "bcryptjs-react";
 // Services
 import apiSignUp from "./apiSignUp.js";
 // Shared
-import { random_id } from "../toolkit.js";
+import { random_id } from "../../../../services/_miscelaneous/toolkit.js";
 // Reducers
-import appStore from "../../store/appStore.js";
+import appStore from "../../../../store/appStore.js";
 
 async function serviceSignUp(signUpInputs) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

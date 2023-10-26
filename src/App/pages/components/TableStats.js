@@ -6,9 +6,9 @@ import LinearProgress from "@mui/material/LinearProgress";
 import SmsFailedIcon from "@mui/icons-material/SmsFailed";
 
 // Components
-import RankingCard from "./RankingCard/RankingCard.js";
+import RankingCard from "./RankingCard.js";
 // Service
-import serviceGetTableStats from "../../../../services/OLD/serviceGetTableStats.js";
+import {serviceTableGetStats} from "../../services/table/table.services.js"
 
 export default function TableStats() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -27,7 +27,7 @@ export default function TableStats() {
 
   // Load
   if (select.loadedDetails && !select.loadedStats) {
-    serviceGetTableStats();
+    serviceTableGetStats();
   }
 
   return (

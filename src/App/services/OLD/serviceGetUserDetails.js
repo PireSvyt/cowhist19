@@ -1,7 +1,7 @@
 // Services
-import apiUserDetails from "../../api/OLD/apiUserDetails.js";
+import apiUserDetails from "./apis/apiUserDetails.js";
 // Shared
-import { random_id } from "../_miscelaneous/toolkit.js";
+import { random_id } from "../../services/_miscelaneous/toolkit.js";
 // Reducers
 import appStore from "../../store/appStore.js";
 

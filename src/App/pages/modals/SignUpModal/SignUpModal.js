@@ -18,7 +18,7 @@ import { LoadingButton } from "@mui/lab";
 import serviceSignUp from "./services/SignUp/serviceSignUp.js";
 import serviceSignUpCheck from "./services/SignUp/serviceSignUpCheck.js";
 // Reducers
-import appStore from "../../../../../../store/appStore.js";
+import appStore from "../../../store/appStore.js";
 
 export default function SignUpModal() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

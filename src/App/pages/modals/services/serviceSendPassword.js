@@ -3,9 +3,9 @@ import { AES } from "crypto-js";
 // Services
 import apiSendPassword from "./apiSendPassword.js";
 // Shared
-import { random_id } from "../toolkit.js";
+import { random_id } from "../../../../services/_miscelaneous/toolkit.js";
 // Reducers
-import appStore from "../../store/appStore.js";
+import appStore from "../../../store/appStore.js";
 
 async function serviceSendPassword(sendPasswordInputs) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

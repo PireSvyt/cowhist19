@@ -14,7 +14,7 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 // Shared
-import { random_id } from "../../../shared/services/toolkit.js";
+import { random_id } from "../../services/_miscelaneous/toolkit.js";
 
 const Faq = (props) => {
   return (

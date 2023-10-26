@@ -1,9 +1,9 @@
 import { AES } from "crypto-js";
 
 // Services
-import apiSendActivation from "../../api/OLD/apiSendActivation.js";
+import apiSendActivation from "./apis/apiSendActivation.js";
 // Shared
-import { random_id } from "../_miscelaneous/toolkit.js";
+import { random_id } from "../../services/_miscelaneous/toolkit.js";
 // Reducers
 import appStore from "../../store/appStore.js";
 

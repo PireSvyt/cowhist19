@@ -12,10 +12,10 @@ import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline.js"
 import CircularProgress from "@mui/material/CircularProgress";
 
 // Services
-import serviceGameDelete from "../../../../../../services/Game/serviceGameDelete.js";
-import serviceGetTableHistory from "../../../../../../services/Table/serviceGetTableHistory.js";
+import {serviceGameDelete} from "../../services/game/game.services.js"
+import {serviceTableGetHistory} from "../../services/table/table.services.js"
 // Shared
-import ConfirmModal from "../../../../../ConfirmModal/ConfirmModal.js";
+import ConfirmModal from "../modals/ConfirmModal/ConfirmModal.js";
 
 export default function HistoryCard(props) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -37,7 +37,7 @@ export default function HistoryCard(props) {
         setDeleting(true);
         serviceGameDelete(props.game._id).then(() => {
           setDeleting(false);
-          serviceGetTableHistory();
+          serviceTableGetHistory();
         });
         break;
       default:

@@ -4,9 +4,9 @@ import { AES } from "crypto-js";
 import apiSendActivation from "./apiSendActivation.js";
 import serviceSendActivationCheck from "./serviceSendActivationCheck.js";
 // Shared
-import { random_id } from "../../../../../../../services/_shared/toolkit.js";
+import { random_id } from "../../../../services/_miscelaneous/toolkit.js";
 // Reducers
-import appStore from "../../../../../../../store/appStore.js";
+import appStore from "../../../store/appStore.js";
 
 async function serviceResendActivation() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

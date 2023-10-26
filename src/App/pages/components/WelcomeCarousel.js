@@ -5,13 +5,12 @@ import { Box, Typography } from "@mui/material";
 // Carousel
 // https://github.com/maxmarinich/react-alice-carousel
 import AliceCarousel from "react-alice-carousel";
-import "react-alice-carousel/lib/alice-carousel.css";
-import "./AliceCarousel.css";
+//import "react-alice-carousel/lib/alice-carousel.css";
+import "../styles/AliceCarousel.css";
 
-import EasyImage from "./resources/easybro.gif";
-import TableImage from "./resources/Table.png";
-import AnalyticsImage from "./resources/Analytics.png";
-import MystatsImage from "./resources/MyStats.png";
+import EasyImage from "../../resources/easybro.gif";
+import TableImage from "../../resources/Table.png";
+import AnalyticsImage from "../../resources/Analytics.png";
 
 export default function WelcomeCarousel() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

@@ -1,9 +1,9 @@
 import Cookies from "js-cookie";
 
 // Services
-import apiAuthAssess from "../../api/OLD/apiAuthAssess.js";
-import serviceAccessGrant from "../shared/services/serviceAccessGrant.js";
-import serviceAccessDeny from "../shared/services/serviceAccessDeny.js";
+import apiAuthAssess from "./apis/apiAuthAssess.js";
+import serviceAccessGrant from "./serviceAccessGrant.js";
+import serviceAccessDeny from "./serviceAccessDeny.js";
 
 async function serviceAssessCookie() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

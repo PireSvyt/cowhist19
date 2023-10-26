@@ -6,18 +6,19 @@ import LinearProgress from "@mui/material/LinearProgress";
 import ErrorIcon from "@mui/icons-material/Error";
 
 // Components
-import TableStats from "./Table/components/TableStats/TableStats.js";
+import TableStats from "./components/TableStats.js";
 import TableHistory from "./components/TableHistory.js";
-import GameModal from "./Modal/GameModal/GameModal.js";
+import GameModal from "./modals/GameModal/GameModal.js";
 // Services
-import serviceGetTableDetails from "../services/OLD/serviceGetTableDetails.js";
-import serviceGetTableStats from "../services/OLD/serviceGetTableStats.js";
-import serviceGetTableHistory from "../../services/Table/serviceGetTableHistory.js";
+import {
+  serviceTableGetDetails, 
+  serviceTableGetHistory, 
+  serviceTableGetStats} from "../services/table/table.services.js";
 
 // Shared
 import Appbar from "./components/Appbar.js";
-import TableModal from "./Modal/TableModal/TableModal.js";
-import Snack from "../../shared/components/Snack/Snack2.js";
+import TableModal from "./modals/TableModal/TableModal.js";
+import Snack from "./components/Snack/Snack2.js";
 // Reducers
 import appStore from "../store/appStore.js";
 
@@ -46,7 +47,7 @@ export default function Table() {
   // Load at opening
   if (select.authLoaded === true && select.signedin === true) {
     if (select.tableDetailsLoaded === false) {
-      serviceGetTableDetails();
+      serviceTableGetDetails();
     }
   }
 
@@ -68,13 +69,13 @@ export default function Table() {
     switch (newTabIndex) {
       case 0:
         if (appStore.getState().sliceTableStats.state === "available") {
-          serviceGetTableStats();
+          serviceTableGetStats();
         }
         setTab(newTabIndex);
         break;
       case 1:
         if (appStore.getState().sliceTableHistory.state === "available") {
-          serviceGetTableHistory();
+          serviceTableGetHistory();
         }
         setTab(newTabIndex);
         break;

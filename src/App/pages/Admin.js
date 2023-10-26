@@ -8,7 +8,7 @@ import AdminStats from "./components/AdminStats.js";
 import AdminActions from "./components/AdminActions.js";
 // Shared
 import Appbar from "./components/Appbar.js";
-import Snack from "../../shared/components/Snack/Snack2.js";
+import Snack from "./components/Snack/Snack2.js";
 
 export default function Admin() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

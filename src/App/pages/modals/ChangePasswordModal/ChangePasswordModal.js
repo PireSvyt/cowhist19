@@ -17,7 +17,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 // Services
 import serviceProceed from "./services/serviceProceed.js";
 // Reducers
-import appStore from "../../../../../../store/appStore.js";
+import appStore from "../../../store/appStore.js";
 
 export default function ChangePasswordModal() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

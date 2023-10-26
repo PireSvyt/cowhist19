@@ -12,7 +12,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline.js";
 
 // Services
-import serviceProceed from "./services/serviceProceed.js";
+//import serviceProceed from "./services/serviceProceed.js";
 // Shared
 import Appbar from "./components/Appbar.js";
 // Reducers
@@ -39,7 +39,7 @@ export default function PasswordReset() {
     },
     send: () => {
       setLoading(true);
-      serviceProceed({
+      /*serviceProceed({
         login: login,
         token: window.location.href.split("/activation/")[1],
       }).then((outcome) => {
@@ -74,7 +74,7 @@ export default function PasswordReset() {
             // NA
           }
         });
-      });
+      });*/
     },
     resend: () => {},
     signin: () => {

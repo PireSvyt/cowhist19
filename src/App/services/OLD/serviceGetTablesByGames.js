@@ -1,7 +1,7 @@
 // Services
-import apiTablesByGames from "../../api/OLD/apiTablesByGames.js";
+import apiTablesByGames from "./apis/apiTablesByGames.js";
 // Shared
-import { random_id } from "../../../../../shared/services/toolkit.js";
+import { random_id } from "../../services/_miscelaneous/toolkit.js";
 // Reducers
 import appStore from "../../store/appStore.js";
 

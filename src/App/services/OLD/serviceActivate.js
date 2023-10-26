@@ -1,7 +1,6 @@
 // Services
-import apiActivate from "../../api/OLD/apiActivate";
-
-import { random_id } from "../_miscelaneous/toolkit.js";
+import apiActivate from "./apis/apiActivate";
+import { random_id } from "../../services/_miscelaneous/toolkit.js";
 
 import appStore from "../../store/appStore.js";
 

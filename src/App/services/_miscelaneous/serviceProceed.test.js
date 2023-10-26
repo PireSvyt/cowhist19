@@ -1,6 +1,4 @@
 require("@jest/globals");
-// Reducers
-import appStore from "../../store/appStore.js";
 
 // Services
 import serviceProceed from "./serviceProceed.js";

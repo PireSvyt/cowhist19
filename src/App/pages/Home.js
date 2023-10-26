@@ -10,8 +10,8 @@ import MyStats from "./components/MyStats.js";
 import MyTables from "./components/MyTables.js";
 // Shared
 import Appbar from "./components/Appbar.js";
-import Snack from "../../shared/components/Snack/Snack2.js";
-import ToComeModal from "./Modal/ToComeModal/ToComeModal.js";
+import Snack from "./components/Snack/Snack2.js";
+import ToComeModal from "./modals/ToComeModal/ToComeModal.js";
 
 export default function Home() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

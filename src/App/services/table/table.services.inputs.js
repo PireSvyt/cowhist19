@@ -672,12 +672,6 @@ export const tableGetStatsInputs = {
 };
 
 export const tableDeleteInputs = {
-  lockuifunction: (log) => {
-    //
-  },
-  unlockuifunction: (log) => {
-    //
-  },
   getinputsfunction: (log) => {
     log.push({
       date: new Date(),
@@ -691,9 +685,6 @@ export const tableDeleteInputs = {
     };
   },
   sercivechecks: [],
-  getcheckoutcomedispatchfunction: (log) => {
-    //
-  },
   apicall: (inputs, log) => {
     log.push({
       date: new Date(),
@@ -725,8 +716,5 @@ export const tableDeleteInputs = {
       },
     };
     return responses[response];
-  },
-  manageconfirmation: (confirmation, log) => {
-    //
   },
 };

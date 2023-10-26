@@ -3,7 +3,7 @@ import { Box, Card, Typography, IconButton } from "@mui/material";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline.js";
 
 // Reducers
-import appStore from "../../../../../store/appStore.js";
+import appStore from "../../store/appStore";
 
 export default function PlayerCard(props) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

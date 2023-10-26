@@ -1,6 +1,6 @@
 // Services
-import apiTableStats from "../../api/OLD/apiTableStats.js";
-import { random_id } from "../../../shared/services/toolkit.js";
+import apiTableStats from "./apis/apiTableStats.js";
+import { random_id } from "../../services/_miscelaneous/toolkit.js";
 
 // Reducers
 import appStore from "../../store/appStore.js";

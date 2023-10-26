@@ -5,9 +5,9 @@ import bcrypt from "bcryptjs-react";
 import apiSignUp from "./apiSignUp.js";
 import serviceProceedCheck from "./serviceProceedCheck.js";
 // Shared
-import { random_id } from "../../../../../../../shared/services/toolkit.js";
+import { random_id } from "../../../../services/_miscelaneous/toolkit.js";
 // Reducers
-import appStore from "../../../../../../../store/appStore.js";
+import appStore from "../../../../store/appStore.js";
 
 async function serviceProceed() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

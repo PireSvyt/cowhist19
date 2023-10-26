@@ -1,5 +1,5 @@
 // Shared
-import { validateEmail } from "../../../../services/_miscelaneous/toolkit";
+import { validateEmail } from "../../../../services/_miscelaneous/toolkit.js";
 
 function serviceProceedCheck(user) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

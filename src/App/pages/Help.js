@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Box, Typography } from "@mui/material";
 
 // Resources
-import faqs from "./resources/faqs.json";
+import faqs from "../resources/faqs.json";
 // Components
 import Faq from "./components/Faq.js";
 // Shared

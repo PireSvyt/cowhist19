@@ -1,5 +1,5 @@
 // APIs
-import { apiGameCreate, apiGameDelete } from "../api/game";
+import { apiGameCreate, apiGameDelete } from "./game.api.js";
 // Services
 import { random_id } from "../_miscelaneous/toolkit.js";
 // Reducers

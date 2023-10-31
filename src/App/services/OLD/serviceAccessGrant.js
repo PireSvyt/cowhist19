@@ -1,4 +1,4 @@
-import jwt_decode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 // Services
 import serviceAccessDeny from "./serviceAccessDeny.js";
@@ -22,7 +22,7 @@ async function serviceGrantAccess(token) {
     errors.push("generic.error.emptytoken");
     serviceAccessDeny();
   } else {
-    let decodedtoken = jwt_decode(token);
+    let decodedtoken = jwtDecode(token);
     // User status tollgate
     if (
       decodedtoken.status === "registered" ||

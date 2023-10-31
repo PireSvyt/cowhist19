@@ -1,5 +1,5 @@
 // Services
-import apiUserInvite from "../../../../api/OLD/apiUserInvite.js";
+import apiUserInvite from "../../../../services/OLD/apis/apiUserInvite.js";
 import serviceProceedCheck from "./serviceProceedCheck.js";
 // Shared
 import { random_id } from "../../../../services/_miscelaneous/toolkit.js";

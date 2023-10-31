@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import jwt_decode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { AES } from "crypto-js";
 // APIs
 import {
@@ -192,7 +192,7 @@ export async function serviceGrantAccess(token) {
     errors.push("generic.error.emptytoken");
     serviceAuthAccessDeny();
   } else {
-    let decodedtoken = jwt_decode(token);
+    let decodedtoken = jwtDecode(token);
     // User status tollgate
     if (
       decodedtoken.status === "registered" ||

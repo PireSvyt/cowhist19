@@ -8,7 +8,7 @@ import SmsFailedIcon from "@mui/icons-material/SmsFailed";
 // Components
 import HistoryCard from "./HistoryCard.js";
 // Services
-import {serviceTableGetHistory} from "../../services/table/table.services.js"
+import { serviceTableGetHistory } from "../../services/table/table.services.js";
 
 export default function TableHistory() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

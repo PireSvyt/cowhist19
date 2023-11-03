@@ -8,7 +8,7 @@ import SmsFailedIcon from "@mui/icons-material/SmsFailed";
 // Components
 import RankingCard from "./RankingCard.js";
 // Service
-import {serviceTableGetStats} from "../../services/table/table.services.js"
+import { serviceTableGetStats } from "../../services/table/table.services.js";
 
 export default function TableStats() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

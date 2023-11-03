@@ -95,7 +95,7 @@ class Snack extends React.Component {
             }
             if (
               this.props.snack.details !== undefined &&
-              this.props.snack.details.length !== 0 
+              this.props.snack.details.length !== 0
             ) {
               let detailedErrors = "";
               this.props.snack.details.forEach((detail) => {

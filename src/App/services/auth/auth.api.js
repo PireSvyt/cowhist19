@@ -1,6 +1,8 @@
 require("dotenv").config();
 const axios = require("axios");
 
+console.log("process.env", process.env);
+
 let apiURL = process.env.TESTSUITE_SERVER_URL;
 
 // TESTED

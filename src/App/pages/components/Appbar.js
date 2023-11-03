@@ -17,7 +17,7 @@ import EditIcon from "@mui/icons-material/Edit.js";
 
 // Services
 import { random_id } from "../../services/_miscelaneous/toolkit.js";
-import {serviceAuthAccessDeny} from "../../services/auth/auth.services.js"
+import { serviceAuthAccessDeny } from "../../services/auth/auth.services.js";
 // Components
 import LanguageSwitcher from "./LanguageSwitcher.js";
 import Snack from "./Snack/Snack2.js";

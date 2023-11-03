@@ -11,9 +11,10 @@ import TableHistory from "./components/TableHistory.js";
 import GameModal from "./modals/GameModal/GameModal.js";
 // Services
 import {
-  serviceTableGetDetails, 
-  serviceTableGetHistory, 
-  serviceTableGetStats} from "../services/table/table.services.js";
+  serviceTableGetDetails,
+  serviceTableGetHistory,
+  serviceTableGetStats,
+} from "../services/table/table.services.js";
 
 // Shared
 import Appbar from "./components/Appbar.js";

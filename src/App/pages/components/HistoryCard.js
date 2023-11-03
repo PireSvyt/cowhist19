@@ -12,8 +12,8 @@ import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline.js"
 import CircularProgress from "@mui/material/CircularProgress";
 
 // Services
-import {serviceGameDelete} from "../../services/game/game.services.js"
-import {serviceTableGetHistory} from "../../services/table/table.services.js"
+import { serviceGameDelete } from "../../services/game/game.services.js";
+import { serviceTableGetHistory } from "../../services/table/table.services.js";
 // Shared
 import ConfirmModal from "../modals/ConfirmModal/ConfirmModal.js";
 

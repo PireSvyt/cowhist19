@@ -18,14 +18,12 @@ export default function Landing() {
   const changes = {
     signup: () => {
       appStore.dispatch({
-        type: "sliceModals/open",
-        payload: "SignUp",
+        type: "signupModalSlice/open",
       });
     },
     signin: () => {
       appStore.dispatch({
-        type: "sliceModals/open",
-        payload: "SignIn",
+        type: "signinModalSlice/open"
       });
     },
   };
@@ -49,13 +47,20 @@ export default function Landing() {
           </Typography>
         </Box>
 
-        <WelcomeCarousel />
 
         <ButtonGroup variant="contained" size="large">
-          <Button onClick={changes.signup} size="large">
+          <Button 
+            onClick={changes.signup} 
+            size="large"
+            data-testid="landing-signup-button" 
+          >
             {t("signup.button.signup")}
           </Button>
-          <Button onClick={changes.signin} size="large">
+          <Button 
+            onClick={changes.signin} 
+            size="large"
+            data-testid="landing-signin-button" 
+          >
             {t("generic.button.signin")}
           </Button>
         </ButtonGroup>
@@ -63,3 +68,4 @@ export default function Landing() {
     </Box>
   );
 }
+//<WelcomeCarousel />

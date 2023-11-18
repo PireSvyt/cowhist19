@@ -15,9 +15,9 @@ import {
 import LoadingButton from "@mui/lab/LoadingButton";
 
 // Services
-import serviceProceed from "./services/serviceProceed.js";
+import { serviceUserInvite } from "../../services/user/user.services.js";
 // Reducers
-import appStore from "../../../store/appStore.js";
+import appStore from "../../store/appStore.js";
 
 export default function InviteModal() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -28,18 +28,18 @@ export default function InviteModal() {
 
   // Selects
   const select = {
-    open: useSelector((state) => state.sliceInviteModal.open),
-    inputs: useSelector((state) => state.sliceInviteModal.inputs),
-    errors: useSelector((state) => state.sliceInviteModal.errors),
-    disabled: useSelector((state) => state.sliceInviteModal.disabled),
-    loading: useSelector((state) => state.sliceInviteModal.loading),
+    open: useSelector((state) => state.inviteModalSlice.open),
+    inputs: useSelector((state) => state.inviteModalSlice.inputs),
+    errors: useSelector((state) => state.inviteModalSlice.errors),
+    disabled: useSelector((state) => state.inviteModalSlice.disabled),
+    loading: useSelector((state) => state.inviteModalSlice.loading),
   };
 
   // Changes
   const changes = {
     pseudo: (e) => {
       appStore.dispatch({
-        type: "sliceInviteModal/change",
+        type: "inviteModalSlice/change",
         payload: {
           inputs: { pseudo: e.target.value },
           errors: { pseudo: false },
@@ -48,7 +48,7 @@ export default function InviteModal() {
     },
     login: (e) => {
       appStore.dispatch({
-        type: "sliceInviteModal/change",
+        type: "inviteModalSlice/change",
         payload: {
           inputs: { login: e.target.value },
           errors: { login: false },
@@ -57,12 +57,19 @@ export default function InviteModal() {
     },
     acknowledgement: (e) => {
       appStore.dispatch({
-        type: "sliceInviteModal/change",
+        type: "inviteModalSlice/change",
         payload: {
           inputs: { acknowledgement: e.target.checked },
           errors: { acknowledgement: false },
         },
       });
+    },
+    invite: () => {
+      console.log("SignInModal.signin");
+      appStore.dispatch({
+        type: "inviteModalSlice/lock",
+      });
+      serviceUserInvite()
     },
   };
 
@@ -75,7 +82,7 @@ export default function InviteModal() {
         id="dialog_invite"
         open={select.open}
         onClose={() => {
-          appStore.dispatch({ type: "sliceInviteModal/close" });
+          appStore.dispatch({ type: "inviteModalSlice/close" });
         }}
         fullWidth={true}
       >
@@ -133,14 +140,14 @@ export default function InviteModal() {
         <DialogActions>
           <Button
             onClick={() => {
-              appStore.dispatch({ type: "sliceInviteModal/close" });
+              appStore.dispatch({ type: "inviteModalSlice/close" });
             }}
           >
             {t("generic.button.cancel")}
           </Button>
           <LoadingButton
             variant="contained"
-            onClick={serviceProceed}
+            onClick={changes.invite}
             disabled={select.disabled}
             loading={select.loading}
           >

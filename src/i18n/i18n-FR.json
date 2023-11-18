@@ -32,7 +32,9 @@
       "view": "Voir",
       "edit": "Modifier",
       "proceed": "Procéder",
-      "tocome": "A venir..."
+      "tocome": "A venir...",
+      "signin": "Se connecter",
+      "tohome": "Accueil"
     },
     "snack": {
       "api": {

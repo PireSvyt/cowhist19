@@ -1,5 +1,4 @@
 import Cookies from "js-cookie";
-
 // Reducers
 import appStore from "../../store/appStore.js";
 
@@ -15,6 +14,8 @@ function serviceAccessDeny() {
   appStore.dispatch({
     type: "sliceUserAuth/signout",
   });
+
+  console.log("sliceUserAuth", appStore.getState().sliceUserAuth)
 
   // Remove cookies
   Cookies.remove("cowhist19_token");

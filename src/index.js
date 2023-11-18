@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import App from "./App/App.js";
 
 import "./i18n/i18n-config.js";
+// Reducers
 import appStore from "./App/store/appStore.js";
 
 const root = createRoot(document.getElementById("root"));

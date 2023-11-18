@@ -22,9 +22,10 @@ import { serviceAuthAccessDeny } from "../../services/auth/auth.services.js";
 import LanguageSwitcher from "./LanguageSwitcher.js";
 import Snack from "./Snack/Snack2.js";
 //import FeedbackModal from "../../../components";
-import TableModal from "../modals/TableModal/TableModal.js";
-import SignInModal from "../modals/SignInModal/SignInModal.js";
-// Store
+import TableModal from "../modals/TableModal.js";
+import SignInModal from "../modals/SignInModal.js";
+import SignUpModal from "../modals/SignUpModal.js";
+// Reducers
 import appStore from "../../store/appStore.js";
 
 export default function Appbar(props) {
@@ -43,12 +44,12 @@ export default function Appbar(props) {
     signedin: useSelector((state) => state.sliceUserAuth.signedin),
     tableDenied: useSelector((state) => state.sliceTableDetails.denied),
     priviledges: useSelector((state) => state.sliceUserDetails.priviledges),
-    feedbackOpen: useSelector((state) => state.sliceFeedbackModal.open),
+    //feedbackOpen: useSelector((state) => state.sliceFeedbackModal.open),
     snackOpen: useSelector((state) => state.sliceSnack.open),
     snackData: useSelector((state) => state.sliceSnack.snackData),
     tableOpen: useSelector((state) => state.sliceTableModal.open),
-    signInModal: useSelector((state) => state.sliceModals.openSignInModal),
-    signUpModal: useSelector((state) => state.sliceModals.openSignUpModal),
+    signUpModal: useSelector((state) => state.signupModalSlice.open),
+    signInModal: useSelector((state) => state.signinModalSlice.open),
   };
 
   // Handles
@@ -232,7 +233,12 @@ export default function Appbar(props) {
                 alignItems: "center",
               }}
             >
-              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              <Typography 
+                variant="h6" 
+                component="div" 
+                sx={{ flexGrow: 1 }}
+                data-testid="appbar-title" 
+              >
                 {props.title}
               </Typography>
 
@@ -242,6 +248,7 @@ export default function Appbar(props) {
                   size="large"
                   color="inherit"
                   onClick={props.edittable}
+                  data-testid="appbar-editable-button" 
                 >
                   <EditIcon />
                 </IconButton>
@@ -259,7 +266,11 @@ export default function Appbar(props) {
 
               {menuItems.length !== 0 ? (
                 <Box>
-                  <IconButton size="large" onClick={action.openMenu}>
+                  <IconButton 
+                    size="large" 
+                    onClick={action.openMenu}
+                    data-testid="appbar-menu-button" 
+                  >
                     <MenuIcon sx={{ color: "white" }} />
                   </IconButton>
 
@@ -270,12 +281,14 @@ export default function Appbar(props) {
                     MenuListProps={{
                       "aria-labelledby": "basic-button",
                     }}
+                    data-testid="appbar-menu" 
                   >
                     {menuItems.map((item) => {
                       if (item.signed && select.signedin) {
                         return (
                           <MenuItem
                             hidden={!(item.signed && select.signedin)}
+                            data-testid={"appbar-menu-" + item.item + "-menuitem"}
                             key={random_id()}
                             onClick={item.onclick}
                           >
@@ -287,6 +300,7 @@ export default function Appbar(props) {
                           return (
                             <MenuItem
                               hidden={!(item.signed && select.signedin)}
+                              data-testid={"appbar-menu-" + item.item + "-menuitem"}
                               key={random_id()}
                               onClick={item.onclick}
                             >
@@ -305,6 +319,7 @@ export default function Appbar(props) {
                   size="large"
                   color="inherit"
                   onClick={() => history.back()}
+                  data-testid="appbar-menu-close-button" 
                 >
                   <CloseIcon />
                 </IconButton>

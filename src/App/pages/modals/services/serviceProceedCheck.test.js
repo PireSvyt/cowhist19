@@ -1,4 +1,4 @@
-require("@jest/globals");
+//require("@jest/globals");
 import serviceProceedCheck from "./serviceProceedCheck.js";
 
 describe.skip("TEST OF SERVICE : serviceProceedCheck", () => {

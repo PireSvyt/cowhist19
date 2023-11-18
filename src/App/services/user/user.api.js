@@ -1,7 +1,7 @@
-require("dotenv").config();
+require("dotenv");
 const axios = require("axios");
 
-let apiURL = process.env.TESTSUITE_SERVER_URL;
+let apiURL = process.env.REACT_APP_SERVER_URL;
 
 export async function apiUserChangePassword(changePasswordInputs, token) {
   try {

@@ -1,14 +1,16 @@
-require("dotenv").config();
-const axios = require("axios");
+require("dotenv");
+import axios from 'axios';
 
-console.log("process.env", process.env);
-
-let apiURL = process.env.TESTSUITE_SERVER_URL;
+let apiURL = process.env.REACT_APP_SERVER_URL;
 
 // TESTED
 export async function apiAuthSignUp(signUpInputs) {
   try {
-    const res = await axios.post(apiURL + "auth/v1/signup", signUpInputs);
+    const res = await axios({
+      method: 'post',
+      url: apiURL + "auth/v1/signup",
+      data: signUpInputs
+    })
     return res.data;
   } catch (err) {
     return err.response.data;
@@ -30,7 +32,11 @@ export async function apiAuthSendActivation(sendActivationInputs) {
 // TESTED
 export async function apiAuthActivate(activateInputs) {
   try {
-    const res = await axios.post(apiURL + "auth/v1/activate", activateInputs);
+    const res = await axios({
+      method: 'post',
+      url: apiURL + "auth/v1/activate",
+      data: activateInputs
+    })
     return res.data;
   } catch (err) {
     return err.response.data;
@@ -40,7 +46,11 @@ export async function apiAuthActivate(activateInputs) {
 // TESTED
 export async function apiAuthSignIn(signInInputs) {
   try {
-    const res = await axios.post(apiURL + "auth/v1/signin", signInInputs);
+    const res = await axios({
+      method: 'post',
+      url: apiURL + "auth/v1/signin",
+      data: signInInputs
+    })
     return res.data;
   } catch (err) {
     return err.response.data;
@@ -58,10 +68,11 @@ export async function apiAuthAssess(token) {
 
 export async function apiAuthSendPassword(sendPasswordInputs) {
   try {
-    const res = await axios.post(
-      apiURL + "auth/v1/sendpassword",
-      sendPasswordInputs,
-    );
+    const res = await axios({
+      method: 'post',
+      url: apiURL + "auth/v1/sendpassword",
+      data: sendPasswordInputs
+    })
     return res.data;
   } catch (err) {
     return err.response.data;
@@ -70,10 +81,11 @@ export async function apiAuthSendPassword(sendPasswordInputs) {
 
 export async function apiAuthExistingPseudo(existingPseudoInput) {
   try {
-    const res = await axios.post(
-      apiURL + "auth/v1/existingpseudo",
-      existingPseudoInput,
-    );
+    const res = await axios({
+      method: 'post',
+      url: apiURL + "auth/v1/existingpseudo",
+      data: existingPseudoInput
+    })
     return res.data;
   } catch (err) {
     return err.response.data;

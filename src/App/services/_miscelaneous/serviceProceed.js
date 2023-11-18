@@ -1,6 +1,5 @@
 // Services
 import serviceProceedCheck from "./serviceProceedCheck.js";
-// Shared
 import { random_id } from "./toolkit.js";
 // Reducers
 import appStore from "../../store/appStore.js";
@@ -21,14 +20,20 @@ async function serviceProceed(serviceProceedInputs, log = []) {
     if (serviceProceedInputs.getinputsfunction !== undefined) {
       serviceInputs = serviceProceedInputs.getinputsfunction(log);
     }
-    if (serviceProceedInputs.repackagingfunction !== undefined) {
-      if (serviceProceedInputs.repackagingfunction !== undefined) {
-        serviceInputs = serviceProceedInputs.repackagingfunction(
+    if (serviceProceedInputs.wrappingfunction !== undefined) {
+      if (serviceProceedInputs.wrappingfunction !== undefined) {
+        serviceInputs = serviceProceedInputs.wrappingfunction(
           serviceInputs,
           log,
         );
       }
     }
+    console.log("log")
+    log.forEach(l => {console.log(l)})
+    console.log("serviceInputs")
+    Object.keys(serviceInputs).forEach(k => {
+      console.log(k,serviceInputs[k])
+    })
 
     // Inputs checks
     let proceedCheckOutcome = undefined;
@@ -38,7 +43,19 @@ async function serviceProceed(serviceProceedInputs, log = []) {
         serviceProceedInputs.sercivechecks,
       );
     }
+
+    console.log("proceedCheckOutcome")
+    Object.keys(proceedCheckOutcome).forEach(k => {
+      console.log(k,proceedCheckOutcome[k])
+    })
+
     if (serviceProceedInputs.getcheckoutcomedispatchfunction !== undefined) {
+
+      console.log("serviceInputs")
+      Object.keys(serviceInputs).forEach(k => {
+        console.log(k,serviceInputs[k])
+      })
+
       if (proceedCheckOutcome.stateChanges !== undefined) {
         appStore.dispatch({
           type: serviceProceedInputs.getcheckoutcomedispatchfunction(log),
@@ -49,7 +66,20 @@ async function serviceProceed(serviceProceedInputs, log = []) {
       proceedCheckOutcome = { proceed: true };
     }
     if (proceedCheckOutcome.proceed === true) {
-      // Prep
+      // Repackaging
+      if (serviceProceedInputs.repackagingfunction !== undefined) {
+        if (serviceProceedInputs.repackagingfunction !== undefined) {
+          serviceInputs = serviceProceedInputs.repackagingfunction(
+            serviceInputs,
+            log,
+          );
+        }
+      }
+
+      console.log("serviceInputs")
+      Object.keys(serviceInputs).forEach(k => {
+        console.log(k,serviceInputs[k])
+      })
 
       // API call
       let proceedResponse = await serviceProceedInputs.apicall(
@@ -57,15 +87,17 @@ async function serviceProceed(serviceProceedInputs, log = []) {
         log,
       );
 
-      // Response management
-      let manageresponsefunction =
+      console.log("proceedResponse")
+      Object.keys(proceedResponse).forEach(k => {
+        console.log(k,proceedResponse[k])
+      })
+
+      // Response management     
+      if (serviceProceedInputs.getmanageresponsefunction !== undefined) {
         serviceProceedInputs.getmanageresponsefunction(
-          proceedResponse.type,
+          proceedResponse,
           log,
-        );
-      //console.log("manageresponsefunction",manageresponsefunction)
-      if (manageresponsefunction !== undefined) {
-        manageresponsefunction(log);
+        )
       } else {
         if (serviceProceedInputs.unlockuifunction !== undefined) {
           serviceProceedInputs.unlockuifunction(log);

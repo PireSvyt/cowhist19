@@ -3,7 +3,7 @@ import { apiGameCreate, apiGameDelete } from "./game.api.js";
 // Services
 import { random_id } from "../_miscelaneous/toolkit.js";
 // Reducers
-import appStore from "../../store/appStore";
+import appStore from "../../store/appStore.js";
 
 export async function serviceGameCreate() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

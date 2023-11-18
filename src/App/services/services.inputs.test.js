@@ -38,8 +38,8 @@ describe("TEST OF INPUTS : services.inputs", () => {
       if (input.getinputsfunction !== undefined) {
         expect(typeof input.getinputsfunction).toBe("function");
       }
-      if (input.repackagingfunction !== undefined) {
-        expect(typeof input.repackagingfunction).toBe("function");
+      if (input.wrappingfunction !== undefined) {
+        expect(typeof input.wrappingfunction).toBe("function");
       }
       if (input.sercivechecks !== undefined) {
         expect(typeof input.sercivechecks).toBe("object");
@@ -49,6 +49,9 @@ describe("TEST OF INPUTS : services.inputs", () => {
         expect(typeof input.getcheckoutcomedispatchfunction(testLog)).toBe(
           "string",
         );
+      }
+      if (input.repackagingfunction !== undefined) {
+        expect(typeof input.repackagingfunction).toBe("function");
       }
       if (input.apicall !== undefined) {
         expect(typeof input.apicall).toBe("function");

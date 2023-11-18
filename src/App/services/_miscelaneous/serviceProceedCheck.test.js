@@ -1,4 +1,4 @@
-require("@jest/globals");
+//require("@jest/globals");
 
 // Services
 import serviceProceedCheck from "./serviceProceedCheck.js";

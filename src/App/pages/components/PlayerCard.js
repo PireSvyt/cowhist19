@@ -1,9 +1,8 @@
 import React from "react";
 import { Box, Card, Typography, IconButton } from "@mui/material";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline.js";
-
 // Reducers
-import appStore from "../../store/appStore";
+import appStore from "../../store/appStore.js";
 
 export default function PlayerCard(props) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

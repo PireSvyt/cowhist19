@@ -1,7 +1,7 @@
 // Services
 import apiActivate from "./apis/apiActivate";
 import { random_id } from "../../services/_miscelaneous/toolkit.js";
-
+// Reducers
 import appStore from "../../store/appStore.js";
 
 async function serviceActivate(activationInputs) {

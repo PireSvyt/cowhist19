@@ -68,6 +68,7 @@ export default function Snack(props) {
             props.data.details.length !== 0
           ) {
             let detailedErrors = "";
+            console.log("props.data.details", props.data.details)
             props.data.details.forEach((detail) => {
               detailedErrors = detailedErrors + t(detail) + ", ";
             });

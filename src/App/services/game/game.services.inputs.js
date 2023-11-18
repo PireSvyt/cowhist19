@@ -2,8 +2,7 @@
 import { apiGameCreate, apiGameDelete } from "./game.api.js";
 // Services
 import { random_id } from "../_miscelaneous/toolkit.js";
-// Reducers
-import appStore from "../../store/appStore";
+import { useAppDispatch } from "../../hooks/app.hooks.js"
 
 export const gameCreateInputs = {
   lockuifunction: (log) => {
@@ -12,7 +11,7 @@ export const gameCreateInputs = {
       message: "serviceProceed.lockuifunction",
       tags: ["function"],
     });
-    appStore.dispatch({ type: "sliceGameModal/lock" });
+    useAppDispatch({ type: "sliceGameModal/lock" });
   },
   unlockuifunction: (log) => {
     log.push({
@@ -20,7 +19,7 @@ export const gameCreateInputs = {
       message: "serviceProceed.unlockuifunction",
       tags: ["function"],
     });
-    appStore.dispatch({
+    useAppDispatch({
       type: "sliceGameModal/change",
       payload: {
         disabled: false,
@@ -41,17 +40,17 @@ export const gameCreateInputs = {
       contracts: { ...appStore.getState().sliceTableDetails.contracts },
     };
   },
-  repackagingfunction: (inputs, log) => {
+  wrappingfunction: (inputs, log) => {
     log.push({
       date: new Date(),
-      message: "serviceProceed.repackagingfunction",
+      message: "serviceProceed.wrappingfunction",
       inputs: inputs,
       tags: ["function"],
     });
-    let rapackagedInputs = inputs;
-    rapackagedInputs.inputs.gameid = inputs.gameid;
-    rapackagedInputs.inputs.tableid = inputs.tableid;
-    return rapackagedInputs;
+    let wrappedInputs = inputs;
+    wrappedInputs.inputs.gameid = inputs.gameid;
+    wrappedInputs.inputs.tableid = inputs.tableid;
+    return wrappedInputs;
   },
   sercivechecks: [
     {
@@ -189,7 +188,7 @@ export const gameCreateInputs = {
     });
     let responses = {
       "game.save.success.created": () => {
-        appStore.dispatch({
+        useAppDispatch({
           type: "sliceGameModal/change",
           payload: {
             open: false,
@@ -213,22 +212,22 @@ export const gameCreateInputs = {
             },
           },
         });
-        appStore.dispatch({
+        useAppDispatch({
           type: "sliceSnack/change",
           payload: {
             uid: random_id(),
             id: "game.snack.saved",
           },
         });
-        appStore.dispatch({
+        useAppDispatch({
           type: "sliceTableStats/unload",
         });
-        appStore.dispatch({
+        useAppDispatch({
           type: "sliceTableHistory/unload",
         });
       },
       "game.save.success.modified": () => {
-        appStore.dispatch({
+        useAppDispatch({
           type: "sliceGameModal/change",
           payload: {
             disabled: false,
@@ -251,7 +250,7 @@ export const gameCreateInputs = {
             },
           },
         });
-        appStore.dispatch({
+        useAppDispatch({
           type: "sliceSnack/change",
           payload: {
             uid: random_id(),
@@ -260,14 +259,14 @@ export const gameCreateInputs = {
         });
       },
       "game.save.error.oncreate": () => {
-        appStore.dispatch({
+        useAppDispatch({
           type: "sliceGameModal/change",
           payload: {
             disabled: false,
             loading: false,
           },
         });
-        appStore.dispatch({
+        useAppDispatch({
           type: "sliceSnack/change",
           payload: {
             uid: random_id(),
@@ -276,14 +275,14 @@ export const gameCreateInputs = {
         });
       },
       "game.save.error.onmodify": () => {
-        appStore.dispatch({
+        useAppDispatch({
           type: "sliceGameModal/change",
           payload: {
             disabled: false,
             loading: false,
           },
         });
-        appStore.dispatch({
+        useAppDispatch({
           type: "sliceSnack/change",
           payload: {
             uid: random_id(),

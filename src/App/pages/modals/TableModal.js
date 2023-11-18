@@ -21,15 +21,15 @@ import SmsFailedIcon from "@mui/icons-material/SmsFailed";
 import AddIcon from "@mui/icons-material/Add.js";
 
 // Components
-import InviteModal from "../InviteModal/InviteModal.js";
-import PlayerCard from "../../components/PlayerCard.js";
+import InviteModal from "./InviteModal.js";
+import PlayerCard from "../components/PlayerCard.js";
 // Services
-import serviceProceed from "../../../services/_miscelaneous/serviceProceed.js";
-import serviceTableDelete from "../../../services/OLD/serviceTableDelete.js";
+import serviceProceed from "../../services/_miscelaneous/serviceProceed.js";
+import serviceTableDelete from "../../services/OLD/serviceTableDelete.js";
 // Shared
-import ConfirmModal from "../ConfirmModal/ConfirmModal.js";
+import ConfirmModal from "./ConfirmModal.js";
 // Reducers
-import appStore from "../../../store/appStore.js";
+import appStore from "../../store/appStore.js";
 
 export default function TableModal() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

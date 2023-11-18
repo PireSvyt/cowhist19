@@ -1,6 +1,13 @@
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import { AES } from "crypto-js";
+// Inputs
+import {
+  authSignupInputs,
+  authSigninInputs,
+  authSendActivationInputs,
+  authSendPasswordInputs
+} from "./auth.service.inputs.js";
 // APIs
 import {
   apiAuthSignUp,
@@ -14,13 +21,15 @@ import {
 // Services
 import { random_id } from "../_miscelaneous/toolkit.js";
 import { serviceUserGetDetails } from "../user/user.services.js";
+import serviceProceed from "../_miscelaneous/serviceProceed.js";
 // Reducers
-import appStore from "../../store/appStore";
+import appStore from "../../store/appStore.js";
 
 export async function serviceAuthSignUp() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("serviceAuthSignUp");
   }
+  serviceProceed(authSignupInputs);
 }
 
 export async function serviceAuthActivate(activationInputs) {
@@ -74,84 +83,18 @@ export async function serviceAuthActivate(activationInputs) {
   }
 }
 
-export async function serviceAuthSendActivation(sendActivationInputs) {
+export async function serviceAuthSendActivation() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("serviceAuthSendActivation");
   }
-
-  try {
-    let stateChanges = {};
-    let errors = [];
-
-    // Encryption
-    if (process.env.NODE_ENV === "_production") {
-      sendActivationInputs.login = AES.encrypt(
-        sendActivationInputs.login,
-        process.env.REACT_APP_ENCRYPTION,
-      ).toString();
-      sendActivationInputs.encryption = true;
-    } else {
-      sendActivationInputs.encryption = false;
-    }
-
-    // API call
-    const data = await apiSendActivation(sendActivationInputs);
-    if (process.env.REACT_APP_DEBUG === "TRUE") {
-      console.log("data.type : " + data.type);
-    }
-
-    // Response management
-    switch (data.type) {
-      case "auth.sendactivation.success":
-        stateChanges.sendActivationStatus = "sent";
-        break;
-
-      case "auth.sendactivation.error.onfind":
-      case "auth.sendactivation.error.accountnotfound":
-      case "auth.sendactivation.error.updatingtoken":
-        stateChanges.sendActivationStatus = "error";
-        break;
-
-      default:
-        stateChanges.sendActivationStatus = "error";
-        appStore.dispatch({
-          type: "sliceSnack/change",
-          payload: {
-            uid: random_id(),
-            id: "generic.snack.api.unmanagedtype",
-            details: data.type,
-          },
-        });
-    }
-
-    // Response
-    return {
-      stateChanges: stateChanges,
-      errors: errors,
-    };
-  } catch (err) {
-    console.error("serviceAuthSendActivation", err);
-    // Snack
-    appStore.dispatch({
-      type: "sliceSnack/change",
-      payload: {
-        uid: random_id(),
-        id: "generic.snack.api.errornetwork",
-      },
-    });
-    return {
-      stateChanges: {
-        sendActivationStatus: "error",
-      },
-      errors: err,
-    };
-  }
+  serviceProceed(authSendActivationInputs);
 }
 
 export async function serviceAuthSignIn() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("serviceAuthSignIn");
   }
+  serviceProceed(authSigninInputs);
 }
 
 export function serviceAuthAccessDeny() {
@@ -164,7 +107,7 @@ export function serviceAuthAccessDeny() {
 
   // State management
   appStore.dispatch({
-    type: "sliceUserAuth/signout",
+    type: "authSlice/signout",
   });
 
   // Remove cookies
@@ -177,32 +120,32 @@ export function serviceAuthAccessDeny() {
   };
 }
 
-export async function serviceGrantAccess(token) {
+export async function serviceAuthGrantAccess(data) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("serviceGrantAccess");
+    console.log("serviceAuthGrantAccess");
   }
   let callbacks = [];
   let errors = [];
   let stateChanges = {};
 
-  if (token === null || token === "") {
+  if (data.token === null || data.token === "") {
     if (process.env.REACT_APP_DEBUG === "TRUE") {
       console.log("empty token");
     }
     errors.push("generic.error.emptytoken");
     serviceAuthAccessDeny();
   } else {
-    let decodedtoken = jwtDecode(token);
+    console.log("serviceAuthGrantAccess data",data)
+    let decodedtoken = jwtDecode(data.token);
     // User status tollgate
     if (
-      decodedtoken.status === "registered" ||
-      decodedtoken.status === "signedup"
+      decodedtoken.status === "activated"
     ) {
       // Then update variables to signed in
       appStore.dispatch({
-        type: "sliceUserAuth/signin",
+        type: "authSlice/signin",
         payload: {
-          token: token,
+          token: data.token,
         },
       });
       serviceUserGetDetails();
@@ -221,6 +164,7 @@ export async function serviceGrantAccess(token) {
     errors: errors,
   };
 }
+//export { serviceAuthGrantAccess };
 
 export async function serviceAuthAssessCookie() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -243,7 +187,7 @@ export async function serviceAuthAssessCookie() {
       switch (data.type) {
         case "auth.assess.success.validtoken":
           // Sign in token
-          serviceAccessGrant(token).then((proceedOutcome) => {
+          serviceAuthGrantAccess({token: token}).then((proceedOutcome) => {
             if (proceedOutcome.errors.length > 0) {
               if (process.env.REACT_APP_DEBUG === "TRUE") {
                 console.log("proceedOutcome errors");
@@ -270,6 +214,7 @@ export async function serviceAuthSendPassword() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("serviceAuthSendPassword");
   }
+  serviceProceed(authSendPasswordInputs);
 }
 
 export async function serviceAuthExistingPseudo() {

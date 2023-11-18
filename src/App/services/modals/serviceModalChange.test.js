@@ -1,4 +1,4 @@
-require("@jest/globals");
+//require("@jest/globals");
 import serviceModalChange from "./serviceModalChange.js";
 
 describe.skip("TEST OF SERVICE : serviceModalChange", () => {

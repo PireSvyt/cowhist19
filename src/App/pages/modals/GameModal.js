@@ -21,9 +21,9 @@ import {
 import LoadingButton from "@mui/lab/LoadingButton";
 
 // Services
-import serviceProceed from "../../../services/_miscelaneous/serviceProceed.js";
+import serviceProceed from "../../services/_miscelaneous/serviceProceed.js";
 // Reducers
-import appStore from "../../../store/appStore.js";
+import appStore from "../../store/appStore.js";
 
 export default function GameModal() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

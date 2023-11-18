@@ -16,7 +16,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 // Components
 import TableCard from "./TableCard.js";
 // Shared
-import TableModal from "../modals/TableModal/TableModal.js";
+import TableModal from "../modals/TableModal.js";
 // Reducers
 import appStore from "../../store/appStore.js";
 
@@ -29,9 +29,9 @@ export default function MyTables() {
 
   // Selects
   const select = {
-    detailsLoaded: useSelector((state) => state.sliceUserDetails.loaded),
-    tables: useSelector((state) => state.sliceUserDetails.tables),
-    openTableModal: useSelector((state) => state.sliceTableModal.open),
+    loaded: useSelector((state) => state.userSlice.loaded),
+    tables: useSelector((state) => state.userSlice.tables),
+    openTableModal: useSelector((state) => state.tableModalSlice.open),
   };
 
   return (
@@ -44,7 +44,7 @@ export default function MyTables() {
           sx={{ p: 2 }}
           onClick={() => {
             appStore.dispatch({
-              type: "sliceTableModal/new",
+              type: "tableModalSlice/new",
               payload: {
                 _id: appStore.getState().sliceUserDetails.id,
                 pseudo: appStore.getState().sliceUserDetails.pseudo,
@@ -57,7 +57,7 @@ export default function MyTables() {
         </IconButton>
       </Stack>
 
-      {select.detailsLoaded === false ? (
+      {select.loaded === false ? (
         <Box sx={{ left: "10%", right: "10%" }}>
           <LinearProgress />
         </Box>

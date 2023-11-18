@@ -5,7 +5,7 @@ import apiTablesByPlayers from "../../api/OLD/apiTablesByPlayers.js";
 import apiUsersByStatus from "../../api/OLD/apiUsersByStatus.js";
 // Services
 import { random_id } from "../_miscelaneous/toolkit.js";
-// Reduces
+// Reducers
 import appStore from "../../store/appStore.js";
 
 export async function serviceAdminPopulate() {

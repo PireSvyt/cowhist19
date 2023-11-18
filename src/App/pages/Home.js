@@ -11,7 +11,7 @@ import MyTables from "./components/MyTables.js";
 // Shared
 import Appbar from "./components/Appbar.js";
 import Snack from "./components/Snack/Snack2.js";
-import ToComeModal from "./modals/ToComeModal/ToComeModal.js";
+import ToComeModal from "./modals/ToComeModal.js";
 
 export default function Home() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -22,17 +22,20 @@ export default function Home() {
 
   // Selects
   const select = {
-    authLoaded: useSelector((state) => state.sliceUserAuth.loaded),
-    signedin: useSelector((state) => state.sliceUserAuth.signedin),
+    loaded: useSelector((state) => state.authSlice.loaded),
+    signedin: useSelector((state) => state.authSlice.signedin),
     snackData: useSelector((state) => state.sliceSnack.snackData),
     tocomeData: useSelector((state) => state.sliceToComeModal.tocomeData),
   };
 
+  console.log("select.authLoaded", select.loaded)
+  console.log("select.signedin", select.signedin)
+
   return (
     <Box>
       <Appbar route="home" title={t("generic.label.product")} />
-      <Box sx={{ height: 48 }} />
-      {select.authLoaded === false ? (
+      <Box sx={{ height: 60 }} />
+      {select.loaded === false ? (
         <Box sx={{ left: "10%", right: "10%" }}>
           <LinearProgress />
         </Box>

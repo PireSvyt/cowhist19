@@ -10,7 +10,8 @@ import {
 // Services
 import { random_id } from "../_miscelaneous/toolkit.js";
 // Reducers
-import appStore from "../../store/appStore";
+import { setupStore } from "../../store/appStore.js";
+let appStore = setupStore()
 
 export const tableCreateInputs = {
   lockuifunction: (log) => {

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Typography, Box, Button } from "@mui/material";
-
 // Reducers
 import appStore from "../../store/appStore.js";
 

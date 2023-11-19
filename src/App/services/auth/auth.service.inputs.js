@@ -228,7 +228,7 @@ export const authSignupInputs = {
           });
         },      
     };
-    return responses[response];
+    return responses[response]();
   },
 };
 
@@ -372,7 +372,9 @@ export const authSigninInputs = {
             status: "notfound",
             errors: {
               login: true
-            }
+            },
+            loading: false,
+            disabled: false
           },
         });
       },
@@ -383,7 +385,9 @@ export const authSigninInputs = {
             status: "notfound",
             errors: {
               login: true
-            }
+            },
+            loading: false,
+            disabled: false
           },
         });
       },
@@ -394,7 +398,9 @@ export const authSigninInputs = {
             status: "denied",
             errors: {
               password: true
-            }
+            },
+            loading: false,
+            disabled: false
           },
         });
       },
@@ -405,7 +411,9 @@ export const authSigninInputs = {
             status: "denied",
             errors: {
               password: true
-            }
+            },
+            loading: false,
+            disabled: false
           },
         });
       },
@@ -415,6 +423,8 @@ export const authSigninInputs = {
           payload: {
             status: "inactivated",
           },
+          loading: false,
+          disabled: false
         });
       },
       "auth.signin.error.statusunknown": () => {
@@ -423,6 +433,8 @@ export const authSigninInputs = {
           payload: {
             status: "inactivated",
           },
+          loading: false,
+          disabled: false
         });
       },
       
@@ -597,7 +609,7 @@ export const authSendActivationInputs = {
         }); 
       },
     };
-    return responses[response];
+    return responses[response]();
   },
 };
 

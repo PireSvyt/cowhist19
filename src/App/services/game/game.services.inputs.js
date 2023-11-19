@@ -291,6 +291,6 @@ export const gameCreateInputs = {
         });
       },
     };
-    return responses[response];
+    return responses[response]();
   },
 };

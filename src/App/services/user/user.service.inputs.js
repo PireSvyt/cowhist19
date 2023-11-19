@@ -16,10 +16,15 @@ import {
         message: "userGetDetailsInputs.getinputsfunction",
         tags: ["function"],
       });
-      console.log("token", appStore.getState().authSlice.token)
-      return {
-        inputs: { token : {...appStore.getState().authSlice.token } }
-      };
+      let token = appStore.getState().authSlice.token
+      console.log("userGetDetailsInputs getinputsfunction token", token)
+      let inputs = {
+        inputs: { 
+            token : token
+        }
+      }
+      console.log("getinputsfunction inputs", inputs)
+      return inputs;
     },
     sercivechecks: [
       {
@@ -51,8 +56,9 @@ import {
         inputs: inputs,
         tags: ["function"],
       });
+      console.log("apicall inputs",inputs)
       try {
-        return await apiUserGetDetails(inputs);
+        return await apiUserGetDetails(inputs.token);
       } catch (err) {
         return err;
       }
@@ -65,13 +71,13 @@ import {
         tags: ["function"],
       });
       let responses = {          
-        "user.details.success": () => {
+        "user.getdetails.success": () => {
             appStore.dispatch({
                 type: "userSlice/setDetails",
-                payload: data.data.user,
+                payload: response.data.user,
             });
         },
-        "user.details.error.notfound": () => {
+        "user.getdetails.error.notfound": () => {
             appStore.dispatch({
                 type: "sliceSnack/change",
                 payload: {
@@ -81,7 +87,7 @@ import {
                 },
             });
         },
-        "user.details.error.onaggregate": () => {
+        "user.getdetails.error.onaggregate": () => {
             appStore.dispatch({
                 type: "sliceSnack/change",
                 payload: {
@@ -91,7 +97,8 @@ import {
             });
         },
       };
-      return responses[response];
+      console.log("userGetDetailsInputs response", response)
+      return responses[response.type]();
     },
   };
 

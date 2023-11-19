@@ -144,9 +144,7 @@ export async function serviceAuthGrantAccess(data) {
       // Then update variables to signed in
       appStore.dispatch({
         type: "authSlice/signin",
-        payload: {
-          token: data.token,
-        },
+        payload: data.token,
       });
       serviceUserGetDetails();
     } else {
@@ -164,7 +162,6 @@ export async function serviceAuthGrantAccess(data) {
     errors: errors,
   };
 }
-//export { serviceAuthGrantAccess };
 
 export async function serviceAuthAssessCookie() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {

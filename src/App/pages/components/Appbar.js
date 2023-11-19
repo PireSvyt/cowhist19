@@ -41,13 +41,13 @@ export default function Appbar(props) {
 
   // Selects
   const select = {
-    signedin: useSelector((state) => state.sliceUserAuth.signedin),
+    signedin: useSelector((state) => state.authSlice.signedin),
     tableDenied: useSelector((state) => state.sliceTableDetails.denied),
     priviledges: useSelector((state) => state.sliceUserDetails.priviledges),
     //feedbackOpen: useSelector((state) => state.sliceFeedbackModal.open),
     snackOpen: useSelector((state) => state.sliceSnack.open),
     snackData: useSelector((state) => state.sliceSnack.snackData),
-    tableOpen: useSelector((state) => state.sliceTableModal.open),
+    tableOpen: useSelector((state) => state.tableModalSlice.open),
     signUpModal: useSelector((state) => state.signupModalSlice.open),
     signInModal: useSelector((state) => state.signinModalSlice.open),
   };
@@ -215,6 +215,7 @@ export default function Appbar(props) {
           bottom: "auto",
         }}
         color={props.route === "admin" ? "error" : "primary"}
+        data-testid="appbar" 
       >
         <Toolbar>
           <Box
@@ -288,7 +289,7 @@ export default function Appbar(props) {
                         return (
                           <MenuItem
                             hidden={!(item.signed && select.signedin)}
-                            data-testid={"appbar-menu-" + item.item + "-menuitem"}
+                            data-testid={"appbar-menu-menuitem-" + item.item }
                             key={random_id()}
                             onClick={item.onclick}
                           >
@@ -300,7 +301,7 @@ export default function Appbar(props) {
                           return (
                             <MenuItem
                               hidden={!(item.signed && select.signedin)}
-                              data-testid={"appbar-menu-" + item.item + "-menuitem"}
+                              data-testid={"appbar-menu-menuitem-" + item.item }
                               key={random_id()}
                               onClick={item.onclick}
                             >

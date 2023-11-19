@@ -43,22 +43,6 @@ const signupModalSlice = createSlice({
     },
     close: (state) => {
       state.open = false;
-      state.inputs = {
-        pseudo: "",
-        login: "",
-        password: "",
-        passwordrepeat: "",
-      };
-      state.errors = {
-        pseudo: false,
-        login: false,
-        password: false,
-        passwordrepeat: false,
-        existingpseudo: false,
-        alreadysignedup: false
-      };
-      state.disabled = false;
-      state.loading = false;
     },
     change: (state, action) => {
       if (action.payload.open !== undefined) {

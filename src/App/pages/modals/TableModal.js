@@ -40,15 +40,15 @@ export default function TableModal() {
 
   // Selects
   const select = {
-    open: useSelector((state) => state.sliceTableModal.open),
-    id: useSelector((state) => state.sliceTableModal.id),
-    inputs: useSelector((state) => state.sliceTableModal.inputs),
-    errors: useSelector((state) => state.sliceTableModal.errors),
-    disabled: useSelector((state) => state.sliceTableModal.disabled),
-    loading: useSelector((state) => state.sliceTableModal.loading),
+    open: useSelector((state) => state.tableModalSlice.open),
+    tableid: useSelector((state) => state.tableModalSlice.tableid),
+    inputs: useSelector((state) => state.tableModalSlice.inputs),
+    errors: useSelector((state) => state.tableModalSlice.errors),
+    disabled: useSelector((state) => state.tableModalSlice.disabled),
+    loading: useSelector((state) => state.tableModalSlice.loading),
     openInviteModal: useSelector((state) => state.sliceInviteModal.open),
     openDeleteConfirmModal: useSelector(
-      (state) => state.sliceTableModal.deleteConfirm,
+      (state) => state.tableModalSlice.deleteConfirm,
     ),
   };
 
@@ -56,7 +56,7 @@ export default function TableModal() {
   const changes = {
     name: (e) => {
       appStore.dispatch({
-        type: "sliceTableModal/change",
+        type: "tableModalSlice/change",
         payload: {
           inputs: { name: e.target.value },
           errors: { name: false },
@@ -65,7 +65,7 @@ export default function TableModal() {
     },
     players: (e) => {
       appStore.dispatch({
-        type: "sliceTableModal/change",
+        type: "tableModalSlice/change",
         payload: {
           inputs: { players: e.target.value },
           errors: { players: false },
@@ -83,7 +83,7 @@ export default function TableModal() {
     switch (choice) {
       case "close":
         appStore.dispatch({
-          type: "sliceTableModal/change",
+          type: "tableModalSlice/change",
           payload: {
             deleteConfirmOpen: false,
           },
@@ -91,7 +91,7 @@ export default function TableModal() {
         break;
       case "delete":
         appStore.dispatch({
-          type: "sliceTableModal/change",
+          type: "tableModalSlice/change",
           payload: {
             deleteConfirmOpen: false,
           },
@@ -109,12 +109,12 @@ export default function TableModal() {
   return (
     <Box>
       <Dialog
-        id="dialog_table"
         open={select.open}
         onClose={() => {
-          appStore.dispatch({ type: "sliceTableModal/close" });
+          appStore.dispatch({ type: "tableModalSlice/close" });
         }}
         fullWidth={true}
+        data-testid="modal-table"
       >
         <DialogTitle>{t("table.label.title")}</DialogTitle>
         <DialogContent
@@ -139,6 +139,7 @@ export default function TableModal() {
               autoComplete="off"
               sx={{ mb: 1 }}
               error={select.errors.name}
+              data-testid="modal-table-input-name"
             />
 
             <Stack direction="row" justifyContent="space-between">
@@ -157,6 +158,7 @@ export default function TableModal() {
                 onClick={() => {
                   appStore.dispatch({ type: "sliceInviteModal/open" });
                 }}
+                data-testid="modal-table-button-invite"
               >
                 <AddIcon />
               </IconButton>
@@ -170,6 +172,7 @@ export default function TableModal() {
                   flexDirection: "column",
                   alignItems: "center",
                 }}
+                data-testid="modal-table-box-nouserscreate"
               >
                 <Typography
                   sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }}
@@ -201,6 +204,7 @@ export default function TableModal() {
                   flexDirection: "column",
                   alignItems: "center",
                 }}
+                data-testid="modal-table-box-nousersdelete"
               >
                 <Typography
                   sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }}
@@ -227,7 +231,10 @@ export default function TableModal() {
             ) : (
               <List dense={true}>
                 {select.inputs.players.map((player) => (
-                  <ListItem key={"player-" + player._id}>
+                  <ListItem 
+                    key={"player-" + player._id}
+                    data-testid={"modal-table-players-player-" + player.userid}
+                  >
                     <PlayerCard player={player} />
                   </ListItem>
                 ))}
@@ -239,12 +246,14 @@ export default function TableModal() {
         <DialogActions>
           <Button
             onClick={() => {
-              appStore.dispatch({ type: "sliceTableModal/close" });
+              appStore.dispatch({ type: "tableModalSlice/close" });
             }}
+            data-testid="modal-table-button-cancel"
           >
             {t("generic.button.cancel")}
           </Button>
           <LoadingButton
+            data-testid="modal-table-button-save"
             variant="contained"
             onClick={() => {
               if (select.id === "") {

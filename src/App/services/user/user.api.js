@@ -1,19 +1,18 @@
 require("dotenv");
-const axios = require("axios");
+import axios from 'axios';
 
 let apiURL = process.env.REACT_APP_SERVER_URL;
 
 export async function apiUserChangePassword(changePasswordInputs, token) {
   try {
-    const res = await axios.post(
-      apiURL + "user/v1/changepassword",
-      changePasswordInputs,
-      {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
+    const res = await axios({
+      method: 'post',
+      url: apiURL + "user/v1/changepassword",
+      data: changePasswordInputs,
+      headers: {
+        Authorization: "Bearer " + token,
       },
-    );
+    })
     return res.data;
   } catch (err) {
     return err.response.data;
@@ -23,11 +22,14 @@ export async function apiUserChangePassword(changePasswordInputs, token) {
 // TESTED
 export async function apiUserInvite(inviteInputs, token) {
   try {
-    const res = await axios.post(apiURL + "/user/v1/invite", inviteInputs, {
+    const res = await axios({
+      method: 'post',
+      url: apiURL + "user/v1/invite",
+      data: inviteInputs,
       headers: {
         Authorization: "Bearer " + token,
       },
-    });
+    })
     return res.data;
   } catch (err) {
     return err.response.data;
@@ -37,13 +39,17 @@ export async function apiUserInvite(inviteInputs, token) {
 // TESTED
 export async function apiUserGetDetails(token) {
   try {
-    const res = await axios.get(apiURL + "/user/v1", {
+    const res = await axios({
+      method: 'get',
+      url: apiURL + "user/v1",
       headers: {
         Authorization: "Bearer " + token,
       },
-    });
+    })
+    console.log("res",res)
     return res.data;
   } catch (err) {
+    console.log("err",err)
     return err.response.data;
   }
 }
@@ -51,11 +57,13 @@ export async function apiUserGetDetails(token) {
 // TESTED
 export async function apiUserGetStats(token) {
   try {
-    const res = await axios.get(apiURL + "/user/v1/stats", {
+    const res = await axios({
+      method: 'get',
+      url: apiURL + "user/v1/stats",
       headers: {
         Authorization: "Bearer " + token,
       },
-    });
+    })
     return res.data;
   } catch (err) {
     return err.response.data;

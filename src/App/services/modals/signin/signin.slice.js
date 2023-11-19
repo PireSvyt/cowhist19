@@ -31,6 +31,18 @@ const signinModalSlice = createSlice({
   reducers: {
     open: (state) => {
       state.open = true
+      state.inputs.login = ""
+      state.inputs.password = ""
+      state.errors.login = false
+      state.errors.password = false
+      state.sendactivation.status = ""
+      state.sendactivation.loading = false
+      state.sendactivation.disabled = false
+      state.sendpassword.status = ""
+      state.sendpassword.loading = false
+      state.sendpassword.disabled = false
+      state.disabled = false
+      state.loading= false
     },
     close: (state) => {
       state.open = false

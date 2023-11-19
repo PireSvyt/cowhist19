@@ -11,7 +11,7 @@ const authSlice = createSlice({
   reducers: {
     signin: (state, action) => {
       state.signedin = true;
-      state.token = action.payload.token;
+      state.token = action.payload;
       state.loaded = true
     },
     signout: (state) => {

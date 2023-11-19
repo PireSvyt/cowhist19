@@ -6,20 +6,18 @@ import LinearProgress from "@mui/material/LinearProgress";
 import ErrorIcon from "@mui/icons-material/Error";
 
 // Components
+import Appbar from "./components/Appbar.js";
 import TableStats from "./components/TableStats.js";
 import TableHistory from "./components/TableHistory.js";
-import GameModal from "./modals/GameModal/GameModal.js";
+import TableModal from "./modals/TableModal.js";
+import GameModal from "./modals/GameModal.js";
+import Snack from "./components/Snack/Snack2.js";
 // Services
 import {
   serviceTableGetDetails,
   serviceTableGetHistory,
   serviceTableGetStats,
 } from "../services/table/table.services.js";
-
-// Shared
-import Appbar from "./components/Appbar.js";
-import TableModal from "./modals/TableModal/TableModal.js";
-import Snack from "./components/Snack/Snack2.js";
 // Reducers
 import appStore from "../store/appStore.js";
 

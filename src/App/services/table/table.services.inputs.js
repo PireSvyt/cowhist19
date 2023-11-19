@@ -200,7 +200,7 @@ export const tableCreateInputs = {
         });
       },
     };
-    return responses[response];
+    return responses[response]();
   },
 };
 
@@ -337,7 +337,7 @@ export const tableSaveInputs = {
         });
       },
     };
-    return responses[response];
+    return responses[response]();
   },
   manageconfirmation: (confirmation, log) => {
     log.push({
@@ -348,9 +348,9 @@ export const tableSaveInputs = {
     });
     if (confirmation === "delete table confirmation") {
       appStore.dispatch({
-        type: "sliceTableModal/change",
+        type: "tableModalSlice/change",
         payload: {
-          deleteConfirmOpen: true,
+          deleteConfirm: true,
         },
       });
     }
@@ -439,7 +439,7 @@ export const tableGetDetailsInputs = {
         });
       },
     };
-    return responses[response];
+    return responses[response]();
   },
 };
 
@@ -569,7 +569,7 @@ export const tableGetHistoryInputs = {
         });
       },
     };
-    return responses[response];
+    return responses[response]();
   },
 };
 
@@ -668,7 +668,7 @@ export const tableGetStatsInputs = {
         });
       },
     };
-    return responses[response];
+    return responses[response]();
   },
 };
 
@@ -716,6 +716,6 @@ export const tableDeleteInputs = {
         });
       },
     };
-    return responses[response];
+    return responses[response]();
   },
 };

@@ -4,9 +4,9 @@ import { useSelector } from "react-redux";
 import { Paper, Button, Typography, Box } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
 
-// Shared
+// Components
 import Appbar from "./components/Appbar.js";
-import ToComeModal from "./modals/ToComeModal/ToComeModal.js";
+import ToComeModal from "./modals/ToComeModal.js";
 // Reducers
 import appStore from "../store/appStore.js";
 

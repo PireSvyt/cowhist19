@@ -35,20 +35,21 @@ export default function MyTables() {
   };
 
   return (
-    <Box>
+    <Box data-testid="component-mytables" >
       <Stack direction="row" justifyContent="space-between">
         <Typography sx={{ p: 2 }} variant="h6" component="span">
           {t("home.label.mytables")}
         </Typography>
         <IconButton
+          data-testid="component-mytables-button-new"
           sx={{ p: 2 }}
           onClick={() => {
             appStore.dispatch({
               type: "tableModalSlice/new",
               payload: {
-                _id: appStore.getState().sliceUserDetails.id,
-                pseudo: appStore.getState().sliceUserDetails.pseudo,
-                status: appStore.getState().sliceUserDetails.status,
+                userid: appStore.getState().userSlice.userid,
+                pseudo: appStore.getState().userSlice.pseudo,
+                status: appStore.getState().userSlice.status,
               },
             });
           }}

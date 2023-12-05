@@ -15,8 +15,6 @@ import LinearProgress from "@mui/material/LinearProgress";
 
 // Components
 import TableCard from "./TableCard.js";
-// Shared
-import TableModal from "../modals/TableModal.js";
 // Reducers
 import appStore from "../../store/appStore.js";
 
@@ -31,17 +29,18 @@ export default function MyTables() {
   const select = {
     loaded: useSelector((state) => state.userSlice.loaded),
     tables: useSelector((state) => state.userSlice.tables),
-    openTableModal: useSelector((state) => state.tableModalSlice.open),
   };
 
   return (
-    <Box data-testid="component-mytables" >
+    <Box 
+      data-testid="component-my tables"
+    >
       <Stack direction="row" justifyContent="space-between">
         <Typography sx={{ p: 2 }} variant="h6" component="span">
           {t("home.label.mytables")}
         </Typography>
         <IconButton
-          data-testid="component-mytables-button-new"
+          data-testid="component-my tables-button-new table"
           sx={{ p: 2 }}
           onClick={() => {
             appStore.dispatch({
@@ -70,6 +69,7 @@ export default function MyTables() {
             flexDirection: "column",
             alignItems: "center",
           }}
+          data-testid="component-my tables-box-no table note"
         >
           <Typography
             sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }}
@@ -94,16 +94,19 @@ export default function MyTables() {
           </Typography>
         </Box>
       ) : (
-        <List dense={true}>
+        <List 
+          dense={true}
+          data-testid="list-my tables"
+        >
           {select.tables.map((table) => (
-            <ListItem key={"table-" + table._id}>
+            <ListItem 
+              key={"table-" + table.tableid}
+            >
               <TableCard table={table} />
             </ListItem>
           ))}
         </List>
       )}
-
-      {select.openTableModal === true ? <TableModal /> : null}
     </Box>
   );
 }

@@ -28,9 +28,6 @@ export default function Home() {
     tocomeData: useSelector((state) => state.sliceToComeModal.tocomeData),
   };
 
-  console.log("select.authLoaded", select.loaded)
-  console.log("select.signedin", select.signedin)
-
   return (
     <Box>
       <Appbar route="home" title={t("generic.label.product")} />
@@ -42,12 +39,12 @@ export default function Home() {
       ) : select.signedin === false ? (
         <Landing />
       ) : (
-        <Box>
+        <Box  data-testid="page-home">
           <MyStats />
           <MyTables />
         </Box>
       )}
-      <Snack data-testid="componentSnack" data={select.snackData} />
+      <Snack data={select.snackData} />
       <ToComeModal data={select.tocomeData} />
     </Box>
   );

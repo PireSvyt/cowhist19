@@ -65,10 +65,7 @@ export default function InviteModal() {
       });
     },
     invite: () => {
-      console.log("SignInModal.signin");
-      appStore.dispatch({
-        type: "inviteModalSlice/lock",
-      });
+      console.log("InviteModal.invite", appStore.getState().inviteModalSlice);
       serviceUserInvite()
     },
   };
@@ -85,6 +82,7 @@ export default function InviteModal() {
           appStore.dispatch({ type: "inviteModalSlice/close" });
         }}
         fullWidth={true}
+        data-testid="modal-invite"
       >
         <DialogTitle>{t("invite.label.title")}</DialogTitle>
         <DialogContent
@@ -110,6 +108,7 @@ export default function InviteModal() {
               sx={{ mb: 1 }}
               required
               error={select.errors.pseudo}
+              data-testid="modal-invite-input-pseudo"
             />
             <TextField
               name="login"
@@ -121,6 +120,7 @@ export default function InviteModal() {
               sx={{ mb: 1 }}
               required
               error={select.errors.login}
+              data-testid="modal-invite-input-login"
             />
             <FormControlLabel
               control={
@@ -132,7 +132,8 @@ export default function InviteModal() {
                 />
               }
               label={t("invite.input.acknowledgement")}
-              error={select.errors.acknowledgement ? "error" : null}
+              error={select.errors.acknowledgement}
+              data-testid="modal-invite-inputbox-acknowledgement"
             />
           </Box>
         </DialogContent>
@@ -142,6 +143,7 @@ export default function InviteModal() {
             onClick={() => {
               appStore.dispatch({ type: "inviteModalSlice/close" });
             }}
+            data-testid="modal-invite-button-cancel"
           >
             {t("generic.button.cancel")}
           </Button>
@@ -150,6 +152,7 @@ export default function InviteModal() {
             onClick={changes.invite}
             disabled={select.disabled}
             loading={select.loading}
+            data-testid="modal-invite-button-invite"
           >
             {t("invite.button.invite")}
           </LoadingButton>

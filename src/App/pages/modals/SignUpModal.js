@@ -102,9 +102,6 @@ export default function SignUpModal() {
     },
     signup: () => {
       console.log("SignUpModal.signup");
-      appStore.dispatch({
-        type: "signupModalSlice/lock",
-      });
       serviceAuthSignUp()
     },
     signin: () => {
@@ -122,7 +119,7 @@ export default function SignUpModal() {
         open={select.open === true}
         onClose={changes.close}
         fullWidth={true}
-        data-testid="modal-signup"
+        data-testid="modal-sign up"
       >
         <DialogTitle>{t("signup.label.title")}</DialogTitle>
         <DialogContent
@@ -139,7 +136,7 @@ export default function SignUpModal() {
             }}
           >
             <TextField
-              data-testid="modal-signup-input-pseudo" 
+              data-testid="modal-sign up-input-pseudo" 
               name="pseudo"
               required
               label={t("generic.input.pseudo")}
@@ -153,7 +150,7 @@ export default function SignUpModal() {
               }
             />
             <TextField
-              data-testid="modal-signup-input-login" 
+              data-testid="modal-sign up-input-login" 
               name="login"
               required
               label={t("generic.input.email")}
@@ -165,7 +162,7 @@ export default function SignUpModal() {
               error={select.errors.login || select.errors.alreadysignedup}
             />
             <TextField
-              data-testid="modal-signup-input-password" 
+              data-testid="modal-sign up-input-password" 
               name="password"
               required
               label={t("generic.input.password")}
@@ -177,7 +174,7 @@ export default function SignUpModal() {
               error={select.errors.password}
             />
             <TextField
-              data-testid="modal-signup-input-passwordrepeat" 
+              data-testid="modal-sign up-input-password repeat" 
               name="passwordrepeat"
               required
               label={t("signup.input.passwordrepeat")}
@@ -196,6 +193,7 @@ export default function SignUpModal() {
                   flexDirection: "column",
                   alignItems: "center",
                 }}
+                data-testid="modal-sign up-box-error on signing up with existing login"
               >
                 <Typography
                   sx={{ mt: 2, mb: 1, whiteSpace: "pre-line" }}
@@ -219,7 +217,7 @@ export default function SignUpModal() {
 
         <DialogActions>
           <Button 
-            data-testid="modal-signup-button-close" 
+            data-testid="modal-sign up-button-close" 
             onClick={changes.close}
           >{t("generic.button.cancel")}</Button>
           <LoadingButton
@@ -227,7 +225,7 @@ export default function SignUpModal() {
             onClick={changes.signup}
             disabled={select.disabled || select.errors.alreadysignedup}
             loading={select.loading}
-            data-testid="modal-signup-button-proceed"
+            data-testid="modal-sign up-button-proceed"
           >
             {t("generic.button.proceed")}
           </LoadingButton>

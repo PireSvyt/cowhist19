@@ -17,7 +17,7 @@ export default function Help() {
   const { t } = useTranslation();
 
   return (
-    <Box>
+    <Box data-testid="page-help">
       <Appbar route="help" title={t("generic.label.help")} />
       <Box sx={{ height: 48 }} />
 

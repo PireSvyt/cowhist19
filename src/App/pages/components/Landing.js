@@ -30,7 +30,7 @@ export default function Landing() {
 
   // Render
   return (
-    <Box>
+    <Box data-testid="page-landing" >
       <Box textAlign="center">
         <Box
           sx={{
@@ -52,14 +52,14 @@ export default function Landing() {
           <Button 
             onClick={changes.signup} 
             size="large"
-            data-testid="landing-signup-button" 
+            data-testid="page-landing-button-sign up"
           >
             {t("signup.button.signup")}
           </Button>
           <Button 
             onClick={changes.signin} 
             size="large"
-            data-testid="landing-signin-button" 
+            data-testid="page-landing-button-sign in"
           >
             {t("generic.button.signin")}
           </Button>

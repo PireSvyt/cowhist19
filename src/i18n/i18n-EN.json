@@ -2,13 +2,13 @@
   "generic": {
     "label": {
       "product": "CoWhist19",
-      "documentation": "Documentation",
+      "help": "Help",
       "about": "About"
     },
     "menu": {
       "home": "Home",
       "account": "My account",
-      "documentation": "Documentation",
+      "help": "Help",
       "about": "About",
       "contact": "Contact",
       "signout": "Sign out"

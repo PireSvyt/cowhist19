@@ -30,7 +30,10 @@ export default function Account() {
   return (
     <div>
       <Appbar route="account" title={t("generic.menu.account")} />
-      <Box sx={{ height: 48 }} />
+      <Box 
+        sx={{ height: 48 }}
+        data-testid="page-account"
+       />
       {select.authLoaded === false || select.detailsLoaded === false ? (
         <Box sx={{ left: "10%", right: "10%" }}>
           <LinearProgress />
@@ -72,6 +75,7 @@ export default function Account() {
                   onClick={() => {
                     appStore.dispatch({ type: "sliceToComeModal/open" });
                   }}
+                  data-testid="page-account-button-change pseudo"
                 >
                   {t("account.button.changepseudo")}
                 </Button>
@@ -98,6 +102,7 @@ export default function Account() {
                   onClick={() => {
                     appStore.dispatch({ type: "sliceToComeModal/open" });
                   }}
+                  data-testid="page-account-button-change email"
                 >
                   {t("account.button.changeemail")}
                 </Button>
@@ -121,6 +126,7 @@ export default function Account() {
                   onClick={() => {
                     appStore.dispatch({ type: "sliceToComeModal/open" });
                   }}
+                  data-testid="page-account-button-change password"
                 >
                   {t("account.button.changepassword")}
                 </Button>
@@ -161,6 +167,7 @@ export default function Account() {
                   onClick={() => {
                     appStore.dispatch({ type: "sliceToComeModal/open" });
                   }}
+                  data-testid="page-account-button-merge accounts"
                 >
                   {t("account.button.merge")}
                 </Button>
@@ -188,6 +195,7 @@ export default function Account() {
                   onClick={() => {
                     appStore.dispatch({ type: "sliceToComeModal/open" });
                   }}
+                  data-testid="page-account-button-anonymize account"
                 >
                   {t("account.button.anonymize")}
                 </Button>
@@ -215,6 +223,7 @@ export default function Account() {
                   onClick={() => {
                     appStore.dispatch({ type: "sliceToComeModal/open" });
                   }}
+                  data-testid="page-account-button-close account"
                 >
                   {t("account.button.close")}
                 </Button>

@@ -80,9 +80,6 @@ export default function SignInModal() {
     },
     signin: () => {
       console.log("SignInModal.signin");
-      appStore.dispatch({
-        type: "signinModalSlice/lock",
-      });
       serviceAuthSignIn()
     },
     gotosignup: () => {
@@ -93,18 +90,10 @@ export default function SignInModal() {
     },
     sendactivation: () => {
       console.log("SignInModal.sendactivation");
-      appStore.dispatch({
-        type: "signinModalSlice/lock",
-        payload: "sendactivation"
-      });
       serviceAuthSendActivation()
     },
     resetpassword: () => {
       console.log("SignInModal.resetpassword");
-      appStore.dispatch({
-        type: "signinModalSlice/lock",
-        payload: "password"
-      });
       serviceAuthSendPassword()
     },
   };
@@ -116,9 +105,9 @@ export default function SignInModal() {
         open={select.open} 
         onClose={changes.close} 
         fullWidth={true}
-        data-testid="modal-signin"
+        data-testid="modal-sign in"
       >
-        <DialogTitle data-testid="modal-signin-title">
+        <DialogTitle>
           {t("signin.label.title")}
         </DialogTitle>
         <DialogContent
@@ -145,7 +134,7 @@ export default function SignInModal() {
                 autoComplete="off"
                 type="email"
                 error={select.errors.login}
-                data-testid="modal-signin-input-login"
+                data-testid="modal-sign in-input-login"
               />
               <TextField
                 name="password"
@@ -157,7 +146,7 @@ export default function SignInModal() {
                 autoComplete="off"
                 type="password"
                 error={select.errors.password}
-                data-testid="modal-signin-input-password"
+                data-testid="modal-sign in-input-password"
               />
               <LoadingButton
                 variant="outlined"
@@ -165,7 +154,7 @@ export default function SignInModal() {
                 sx={{ mt: 2, mb: 1 }}
                 disabled={select.sendpassword.disbaled || select.sendpassword.status === "sent"}
                 loading={select.sendpassword.loading}
-                data-testid="modal-signin-button-resetpassword"
+                data-testid="modal-sign in-button-reset password"
               >
                 {t("signin.button.resetpassword")}
               </LoadingButton>
@@ -177,7 +166,7 @@ export default function SignInModal() {
                     flexDirection: "column",
                     alignItems: "center",
                   }}
-                  data-testid="modal-signin-box-status-notfound"
+                  data-testid="modal-sign in-box-error on finding account"
                 >
                   <Typography
                     sx={{ mt: 2, mb: 1, whiteSpace: "pre-line" }}
@@ -191,7 +180,7 @@ export default function SignInModal() {
                     variant="contained"
                     sx={{ mt: 1, width: "100%" }}
                     onClick={changes.gotosignup}
-                    data-testid="modal-signin-button-gotosignup"
+                    data-testid="modal-sign in-button-open sign up modal"
                   >
                     {t("signin.button.gotosignup")}
                   </Button>
@@ -205,7 +194,7 @@ export default function SignInModal() {
                     flexDirection: "column",
                     alignItems: "center",
                   }}
-                  data-testid="modal-signin-box-sendpassword-sent"
+                  data-testid="modal-sign in-box-password sent"
                 >
                   <Typography
                     sx={{ mt: 2, mb: 1, whiteSpace: "pre-line" }}
@@ -225,7 +214,7 @@ export default function SignInModal() {
                     flexDirection: "column",
                     alignItems: "center",
                   }}
-                  data-testid="modal-signin-box-status-inactivated"
+                  data-testid="modal-sign in-box-inactive account"
                 >
                   <Typography
                     sx={{ mt: 2, mb: 1, whiteSpace: "pre-line" }}
@@ -243,7 +232,7 @@ export default function SignInModal() {
                       select.sendactivation.disabled || select.sendactivation.status === "sent"
                     }
                     loading={select.sendactivation.loading}
-                    data-testid="modal-signin-button-sendactivation"
+                    data-testid="modal-sign in-button-send activation"
                   >
                     {t("signin.button.resendactivationemail")}
                   </LoadingButton>
@@ -257,7 +246,7 @@ export default function SignInModal() {
                     flexDirection: "column",
                     alignItems: "center",
                   }}
-                  data-testid="modal-signin-box-sendactivation-send"
+                  data-testid="modal-sign in-box-activation sent"
                 >
                   <Typography
                     sx={{ mt: 2, mb: 1, whiteSpace: "pre-line" }}
@@ -275,7 +264,7 @@ export default function SignInModal() {
 
         <DialogActions>
           <Button 
-            data-testid="modal-signin-button-close" 
+            data-testid="modal-sign in-button-close" 
             onClick={changes.close}>
               {t("generic.button.cancel")}
           </Button>
@@ -284,7 +273,7 @@ export default function SignInModal() {
             onClick={changes.signin}
             disabled={select.disabled || select.status === "inactivated"}
             loading={select.loading}
-            data-testid="modal-signin-button-proceed"
+            data-testid="modal-sign in-button-proceed"
           >
             {t("generic.button.proceed")}
           </LoadingButton>

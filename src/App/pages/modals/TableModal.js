@@ -13,7 +13,7 @@ import {
   Typography,
   IconButton,
   List,
-  ListItem,
+  ListItem, FormControl, InputLabel, Select, MenuItem
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import SmsFailedIcon from "@mui/icons-material/SmsFailed";
@@ -24,8 +24,7 @@ import AddIcon from "@mui/icons-material/Add.js";
 import InviteModal from "./InviteModal.js";
 import PlayerCard from "../components/PlayerCard.js";
 // Services
-import serviceProceed from "../../services/_miscelaneous/serviceProceed.js";
-import serviceTableDelete from "../../services/OLD/serviceTableDelete.js";
+import { serviceTableCreate, serviceTableSave, serviceTableDelete } from "../../services/table/table.services.js";
 // Shared
 import ConfirmModal from "./ConfirmModal.js";
 // Reducers
@@ -46,7 +45,7 @@ export default function TableModal() {
     errors: useSelector((state) => state.tableModalSlice.errors),
     disabled: useSelector((state) => state.tableModalSlice.disabled),
     loading: useSelector((state) => state.tableModalSlice.loading),
-    openInviteModal: useSelector((state) => state.sliceInviteModal.open),
+    openInviteModal: useSelector((state) => state.inviteModalSlice.open),
     openDeleteConfirmModal: useSelector(
       (state) => state.tableModalSlice.deleteConfirm,
     ),
@@ -63,6 +62,15 @@ export default function TableModal() {
         },
       });
     },
+    guests: (e) => {
+      appStore.dispatch({
+        type: "tableModalSlice/change",
+        payload: {
+          inputs: { guests: e.target.value },
+          errors: { guests: false },
+        },
+      });
+    },
     players: (e) => {
       appStore.dispatch({
         type: "tableModalSlice/change",
@@ -71,6 +79,18 @@ export default function TableModal() {
           errors: { players: false },
         },
       });
+    },
+    invite: () => {
+      console.log("TableModal.invite");
+      appStore.dispatch({type: "inviteModalSlice/open"})
+    },
+    create: () => {
+      console.log("TableModal.create");
+      serviceTableCreate()
+    },
+    save: () => {
+      console.log("TableModal.save");
+      serviceTableSave()
     },
   };
 
@@ -102,7 +122,7 @@ export default function TableModal() {
         });
         break;
       default:
-        console.error("HistoryCard.confirmCallback unmatched " + choice);
+        console.error("tableModal.confirmCallback unmatched " + choice);
     }
   }
 
@@ -142,6 +162,21 @@ export default function TableModal() {
               data-testid="modal-table-input-name"
             />
 
+            <FormControl variant="standard">
+              <InputLabel>{t("table.input.guests")}</InputLabel>
+              <Select
+                value={select.inputs.guests}
+                label={t("table.input.guests")}
+                onChange={changes.guests}
+                error={select.errors.guests}
+                data-testid="modal-table-input-guests"
+              >
+                <MenuItem value={0}>0</MenuItem>
+                <MenuItem value={1}>1</MenuItem>
+                <MenuItem value={2}>2</MenuItem>
+              </Select>
+            </FormControl>
+
             <Stack direction="row" justifyContent="space-between">
               <Typography
                 variant="body1"
@@ -156,15 +191,15 @@ export default function TableModal() {
               <IconButton
                 sx={{ p: 2 }}
                 onClick={() => {
-                  appStore.dispatch({ type: "sliceInviteModal/open" });
+                  changes.invite()
                 }}
-                data-testid="modal-table-button-invite"
+                data-testid="modal-table-button-invite player"
               >
                 <AddIcon />
               </IconButton>
             </Stack>
 
-            {select.inputs.players.length === 0 && select.id === "" ? (
+            {select.inputs.players.length === 0 && select.tableid === "" ? (
               <Box
                 sx={{
                   m: 2,
@@ -172,7 +207,7 @@ export default function TableModal() {
                   flexDirection: "column",
                   alignItems: "center",
                 }}
-                data-testid="modal-table-box-nouserscreate"
+                data-testid="modal-table-box-error on creating without user"
               >
                 <Typography
                   sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }}
@@ -204,7 +239,7 @@ export default function TableModal() {
                   flexDirection: "column",
                   alignItems: "center",
                 }}
-                data-testid="modal-table-box-nousersdelete"
+                data-testid="modal-table-box-error on saving without user"
               >
                 <Typography
                   sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }}
@@ -229,11 +264,13 @@ export default function TableModal() {
                 </Typography>
               </Box>
             ) : (
-              <List dense={true}>
+              <List 
+                dense={true} 
+                data-testid="list-players"
+              >
                 {select.inputs.players.map((player) => (
                   <ListItem 
-                    key={"player-" + player._id}
-                    data-testid={"modal-table-players-player-" + player.userid}
+                    key={"player-" + player.userid}
                   >
                     <PlayerCard player={player} />
                   </ListItem>
@@ -256,10 +293,10 @@ export default function TableModal() {
             data-testid="modal-table-button-save"
             variant="contained"
             onClick={() => {
-              if (select.id === "") {
-                serviceProceed("tableCreate");
+              if (select.tableid === "") {
+                changes.create()
               } else {
-                serviceProceed("tableSave");
+                changes.save()
               }
             }}
             disabled={select.disabled}

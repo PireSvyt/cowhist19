@@ -19,10 +19,9 @@ export default function TableStats() {
 
   // Selects
   const select = {
-    loadedDetails: useSelector((state) => state.sliceTableDetails.loaded),
-    loadedStats: useSelector((state) => state.sliceTableStats.loaded),
-    stats: useSelector((state) => state.sliceTableStats.stats),
-    players: useSelector((state) => state.sliceTableDetails.players),
+    tableState: useSelector((state) => state.tableSlice.state),
+    stats: useSelector((state) => state.tableSlice.stats),
+    players: useSelector((state) => state.tableSlice.players),
   };
 
   // Load
@@ -31,8 +30,10 @@ export default function TableStats() {
   }
 
   return (
-    <Box>
-      {!(select.loadedDetails === true && select.loadedStats === true) ? (
+    <Box 
+      data-testid="component-table analytics"
+    >
+      {!(select.tableState.details === "available" && select.tableState.stats === "available") ? (
         <Box sx={{ left: "10%", right: "10%" }}>
           <LinearProgress />
         </Box>
@@ -44,6 +45,7 @@ export default function TableStats() {
             flexDirection: "column",
             alignItems: "center",
           }}
+          data-testid="component-table analytics-box-no game note"
         >
           <Typography
             sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }}
@@ -68,7 +70,10 @@ export default function TableStats() {
           </Typography>
         </Box>
       ) : (
-        <List dense={true}>
+        <List 
+          data-testid="component-table analytics-list-player"  
+          dense={true} 
+        >
           {select.stats.ranking.map((player) => {
             let rankingPlayer = { ...player };
             let pseudoPlayer = select.players.filter((tablePlayer) => {

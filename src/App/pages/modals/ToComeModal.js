@@ -42,7 +42,11 @@ export default function ToComeModal(props) {
   }, [props]);
 
   return (
-    <Dialog id="dialog_tocome" open={open} onClose={onClose} fullWidth={true}>
+    <Dialog 
+      data-testid="modal-to come"
+      open={open} onClose={onClose} 
+      fullWidth={true}
+    >
       <DialogTitle>{t("generic.label.tocome")}</DialogTitle>
       <DialogContent>
         <Box component="span">
@@ -72,7 +76,10 @@ export default function ToComeModal(props) {
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={onClose}>{t("generic.button.close")}</Button>
+        <Button 
+          onClick={onClose}
+          data-testid="modal-to come-button-close"
+        >{t("generic.button.close")}</Button>
       </DialogActions>
     </Dialog>
   );

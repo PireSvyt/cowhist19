@@ -47,6 +47,13 @@ function serviceProceedCheck(serviceInputs, serciveChecks) {
             fieldIsOK = false;
           }
           break;
+        case "boolean":
+          console.log("serviceProceedCheck.checkField.boolean",check)
+          if (field !== true & field !== false) {
+            failedCheck(check);
+            fieldIsOK = false;
+          }
+          break;
         default:
           console.log(
             "serviceProceedCheck unmanaged field type : ",

@@ -74,6 +74,7 @@ export default function HistoryCard(props) {
   return (
     <Card sx={{ width: "100%", p: 1 }}>
       <Box
+        data-testid="component-table history-listitem-game"
         sx={{
           display: "flex",
           flexDirection: "row",
@@ -90,7 +91,11 @@ export default function HistoryCard(props) {
           </Typography>
         </Box>
 
-        <IconButton onClick={() => setConfirmOpen(true)} disabled={deleting}>
+        <IconButton 
+          id={props.game.gameid}
+          data-testid="component-table history-listitem-game-button-delete game"
+          onClick={() => setConfirmOpen(true)} disabled={deleting}
+        >
           {deleting ? (
             <CircularProgress size={24} sx={{ color: "grey.500" }} />
           ) : (

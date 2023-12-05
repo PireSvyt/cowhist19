@@ -31,6 +31,7 @@ export default function WelcomeCarousel() {
         justifyContent: "space-between",
         alignItems: "center",
       }}
+      data-testid="component-carousel-box-page 1" 
     >
       <Typography sx={{ whiteSpace: "pre-line" }}>
         {t("home.label.carousel1")}
@@ -54,6 +55,7 @@ export default function WelcomeCarousel() {
         justifyContent: "space-between",
         alignItems: "center",
       }}
+      data-testid="component-carousel-box-page 2" 
     >
       <Typography sx={{ whiteSpace: "pre-line" }}>
         {t("home.label.carousel2")}
@@ -77,6 +79,7 @@ export default function WelcomeCarousel() {
         justifyContent: "space-between",
         alignItems: "center",
       }}
+      data-testid="component-carousel-box-page 3" 
     >
       <Typography sx={{ whiteSpace: "pre-line" }}>
         {t("home.label.carousel3")}
@@ -113,6 +116,7 @@ export default function WelcomeCarousel() {
         touchTracking
         disableButtonsControls
         items={items}
+        data-testid="component-carousel" 
       />
     </Box>
   );

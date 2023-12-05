@@ -98,6 +98,7 @@ export default function Stepper(props) {
         flexDirection: "column",
         alignItems: "center",
       }}
+      data-testid="component-stepper" 
     >
       <Box
         sx={{
@@ -105,11 +106,12 @@ export default function Stepper(props) {
           flexDirection: "row",
           alignItems: "center",
         }}
+        data-testid="component-stepper-list-page steps" 
       >
         {displayedItems.map((item) => {
           if (item.type === "progress") {
             return (
-              <BorderLinearProgress
+              <BorderLinearProgress 
                 variant="determinate"
                 value={(props.progress - Math.trunc(props.progress)) * 100}
                 sx={{ ml: radius + "px", mr: radius + "px" }}
@@ -120,6 +122,7 @@ export default function Stepper(props) {
               <Box sx={{ m: "0px" }}>
                 <IconButton
                   size="small"
+                  data-testid="component-stepper-listitem-page step" 
                   onClick={() =>
                     props.select(Math.floor(props.progress + item.onclick) % 3)
                   }

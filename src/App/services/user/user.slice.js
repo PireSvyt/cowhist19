@@ -14,7 +14,7 @@ const userSlice = createSlice({
   },
   reducers: {
     setDetails: (state, action) => {
-      console.log("userSlice/setDetails ",action.payload)
+      //console.log("userSlice/setDetails ",action.payload)
       state.state.push("details")
       if (action.payload.userid !== undefined) {
         state.userid = action.payload.userid;

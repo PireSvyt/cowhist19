@@ -9,6 +9,19 @@ export function random_id(length = 8) {
   return temp_id;
 }
 
+export function random_string(length = 24) {
+  let result = "";
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const charactersLength = characters.length;
+  let counter = 0;
+  while (counter < length) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    counter += 1;
+  }
+  return result;
+}
+
 export function validateEmail(email) {
   /*
 

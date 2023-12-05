@@ -7,6 +7,7 @@ import Activation from "./pages/Activation.js";
 import PasswordReset from "./pages/PasswordReset.js";
 import Table from "./pages/Table.js";
 import Account from "./pages/Account.js";
+import About from "./pages/About.js";
 import Help from "./pages/Help.js";
 import Admin from "./pages/Admin.js";
 
@@ -30,6 +31,7 @@ export default function App() {
         <Route path="/account" element={<Account />} />
         <Route path="/table/:id" element={<Table />} />
         <Route path="/help" element={<Help />} />
+        <Route path="/about" element={<About />} />
         <Route path="/admin" element={<Admin />} />
       </Routes>
     </Router>

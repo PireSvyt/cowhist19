@@ -135,7 +135,7 @@ export async function serviceAuthGrantAccess(data) {
     errors.push("generic.error.emptytoken");
     serviceAuthAccessDeny();
   } else {
-    console.log("serviceAuthGrantAccess data",data)
+    //console.log("serviceAuthGrantAccess data",data)
     let decodedtoken = jwtDecode(data.token);
     // User status tollgate
     if (

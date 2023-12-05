@@ -123,7 +123,9 @@ export default function Activation() {
   };
 
   return (
-    <Box>
+    <Box 
+      data-testid="page-activation"
+    >
       <Appbar route="activation" title={t("generic.label.product")} />
       <Box sx={{ height: 55 }} />
 
@@ -160,6 +162,7 @@ export default function Activation() {
           }
           loading={loadingActivate}
           sx={{ mt: 1, mb: 1, width: "80%" }}
+          data-testid="page-activation-button-activate"
         >
           {t("activation.button.activate")}
         </LoadingButton>
@@ -172,6 +175,7 @@ export default function Activation() {
             flexDirection: "column",
             alignItems: "center",
           }}
+          data-testid="page-activation-box-account is activated"
         >
           <Typography
             sx={{ mt: 2, mb: 1, whiteSpace: "pre-line" }}
@@ -185,6 +189,7 @@ export default function Activation() {
             variant="contained"
             sx={{ mt: 1, width: "80%" }}
             onClick={changes.signin}
+            data-testid="page-activation-button-open sign in modal"
           >
             {t("generic.button.signin")}
           </Button>
@@ -198,6 +203,7 @@ export default function Activation() {
             flexDirection: "column",
             alignItems: "center",
           }}
+          data-testid="page-activation-box-error while activating"
         >
           <Typography
             sx={{ mt: 2, mb: 1, whiteSpace: "pre-line" }}
@@ -230,6 +236,7 @@ export default function Activation() {
               sendActivationStatus === "error"
             }
             loading={loadingSendActivation}
+            data-testid="page-activation-button-resend activation email"
           >
             {t("activation.button.resend")}
           </LoadingButton>
@@ -243,6 +250,7 @@ export default function Activation() {
             flexDirection: "column",
             alignItems: "center",
           }}
+          data-testid="page-activation-box-activation sent"
         >
           <Typography
             sx={{ mt: 2, mb: 1, whiteSpace: "pre-line" }}
@@ -262,6 +270,7 @@ export default function Activation() {
             flexDirection: "column",
             alignItems: "center",
           }}
+          data-testid="page-activation-box-error while sending activation"
         >
           <Typography
             sx={{ mt: 2, mb: 1, whiteSpace: "pre-line" }}

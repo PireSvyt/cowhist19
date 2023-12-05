@@ -8,10 +8,9 @@ import {
   apiTableDelete,
 } from "./table.api.js";
 // Services
-import { random_id } from "../_miscelaneous/toolkit.js";
+import { random_string, random_id } from "../_miscelaneous/toolkit.js";
 // Reducers
-import { setupStore } from "../../store/appStore.js";
-let appStore = setupStore()
+import appStore from "../../store/appStore.js";
 
 export const tableCreateInputs = {
   lockuifunction: (log) => {
@@ -20,16 +19,16 @@ export const tableCreateInputs = {
       message: "serviceTableCreate.lockuifunction",
       tags: ["function"],
     });
-    appStore.dispatch({ type: "sliceTableModal/lock" });
+    appStore.dispatch({ type: "tableModalSlice/lock" });
   },
   unlockuifunction: (log) => {
     log.push({
       date: new Date(),
-      message: "serviceTableCreate.unlockuifunction",
+      message: "tableCreateInputs.unlockuifunction",
       tags: ["function"],
     });
     appStore.dispatch({
-      type: "sliceTableModal/change",
+      type: "tableModalSlice/change",
       payload: {
         disabled: false,
         loading: false,
@@ -43,8 +42,8 @@ export const tableCreateInputs = {
       tags: ["function"],
     });
     return {
-      inputs: { ...appStore.getState().sliceTableModal.inputs },
-      userid: appStore.getState().sliceUserDetails.id,
+      inputs: { ...appStore.getState().tableModalSlice.inputs },
+      userid: appStore.getState().userSlice.userid,
     };
   },
   sercivechecks: [
@@ -88,7 +87,7 @@ export const tableCreateInputs = {
                   checkfunction: (serviceInputs) => {
                     if (
                       serviceInputs.inputs.players.filter((p) => {
-                        return p._id === serviceInputs.userid;
+                        return p.userid === serviceInputs.userid;
                       }).length === 0
                     ) {
                       return "fail";
@@ -112,16 +111,38 @@ export const tableCreateInputs = {
       message: "serviceTableCreate.getcheckoutcomedispatchfunction",
       tags: ["function"],
     });
-    return "sliceTableModal/change";
+    return "tableModalSlice/change";
   },
-  apicall: (inputs, log) => {
+  repackagingfunction: (inputs, log) => {
+    log.push({
+      date: new Date(),
+      message: "serviceProceed.repackagingfunction",
+      inputs: inputs,
+      tags: ["function"],
+    });
+    let repackagedInputs = { ...inputs };
+    console.log("table.serviceProceed.repackagingfunction")
+    repackagedInputs.inputs.tableid = random_string();
+    repackagedInputs.inputs.userids = []
+    repackagedInputs.inputs.players.forEach(player => {
+      repackagedInputs.inputs.userids.push(player.userid)
+    });
+    delete repackagedInputs.inputs.players
+    console.log("repackagedInputs", repackagedInputs)
+    return repackagedInputs;
+  },
+  apicall: async (inputs, log) => {
     log.push({
       date: new Date(),
       message: "serviceTableCreate.apicall",
       inputs: inputs,
       tags: ["function"],
     });
-    apiTableCreate(inputs, appStore.getState().sliceUserAuth.token);
+    try {
+      return await apiTableCreate(inputs, appStore.getState().authSlice.token);
+    } catch (err) {
+      return err;
+    }    
   },
   getmanageresponsefunction: (response, log) => {
     log.push({
@@ -131,7 +152,7 @@ export const tableCreateInputs = {
       tags: ["function"],
     });
     let responses = {
-      "table.create.success.created": () => {
+      "table.create.success": () => {
         appStore.dispatch({
           type: "sliceSnack/change",
           payload: {
@@ -139,37 +160,11 @@ export const tableCreateInputs = {
             id: "table.snack.saved",
           },
         });
-        window.location = "/table/" + data.data.id;
-      },
-      "table.save.success.modified": () => {
-        appStore.dispatch({
-          type: "sliceTableModal/change",
-          payload: {
-            open: false,
-            disabled: false,
-            loading: false,
-          },
-        });
-        appStore.dispatch({
-          type: "sliceSnack/change",
-          payload: {
-            uid: random_id(),
-            id: "table.snack.saved",
-          },
-        });
-        // Update table
-        serviceTableGetDetails().then(() => {
-          appStore.dispatch({
-            type: "sliceTableStats/unload",
-          });
-          appStore.dispatch({
-            type: "sliceTableHistory/unload",
-          });
-        });
+        window.location = "/table/" + response.data.tableid;
       },
       "table.create.error.idprovided": () => {
         appStore.dispatch({
-          type: "sliceTableModal/change",
+          type: "tableModalSlice/change",
           payload: {
             disabled: false,
             loading: false,
@@ -185,7 +180,7 @@ export const tableCreateInputs = {
       },
       "table.create.error.oncreate": () => {
         appStore.dispatch({
-          type: "sliceTableModal/change",
+          type: "tableModalSlice/change",
           payload: {
             disabled: false,
             loading: false,
@@ -200,7 +195,7 @@ export const tableCreateInputs = {
         });
       },
     };
-    return responses[response]();
+    return responses[response.type]();
   },
 };
 
@@ -211,7 +206,7 @@ export const tableSaveInputs = {
       message: "serviceTableSave.lockuifunction",
       tags: ["function"],
     });
-    appStore.dispatch({ type: "sliceTableModal/lock" });
+    appStore.dispatch({ type: "tableModalSlice/lock" });
   },
   unlockuifunction: (log) => {
     log.push({
@@ -220,7 +215,7 @@ export const tableSaveInputs = {
       tags: ["function"],
     });
     appStore.dispatch({
-      type: "sliceTableModal/change",
+      type: "tableModalSlice/change",
       payload: {
         disabled: false,
         loading: false,
@@ -234,7 +229,7 @@ export const tableSaveInputs = {
       tags: ["function"],
     });
     return {
-      inputs: { ...appStore.getState().sliceTableModal.inputs },
+      inputs: { ...appStore.getState().tableModalSlice.inputs },
     };
   },
   sercivechecks: [
@@ -265,16 +260,20 @@ export const tableSaveInputs = {
       message: "serviceTableSave.getcheckoutcomedispatchfunction",
       tags: ["function"],
     });
-    return "sliceTableModal/change";
+    return "tableModalSlice/change";
   },
-  apicall: (inputs, log) => {
+  apicall: async (inputs, log) => {
     log.push({
       date: new Date(),
       message: "serviceTableSave.apicall",
       inputs: inputs,
       tags: ["function"],
     });
-    apiTableSave(inputs, appStore.getState().sliceUserAuth.token);
+    try {
+      return await apiTableSave(inputs, appStore.getState().authSlice.token);
+    } catch (err) {
+      return err;
+    } 
   },
   getmanageresponsefunction: (response, log) => {
     log.push({
@@ -292,11 +291,11 @@ export const tableSaveInputs = {
             id: "table.snack.saved",
           },
         });
-        window.location = "/table/" + data.data.id;
+        window.location = "/table/" + data.data.tableid;
       },
       "table.save.success.modified": () => {
         appStore.dispatch({
-          type: "sliceTableModal/change",
+          type: "tableModalSlice/change",
           payload: {
             open: false,
             disabled: false,
@@ -313,16 +312,13 @@ export const tableSaveInputs = {
         // Update table
         serviceGetTableDetails().then(() => {
           appStore.dispatch({
-            type: "sliceTableStats/unload",
-          });
-          appStore.dispatch({
-            type: "sliceTableHistory/unload",
+            type: "tableSlice/unload",
           });
         });
       },
       "table.save.error.oncreate": () => {
         appStore.dispatch({
-          type: "sliceTableModal/change",
+          type: "tableModalSlice/change",
           payload: {
             disabled: false,
             loading: false,
@@ -364,7 +360,11 @@ export const tableGetDetailsInputs = {
       message: "serviceTableGetDetails.lockuifunction",
       tags: ["function"],
     });
-    appStore.dispatch({ type: "sliceTableDetails/lock" });
+    console.log("tableGetDetailsInputs.lockuifunction")
+    appStore.dispatch({ 
+      type: "tableSlice/lock",
+      payload: {scope: "details"},
+   });
   },
   getinputsfunction: (log) => {
     log.push({
@@ -392,14 +392,18 @@ export const tableGetDetailsInputs = {
       ],
     },
   ],
-  apicall: (inputs, log) => {
+  apicall: async (inputs, log) => {
     log.push({
       date: new Date(),
       message: "serviceTableGetDetails.apicall",
       inputs: inputs,
       tags: ["function"],
     });
-    apiTableGetDetails(inputs.tableid, appStore.getState().sliceUserAuth.token);
+    try {
+      return await apiTableGetDetails(inputs.tableid, appStore.getState().authSlice.token);
+    } catch (err) {
+      return err;
+    } 
   },
   getmanageresponsefunction: (response, log) => {
     log.push({
@@ -409,13 +413,13 @@ export const tableGetDetailsInputs = {
       tags: ["function"],
     });
     let responses = {
-      "table.details.success": () => {
+      "table.getdetails.success": () => {
         appStore.dispatch({
-          type: "sliceTableDetails/set",
-          payload: data.data.table,
+          type: "tableSlice/setDetails",
+          payload: response.data.table,
         });
       },
-      "table.details.error.onaggregate": () => {
+      "table.getdetails.error.onaggregate": () => {
         appStore.dispatch({
           type: "sliceSnack/change",
           payload: {
@@ -424,7 +428,7 @@ export const tableGetDetailsInputs = {
           },
         });
       },
-      "table.details.error.onfind": () => {
+      "table.getdetails.error.onfind": () => {
         appStore.dispatch({
           type: "sliceSnack/change",
           payload: {
@@ -433,13 +437,13 @@ export const tableGetDetailsInputs = {
           },
         });
       },
-      "table.details.error.deniedaccess": () => {
+      "table.getdetails.error.deniedaccess": () => {
         appStore.dispatch({
-          type: "sliceTableDetails/deny",
+          type: "tableSlice/deny",
         });
       },
     };
-    return responses[response]();
+    return responses[response.type]();
   },
 };
 
@@ -450,7 +454,10 @@ export const tableGetHistoryInputs = {
       message: "serviceTableGetHistory.lockuifunction",
       tags: ["function"],
     });
-    appStore.dispatch({ type: "sliceTableHistory/lock" });
+    appStore.dispatch({ 
+      type: "tableSlice/lock",
+      payload: {scope: "history"},
+   });
   },
   getinputsfunction: (log) => {
     log.push({
@@ -514,18 +521,22 @@ export const tableGetHistoryInputs = {
       ],
     },
   ],
-  apicall: (inputs, log) => {
+  apicall: async (inputs, log) => {
     log.push({
       date: new Date(),
       message: "serviceTableGetHistory.apicall",
       inputs: inputs,
       tags: ["function"],
     });
-    apiTableGetHistory(
-      inputs.tableid,
-      inputs.parameters,
-      appStore.getState().sliceUserAuth.token,
-    );
+    try {
+      return await apiTableGetHistory(
+        inputs.tableid,
+        inputs.parameters,
+        appStore.getState().authSlice.token,
+      );
+    } catch (err) {
+      return err;
+    } 
   },
   getmanageresponsefunction: (response, log) => {
     log.push({
@@ -535,22 +546,13 @@ export const tableGetHistoryInputs = {
       tags: ["function"],
     });
     let responses = {
-      "table.history.success": () => {
+      "table.gethistory.success": () => {
         appStore.dispatch({
-          type: "sliceTableHistory/set",
-          payload: data.data.games,
+          type: "tableSlice/setHistory",
+          payload: response.data.games,
         });
       },
-      "table.history.accessdenied.noneed": () => {
-        appStore.dispatch({
-          type: "sliceSnack/change",
-          payload: {
-            uid: random_id(),
-            id: "generic.snack.error.wip",
-          },
-        });
-      },
-      "table.history.accessdenied.needmissmatch": () => {
+      "table.gethistory.accessdenied.noneed": () => {
         appStore.dispatch({
           type: "sliceSnack/change",
           payload: {
@@ -559,7 +561,16 @@ export const tableGetHistoryInputs = {
           },
         });
       },
-      "table.history.error.findinggames": () => {
+      "table.gethistory.accessdenied.needmissmatch": () => {
+        appStore.dispatch({
+          type: "sliceSnack/change",
+          payload: {
+            uid: random_id(),
+            id: "generic.snack.error.wip",
+          },
+        });
+      },
+      "table.gethistory.error.findinggames": () => {
         appStore.dispatch({
           type: "sliceSnack/change",
           payload: {
@@ -569,7 +580,7 @@ export const tableGetHistoryInputs = {
         });
       },
     };
-    return responses[response]();
+    return responses[response.type]();
   },
 };
 
@@ -580,7 +591,10 @@ export const tableGetStatsInputs = {
       message: "serviceTableGetStats.lockuifunction",
       tags: ["function"],
     });
-    appStore.dispatch({ type: "sliceTableStats/lock" });
+    appStore.dispatch({ 
+      type: "tableSlice/lock",
+      payload: {scope: "stats"},
+   });
   },
   getinputsfunction: (log) => {
     log.push({
@@ -623,18 +637,22 @@ export const tableGetStatsInputs = {
       ],
     },
   ],
-  apicall: (inputs, log) => {
+  apicall: async (inputs, log) => {
     log.push({
       date: new Date(),
       message: "serviceTableGetStats.apicall",
       inputs: inputs,
       tags: ["function"],
     });
-    apiTableGetStats(
-      inputs.tableid,
-      inputs.parameters,
-      appStore.getState().sliceUserAuth.token,
-    );
+    try {
+      return await apiTableGetStats(
+        inputs.tableid,
+        inputs.parameters,
+        appStore.getState().authSlice.token,
+      );
+    } catch (err) {
+      return err;
+    } 
   },
   getmanageresponsefunction: (response, log) => {
     log.push({
@@ -644,21 +662,21 @@ export const tableGetStatsInputs = {
       tags: ["function"],
     });
     let responses = {
-      "table.stats.success": () => {
-        let stats = data.data.stats;
+      "table.getstats.success": () => {
+        let stats = response.data.stats;
         let playerids = appStore
           .getState()
-          .sliceTableDetails.players.map((p) => p._id);
+          .tableSlice.players.map((p) => p.userid);
         stats.ranking = stats.ranking.filter((rank) =>
-          playerids.includes(rank._id),
+          playerids.includes(rank.userid),
         );
         // Outcome
         appStore.dispatch({
-          type: "sliceTableStats/set",
+          type: "tableSlice/setStats",
           payload: stats,
         });
       },
-      "table.stats.error": () => {
+      "table.getstats.error": () => {
         appStore.dispatch({
           type: "sliceSnack/change",
           payload: {
@@ -668,7 +686,7 @@ export const tableGetStatsInputs = {
         });
       },
     };
-    return responses[response]();
+    return responses[response.type]();
   },
 };
 
@@ -681,19 +699,23 @@ export const tableDeleteInputs = {
     });
     return {
       inputs: {
-        tableid: appStore.getState().sliceTableModal.inputs.tableid,
+        tableid: appStore.getState().tableModalSlice.inputs.tableid,
       },
     };
   },
   sercivechecks: [],
-  apicall: (inputs, log) => {
+  apicall: async (inputs, log) => {
     log.push({
       date: new Date(),
       message: "serviceTableDelete.apicall",
       inputs: inputs,
       tags: ["function"],
     });
-    apiTableDelete(inputs.tableid, appStore.getState().sliceUserAuth.token);
+    try {
+      return await apiTableDelete(inputs.tableid, appStore.getState().authSlice.token);
+    } catch (err) {
+      return err;
+    } 
   },
   getmanageresponsefunction: (response, log) => {
     log.push({

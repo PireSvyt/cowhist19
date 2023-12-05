@@ -31,7 +31,7 @@ export default function ConfirmModal(props) {
   return (
     <Box>
       <Dialog
-        id="dialog_confirm"
+        data-testid="modal-confirm"
         open={open}
         onClose={() => props.callback("close")}
         fullWidth={true}
@@ -49,6 +49,7 @@ export default function ConfirmModal(props) {
         <DialogActions>
           {props.data.callToActions.map((cta) => (
             <Button
+              data-testid={"modal-confirm-button-"+cta.label}
               key={cta.label}
               onClick={() => props.callback(cta.choice)}
               color={cta.color === undefined ? "primary" : cta.color}

@@ -8,12 +8,14 @@ const tableModalSlice = createSlice({
     loading: false,
     tableid: "",
     inputs: {
-        tableid: "",
+      //tableid: "",
       name: "",
+      guests: 0,
       players: [],
     },
     errors: {
       name: false,
+      guests: false,
       players: false,
     },
     deleteConfirm: false,
@@ -23,20 +25,23 @@ const tableModalSlice = createSlice({
       state.open = true;
       state.tableid = "";
       state.inputs = {
-        tableid: "",
+        //tableid: "",
         name: "",
+        guests: 0,
         players: [action.payload],
       };
       state.errors = {
         name: false,
+        guests: false,
         players: false,
       };
     },
     open: (state, action) => {
       state.open = true;
       state.tableid = action.payload.tableid;
-      state.inputs.tableid = action.payload.tableid;
+      //state.inputs.tableid = action.payload.tableid;
       state.inputs.name = action.payload.name;
+      state.inputs.guests = action.payload.guests;
       state.inputs.players = action.payload.players;
       state.errors = {
         name: false,
@@ -48,6 +53,7 @@ const tableModalSlice = createSlice({
       state.errors = {
         tableid: "",
         name: false,
+        guests: false,
         players: false,
       };
       state.disabled = false;
@@ -62,6 +68,9 @@ const tableModalSlice = createSlice({
         if (action.payload.inputs.name !== undefined) {
           state.inputs.name = action.payload.inputs.name;
         }
+        if (action.payload.inputs.guests !== undefined) {
+          state.inputs.guests = action.payload.inputs.guests;
+        }
         if (action.payload.inputs.players !== undefined) {
           state.inputs.players = action.payload.inputs.players;
         }
@@ -70,6 +79,9 @@ const tableModalSlice = createSlice({
       if (action.payload.errors !== undefined) {
         if (action.payload.errors.name !== undefined) {
           state.errors.name = action.payload.errors.name;
+        }
+        if (action.payload.errors.guests !== undefined) {
+          state.errors.guests = action.payload.errors.guests;
         }
         if (action.payload.errors.players !== undefined) {
           state.errors.players = action.payload.errors.players;
@@ -108,13 +120,5 @@ const tableModalSlice = createSlice({
     },
   },
 });
-
-export const selectTableModal_open = state => state.open
-export const selectTableModal_disabled = state => state.disabled
-export const selectTableModal_loading = state => state.loading
-export const selectTableModal_tableid = state => state.tableid
-export const selectTableModal_inputs = state => state.inputs
-export const selectTableModal_errors = state => state.errors
-export const selectTableModal_deleteConfirm = state => state.deleteConfirm
 
 export default tableModalSlice.reducer;

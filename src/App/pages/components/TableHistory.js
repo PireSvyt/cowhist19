@@ -19,10 +19,9 @@ export default function TableHistory() {
 
   // Selects
   const select = {
-    loadedDetails: useSelector((state) => state.sliceTableDetails.loaded),
-    loadedHistory: useSelector((state) => state.sliceTableHistory.loaded),
-    history: useSelector((state) => state.sliceTableHistory.games),
-    players: useSelector((state) => state.sliceTableDetails.players),
+    tableState: useSelector((state) => state.tableSlice.state),
+    history: useSelector((state) => state.tableSlice.games),
+    players: useSelector((state) => state.tableSlice.players),
   };
 
   // Load
@@ -32,7 +31,7 @@ export default function TableHistory() {
 
   return (
     <Box>
-      {!(select.loadedDetails === true && select.loadedHistory === true) ? (
+      {!(select.tableState.details === "available" && select.tableState.history === "available") ? (
         <Box sx={{ left: "10%", right: "10%" }}>
           <LinearProgress />
         </Box>
@@ -68,7 +67,10 @@ export default function TableHistory() {
           </Typography>
         </Box>
       ) : (
-        <List dense={true}>
+        <List 
+          dense={true} 
+          data-testid="component-table history-list-game"
+        >
           {select.history.map((game) => {
             let gameCard = { ...game };
             gameCard.attackPlayers = [];

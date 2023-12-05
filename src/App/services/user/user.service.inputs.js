@@ -17,13 +17,13 @@ import {
         tags: ["function"],
       });
       let token = appStore.getState().authSlice.token
-      console.log("userGetDetailsInputs getinputsfunction token", token)
+      //console.log("userGetDetailsInputs getinputsfunction token", token)
       let inputs = {
         inputs: { 
             token : token
         }
       }
-      console.log("getinputsfunction inputs", inputs)
+      //console.log("getinputsfunction inputs", inputs)
       return inputs;
     },
     sercivechecks: [
@@ -56,7 +56,7 @@ import {
         inputs: inputs,
         tags: ["function"],
       });
-      console.log("apicall inputs",inputs)
+      //console.log("apicall inputs",inputs)
       try {
         return await apiUserGetDetails(inputs.token);
       } catch (err) {
@@ -97,7 +97,7 @@ import {
             });
         },
       };
-      console.log("userGetDetailsInputs response", response)
+      //console.log("userGetDetailsInputs response", response)
       return responses[response.type]();
     },
   };
@@ -156,11 +156,11 @@ import {
                     {
                         // Check email validity
                         checkfunction: (serviceInputs) => {
-                        if (!validateEmail(serviceInputs.inputs.login)) {
-                            return "fail";
-                        } else {
-                            return "pass";
-                        }
+                          if (!validateEmail(serviceInputs.inputs.login)) {
+                              return "fail";
+                          } else {
+                              return "pass";
+                          }
                         },
                         error: "generic.error.invalidlogin",
                         fieldsinerror: ["login"],
@@ -176,11 +176,12 @@ import {
                     {
                         // Check acknowledgement is true
                         checkfunction: (serviceInputs) => {
-                        if (serviceInputs.inputs.acknowledgement !== true) {
-                            return "fail";
-                        } else {
-                            return "pass";
-                        }
+                          console.log("userInviteInputs.sercivechecks.acknowledgement.checkfunction", serviceInputs)
+                          if (!serviceInputs.inputs.acknowledgement) {
+                              return "fail";
+                          } else {
+                              return "pass";
+                          }
                         },
                         error: "invite.error.missingacknowledgement",
                         fieldsinerror: ["acknowledgement"],
@@ -206,7 +207,7 @@ import {
         tags: ["function"],
       });
       try {
-        return await apiUserInvite(inputs);
+        return await apiUserInvite(inputs, appStore.getState().authSlice.token);
       } catch (err) {
         return err;
       }    
@@ -222,7 +223,7 @@ import {
       let responses = {
         "user.invite.success.created":() => {
             appStore.dispatch({
-                type: "sliceInviteModal/change",
+                type: "inviteModalSlice/change",
                 payload: {
                     open: false,
                     inputs: {
@@ -241,13 +242,13 @@ import {
                 },
             });
             appStore.dispatch({
-                type: "sliceTableModal/adduser",
-                payload: data.data.user,
+                type: "tableModalSlice/adduser",
+                payload: response.data.user,
             });
         },
         "user.invite.success.alreadyexisting":() => {
             appStore.dispatch({
-                type: "sliceInviteModal/change",
+                type: "inviteModalSlice/change",
                 payload: {
                     open: false,
                     inputs: {
@@ -266,13 +267,13 @@ import {
                 },
             });
             appStore.dispatch({
-                type: "sliceTableModal/adduser",
-                payload: data.data.user,
+                type: "tableModalSlice/adduser",
+                payload: response.data.user,
             });
         },
         "user.invite.error.oncreate":() => {
             appStore.dispatch({
-                type: "sliceInviteModal/change",
+                type: "inviteModalSlice/change",
                 payload: {
                     disabled: false,
                     loading: false,
@@ -288,7 +289,7 @@ import {
         },
         "user.invite.error.onfind":() => {
             appStore.dispatch({
-                type: "sliceInviteModal/change",
+                type: "inviteModalSlice/change",
                 payload: {
                     disabled: false,
                     loading: false,

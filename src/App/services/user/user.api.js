@@ -46,7 +46,7 @@ export async function apiUserGetDetails(token) {
         Authorization: "Bearer " + token,
       },
     })
-    console.log("res",res)
+    //console.log("res",res)
     return res.data;
   } catch (err) {
     console.log("err",err)

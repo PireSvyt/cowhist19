@@ -28,6 +28,7 @@ const inviteModalSlice = createSlice({
       state.errors = {
         pseudo: false,
         login: false,
+        acknowledgement: false,
       };
     },
     close: (state) => {
@@ -40,6 +41,7 @@ const inviteModalSlice = createSlice({
       state.errors = {
         pseudo: false,
         login: false,
+        acknowledgement: false,
       };
       state.disabled = false;
       state.loading = false;
@@ -86,11 +88,5 @@ const inviteModalSlice = createSlice({
     },
   },
 });
-
-export const selectSigninModal_open = state => state.open
-export const selectSigninModal_disabled = state => state.disabled
-export const selectSigninModal_loading = state => state.loading
-export const selectSigninModal_inputs = state => state.inputs
-export const selectSigninModal_errors = state => state.errors
 
 export default inviteModalSlice.reducer;

@@ -9,7 +9,10 @@ export default function RankingCard(props) {
   // i18n
   const { t } = useTranslation();
   return (
-    <Card sx={{ width: "100%", p: 1 }}>
+    <Card 
+      sx={{ width: "100%", p: 1 }}
+      data-testid="component-table analytics-lisitem-player"  
+    >
       <Box
         sx={{
           display: "flex",

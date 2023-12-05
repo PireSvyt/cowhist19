@@ -21,7 +21,7 @@ import {
 import LoadingButton from "@mui/lab/LoadingButton";
 
 // Services
-import serviceProceed from "../../services/_miscelaneous/serviceProceed.js";
+import { serviceGameCreate } from "../../services/game/game.services.js";
 // Reducers
 import appStore from "../../store/appStore.js";
 
@@ -37,15 +37,15 @@ export default function GameModal() {
 
   // Selects
   const select = {
-    open: useSelector((state) => state.sliceGameModal.open),
-    id: useSelector((state) => state.sliceGameModal.id),
-    inputs: useSelector((state) => state.sliceGameModal.inputs),
-    errors: useSelector((state) => state.sliceGameModal.errors),
-    requirements: useSelector((state) => state.sliceGameModal.requirements),
-    disabled: useSelector((state) => state.sliceGameModal.disabled),
-    loading: useSelector((state) => state.sliceGameModal.loading),
-    players: useSelector((state) => state.sliceTableDetails.players),
-    contracts: useSelector((state) => state.sliceTableDetails.contracts),
+    open: useSelector((state) => state.gameModalSlice.open),
+    id: useSelector((state) => state.gameModalSlice.id),
+    inputs: useSelector((state) => state.gameModalSlice.inputs),
+    errors: useSelector((state) => state.gameModalSlice.errors),
+    requirements: useSelector((state) => state.gameModalSlice.requirements),
+    disabled: useSelector((state) => state.gameModalSlice.disabled),
+    loading: useSelector((state) => state.gameModalSlice.loading),
+    players: useSelector((state) => state.tableSlice.players),
+    contracts: useSelector((state) => state.tableSlice.contracts),
   };
 
   // Changes
@@ -55,7 +55,7 @@ export default function GameModal() {
         (c) => c.key === e.target.value,
       )[0];
       appStore.dispatch({
-        type: "sliceGameModal/change",
+        type: "gameModalSlice/change",
         payload: {
           inputs: { contract: e.target.value },
           errors: { contract: false },
@@ -79,7 +79,7 @@ export default function GameModal() {
         });
       });
       appStore.dispatch({
-        type: "sliceGameModal/change",
+        type: "gameModalSlice/change",
         payload: {
           inputs: { players: newPlayers },
           errors: { attack: false },
@@ -98,7 +98,7 @@ export default function GameModal() {
         });
       });
       appStore.dispatch({
-        type: "sliceGameModal/change",
+        type: "gameModalSlice/change",
         payload: {
           inputs: { players: newPlayers },
           errors: { defense: false },
@@ -107,22 +107,25 @@ export default function GameModal() {
     },
     outcome: (e) => {
       appStore.dispatch({
-        type: "sliceGameModal/change",
+        type: "gameModalSlice/change",
         payload: {
           inputs: { outcome: e.target.value },
           errors: { outcome: false },
         },
       });
     },
+    save: () => {
+      serviceGameCreate()
+    }
   };
 
   return (
     <Box>
       <Dialog
-        id="dialog_transaction"
+        data-testid="modal-game"
         open={select.open}
         onClose={() => {
-          appStore.dispatch({ type: "sliceGameModal/close" });
+          appStore.dispatch({ type: "gameModalSlice/close" });
         }}
         fullWidth={true}
       >
@@ -146,6 +149,7 @@ export default function GameModal() {
                 value={select.inputs.contract}
                 onChange={changes.contract}
                 error={select.errors.contract}
+                data-testid="modal-game-input-contract"
               >
                 {select.contracts.map((contract) => (
                   <MenuItem key={contract.key} value={contract.key}>
@@ -157,6 +161,7 @@ export default function GameModal() {
 
             <FormControl variant="standard">
               <Autocomplete
+                data-testid="modal-game-input-attack"
                 name="attack"
                 multiple
                 disableClearable
@@ -209,6 +214,7 @@ export default function GameModal() {
 
             <FormControl variant="standard">
               <Autocomplete
+                data-testid="modal-game-input-defense"
                 name="defense"
                 multiple
                 disableClearable
@@ -265,6 +271,7 @@ export default function GameModal() {
               {t("game.input.outcome") + " " + select.requirements.outcome}
             </Typography>
             <Slider
+              data-testid="modal-game-input-outcome"
               name="outcome"
               defaultValue={0}
               value={select.inputs.outcome || 0}
@@ -283,14 +290,16 @@ export default function GameModal() {
         <DialogActions>
           <Button
             onClick={() => {
-              appStore.dispatch({ type: "sliceGameModal/close" });
+              appStore.dispatch({ type: "gameModalSlice/close" });
             }}
+            data-testid="modal-game-button-cancel"
           >
             {t("generic.button.close")}
           </Button>
           <LoadingButton
+            data-testid="modal-game-button-save"
             variant="contained"
-            onClick={() => serviceProceed("gameSave")}
+            onClick={() => changes.save()}
             disabled={select.disabled}
             loading={select.loading}
           >

@@ -37,7 +37,7 @@ export default function LanguageSwitcher() {
         onClick={openSwitcher} 
         size="small" 
         sx={{ ml: 2 }}
-        data-testid="appbar-localization-button" 
+        data-testid="component-localization-button-open menu"
       >
         <LanguageIcon sx={{ color: "white" }} />
       </IconButton>
@@ -48,13 +48,13 @@ export default function LanguageSwitcher() {
         MenuListProps={{
           "aria-labelledby": "basic-button",
         }}
-        data-testid="appbar-localization"
+        data-testid="component-localization-list"
       >
         {languages.map((language) => {
           return (
             <MenuItem
               key={random_id()}
-              data-testid={"appbar-localization-" + language + "-menuitem"}
+              data-testid={"component-localization-listitem-"+language}
               onClick={() => {
                 Cookies.set("cowhist19_language", language);
                 window.location.reload(false);

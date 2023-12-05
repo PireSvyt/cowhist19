@@ -33,21 +33,25 @@ export default function Table() {
 
   // Selects
   const select = {
-    authLoaded: useSelector((state) => state.sliceUserAuth.loaded),
-    tableDetailsLoaded: useSelector((state) => state.sliceTableDetails.loaded),
-    tableDenied: useSelector((state) => state.sliceTableDetails.denied),
-    signedin: useSelector((state) => state.sliceUserAuth.signedin),
-    name: useSelector((state) => state.sliceTableDetails.name),
+    authLoaded: useSelector((state) => state.authSlice.loaded),
+    signedin: useSelector((state) => state.authSlice.signedin),
+    tableState: useSelector((state) => state.tableSlice.state),
+    tableDenied: useSelector((state) => state.tableSlice.denied),
+    name: useSelector((state) => state.tableSlice.name),
     snackData: useSelector((state) => state.sliceSnack.snackData),
-    openTableModal: useSelector((state) => state.sliceTableModal.open),
-    openGameModal: useSelector((state) => state.sliceGameModal.open),
+    openTableModal: useSelector((state) => state.tableModalSlice.open),
+    openGameModal: useSelector((state) => state.gameModalSlice.open),
   };
 
+  console.log("select.authLoaded", select.authLoaded)
+  console.log("select.signedin", select.signedin)
+  console.log("select.tableState", select.tableState)
+  console.log("select.name", select.name)
+
   // Load at opening
-  if (select.authLoaded === true && select.signedin === true) {
-    if (select.tableDetailsLoaded === false) {
-      serviceTableGetDetails();
-    }
+  if (select.authLoaded === true && select.signedin === true && select.tableState.details === undefined) {
+    serviceTableGetDetails();    
+    serviceTableGetStats();  
   }
 
   function TabPanel(props) {
@@ -86,7 +90,7 @@ export default function Table() {
   }
 
   return (
-    <Box>
+    <Box data-testid="page-table">
       <Appbar
         route="table"
         title={select.name}
@@ -94,15 +98,15 @@ export default function Table() {
           appStore.dispatch({
             type: "sliceTableModal/open",
             payload: {
-              id: appStore.getState().sliceTableDetails.id,
-              name: appStore.getState().sliceTableDetails.name,
-              players: appStore.getState().sliceTableDetails.players,
+              tableid: appStore.getState().tableSlice.tableid,
+              name: appStore.getState().tableSlice.name,
+              players: appStore.getState().tableSlice.players,
             },
           });
         }}
       />
       <Box sx={{ height: 48 }} />
-      {select.authLoaded === false ? (
+      {select.authLoaded !== true ? (
         <Box sx={{ left: "10%", right: "10%" }}>
           <LinearProgress />
         </Box>
@@ -114,6 +118,7 @@ export default function Table() {
             flexDirection: "column",
             alignItems: "center",
           }}
+          data-testid="page-table-box-denied access"
         >
           <Typography
             sx={{ mt: 2, mb: 2, whiteSpace: "pre-line" }}
@@ -138,6 +143,7 @@ export default function Table() {
             }}
             variant={"contained"}
             sx={{ mt: 2, mb: 2 }}
+            data-testid="page-table-button-to home"
           >
             {t("generic.button.tohome")}
           </Button>
@@ -149,17 +155,20 @@ export default function Table() {
               borderBottom: 1,
               borderColor: "divider",
             }}
+            data-testid="page-table-box-granted access"
           >
             <Tabs value={tab} onChange={changeTab} variant="fullWidth">
               <Tab
                 label={t("table.label.stats")}
                 id="tab-0"
                 aria-controls="tabpanel-0"
+                data-testid="page-table-box-analytics tab"
               />
               <Tab
                 label={t("table.label.history")}
                 id="tab-1"
                 aria-controls="tabpanel-1"
+                data-testid="page-table-box-history tab"
               />
             </Tabs>
           </Box>
@@ -174,8 +183,9 @@ export default function Table() {
             color="primary"
             sx={{ position: "fixed", bottom: 20, right: 20 }}
             onClick={() => {
-              appStore.dispatch({ type: "sliceGameModal/new" });
+              appStore.dispatch({ type: "gameModalSlice/new" });
             }}
+            data-testid="page-table-button-new game"
           >
             {t("table.button.newgame")}
           </Fab>
@@ -184,7 +194,7 @@ export default function Table() {
           {select.openTableModal === true ? <TableModal /> : null}
           {select.openGameModal === true ? <GameModal /> : null}
 
-          <Snack data-testid="componentSnack" data={select.snackData} />
+          <Snack data={select.snackData} />
         </Box>
       )}
     </Box>

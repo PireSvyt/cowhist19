@@ -9,6 +9,8 @@ async function serviceProceed(serviceProceedInputs, log = []) {
     console.log("serviceProceed");
   }
 
+  let debugProceed = true
+
   try {
     // Lock UI
     if (serviceProceedInputs.lockuifunction !== undefined) {
@@ -28,12 +30,14 @@ async function serviceProceed(serviceProceedInputs, log = []) {
         );
       }
     }
-    console.log("log")
-    log.forEach(l => {console.log(l)})
-    console.log("serviceInputs")
-    Object.keys(serviceInputs).forEach(k => {
-      console.log(k,serviceInputs[k])
-    })
+    if (debugProceed) {
+      console.log("log")
+      log.forEach(l => {console.log(l)})
+      console.log("serviceInputs")
+      Object.keys(serviceInputs).forEach(k => {
+        console.log(k,serviceInputs[k])
+      })
+    }
 
     // Inputs checks
     let proceedCheckOutcome = undefined;
@@ -43,18 +47,21 @@ async function serviceProceed(serviceProceedInputs, log = []) {
         serviceProceedInputs.sercivechecks,
       );
     }
-
-    console.log("proceedCheckOutcome")
-    Object.keys(proceedCheckOutcome).forEach(k => {
-      console.log(k,proceedCheckOutcome[k])
-    })
+    if (debugProceed) {
+      console.log("proceedCheckOutcome")
+      Object.keys(proceedCheckOutcome).forEach(k => {
+        console.log(k,proceedCheckOutcome[k])
+      })
+    }
 
     if (serviceProceedInputs.getcheckoutcomedispatchfunction !== undefined) {
 
-      console.log("serviceInputs")
-      Object.keys(serviceInputs).forEach(k => {
-        console.log(k,serviceInputs[k])
-      })
+      if (debugProceed) {
+        console.log("serviceInputs")
+        Object.keys(serviceInputs).forEach(k => {
+          console.log(k,serviceInputs[k])
+        })
+      }
 
       if (proceedCheckOutcome.stateChanges !== undefined) {
         appStore.dispatch({
@@ -75,22 +82,24 @@ async function serviceProceed(serviceProceedInputs, log = []) {
           );
         }
       }
-
-      console.log("serviceInputs")
-      Object.keys(serviceInputs).forEach(k => {
-        console.log(k,serviceInputs[k])
-      })
+      if (debugProceed) {
+        console.log("serviceInputs")
+        Object.keys(serviceInputs).forEach(k => {
+          console.log(k,serviceInputs[k])
+        })
+      }
 
       // API call
       let proceedResponse = await serviceProceedInputs.apicall(
         serviceInputs.inputs,
         log,
       );
-
-      console.log("proceedResponse")
-      Object.keys(proceedResponse).forEach(k => {
-        console.log(k,proceedResponse[k])
-      })
+      if (debugProceed) {
+        console.log("proceedResponse", proceedResponse)
+        //Object.keys(proceedResponse).forEach(k => {
+        //  console.log(k,proceedResponse[k])
+        //})
+      }
 
       // Response management     
       if (serviceProceedInputs.getmanageresponsefunction !== undefined) {
@@ -149,7 +158,9 @@ async function serviceProceed(serviceProceedInputs, log = []) {
       console.log("service caught error");
       console.log(err);
     }
-    console.log(log);
+    if (debugProceed) {
+      console.log(log);
+    }
     // Post error command
     if (serviceProceedInputs.unlockuifunction !== undefined) {
       serviceProceedInputs.unlockuifunction(log);

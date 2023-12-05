@@ -13,7 +13,10 @@ export default function MyStats() {
   const { t } = useTranslation();
 
   return (
-    <Box sx={{ m: 2 }}>
+    <Box 
+      sx={{ m: 2 }}
+      data-testid="component-my stats"
+    >
       <Typography variant="h6" component="span">
         {t("home.label.mystats")}
       </Typography>

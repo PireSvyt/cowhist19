@@ -65,9 +65,9 @@ export default function Appbar(props) {
       setMenuOpen(false);
       window.location = "/";
     },
-    toDocumentation: () => {
+    toHelp: () => {
       setMenuOpen(false);
-      window.location = "/documentation";
+      window.location = "/help";
     },
     toAbout: () => {
       setMenuOpen(false);
@@ -135,10 +135,10 @@ export default function Appbar(props) {
       onclick: action.toHome,
       signed: true,
     },
-    toDocumentation: {
-      item: "documentation",
-      label: "generic.menu.documentation",
-      onclick: action.toDocumentation,
+    toHelp: {
+      item: "help",
+      label: "generic.menu.help",
+      onclick: action.toHelp,
       signed: false,
     },
     toAbout: {
@@ -167,7 +167,7 @@ export default function Appbar(props) {
   switch (props.route) {
     case "home":
       menuItems.push(potentialMenuItems.toAccount);
-      menuItems.push(potentialMenuItems.toDocumentation);
+      menuItems.push(potentialMenuItems.toHelp);
       menuItems.push(potentialMenuItems.toAbout);
       if (select.priviledges.includes("admin")) {
         menuItems.push(potentialMenuItems.toAdmin);
@@ -179,7 +179,7 @@ export default function Appbar(props) {
     case "table":
       menuItems.push(potentialMenuItems.toHome);
       menuItems.push(potentialMenuItems.toAccount);
-      menuItems.push(potentialMenuItems.toDocumentation);
+      menuItems.push(potentialMenuItems.toHelp);
       menuItems.push(potentialMenuItems.toAbout);
       if (select.priviledges.includes("admin")) {
         menuItems.push(potentialMenuItems.toAdmin);
@@ -215,7 +215,7 @@ export default function Appbar(props) {
           bottom: "auto",
         }}
         color={props.route === "admin" ? "error" : "primary"}
-        data-testid="appbar" 
+        data-testid="component-app bar" 
       >
         <Toolbar>
           <Box
@@ -238,7 +238,7 @@ export default function Appbar(props) {
                 variant="h6" 
                 component="div" 
                 sx={{ flexGrow: 1 }}
-                data-testid="appbar-title" 
+                data-testid="component-app bar-text-title" 
               >
                 {props.title}
               </Typography>
@@ -249,7 +249,7 @@ export default function Appbar(props) {
                   size="large"
                   color="inherit"
                   onClick={props.edittable}
-                  data-testid="appbar-editable-button" 
+                  data-testid="component-app bar-button-edit table" 
                 >
                   <EditIcon />
                 </IconButton>
@@ -270,7 +270,7 @@ export default function Appbar(props) {
                   <IconButton 
                     size="large" 
                     onClick={action.openMenu}
-                    data-testid="appbar-menu-button" 
+                    data-testid="component-app bar-button-open menu" 
                   >
                     <MenuIcon sx={{ color: "white" }} />
                   </IconButton>
@@ -282,14 +282,14 @@ export default function Appbar(props) {
                     MenuListProps={{
                       "aria-labelledby": "basic-button",
                     }}
-                    data-testid="appbar-menu" 
+                    data-testid="list-app bar menu" 
                   >
                     {menuItems.map((item) => {
                       if (item.signed && select.signedin) {
                         return (
                           <MenuItem
                             hidden={!(item.signed && select.signedin)}
-                            data-testid={"appbar-menu-menuitem-" + item.item }
+                            data-testid={"list-app bar menu-listitem"}
                             key={random_id()}
                             onClick={item.onclick}
                           >
@@ -301,7 +301,7 @@ export default function Appbar(props) {
                           return (
                             <MenuItem
                               hidden={!(item.signed && select.signedin)}
-                              data-testid={"appbar-menu-menuitem-" + item.item }
+                              data-testid={"list-app bar menu-listitem"}
                               key={random_id()}
                               onClick={item.onclick}
                             >
@@ -320,7 +320,7 @@ export default function Appbar(props) {
                   size="large"
                   color="inherit"
                   onClick={() => history.back()}
-                  data-testid="appbar-menu-close-button" 
+                  data-testid="component-app bar-button-close menu" 
                 >
                   <CloseIcon />
                 </IconButton>

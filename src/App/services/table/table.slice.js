@@ -18,7 +18,11 @@ const tableSlice = createSlice({
     lock: (state, action) => {
       state.state[action.payload.scope] = "locked";
     },
-    unload: () => {},
+    unload: (state, action) => {
+      console.log("tableSlice.unload")
+      delete state.state.stats;
+      delete state.state.history;
+    },
     setDetails: (state, action) => {
       console.log("tableSlice.setDetails", action.payload)
       state.tableid = action.payload.tableid;

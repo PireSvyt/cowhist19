@@ -1,14 +1,21 @@
+// Inputs
+import {
+  gameCreateInputs
+} from "./game.service.inputs.js";
 // APIs
-import { apiGameCreate, apiGameDelete } from "./game.api.js";
+import { apiGameDelete } from "./game.api.js";
 // Services
 import { random_id } from "../_miscelaneous/toolkit.js";
+import serviceProceed from "../_miscelaneous/serviceProceed.js";
 // Reducers
 import appStore from "../../store/appStore.js";
+
 
 export async function serviceGameCreate() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("serviceGameCreate");
   }
+  serviceProceed(gameCreateInputs);
 }
 
 export async function serviceGameDelete(gamieid) {

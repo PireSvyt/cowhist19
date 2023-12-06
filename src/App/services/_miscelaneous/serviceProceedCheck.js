@@ -1,3 +1,5 @@
+let debugProceedCheck = true
+
 function serviceProceedCheck(serviceInputs, serciveChecks) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("serviceProceedCheck");
@@ -22,12 +24,13 @@ function serviceProceedCheck(serviceInputs, serciveChecks) {
     }
   }
   function checkField(field, check) {
-    //console.log("serviceProceedCheck.checkField ", field, check)
+    if (debugProceedCheck) {
+      console.log("serviceProceedCheck.checkField ", field, check)
+    }
     if (field === undefined || field === null) {
       failedCheck(check);
     } else {
       let fieldIsOK = true;
-      //console.log("typeof field ", typeof field)
       switch (typeof field) {
         case "string":
           if (field === "") {
@@ -48,7 +51,6 @@ function serviceProceedCheck(serviceInputs, serciveChecks) {
           }
           break;
         case "boolean":
-          console.log("serviceProceedCheck.checkField.boolean",check)
           if (field !== true & field !== false) {
             failedCheck(check);
             fieldIsOK = false;
@@ -66,13 +68,22 @@ function serviceProceedCheck(serviceInputs, serciveChecks) {
       }
       // Custom checks
       if (check.checkfunction !== undefined) {
+        if (debugProceedCheck) {
+          console.log("serviceProceedCheck.checkField.checkfunction", check.checkfunction, serviceInputs)
+        }
         if (check.checkfunction(serviceInputs) === "fail") {
           failedCheck(check);
           fieldIsOK = false;
         }
       }
+      if (debugProceedCheck) {
+        console.log("serviceProceedCheck.checkField fieldIsOK", fieldIsOK)
+      }
       // Subsequent checks
       if (fieldIsOK && check.subchecks !== undefined) {
+        if (debugProceedCheck) {
+          console.log("serviceProceedCheck.checkField.subchecks")
+        }
         check.subchecks.forEach((subcheck) => {
           if (subcheck.field === undefined) {
             checkField(field, subcheck);
@@ -85,10 +96,23 @@ function serviceProceedCheck(serviceInputs, serciveChecks) {
   }
 
   // Run checks
-  //console.log("serviceInputs", serviceInputs)
+  if (debugProceedCheck) {
+    console.log("serviceProceedCheck ", serviceInputs, serciveChecks)
+  }
   serciveChecks.forEach((check) => {
+    if (debugProceedCheck) {
+      console.log("serviceProceedCheck.check ", check)
+    }
     checkField(serviceInputs[check.field], check);
   });
+  if (debugProceedCheck) {
+    console.log("serviceProceedCheck.outcome ", {
+      stateChanges: stateChanges,
+      proceed: proceed,
+      errors: errors,
+      confirmation: confirmation,
+    })
+  }
 
   // Outcome
   return {

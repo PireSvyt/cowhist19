@@ -31,7 +31,8 @@ const gameModalSlice = createSlice({
         open: false,
         disabled: false,
         loading: false,
-        contracts: {},
+        gameid: "",
+        contracts: [],
     },
     reducers: {
         new: (state) => {
@@ -39,70 +40,71 @@ const gameModalSlice = createSlice({
             state.open = true;
             state.disabled = false;
             state.loading = false;
-            state.contracts[random_id()] = newContract
+            state.gameid = "";
+            state.contracts = [ newContract ]
         },
         contractAdd: (state) => {
             // Adds a new contract
-            state.contracts[random_id()] = newContract
+            state.contracts.push(newContract)
         },
         contractRemove: (state, action) => {
             // Removes a new contract
-            delete state.contracts[action.payload.id]
+            delete state.contracts[action.payload.contractposition]
         },
         close: (state) => {
             // Close the modal and replace all stored values
             state.open = false;
             state.disabled = false;
             state.loading = false;
+            state.gameid = "";
             state.contracts = {}
         },
         change: (state, action) => {
             if (action.payload.open !== undefined) {
                 state.open = action.payload.open;
             }
+            console.log("gameModalSlice.change", action.payload)
             // Contract related actions
-            if (action.payload.contracts !== undefined) {
-                Object.keys(action.payload.contracts).forEach(c => {
-                    // Inputs
-                    if (action.payload.contracts[c] !== undefined) {
-                        if (action.payload.contracts[c].inputs.contract !== undefined) {
-                            state.contracts[c].inputs.contract = action.payload.contracts[c].contract;
-                        }
-                        if (action.payload.contracts[c].players !== undefined) {
-                            state.contracts[c].inputs.players = action.payload.contracts[c].players;
-                        }
-                        if (action.payload.contracts[c].outcome !== undefined) {
-                            state.contracts[c].inputs.outcome = action.payload.contracts[c].outcome;
-                        }
+            if (action.payload.contractid !== undefined) {
+                // Inputs
+                if (action.payload.inputs !== undefined) {
+                    if (action.payload.inputs.contract !== undefined) {
+                        state.contracts[action.payload.contractid].inputs.contract = action.payload.inputs.contract;
                     }
-                    // Errors
-                    if (action.payload.errors !== undefined) {
-                        if (action.payload.contracts[c].errors.contract !== undefined) {
-                            state.contracts[c].errors.contract = action.payload.contracts[c].errors.contract;
-                        }
-                        if (action.payload.contracts[c].errors.attack !== undefined) {
-                            state.contracts[c].errors.attack = action.payload.contracts[c].errors.attack;
-                        }
-                        if (action.payload.contracts[c].errors.defense !== undefined) {
-                            state.contracts[c].errors.defense = action.payload.contracts[c].errors.defense;
-                        }
-                        if (action.payload.contracts[c].errors.outcome !== undefined) {
-                            state.contracts[c].errors.outcome = action.payload.contracts[c].errors.outcome;
-                        }
+                    if (action.payload.inputs.players !== undefined) {
+                        state.contracts[action.payload.contractid].inputs.players = action.payload.inputs.players;
                     }
-                    // Requirements
-                    if (action.payload.requirements !== undefined) {
-                        if (action.payload.contracts[c].requirements.attack !== undefined) {
-                            state.contracts[c].requirements.attack = action.payload.contracts[c].requirements.attack;
-                        }
-                        if (action.payload.contracts[c].requirements.defense !== undefined) {
-                            state.contracts[c].requirements.defense = action.payload.contracts[c].requirements.defense;
-                        }
-                        if (action.payload.contracts[c].requirements.outcome !== undefined) {
-                            state.contracts[c].requirements.outcome = action.payload.contracts[c].requirements.outcome;
-                        }
+                    if (action.payload.inputs.outcome !== undefined) {
+                        state.contracts[action.payload.contractid].inputs.outcome = action.payload.inputs.outcome;
                     }
-                })
+                }
+                // Errors
+                if (action.payload.errors !== undefined) {
+                    if (action.payload.errors.contract !== undefined) {
+                        state.contracts[action.payload.contractid].errors.contract = action.payload.errors.contract;
+                    }
+                    if (action.payload.errors.attack !== undefined) {
+                        state.contracts[action.payload.contractid].errors.attack = action.payload.errors.attack;
+                    }
+                    if (action.payload.errors.defense !== undefined) {
+                        state.contracts[action.payload.contractid].errors.defense = action.payload.errors.defense;
+                    }
+                    if (action.payload.errors.outcome !== undefined) {
+                        state.contracts[action.payload.contractid].errors.outcome = action.payload.errors.outcome;
+                    }
+                }
+                // Requirements
+                if (action.payload.requirements !== undefined) {
+                    if (action.payload.requirements.attack !== undefined) {
+                        state.contracts[action.payload.contractid].requirements.attack = action.payload.requirements.attack;
+                    }
+                    if (action.payload.requirements.defense !== undefined) {
+                        state.contracts[action.payload.contractid].requirements.defense = action.payload.requirements.defense;
+                    }
+                    if (action.payload.requirements.outcome !== undefined) {
+                        state.contracts[action.payload.contractid].requirements.outcome = action.payload.requirements.outcome;
+                    }
+                }
             }
             // Lock
             if (action.payload.disabled !== undefined) {
@@ -119,10 +121,5 @@ const gameModalSlice = createSlice({
         },
     },
 });
-
-export const selectGameModal_open = state => state.open
-export const selectGameModal_disabled = state => state.disabled
-export const selectGameModal_loading = state => state.loading
-export const selectGameModal_contracts = state => state.contracts
 
 export default gameModalSlice.reducer;

@@ -42,15 +42,17 @@ export default function Table() {
     openTableModal: useSelector((state) => state.tableModalSlice.open),
     openGameModal: useSelector((state) => state.gameModalSlice.open),
   };
-
+  /*
   console.log("select.authLoaded", select.authLoaded)
   console.log("select.signedin", select.signedin)
   console.log("select.tableState", select.tableState)
   console.log("select.name", select.name)
-
+  */
   // Load at opening
   if (select.authLoaded === true && select.signedin === true && select.tableState.details === undefined) {
     serviceTableGetDetails();    
+  }
+  if (select.authLoaded === true && select.signedin === true && select.tableState.stats === undefined) {
     serviceTableGetStats();  
   }
 
@@ -71,13 +73,13 @@ export default function Table() {
   function changeTab(event, newTabIndex) {
     switch (newTabIndex) {
       case 0:
-        if (appStore.getState().sliceTableStats.state === "available") {
+        if (select.tableState.stats !== "available") {
           serviceTableGetStats();
         }
         setTab(newTabIndex);
         break;
       case 1:
-        if (appStore.getState().sliceTableHistory.state === "available") {
+        if (select.tableState.history !== "available") {
           serviceTableGetHistory();
         }
         setTab(newTabIndex);

@@ -10,13 +10,8 @@ import {
 } from "./auth.service.inputs.js";
 // APIs
 import {
-  apiAuthSignUp,
   apiAuthActivate,
-  apiAuthSendActivation,
-  apiAuthSignIn,
   apiAuthAssess,
-  apiAuthSendPassword,
-  apiAuthExistingPseudo,
 } from "./auth.api.js";
 // Services
 import { random_id } from "../_miscelaneous/toolkit.js";

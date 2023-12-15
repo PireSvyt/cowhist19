@@ -9,16 +9,25 @@ export default function PlayerCard(props) {
     console.log("PlayerCard " + props.player.userid);
   }
 
-  // Handles
-  function removeUser() {
-    appStore.dispatch({
-      type: "tableModalSlice/removeuser",
-      payload: props.player.userid,
-    });
+  // Changes
+  let changes = {
+    remove : () => {
+      appStore.dispatch({
+        type: "tableModalSlice/removeuser",
+        payload: props.player.userid,
+      });
+  } 
   }
 
   return (
-    <Card sx={{ width: "100%", p: 1 }}>
+    <Card 
+      sx={{ 
+        width: "100%", 
+        p: 1 
+      }}
+      data-testid={"list-players-listitem"}
+      index={props.index}
+    >
       <Box
         sx={{
           display: "flex",
@@ -26,11 +35,10 @@ export default function PlayerCard(props) {
           justifyContent: "space-between",
           alignItems: "center",
         }}
-        data-testid={"list-players-listitem"}
       >
         <Typography>{props.player.pseudo}</Typography>
         <IconButton 
-          onClick={removeUser}
+          onClick={changes.remove}
           data-testid={"list-players-button-remove player"}
           id={props.player.userid}
           label={props.player.pseudo}

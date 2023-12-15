@@ -25,11 +25,27 @@ export default function MyTables() {
   // i18n
   const { t } = useTranslation();
 
+  let c = -1
+
   // Selects
   const select = {
     loaded: useSelector((state) => state.userSlice.loaded),
     tables: useSelector((state) => state.userSlice.tables),
   };
+
+  // Changes
+  let changes = {
+    new: () => {
+      appStore.dispatch({
+        type: "tableModalSlice/new",
+        payload: {
+          userid: appStore.getState().userSlice.userid,
+          pseudo: appStore.getState().userSlice.pseudo,
+          status: appStore.getState().userSlice.status,
+        },
+      });
+    }
+  }
 
   return (
     <Box 
@@ -42,16 +58,7 @@ export default function MyTables() {
         <IconButton
           data-testid="component-my tables-button-new table"
           sx={{ p: 2 }}
-          onClick={() => {
-            appStore.dispatch({
-              type: "tableModalSlice/new",
-              payload: {
-                userid: appStore.getState().userSlice.userid,
-                pseudo: appStore.getState().userSlice.pseudo,
-                status: appStore.getState().userSlice.status,
-              },
-            });
-          }}
+          onClick={changes.new}
         >
           <AddIcon />
         </IconButton>
@@ -98,13 +105,17 @@ export default function MyTables() {
           dense={true}
           data-testid="list-my tables"
         >
-          {select.tables.map((table) => (
-            <ListItem 
-              key={"table-" + table.tableid}
-            >
-              <TableCard table={table} />
-            </ListItem>
-          ))}
+          {select.tables.map((table) => {
+            c += 1
+            return(
+              <ListItem 
+                key={"table-" + table.tableid}
+                index={c}
+              >
+                <TableCard table={table} />
+              </ListItem>
+            )
+          })}
         </List>
       )}
     </Box>

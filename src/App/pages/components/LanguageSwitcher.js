@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Cookies from "js-cookie";
 import { useTranslation } from "react-i18next";
-import { IconButton, Typography, Menu, MenuItem, Box } from "@mui/material";
+import { IconButton, Menu, MenuItem, Box } from "@mui/material";
 
 import LanguageIcon from "@mui/icons-material/Language.js";
 

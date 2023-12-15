@@ -69,9 +69,17 @@ export const authSignupInputs = {
               // Check email validity
               checkfunction: (serviceInputs) => {
                 if (!validateEmail(serviceInputs.inputs.login)) {
-                  return "fail";
+                  return { 
+                    errors: ["generic.error.invalidlogin"],
+                    stateChanges: {
+                      errors: { 
+                        login : true
+                      }
+                    },
+                    proceed: false 
+                  };
                 } else {
-                  return "pass";
+                  return { proceed: true };
                 }
               },
               error: "generic.error.invalidlogin",
@@ -95,9 +103,17 @@ export const authSignupInputs = {
               // Check password match
               checkfunction: (serviceInputs) => {
                 if (serviceInputs.inputs.password !== serviceInputs.inputs.passwordrepeat) {
-                  return "fail";
+                  return { 
+                    errors: ["generic.error.passwordmissmatch"],
+                    stateChanges: {
+                      errors: { 
+                        passwordrepeat : true
+                      }
+                    },
+                    proceed: false 
+                  };
                 } else {
-                  return "pass";
+                  return { proceed: true };
                 }
               },
               error: "generic.error.passwordmissmatch",
@@ -281,9 +297,17 @@ export const authSigninInputs = {
               // Check email validity
               checkfunction: (serviceInputs) => {
                 if (!validateEmail(serviceInputs.inputs.login)) {
-                  return "fail";
+                  return { 
+                    errors: ["generic.error.invalidlogin"],
+                    stateChanges: {
+                      errors: { 
+                        login : true
+                      }
+                    },
+                    proceed: false 
+                  };
                 } else {
-                  return "pass";
+                  return { proceed: true };
                 }
               },
               error: "generic.error.invalidlogin",
@@ -498,9 +522,17 @@ export const authSendActivationInputs = {
               // Check email validity
               checkfunction: (serviceInputs) => {
                 if (!validateEmail(serviceInputs.inputs.login)) {
-                  return "fail";
+                  return { 
+                    errors: ["generic.error.invalidlogin"],
+                    stateChanges: {
+                      errors: { 
+                        login : true
+                      }
+                    },
+                    proceed: false 
+                  };
                 } else {
-                  return "pass";
+                  return { proceed: true };
                 }
               },
               error: "generic.error.invalidlogin",
@@ -667,9 +699,17 @@ export const authSendPasswordInputs = {
               // Check email validity
               checkfunction: (serviceInputs) => {
                 if (!validateEmail(serviceInputs.inputs.login)) {
-                  return "fail";
+                  return { 
+                    errors: ["generic.error.invalidlogin"],
+                    stateChanges: {
+                      errors: { 
+                        login : true
+                      }
+                    },
+                    proceed: false 
+                  };
                 } else {
-                  return "pass";
+                  return { proceed: true };
                 }
               },
               error: "generic.error.invalidlogin",

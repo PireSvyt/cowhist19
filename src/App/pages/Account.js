@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Paper, Button, Typography, Box } from "@mui/material";
@@ -19,13 +19,20 @@ export default function Account() {
 
   // Selects
   const select = {
-    authLoaded: useSelector((state) => state.sliceUserAuth.loaded),
-    signedin: useSelector((state) => state.sliceUserAuth.signedin),
-    detailsLoaded: useSelector((state) => state.sliceUserDetails.loaded),
-    login: useSelector((state) => state.sliceUserDetails.login),
-    pseudo: useSelector((state) => state.sliceUserDetails.pseudo),
+    authLoaded: useSelector((state) => state.authSlice.loaded),
+    signedin: useSelector((state) => state.authSlice.signedin),
+    detailsLoaded: useSelector((state) => state.userSlice.loaded),
+    login: useSelector((state) => state.userSlice.login),
+    pseudo: useSelector((state) => state.userSlice.pseudo),
     tocomeData: useSelector((state) => state.sliceToComeModal.tocomeData),
   };
+
+  // Changes
+  let changes = {
+    tocome: () => {
+      appStore.dispatch({ type: "sliceToComeModal/open" });
+    }
+  }
 
   return (
     <div>
@@ -72,9 +79,7 @@ export default function Account() {
                     width: "80%",
                     m: 1,
                   }}
-                  onClick={() => {
-                    appStore.dispatch({ type: "sliceToComeModal/open" });
-                  }}
+                  onClick={changes.tocome}
                   data-testid="page-account-button-change pseudo"
                 >
                   {t("account.button.changepseudo")}
@@ -99,9 +104,7 @@ export default function Account() {
                     width: "80%",
                     m: 1,
                   }}
-                  onClick={() => {
-                    appStore.dispatch({ type: "sliceToComeModal/open" });
-                  }}
+                  onClick={changes.tocome}
                   data-testid="page-account-button-change email"
                 >
                   {t("account.button.changeemail")}
@@ -123,9 +126,7 @@ export default function Account() {
                     width: "80%",
                     m: 1,
                   }}
-                  onClick={() => {
-                    appStore.dispatch({ type: "sliceToComeModal/open" });
-                  }}
+                  onClick={changes.tocome}
                   data-testid="page-account-button-change password"
                 >
                   {t("account.button.changepassword")}
@@ -164,9 +165,7 @@ export default function Account() {
                     width: "80%",
                     m: 1,
                   }}
-                  onClick={() => {
-                    appStore.dispatch({ type: "sliceToComeModal/open" });
-                  }}
+                  onClick={changes.tocome}
                   data-testid="page-account-button-merge accounts"
                 >
                   {t("account.button.merge")}
@@ -192,9 +191,7 @@ export default function Account() {
                     width: "80%",
                     m: 1,
                   }}
-                  onClick={() => {
-                    appStore.dispatch({ type: "sliceToComeModal/open" });
-                  }}
+                  onClick={changes.tocome}
                   data-testid="page-account-button-anonymize account"
                 >
                   {t("account.button.anonymize")}
@@ -220,9 +217,7 @@ export default function Account() {
                     width: "80%",
                     m: 1,
                   }}
-                  onClick={() => {
-                    appStore.dispatch({ type: "sliceToComeModal/open" });
-                  }}
+                  onClick={changes.tocome}
                   data-testid="page-account-button-close account"
                 >
                   {t("account.button.close")}

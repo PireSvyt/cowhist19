@@ -74,9 +74,12 @@ export const tableCreateInputs = {
               // Check that players list is not empty
               checkfunction: (serviceInputs) => {
                 if (serviceInputs.inputs.players.length === 0) {
-                  return "fail";
+                  return { 
+                    errors: ["table.error.creationwithoutplayers"],
+                    proceed: false 
+                  };
                 } else {
-                  return "pass";
+                  return { proceed: true };
                 }
               },
               error: "table.error.creationwithoutplayers",
@@ -90,9 +93,12 @@ export const tableCreateInputs = {
                         return p.userid === serviceInputs.userid;
                       }).length === 0
                     ) {
-                      return "fail";
+                      return { 
+                        errors: ["table.error.creationwithoutuser"],
+                        proceed: false 
+                      };
                     } else {
-                      return "pass";
+                      return { proceed: true };
                     }
                   },
                   error: "table.error.creationwithoutuser",
@@ -703,7 +709,6 @@ export const tableDeleteInputs = {
       },
     };
   },
-  sercivechecks: [],
   apicall: async (inputs, log) => {
     log.push({
       date: new Date(),

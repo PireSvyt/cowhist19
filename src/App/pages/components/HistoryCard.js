@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Box,
-  List,
-  ListItem,
   Card,
   Typography,
   IconButton,
+  List,
+  ListItem
 } from "@mui/material";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline.js";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -16,10 +16,11 @@ import { serviceGameDelete } from "../../services/game/game.services.js";
 import { serviceTableGetHistory } from "../../services/table/table.services.js";
 // Shared
 import ConfirmModal from "../modals/ConfirmModal.js";
+import { random_id } from "../../services/_miscelaneous/toolkit.js";
 
 export default function HistoryCard(props) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("HistoryCard " + props.game._id);
+    console.log("HistoryCard " + props.game.gameid);
   }
   // i18n
   const { t } = useTranslation();
@@ -35,7 +36,7 @@ export default function HistoryCard(props) {
       case "delete":
         setConfirmOpen(false);
         setDeleting(true);
-        serviceGameDelete(props.game._id).then(() => {
+        serviceGameDelete(props.game.gameid).then(() => {
           setDeleting(false);
           serviceTableGetHistory();
         });
@@ -45,24 +46,41 @@ export default function HistoryCard(props) {
     }
   }
 
-  function stringifyPlayers() {
+  function stringifyPlayers(contract) {
     let res = "";
+    let contractPlayers = {
+      attackPlayers: [],
+      defensePlayers: []
+    }
+    // 
+    Object.values(contract.players).forEach((gamePlayer) => {
+      let pseudoPlayer = props.players.filter((tablePlayer) => {
+        return tablePlayer.userid === gamePlayer.userid;
+      });
+      let readyGamePlayer = { ...gamePlayer };
+      if (pseudoPlayer.length > 0) {
+        readyGamePlayer.pseudo = pseudoPlayer[0].pseudo;
+      } else {
+        readyGamePlayer.pseudo = "a removed user";
+      }
+      contractPlayers[gamePlayer.role + "Players"].push(readyGamePlayer);
+    })
     // Attack
-    props.game.attackPlayers.forEach((gamePlayer) => {
+    contractPlayers.attackPlayers.forEach((gamePlayer) => {
       res = res + gamePlayer.pseudo + ", ";
     });
     res = res.slice(0, -2) + " " + t("game.label.against") + " ";
     // Defense
-    props.game.defensePlayers.forEach((gamePlayer) => {
+    contractPlayers.defensePlayers.forEach((gamePlayer) => {
       res = res + gamePlayer.pseudo + ", ";
     });
     return res.slice(0, -2);
   }
-  function stringifyOutcome() {
-    if (props.game.outcome >= 0) {
-      return t("game.label.won") + "  +" + props.game.outcome;
+  function stringifyOutcome(contract) {
+    if (contract.outcome >= 0) {
+      return t("game.label.won") + "  +" + contract.outcome;
     } else {
-      return t("game.label.lost") + "  " + props.game.outcome;
+      return t("game.label.lost") + "  " + contract.outcome;
     }
   }
   function stringifyDate() {
@@ -72,9 +90,15 @@ export default function HistoryCard(props) {
   }
 
   return (
-    <Card sx={{ width: "100%", p: 1 }}>
+    <Card 
+      data-testid="component-table history-listitem-game"
+      index={props.index}
+      sx={{ 
+        width: "100%", 
+        p: 1 
+      }}
+    >
       <Box
-        data-testid="component-table history-listitem-game"
         sx={{
           display: "flex",
           flexDirection: "row",
@@ -84,16 +108,12 @@ export default function HistoryCard(props) {
       >
         <Box>
           <Typography variant="caption">{stringifyDate()}</Typography>
-          <Typography sx={{ fontWeight: "bold" }}>
-            {t("game.label.contract." + props.game.contract) +
-              " " +
-              stringifyOutcome()}
-          </Typography>
         </Box>
 
         <IconButton 
           id={props.game.gameid}
           data-testid="component-table history-listitem-game-button-delete game"
+          index={props.index}
           onClick={() => setConfirmOpen(true)} disabled={deleting}
         >
           {deleting ? (
@@ -104,7 +124,26 @@ export default function HistoryCard(props) {
         </IconButton>
       </Box>
 
-      <Typography variant="body2">{stringifyPlayers()}</Typography>
+      <List 
+        dense={true} 
+        data-testid="component-history card-list-contract"
+      >
+        {props.game.contracts.map((contract) => {
+          return (
+            <ListItem key={"contract-" + props.game.gameid + "-" + random_id()}>   
+              <Box>
+                <Typography sx={{ fontWeight: "bold" }}>
+                  {t("game.label.contract." + contract.contract) +
+                    " " +
+                    stringifyOutcome(contract)}
+                </Typography>
+                <Typography variant="body2">{stringifyPlayers(contract)}</Typography>    
+              </Box>          
+            </ListItem>
+            
+          );
+        })}
+      </List>
 
       {confirmOpen === false ? null : (
         <ConfirmModal

@@ -4,12 +4,12 @@ import { random_id } from "./toolkit.js";
 // Reducers
 import appStore from "../../store/appStore.js";
 
+let debugProceed = false
+
 async function serviceProceed(serviceProceedInputs, log = []) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("serviceProceed");
   }
-
-  let debugProceed = true
 
   try {
     // Lock UI
@@ -124,6 +124,9 @@ async function serviceProceed(serviceProceedInputs, log = []) {
     } else {
       // When proceed outcome is false
       if (proceedCheckOutcome.errors.length > 0) {
+        if (debugProceed) {
+          console.log("proceedCheckOutcome.errors", proceedCheckOutcome.errors)
+        }
         if (serviceProceedInputs.unlockuifunction !== undefined) {
           serviceProceedInputs.unlockuifunction(log);
         }
@@ -159,6 +162,7 @@ async function serviceProceed(serviceProceedInputs, log = []) {
       console.log(err);
     }
     if (debugProceed) {
+      console.log("service caught error");
       console.log(log);
     }
     // Post error command

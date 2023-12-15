@@ -12,6 +12,7 @@ function serviceProceedCheck(serviceInputs, serciveChecks) {
 
   // Check functions
   function failedCheck(check) {
+    console.log(">> failedCheck", check)
     proceed = false;
     errors.push(check.error);
     // Fields to flag in error
@@ -25,12 +26,14 @@ function serviceProceedCheck(serviceInputs, serciveChecks) {
   }
   function checkField(field, check) {
     if (debugProceedCheck) {
-      console.log("serviceProceedCheck.checkField ", field, check)
+      console.log(">> >> serviceProceedCheck checkField", field)
     }
+    let fieldIsOK = true;
     if (field === undefined || field === null) {
+      console.log(">> >> serviceProceedCheck undefined field", field)
       failedCheck(check);
+      fieldIsOK = false;
     } else {
-      let fieldIsOK = true;
       switch (typeof field) {
         case "string":
           if (field === "") {
@@ -69,44 +72,71 @@ function serviceProceedCheck(serviceInputs, serciveChecks) {
       // Custom checks
       if (check.checkfunction !== undefined) {
         if (debugProceedCheck) {
-          console.log("serviceProceedCheck.checkField.checkfunction", check.checkfunction, serviceInputs)
+          console.log(">> >> serviceProceedCheck checkfunction", check.checkfunction, serviceInputs)
         }
-        if (check.checkfunction(serviceInputs) === "fail") {
-          failedCheck(check);
+        let checkFunctionOutcome = check.checkfunction(serviceInputs)
+        console.log(">> >> serviceProceedCheck.checkfunction ", check, checkFunctionOutcome)
+        if (checkFunctionOutcome.proceed === false) {
+          console.log(">> >> serviceProceedCheck.checkfunction proceed = false")
+          failedCheck(check)
+          console.log(">> >> serviceProceedCheck.checkfunction errors", checkFunctionOutcome.errors)
+          checkFunctionOutcome.errors.forEach(err => {
+            errors.push(err)
+          })
+          Object.keys(checkFunctionOutcome.stateChanges).forEach(key => {
+            stateChanges[key] = checkFunctionOutcome.stateChanges[key]
+          })
           fieldIsOK = false;
+        }
+        if (debugProceedCheck) {
+          console.log(">> >> serviceProceedCheck checkfunction outcome", checkFunctionOutcome)
         }
       }
       if (debugProceedCheck) {
-        console.log("serviceProceedCheck.checkField fieldIsOK", fieldIsOK)
+        console.log(">> >> serviceProceedCheck fieldIsOK", fieldIsOK)
       }
       // Subsequent checks
       if (fieldIsOK && check.subchecks !== undefined) {
         if (debugProceedCheck) {
-          console.log("serviceProceedCheck.checkField.subchecks")
+          console.log(">> >> serviceProceedCheck >> subchecks *** BEGIN ***")
+          console.log(">> >> >> check.subchecks", check.subchecks)
+          console.log(">> >> >> field", field)
         }
         check.subchecks.forEach((subcheck) => {
-          if (subcheck.field === undefined) {
-            checkField(field, subcheck);
-          } else {
+          console.log(">> >> >> subcheck", subcheck)
+          if (subcheck.field !== undefined) {
+            console.log(">> >> >> subcheck subfield", field[subcheck.field])
             checkField(field[subcheck.field], subcheck);
+          } else {
+            console.log(">> >> >> subcheck field")
+            checkField(field, subcheck);
           }
         });
+        if (debugProceedCheck) {
+          console.log(">> >> serviceProceedCheck >> subchecks *** END ***")
+          console.log(">> >> serviceProceedCheck current outcome", {
+            stateChanges: stateChanges,
+            proceed: proceed,
+            errors: errors,
+            confirmation: confirmation,
+          })
+        }
       }
     }
   }
 
   // Run checks
   if (debugProceedCheck) {
-    console.log("serviceProceedCheck ", serviceInputs, serciveChecks)
+    console.log(">> >> serviceProceedChecks ")
   }
   serciveChecks.forEach((check) => {
     if (debugProceedCheck) {
-      console.log("serviceProceedCheck.check ", check)
+      console.log(">> >> serviceProceedCheck check ", check, serviceInputs[check.field])
     }
     checkField(serviceInputs[check.field], check);
   });
   if (debugProceedCheck) {
-    console.log("serviceProceedCheck.outcome ", {
+    console.log("*********** serviceProceedCheck.outcome ", {
       stateChanges: stateChanges,
       proceed: proceed,
       errors: errors,

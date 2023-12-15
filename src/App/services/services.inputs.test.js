@@ -1,5 +1,15 @@
 require("@jest/globals");
 // Inputs
+import { 
+  authSignupInputs,
+  authSigninInputs,
+  authSendActivationInputs,
+  authSendPasswordInputs
+} from "./auth/auth.service.inputs.js";
+import { 
+  userGetDetailsInputs,
+  userInviteInputs
+} from "./user/user.service.inputs.js";
 import {
   tableCreateInputs,
   tableSaveInputs,
@@ -8,17 +18,29 @@ import {
   tableGetStatsInputs,
   tableDeleteInputs,
 } from "./table/table.services.inputs.js";
-import { gameCreateInputs } from "./game/game.services.inputs.js";
+import { 
+  gameCreateInputs 
+} from "./game/game.service.inputs.js";
+import { 
+  adminGetTablesByGamesInputs,
+} from "./admin/admin.services.inputs.js";
 
 describe("TEST OF INPUTS : services.inputs", () => {
   let testInputs = {
-    gameCreateInputs: gameCreateInputs,
+    authSignupInputs: authSignupInputs,
+    authSigninInputs: authSigninInputs,
+    authSendActivationInputs: authSendActivationInputs,
+    authSendPasswordInputs: authSendPasswordInputs,
+    userGetDetailsInputs: userGetDetailsInputs,
+    userInviteInputs: userInviteInputs,
     tableCreateInputs: tableCreateInputs,
     tableSaveInputs: tableSaveInputs,
     tableGetDetailsInputs: tableGetDetailsInputs,
     tableGetHistoryInputs: tableGetHistoryInputs,
     tableGetStatsInputs: tableGetStatsInputs,
     tableDeleteInputs: tableDeleteInputs,
+    gameCreateInputs: gameCreateInputs,
+    adminGetTablesByGamesInputs: adminGetTablesByGamesInputs,
   };
   let testLog = [];
   let input = undefined;

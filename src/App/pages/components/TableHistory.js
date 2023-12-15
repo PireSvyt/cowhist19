@@ -17,6 +17,8 @@ export default function TableHistory() {
   // i18n
   const { t } = useTranslation();
 
+  let c = -1
+
   // Selects
   const select = {
     tableState: useSelector((state) => state.tableSlice.state),
@@ -72,24 +74,14 @@ export default function TableHistory() {
           data-testid="component-table history-list-game"
         >
           {select.history.map((game) => {
-            let gameCard = { ...game };
-            gameCard.attackPlayers = [];
-            gameCard.defensePlayers = [];
-            Object.values(game.players).forEach((gamePlayer) => {
-              let pseudoPlayer = select.players.filter((tablePlayer) => {
-                return tablePlayer._id === gamePlayer._id;
-              });
-              let readyGamePlayer = { ...gamePlayer };
-              if (pseudoPlayer.length > 0) {
-                readyGamePlayer.pseudo = pseudoPlayer[0].pseudo;
-              } else {
-                readyGamePlayer.pseudo = "a removed user";
-              }
-              gameCard[gamePlayer.role + "Players"].push(readyGamePlayer);
-            });
+            c += 1
             return (
-              <ListItem key={"game-" + game._id}>
-                <HistoryCard game={gameCard} />
+              <ListItem key={"game-" + game.gameid}>
+                <HistoryCard 
+                  game={game} 
+                  players={select.players} 
+                  index={c} 
+                />
               </ListItem>
             );
           })}

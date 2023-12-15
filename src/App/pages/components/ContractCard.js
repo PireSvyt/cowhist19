@@ -1,13 +1,8 @@
 import * as React from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import {
-  Button,
   Box,
-  Dialog,Card, 
-  DialogActions,
-  DialogContent,
-  DialogTitle,
+  Card, 
   Typography,
   Slider,
   Select,
@@ -16,15 +11,14 @@ import {
   InputLabel,
   MenuItem,
   FormControl,
-  Chip,IconButton
+  Chip,
 } from "@mui/material";
-import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline.js";
 // Reducers
 import appStore from "../../store/appStore.js";
 
 export default function ContractCard(props) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("ContractCard " + props.contractid);
+    console.log("ContractCard " + props.contractposition);
   }
   // i18n
   const { t } = useTranslation();
@@ -40,7 +34,7 @@ export default function ContractCard(props) {
       appStore.dispatch({
         type: "gameModalSlice/change",
         payload: {
-            contractid : props.contractid,
+            contractposition : props.contractposition,
             inputs: { contract: e.target.value },
             errors: { contract: false },
             requirements: {
@@ -65,7 +59,7 @@ export default function ContractCard(props) {
       appStore.dispatch({
         type: "gameModalSlice/change",
         payload: {
-            contractid : props.contractid,
+            contractposition : props.contractposition,
             inputs: { players: newPlayers },
             errors: { attack: false },
         },
@@ -85,7 +79,7 @@ export default function ContractCard(props) {
       appStore.dispatch({
         type: "gameModalSlice/change",
         payload: {
-            contractid : props.contractid,
+            contractposition : props.contractposition,
             inputs: { players: newPlayers },
             errors: { defense: false },
         },
@@ -95,7 +89,7 @@ export default function ContractCard(props) {
         appStore.dispatch({
             type: "gameModalSlice/change",
             payload: {
-                contractid : props.contractid,
+                contractposition : props.contractposition,
                 inputs: { outcome: e.target.value },
                 errors: { outcome: false },
             },
@@ -104,18 +98,24 @@ export default function ContractCard(props) {
     remove: () => {
         appStore.dispatch({
             type: "gameModalSlice/removecontract",
-            payload: props.contractid,
+            payload: props.contractposition,
         });
     }
   };
   return (
-    <Card sx={{ width: "100%", p: 1 }}>
-        <Box
-        sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-evenly",
+    <Card 
+        sx={{ 
+            p: 1 
         }}
+        data-testid="modal-game-listitem-contract"
+        index={props.index}
+    >
+        <Box
+            sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-evenly",
+            }}
         >
         <FormControl variant="standard">
             <InputLabel>{t("game.input.contract")}</InputLabel>
@@ -124,7 +124,7 @@ export default function ContractCard(props) {
                 value={props.contract.inputs.contract}
                 onChange={changes.contract}
                 error={props.contract.errors.contract}
-                data-testid="modal-game-input-contract"
+                data-testid="modal-game-listitem-contract-input-contract"
             >
                 {props.contracts.map((contract) => (
                     <MenuItem key={contract.key} value={contract.key}>
@@ -136,7 +136,7 @@ export default function ContractCard(props) {
 
         <FormControl variant="standard">
             <Autocomplete
-            data-testid="modal-game-input-attack"
+            data-testid="modal-game-listitem-contract-input-attack"
             name="attack"
             multiple
             disableClearable
@@ -189,7 +189,7 @@ export default function ContractCard(props) {
 
         <FormControl variant="standard">
             <Autocomplete
-            data-testid="modal-game-input-defense"
+            data-testid="modal-game-listitem-contract-input-defense"
             name="defense"
             multiple
             disableClearable
@@ -246,7 +246,7 @@ export default function ContractCard(props) {
             {t("game.input.outcome") + " " + props.contract.requirements.outcome}
         </Typography>
         <Slider
-            data-testid="modal-game-input-outcome"
+            data-testid="modal-game-listitem-contract-input-outcome"
             name="outcome"
             defaultValue={0}
             value={props.contract.inputs.outcome || 0}

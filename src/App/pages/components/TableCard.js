@@ -1,5 +1,4 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
 import { Card, Typography } from "@mui/material";
 
 export default function TableCard(props) {
@@ -7,13 +6,19 @@ export default function TableCard(props) {
     console.log("TableCard " + props.table.tableid);
   }
 
+  // Changes
+  let changes = {
+    totable : () => {
+      window.location = "/table/" + props.table.tableid;
+    }
+  }
+
   return (
     <Card
       data-testid={"list-my tables-listitem"}
+      index={props.index}
       sx={{ width: "100%", p: 1 }}
-      onClick={() => {
-        window.location = "/table/" + props.table.tableid;
-      }}
+      onClick={changes.totable}
     >
       <Typography>{props.table.name}</Typography>
     </Card>

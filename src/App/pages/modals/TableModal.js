@@ -37,6 +37,8 @@ export default function TableModal() {
   // i18n
   const { t } = useTranslation();
 
+  let c = -1
+
   // Selects
   const select = {
     open: useSelector((state) => state.tableModalSlice.open),
@@ -84,14 +86,16 @@ export default function TableModal() {
       console.log("TableModal.invite");
       appStore.dispatch({type: "inviteModalSlice/open"})
     },
-    create: () => {
-      console.log("TableModal.create");
-      serviceTableCreate()
-    },
     save: () => {
-      console.log("TableModal.save");
-      serviceTableSave()
+      if (select.tableid === "") {
+        serviceTableCreate()
+      } else {
+        serviceTableSave()
+      }
     },
+    close: () => {
+      appStore.dispatch({ type: "tableModalSlice/close" });
+    }
   };
 
   // Constants
@@ -130,9 +134,7 @@ export default function TableModal() {
     <Box>
       <Dialog
         open={select.open}
-        onClose={() => {
-          appStore.dispatch({ type: "tableModalSlice/close" });
-        }}
+        onClose={changes.close}
         fullWidth={true}
         data-testid="modal-table"
       >
@@ -190,9 +192,7 @@ export default function TableModal() {
               </Typography>
               <IconButton
                 sx={{ p: 2 }}
-                onClick={() => {
-                  changes.invite()
-                }}
+                onClick={changes.invite}
                 data-testid="modal-table-button-invite player"
               >
                 <AddIcon />
@@ -268,13 +268,19 @@ export default function TableModal() {
                 dense={true} 
                 data-testid="list-players"
               >
-                {select.inputs.players.map((player) => (
-                  <ListItem 
-                    key={"player-" + player.userid}
-                  >
-                    <PlayerCard player={player} />
-                  </ListItem>
-                ))}
+                {select.inputs.players.map((player) => {
+                  c += 1
+                  return (
+                    <ListItem 
+                      key={"player-" + player.userid}
+                    >
+                      <PlayerCard 
+                        player={player} 
+                        index={c}
+                      />
+                    </ListItem>
+                  )
+                })}
               </List>
             )}
           </Box>
@@ -282,9 +288,7 @@ export default function TableModal() {
 
         <DialogActions>
           <Button
-            onClick={() => {
-              appStore.dispatch({ type: "tableModalSlice/close" });
-            }}
+            onClick={changes.close}
             data-testid="modal-table-button-cancel"
           >
             {t("generic.button.cancel")}
@@ -292,13 +296,7 @@ export default function TableModal() {
           <LoadingButton
             data-testid="modal-table-button-save"
             variant="contained"
-            onClick={() => {
-              if (select.tableid === "") {
-                changes.create()
-              } else {
-                changes.save()
-              }
-            }}
+            onClick={changes.save}
             disabled={select.disabled}
             loading={select.loading}
             color={

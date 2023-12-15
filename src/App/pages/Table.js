@@ -9,7 +9,6 @@ import ErrorIcon from "@mui/icons-material/Error";
 import Appbar from "./components/Appbar.js";
 import TableStats from "./components/TableStats.js";
 import TableHistory from "./components/TableHistory.js";
-import TableModal from "./modals/TableModal.js";
 import GameModal from "./modals/GameModal.js";
 import Snack from "./components/Snack/Snack2.js";
 // Services
@@ -39,7 +38,6 @@ export default function Table() {
     tableDenied: useSelector((state) => state.tableSlice.denied),
     name: useSelector((state) => state.tableSlice.name),
     snackData: useSelector((state) => state.sliceSnack.snackData),
-    openTableModal: useSelector((state) => state.tableModalSlice.open),
     openGameModal: useSelector((state) => state.gameModalSlice.open),
   };
   /*
@@ -48,6 +46,25 @@ export default function Table() {
   console.log("select.tableState", select.tableState)
   console.log("select.name", select.name)
   */
+
+  // Changes
+  let changes = {
+    edittable: () => {
+      console.log('Table.changes.edittable')
+      appStore.dispatch({
+        type: "tableModalSlice/open",
+        payload: {
+          tableid: appStore.getState().tableSlice.tableid,
+          name: appStore.getState().tableSlice.name,
+          players: appStore.getState().tableSlice.players,
+        },
+      });
+    },
+    newgame: () => {
+      appStore.dispatch({ type: "gameModalSlice/new" });
+    }
+  }
+
   // Load at opening
   if (select.authLoaded === true && select.signedin === true && select.tableState.details === undefined) {
     serviceTableGetDetails();    
@@ -73,15 +90,11 @@ export default function Table() {
   function changeTab(event, newTabIndex) {
     switch (newTabIndex) {
       case 0:
-        if (select.tableState.stats !== "available") {
-          serviceTableGetStats();
-        }
+        serviceTableGetStats();
         setTab(newTabIndex);
         break;
       case 1:
-        if (select.tableState.history !== "available") {
-          serviceTableGetHistory();
-        }
+        serviceTableGetHistory();
         setTab(newTabIndex);
         break;
       default:
@@ -96,16 +109,7 @@ export default function Table() {
       <Appbar
         route="table"
         title={select.name}
-        edittable={() => {
-          appStore.dispatch({
-            type: "sliceTableModal/open",
-            payload: {
-              tableid: appStore.getState().tableSlice.tableid,
-              name: appStore.getState().tableSlice.name,
-              players: appStore.getState().tableSlice.players,
-            },
-          });
-        }}
+        edittable={changes.edittable}
       />
       <Box sx={{ height: 48 }} />
       {select.authLoaded !== true ? (
@@ -164,36 +168,39 @@ export default function Table() {
                 label={t("table.label.stats")}
                 id="tab-0"
                 aria-controls="tabpanel-0"
-                data-testid="page-table-box-analytics tab"
+                data-testid="page-table-button-to analytics tab"
               />
               <Tab
                 label={t("table.label.history")}
                 id="tab-1"
                 aria-controls="tabpanel-1"
-                data-testid="page-table-box-history tab"
+                data-testid="page-table-button-to history tab"
               />
             </Tabs>
           </Box>
-          <TabPanel value={tab} index={0}>
+          <TabPanel 
+            value={tab} index={0}
+            data-testid="page-table-box-analytics tab"
+          >
             <TableStats />
           </TabPanel>
-          <TabPanel value={tab} index={1}>
+          <TabPanel 
+            value={tab} index={1}
+            data-testid="page-table-box-history tab"
+          >
             <TableHistory />
           </TabPanel>
           <Fab
             variant="extended"
             color="primary"
             sx={{ position: "fixed", bottom: 20, right: 20 }}
-            onClick={() => {
-              appStore.dispatch({ type: "gameModalSlice/new" });
-            }}
+            onClick={changes.newgame}
             data-testid="page-table-button-new game"
           >
             {t("table.button.newgame")}
           </Fab>
           <Box sx={{ height: 60 }} />
 
-          {select.openTableModal === true ? <TableModal /> : null}
           {select.openGameModal === true ? <GameModal /> : null}
 
           <Snack data={select.snackData} />

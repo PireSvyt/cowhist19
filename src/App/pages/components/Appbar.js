@@ -42,8 +42,8 @@ export default function Appbar(props) {
   // Selects
   const select = {
     signedin: useSelector((state) => state.authSlice.signedin),
-    tableDenied: useSelector((state) => state.sliceTableDetails.denied),
-    priviledges: useSelector((state) => state.sliceUserDetails.priviledges),
+    tableDenied: useSelector((state) => state.tableSlice.denied),
+    priviledges: useSelector((state) => state.userSlice.priviledges),
     //feedbackOpen: useSelector((state) => state.sliceFeedbackModal.open),
     snackOpen: useSelector((state) => state.sliceSnack.open),
     snackData: useSelector((state) => state.sliceSnack.snackData),

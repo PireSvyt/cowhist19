@@ -1,12 +1,13 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Box, Paper, Typography, List, ListItem } from "@mui/material";
-import LinearProgress from "@mui/material/LinearProgress";
 
 // Services
-import serviceGetTablesByPlayers from "../../services/OLD/serviceGetTablesByPlayers.js";
-import serviceGetTablesByGames from "../../services/OLD/serviceGetTablesByGames.js";
-import serviceGetUsersByStatus from "../../services/OLD/serviceGetUsersByStatus.js";
+import { 
+  serviceAdminGetTablesByPlayers,
+  serviceAdminGetTablesByGames,
+  serviceAdminGetUsersByStatus
+  } from "../../services/admin/admin.services.js";
 
 export default function AdminStats() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -15,34 +16,35 @@ export default function AdminStats() {
 
   // Selects
   const select = {
-    authLoaded: useSelector((state) => state.sliceUserAuth.loaded),
-    signedin: useSelector((state) => state.sliceUserAuth.signedin),
-    priviledges: useSelector((state) => state.sliceUserDetails.priviledges),
-    statsLoaded: useSelector((state) => state.sliceAdminStats.loaded),
-    stats: useSelector((state) => state.sliceAdminStats.stats),
-    statsState: useSelector((state) => state.sliceAdminStats.state),
+    authLoaded: useSelector((state) => state.authSlice.loaded),
+    signedin: useSelector((state) => state.authSlice.signedin),
+    priviledges: useSelector((state) => state.userSlice.priviledges),
+    adminStats: useSelector((state) => state.adminSlice.stats),
+    adminState: useSelector((state) => state.adminSlice.state),
   };
 
   // Load at opening
-  if (select.priviledges.includes("admin")) {
-    if (
-      select.statsLoaded.tablesbyplayers === false &&
-      select.statsState === "available"
+  if (select.authLoaded === true && 
+      select.signedin === true && 
+      select.priviledges.includes("admin")
     ) {
-      serviceGetTablesByPlayers();
-    }
-    if (
-      select.statsLoaded.tablesbygames === false &&
-      select.statsState === "available"
-    ) {
-      serviceGetTablesByGames();
-    }
-    if (
-      select.statsLoaded.usersbystatus === false &&
-      select.statsState === "available"
-    ) {
-      serviceGetUsersByStatus();
-    }
+      let isAvailable = true
+      Object.keys(select.adminState).forEach( k => {
+        if (select.adminState[k] === "locked") {
+          isAvailable = false
+        }
+      })
+      if (isAvailable) {
+        if (select.adminState.tablesbyplayers === undefined) {
+          serviceAdminGetTablesByPlayers();
+        }
+        if (select.adminState.tablesbygames === undefined) {
+          serviceAdminGetTablesByGames();
+        }
+        if (select.adminState.usersbystatus === undefined) {
+          serviceAdminGetUsersByStatus();
+        }
+      }
   }
 
   return (
@@ -53,7 +55,7 @@ export default function AdminStats() {
         </Typography>
         <Typography>{"Users by status"}</Typography>
         <List dense={true}>
-          {select.stats.usersbystatus.map((status) => {
+          {select.adminStats.usersbystatus.map((status) => {
             return (
               <ListItem key={"status-" + status._id}>
                 <Typography>{status.nbusers + " " + status._id}</Typography>
@@ -63,7 +65,7 @@ export default function AdminStats() {
         </List>
         <Typography>{"Tables by players"}</Typography>
         <List dense={true}>
-          {select.stats.tablesbyplayers.map((playernb) => {
+          {select.adminStats.tablesbyplayers.map((playernb) => {
             return (
               <ListItem key={"playernb-" + playernb._id}>
                 <Typography>
@@ -78,7 +80,7 @@ export default function AdminStats() {
         </List>
         <Typography>{"Tables by games"}</Typography>
         <List dense={true}>
-          {select.stats.tablesbygames.map((gamesnb) => {
+          {select.adminStats.tablesbygames.map((gamesnb) => {
             return (
               <ListItem key={"gamesnb-" + gamesnb._id}>
                 <Typography>

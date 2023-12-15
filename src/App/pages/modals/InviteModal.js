@@ -68,6 +68,9 @@ export default function InviteModal() {
       console.log("InviteModal.invite", appStore.getState().inviteModalSlice);
       serviceUserInvite()
     },
+    close: () => {
+      appStore.dispatch({ type: "inviteModalSlice/close" });
+    }
   };
 
   // Constants
@@ -78,9 +81,7 @@ export default function InviteModal() {
       <Dialog
         id="dialog_invite"
         open={select.open}
-        onClose={() => {
-          appStore.dispatch({ type: "inviteModalSlice/close" });
-        }}
+        onClose={changes.close}
         fullWidth={true}
         data-testid="modal-invite"
       >
@@ -140,9 +141,7 @@ export default function InviteModal() {
 
         <DialogActions>
           <Button
-            onClick={() => {
-              appStore.dispatch({ type: "inviteModalSlice/close" });
-            }}
+            onClick={changes.close}
             data-testid="modal-invite-button-cancel"
           >
             {t("generic.button.cancel")}

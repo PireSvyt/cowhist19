@@ -157,9 +157,12 @@ import {
                         // Check email validity
                         checkfunction: (serviceInputs) => {
                           if (!validateEmail(serviceInputs.inputs.login)) {
-                              return "fail";
+                            return { 
+                              errors: ["generic.error.invalidlogin"],
+                              proceed: false 
+                            };
                           } else {
-                              return "pass";
+                            return { proceed: true };
                           }
                         },
                         error: "generic.error.invalidlogin",
@@ -178,9 +181,12 @@ import {
                         checkfunction: (serviceInputs) => {
                           console.log("userInviteInputs.sercivechecks.acknowledgement.checkfunction", serviceInputs)
                           if (!serviceInputs.inputs.acknowledgement) {
-                              return "fail";
+                            return { 
+                              errors: ["invite.error.missingacknowledgement"],
+                              proceed: false 
+                            };
                           } else {
-                              return "pass";
+                            return { proceed: true };
                           }
                         },
                         error: "invite.error.missingacknowledgement",

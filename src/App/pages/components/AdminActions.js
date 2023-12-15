@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Paper, Typography, Button } from "@mui/material";
 
 // Services
-import servicePopulate from "../../services/OLD/servicePopulate.js";
+import { serviceAdminPopulate } from "../../services/admin/admin.services.js";
 
 export default function AdminActions() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
@@ -22,7 +22,7 @@ export default function AdminActions() {
             width: "80%",
             m: 1,
           }}
-          onClick={() => servicePopulate()}
+          onClick={() => serviceAdminPopulate()}
         >
           {"Populate DB"}
         </Button>

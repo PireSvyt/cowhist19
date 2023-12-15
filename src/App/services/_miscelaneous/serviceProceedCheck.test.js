@@ -221,9 +221,9 @@ describe("TEST OF SERVICE : serviceProceedCheck", () => {
             fieldsinerror: ["fieldList"],
             checkfunction: (serviceInputs) => {
               if (serviceInputs.fieldList.length === 3) {
-                return "fail";
+                return { proceed: false };
               } else {
-                return "pass";
+                return { proceed: true };
               }
             },
           },
@@ -261,9 +261,9 @@ describe("TEST OF SERVICE : serviceProceedCheck", () => {
                 fieldsinerror: ["subcheck"],
                 checkfunction: (serviceInputs) => {
                   if (serviceInputs.fieldList.length !== 3) {
-                    return "fail";
+                    return { proceed: false };
                   } else {
-                    return "pass";
+                    return { proceed: true };
                   }
                 },
               },
@@ -301,9 +301,9 @@ describe("TEST OF SERVICE : serviceProceedCheck", () => {
                 fieldsinerror: ["child"],
                 checkfunction: (serviceInputs) => {
                   if (serviceInputs.parent.child !== "here it is") {
-                    return "fail";
+                    return { proceed: false };
                   } else {
-                    return "pass";
+                    return { proceed: true };
                   }
                 },
               },
@@ -340,9 +340,9 @@ describe("TEST OF SERVICE : serviceProceedCheck", () => {
                 fieldsinerror: ["subcheck"],
                 checkfunction: (serviceInputs) => {
                   if (serviceInputs.fieldList.length === 3) {
-                    return "fail";
+                    return { proceed: false };
                   } else {
-                    return "pass";
+                    return { proceed: true };
                   }
                 },
               },

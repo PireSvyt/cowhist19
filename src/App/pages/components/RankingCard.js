@@ -4,14 +4,15 @@ import { Box, Card, Typography } from "@mui/material";
 
 export default function RankingCard(props) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
-    console.log("RankingCard " + props.player._id);
+    console.log("RankingCard " + props.player.userid);
   }
   // i18n
   const { t } = useTranslation();
   return (
     <Card 
       sx={{ width: "100%", p: 1 }}
-      data-testid="component-table analytics-lisitem-player"  
+      data-testid="component-table analytics-listitem-player"
+      index={props.index}
     >
       <Box
         sx={{

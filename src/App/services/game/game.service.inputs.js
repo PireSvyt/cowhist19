@@ -62,116 +62,179 @@ export const gameCreateInputs = {
             {
               // Check contract is correct
               error: "game.error.erroneouscontract",
+              fieldsinerror: [],
               checkfunction: (serviceInputs) => {
-                console.log('gameCreateInputs.sercivechecks', serviceInputs)
-                let contractsCheckOutcome = "pass"
+                console.log('BEG gameCreateInputs.sercivechecks')
+                let contractsCheckOutcome = {
+                  proceed: true,
+                  errors: [],
+                  stateChanges: {
+                    errors: {}
+                  },
+                  confirmation: undefined
+                }
                 for (let c = 0; c < serviceInputs.inputs.contracts.length; c++) {
+                  console.log('>> Check contract is correct :', serviceInputs.inputs.contracts[c])
                   let contractChecks = [
                     {
-                      // Check contract is available
-                      field: "contract",
-                      error: "game.error.missingcontract",
-                      fieldsinerror: ["contract"],
+                      field: "inputs",
+                      error: "game.error.missinginputs",
                       subchecks: [
                         {
-                          // Check that contract is among supported contracts
-                          checkfunction: (serviceInputs) => {
-                            let fullContract = serviceInputs.tableContracts.filter(
-                              (c) => c.key === serviceInputs.inputs.contracts[c].inputs.contract,
-                            )[0];
-                            if (fullContract !== undefined) {
-                              return "fail";
-                            } else {
-                              return "pass";
-                            }
-                          },
-                          error: "game.error.notfoundcontract",
-                          fieldsinerror: ["contract"],
-                        },
-                      ],
-                    },
-                    {
-                      // Checking players is a non empty list
-                      field: "players",
-                      error: "game.error.missingplayers",
-                      fieldsinerror: ["attack", "defense"],
-                      subchecks: [
-                        {
-                          // Checking attack is well formed
-                          checkfunction: (serviceInputs) => {
-                            let fullContract = serviceInputs.tableContracts.filter(
-                              (c) => c.key === serviceInputs.inputs.contracts[c].inputs.contract,
-                            )[0];
-                            if (fullContract !== undefined) {
-                              if (
-                                serviceInputs.inputs.contracts[c].inputs.players.filter(
-                                  (player) => player.role === "attack",
-                                ).length !== fullContract.attack
-                              ) {
-                                return "fail";
-                              } else {
-                                return "pass";
-                              }
-                            } else {
-                              return "pass";
-                            }
-                          },
-                          error: "game.error.attackmissmatch",
-                          fieldsinerror: ["attack"],
+                          // Check contract is available
+                          field: "contract",
+                          error: "game.error.missingcontract",
+                          fieldsinerror: ["contract#"+c],
+                          subchecks: [
+                            {
+                              // Check that contract is among supported contracts
+                              error: "game.error.notfoundcontract",
+                              fieldsinerror: ["contract#"+c],
+                              checkfunction: (serviceInputs) => {
+                                console.log("*** serviceInputs.tableContracts", serviceInputs.tableContracts)
+                                console.log("*** serviceInputs.inputs.contract", serviceInputs.inputs.contract)
+                                let contractList =  Object.values(serviceInputs.tableContracts).filter(
+                                  (contract) => {
+                                    return contract.key === serviceInputs.inputs.contract
+                                  }
+                                )
+                                console.log("*** contractList", contractList)
+                                let fullContract = Object.values(serviceInputs.tableContracts).filter(
+                                  (contract) => { contract.key === serviceInputs.inputs.contract}
+                                )[0];
+                                console.log("*** fullContract", fullContract)
+                                if (fullContract !== undefined) {
+                                  return { 
+                                    errors: ["game.error.notfoundcontract"],
+                                    stateChanges: {
+                                      errors: {}
+                                    },
+                                    proceed: false 
+                                  };
+                                } else {
+                                  return { proceed: true };
+                                }
+                              },
+                            },
+                          ],
                         },
                         {
-                          // Checking defense is well formed
+                          // Checking players is a non empty list
+                          field: "players",
+                          error: "game.error.missingplayers",
+                          fieldsinerror: ["attack#"+c, "defense#"+c],
+                          subchecks: [
+                            {
+                              // Checking attack is well formed
+                              error: "game.error.attackmissmatch",
+                              fieldsinerror: ["attack#"+c],
+                              checkfunction: (serviceInputs) => {
+                                let fullContract = Object.values(serviceInputs.tableContracts).filter(
+                                  (contract) => { contract.key === serviceInputs.inputs.contract}
+                                )[0];
+                                if (fullContract !== undefined) {
+                                  if (
+                                    serviceInputs.inputs.contracts[c].inputs.players.filter(
+                                      (player) => player.role === "attack",
+                                    ).length !== fullContract.attack
+                                  ) {
+                                    return { 
+                                      errors: ["game.error.attackmissmatch"],
+                                      stateChanges: {
+                                        errors: {}
+                                      },
+                                      proceed: false 
+                                    };
+                                  } else {
+                                    return { proceed: true };
+                                  }
+                                } else {
+                                  return { proceed: true };
+                                }
+                              },
+                            },
+                            {
+                              // Checking defense is well formed
+                              error: "game.error.defensemissmatch",
+                              fieldsinerror: ["defense#"+c],
+                              checkfunction: (serviceInputs) => {
+                                let fullContract = Object.values(serviceInputs.tableContracts).filter(
+                                  (contract) => { contract.key === serviceInputs.inputs.contract}
+                                )[0];
+                                if (fullContract !== undefined) {
+                                  if (
+                                    serviceInputs.inputs.contracts[c].inputs.players.filter(
+                                      (player) => player.role === "defense",
+                                    ).length !== fullContract.defense
+                                  ) {
+                                    return { 
+                                      errors: ["game.error.defensemissmatch"],
+                                      stateChanges: {
+                                        errors: {}
+                                      },
+                                      proceed: false 
+                                    };
+                                  } else {
+                                    return { proceed: true };
+                                  }
+                                } else {
+                                  return { proceed: true };
+                                }
+                              },
+                            },
+                          ],
+                        },
+                        {
+                          // Checking outcome is consistent
+                          field: "outcome",
+                          error: "game.error.outcomemissmatch",
+                          fieldsinerror: ["outcome#"+c],
                           checkfunction: (serviceInputs) => {
-                            let fullContract = serviceInputs.tableContracts.filter(
-                              (c) => c.key === serviceInputs.inputs.contracts[c].inputs.contract,
+                            let fullContract = Object.values(serviceInputs.tableContracts).filter(
+                              (contract) => { contract.key === serviceInputs.inputs.contract}
                             )[0];
                             if (fullContract !== undefined) {
-                              if (
-                                serviceInputs.inputs.contracts[c].inputs.players.filter(
-                                  (player) => player.role === "defense",
-                                ).length !== fullContract.defense
-                              ) {
-                                return "fail";
+                              if (serviceInputs.inputs.contracts[c].inputs.outcome + fullContract.folds > 13) {
+                                return { 
+                                  errors: ["game.error.outcomemissmatch"],
+                                  stateChanges: {
+                                    errors: {}
+                                  },
+                                  proceed: false 
+                                };
                               } else {
-                                return "pass";
+                                return { proceed: true };
                               }
                             } else {
-                              return "pass";
+                              return { proceed: true };
                             }
                           },
-                          error: "game.error.defensemissmatch",
-                          fieldsinerror: ["defense"],
                         },
-                      ],
-                    },
-                    {
-                      // Checking outcome is consistent
-                      checkfunction: (serviceInputs) => {
-                        let fullContract = serviceInputs.tableContracts.filter(
-                          (c) => c.key === serviceInputs.inputs.contracts[c].inputs.contract,
-                        )[0];
-                        if (fullContract !== undefined) {
-                          if (serviceInputs.inputs.contracts[c].inputs.outcome + fullContract.folds > 13) {
-                            return "fail";
-                          } else {
-                            return "pass";
-                          }
-                        } else {
-                          return "pass";
-                        }
-                      },
-                      error: "game.error.outcomemissmatch",
-                      fieldsinerror: ["outcome"],
+                      ]
                     },
                   ]
-                  console.log('gameCreateInputs.sercivechecks.serviceProceedCheck', serviceInputs.inputs.contracts[c], contractChecks)
-                  let contractCheckOutcomes = serviceProceedCheck(serviceInputs.inputs.contracts[c], contractChecks)
-                  console.log('gameCreateInputs.sercivechecks.contractCheckOutcomes', contractCheckOutcomes)
-                  contractCheckOutcomes
-                  if (!contractCheckOutcomes.proceed) {
-                    contractsCheckOutcome = "fail";
+                  // TODO : capitalize changes of all subchecks 
+                  // first into contractCheckOutcome
+                  // then into contractCheckOutcome
+                  let contractCheckOutcome = serviceProceedCheck({
+                    inputs: serviceInputs.inputs.contracts[c].inputs,
+                    tableContracts: serviceInputs.tableContracts
+                  }, contractChecks)
+                  console.log('>> Check outcome :', contractCheckOutcome)
+                  if (contractCheckOutcome.proceed === false) {
+                    contractsCheckOutcome.proceed = false;
                   }
+                  contractCheckOutcome.errors.forEach(err => {
+                    console.log(">> > contractCheckOutcome.errors", err)
+                    contractsCheckOutcome.errors.push(err)
+                  })
+                  Object.keys(contractCheckOutcome.stateChanges).forEach(key => {
+                    console.log(">> > contractCheckOutcome.stateChanges", key)
+                    contractsCheckOutcome.stateChanges[key] = contractCheckOutcome.stateChanges[key]
+                  })
+                  console.log('   gameCreateInputs.sercivechecks contractCheckOutcome', contractCheckOutcome)
                 }
+                console.log('END gameCreateInputs.sercivechecks contractsCheckOutcome', contractsCheckOutcome)
                 return contractsCheckOutcome
               }
             }

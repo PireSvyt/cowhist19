@@ -17,10 +17,10 @@ export default function Admin() {
 
   // Selects
   const select = {
-    authLoaded: useSelector((state) => state.sliceUserAuth.loaded),
-    signedin: useSelector((state) => state.sliceUserAuth.signedin),
-    userLoaded: useSelector((state) => state.sliceUserDetails.loaded),
-    priviledges: useSelector((state) => state.sliceUserDetails.priviledges),
+    authLoaded: useSelector((state) => state.authSlice.loaded),
+    signedin: useSelector((state) => state.authSlice.signedin),
+    userLoaded: useSelector((state) => state.userSlice.loaded),
+    priviledges: useSelector((state) => state.userSlice.priviledges),
   };
 
   return (

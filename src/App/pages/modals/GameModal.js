@@ -8,15 +8,6 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Typography,
-  Slider,
-  Select,
-  Autocomplete,
-  TextField,
-  InputLabel,
-  MenuItem,
-  FormControl,
-  Chip,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 
@@ -53,6 +44,7 @@ export default function GameModal() {
   // Changes
   const changes = {
     save: () => {
+      console.log('GameModal.changes.save gameContracts', select.gameContracts)
       serviceGameCreate()
     },
     close: () => {
@@ -74,18 +66,22 @@ export default function GameModal() {
             height: componentHeight,
           }}
         >
-          {select.gameContracts.map((contract) => { 
-            c += 1
-            return(
-              <ContractCard 
-                key={random_id()} 
-                contractid={c} 
-                contract={contract}
-                players={select.players} 
-                contracts={select.contracts}
-              />
+          <Box
+            data-testid="modal-game-list-contracts"
+          >
+            {select.gameContracts.map((contract) => { 
+              c += 1
+              return(
+                <ContractCard 
+                  key={random_id()} 
+                  index={c} 
+                  contract={contract}
+                  players={select.players} 
+                  contracts={select.contracts}
+                />
+              )}
             )}
-          )}
+          </Box>
         </DialogContent>
 
         <DialogActions>

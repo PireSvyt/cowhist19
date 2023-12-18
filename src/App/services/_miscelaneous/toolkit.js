@@ -34,3 +34,18 @@ export function validateEmail(email) {
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
   );
 }
+
+export function appendObject (obj, append) {
+  Object.keys(append).forEach(key => {
+    if (obj[key] === undefined) {
+      obj[key] = append[key]
+    } else {
+      if (typeof obj[key] === 'object') {
+        obj[key] = appendObject(obj[key], append[key])
+      } else {
+        obj[key] = append[key]
+      }
+    }
+  })
+  return obj
+}

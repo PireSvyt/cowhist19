@@ -1,7 +1,79 @@
 //require("@jest/globals");
 
 // Services
-import serviceProceedCheck from "./serviceProceedCheck.js";
+import serviceProceedCheck, { updateOutcome } from "./serviceProceedCheck.js";
+
+describe("TEST OF SERVICE : updateOutcome", () => {
+  describe("When the outcome turns to false", () => {
+    let currentOutcome = {
+      proceed: true,
+      errors: [],
+      stateChanges: {
+        errors: {}
+      },
+      confirmation: undefined
+  }
+  let editOutcome = {
+    proceed: false,
+    errors: ["a new error"],
+    stateChanges: {
+      errors: {
+        anerror: true
+      }
+    },
+    confirmation: true
+  }
+  let resultingOutcome = updateOutcome(currentOutcome, editOutcome)
+    test("then the proceed is false", () => {
+      expect(resultingOutcome.proceed).toBeFalsy();
+    });
+    test("then the errors are accounted for", () => {
+      expect(resultingOutcome.errors.length).toBe(1);
+    });
+    test("then the state changes are accounted for", () => {
+      expect(resultingOutcome.stateChanges.errors.anerror).toBeTruthy();
+    });
+    test("then the confirmation accounted for", () => {
+      expect(resultingOutcome.confirmation).toBeTruthy();
+    });
+  });
+  describe("When the outcome is already false", () => {
+    let currentOutcome = {
+      proceed: false,
+      errors: ["a new error"],
+      stateChanges: {
+        errors: {
+          anerror: true
+        }
+      },
+      confirmation: undefined
+  }
+  let editOutcome = {
+    proceed: false,
+    errors: ["another new error"],
+    stateChanges: {
+      errors: {
+        anothererror: true
+      }
+    },
+    confirmation: true
+  }
+  let resultingOutcome = updateOutcome(currentOutcome, editOutcome)
+    test("then the proceed is false", () => {
+      expect(resultingOutcome.proceed).toBeFalsy();
+    });
+    test("then the errors are accounted for", () => {
+      expect(resultingOutcome.errors.length).toBe(2);
+    });
+    test("then the state changes are accounted for", () => {
+      expect(resultingOutcome.stateChanges.errors.anerror).toBeTruthy();
+      expect(resultingOutcome.stateChanges.errors.anothererror).toBeTruthy();
+    });
+    test("then the confirmation accounted for", () => {
+      expect(resultingOutcome.confirmation).toBeTruthy();
+    });
+  });
+})
 
 describe("TEST OF SERVICE : serviceProceedCheck", () => {
   describe("Assessment with empty checks", () => {
@@ -188,9 +260,9 @@ describe("TEST OF SERVICE : serviceProceedCheck", () => {
             fieldsinerror: ["fieldList"],
             checkfunction: (serviceInputs) => {
               if (serviceInputs.fieldList.length !== 3) {
-                return "fail";
+                return { proceed: false }
               } else {
-                return "pass";
+                return { proceed: true }
               }
             },
           },
@@ -221,7 +293,15 @@ describe("TEST OF SERVICE : serviceProceedCheck", () => {
             fieldsinerror: ["fieldList"],
             checkfunction: (serviceInputs) => {
               if (serviceInputs.fieldList.length === 3) {
-                return { proceed: false };
+                return { 
+                  proceed: false,
+                  errors: ["test.error.fieldList"],
+                  stateChanges: {
+                    errors: {
+                      fieldList: true
+                    }
+                  }
+                };
               } else {
                 return { proceed: true };
               }
@@ -340,7 +420,15 @@ describe("TEST OF SERVICE : serviceProceedCheck", () => {
                 fieldsinerror: ["subcheck"],
                 checkfunction: (serviceInputs) => {
                   if (serviceInputs.fieldList.length === 3) {
-                    return { proceed: false };
+                    return { 
+                      proceed: false,
+                      errors: ["test.error.subcheck"],
+                      stateChanges: {
+                        errors: {
+                          subcheck: true
+                        }
+                      }
+                    };
                   } else {
                     return { proceed: true };
                   }

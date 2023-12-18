@@ -159,6 +159,9 @@ import {
                           if (!validateEmail(serviceInputs.inputs.login)) {
                             return { 
                               errors: ["generic.error.invalidlogin"],
+                              stateChanges: {
+                                errors: { login: true}
+                              },
                               proceed: false 
                             };
                           } else {
@@ -183,6 +186,9 @@ import {
                           if (!serviceInputs.inputs.acknowledgement) {
                             return { 
                               errors: ["invite.error.missingacknowledgement"],
+                              stateChanges: {
+                                errors: { acknowledgement: true}
+                              },
                               proceed: false 
                             };
                           } else {

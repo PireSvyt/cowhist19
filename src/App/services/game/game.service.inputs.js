@@ -104,10 +104,13 @@ export const gameCreateInputs = {
                                 )[0];
                                 console.log("*** fullContract", fullContract)
                                 if (fullContract !== undefined) {
-                                  return { 
+                                    let field = "contract#"+c
+                                    let errors = {}
+                                    errors[field] = true
+                                    return { 
                                     errors: ["game.error.notfoundcontract"],
                                     stateChanges: {
-                                      errors: {}
+                                      errors: errors
                                     },
                                     proceed: false 
                                   };
@@ -138,10 +141,13 @@ export const gameCreateInputs = {
                                       (player) => player.role === "attack",
                                     ).length !== fullContract.attack
                                   ) {
+                                    let field = "attack#"+c
+                                    let errors = {}
+                                    errors[field] = true
                                     return { 
                                       errors: ["game.error.attackmissmatch"],
                                       stateChanges: {
-                                        errors: {}
+                                        errors: errors
                                       },
                                       proceed: false 
                                     };
@@ -167,10 +173,13 @@ export const gameCreateInputs = {
                                       (player) => player.role === "defense",
                                     ).length !== fullContract.defense
                                   ) {
+                                    let field = "defense#"+c
+                                    let errors = {}
+                                    errors[field] = true
                                     return { 
                                       errors: ["game.error.defensemissmatch"],
                                       stateChanges: {
-                                        errors: {}
+                                        errors: errors
                                       },
                                       proceed: false 
                                     };
@@ -195,10 +204,13 @@ export const gameCreateInputs = {
                             )[0];
                             if (fullContract !== undefined) {
                               if (serviceInputs.inputs.contracts[c].inputs.outcome + fullContract.folds > 13) {
+                                let field = "outcome#"+c
+                                let errors = {}
+                                errors[field] = true
                                 return { 
                                   errors: ["game.error.outcomemissmatch"],
                                   stateChanges: {
-                                    errors: {}
+                                    errors: errors
                                   },
                                   proceed: false 
                                 };

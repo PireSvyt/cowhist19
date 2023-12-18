@@ -76,6 +76,9 @@ export const tableCreateInputs = {
                 if (serviceInputs.inputs.players.length === 0) {
                   return { 
                     errors: ["table.error.creationwithoutplayers"],
+                    stateChanges: {
+                      errors: { players: true}
+                    },
                     proceed: false 
                   };
                 } else {
@@ -95,6 +98,9 @@ export const tableCreateInputs = {
                     ) {
                       return { 
                         errors: ["table.error.creationwithoutuser"],
+                        stateChanges: {
+                          errors: { players: true}
+                        },
                         proceed: false 
                       };
                     } else {

@@ -15,7 +15,7 @@ export default function TableCard(props) {
 
   return (
     <Card
-      data-testid={"list-my tables-listitem"}
+      data-testid={"component-my tables-listitem-table"}
       index={props.index}
       sx={{ width: "100%", p: 1 }}
       onClick={changes.totable}

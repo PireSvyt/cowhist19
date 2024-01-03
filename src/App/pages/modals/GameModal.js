@@ -32,7 +32,7 @@ export default function GameModal() {
   // Selects
   const select = {
     open: useSelector((state) => state.gameModalSlice.open),
-    gameId: useSelector((state) => state.gameModalSlice.id),
+    gameId: useSelector((state) => state.gameModalSlice.gameid),
     gameContracts: useSelector((state) => state.gameModalSlice.contracts),
     disabled: useSelector((state) => state.gameModalSlice.disabled),
     loading: useSelector((state) => state.gameModalSlice.loading),
@@ -67,7 +67,7 @@ export default function GameModal() {
           }}
         >
           <Box
-            data-testid="modal-game-list-contracts"
+            data-testid="modal-game-list-contract"
           >
             {select.gameContracts.map((contract) => { 
               c += 1

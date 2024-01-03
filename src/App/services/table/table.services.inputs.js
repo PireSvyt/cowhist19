@@ -9,6 +9,7 @@ import {
 } from "./table.api.js";
 // Services
 import { random_string, random_id } from "../_miscelaneous/toolkit.js";
+import { serviceTableProcessCurves } from "./table.services.js"
 // Reducers
 import appStore from "../../store/appStore.js";
 
@@ -608,7 +609,7 @@ export const tableGetStatsInputs = {
       payload: {scope: "stats"},
    });
   },
-  getinputsfunction: (log) => {
+  getinputsfunction: (log, directInputs) => {
     log.push({
       date: new Date(),
       message: "serviceTableGetStats.getinputsfunction",
@@ -618,7 +619,7 @@ export const tableGetStatsInputs = {
       inputs: {
         tableid: window.location.href.split("/table/")[1],
         parameters: {
-          need: "ranking",
+          need: directInputs.need,     
         },
       },
     };
@@ -683,9 +684,12 @@ export const tableGetStatsInputs = {
           playerids.includes(rank.userid),
         );
         // Outcome
+        if (stats.graph !== undefined) {
+          serviceTableProcessCurves(stats.graph)
+        }
         appStore.dispatch({
-          type: "tableSlice/setStats",
-          payload: stats,
+          type: "tableSlice/setRanking",
+          payload: stats.ranking,
         });
       },
       "table.getstats.error": () => {

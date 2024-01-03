@@ -25,7 +25,7 @@ export default function PlayerCard(props) {
         width: "100%", 
         p: 1 
       }}
-      data-testid={"list-players-listitem"}
+      data-testid={"modal-table-listitem-player"}
       index={props.index}
     >
       <Box
@@ -39,7 +39,8 @@ export default function PlayerCard(props) {
         <Typography>{props.player.pseudo}</Typography>
         <IconButton 
           onClick={changes.remove}
-          data-testid={"list-players-button-remove player"}
+          data-testid={"modal-table-listitem-player-button-remove player"}
+          index={props.index}
           id={props.player.userid}
           label={props.player.pseudo}
         >

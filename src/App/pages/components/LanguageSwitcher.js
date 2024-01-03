@@ -17,6 +17,7 @@ export default function LanguageSwitcher() {
 
   // Constants
   const languages = ["enGB", "frFR"];
+  let c = -1
 
   // States
   const [switcherOpen, setSwitcherOpen] = useState(false);
@@ -48,13 +49,15 @@ export default function LanguageSwitcher() {
         MenuListProps={{
           "aria-labelledby": "basic-button",
         }}
-        data-testid="component-localization-list"
+        data-testid="component-localization-list-language"
       >
         {languages.map((language) => {
+          c += 1
           return (
             <MenuItem
               key={random_id()}
-              data-testid={"component-localization-listitem-"+language}
+              data-testid={"component-localization-listitem-language"}
+              index={c}
               onClick={() => {
                 Cookies.set("cowhist19_language", language);
                 window.location.reload(false);

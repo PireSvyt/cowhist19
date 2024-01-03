@@ -4,9 +4,9 @@ import { random_id } from "./toolkit.js";
 // Reducers
 import appStore from "../../store/appStore.js";
 
-let debugProceed = false
+let debugProceed = true
 
-async function serviceProceed(serviceProceedInputs, log = []) {
+async function serviceProceed(serviceProceedInputs, directInputs = undefined, log = []) {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("serviceProceed");
   }
@@ -20,7 +20,12 @@ async function serviceProceed(serviceProceedInputs, log = []) {
     // Inputs management
     let serviceInputs = undefined;
     if (serviceProceedInputs.getinputsfunction !== undefined) {
-      serviceInputs = serviceProceedInputs.getinputsfunction(log);
+      if (directInputs === undefined) {
+        serviceInputs = serviceProceedInputs.getinputsfunction(log);
+      } else {
+        serviceInputs = serviceProceedInputs.getinputsfunction(log, directInputs);
+      }
+      
     }
     if (serviceProceedInputs.wrappingfunction !== undefined) {
       if (serviceProceedInputs.wrappingfunction !== undefined) {

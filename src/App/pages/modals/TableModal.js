@@ -266,7 +266,7 @@ export default function TableModal() {
             ) : (
               <List 
                 dense={true} 
-                data-testid="list-players"
+                data-testid="modal-table-list-player"
               >
                 {select.inputs.players.map((player) => {
                   c += 1

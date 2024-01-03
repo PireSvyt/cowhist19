@@ -24,7 +24,7 @@ export async function serviceAuthSignUp() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("serviceAuthSignUp");
   }
-  serviceProceed(authSignupInputs);
+  await serviceProceed(authSignupInputs);
 }
 
 export async function serviceAuthActivate(activationInputs) {
@@ -82,14 +82,14 @@ export async function serviceAuthSendActivation() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("serviceAuthSendActivation");
   }
-  serviceProceed(authSendActivationInputs);
+  await serviceProceed(authSendActivationInputs);
 }
 
 export async function serviceAuthSignIn() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("serviceAuthSignIn");
   }
-  serviceProceed(authSigninInputs);
+  await serviceProceed(authSigninInputs);
 }
 
 export function serviceAuthAccessDeny() {
@@ -206,7 +206,7 @@ export async function serviceAuthSendPassword() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("serviceAuthSendPassword");
   }
-  serviceProceed(authSendPasswordInputs);
+  await serviceProceed(authSendPasswordInputs);
 }
 
 export async function serviceAuthExistingPseudo() {

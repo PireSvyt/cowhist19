@@ -35,7 +35,8 @@ export default function TableHistory() {
     <Box>
       {!(select.tableState.details === "available" && select.tableState.history === "available") ? (
         <Box sx={{ left: "10%", right: "10%" }}>
-          <LinearProgress />
+          <LinearProgress 
+          color="secondary"/>
         </Box>
       ) : select.history.length === 0 ? (
         <Box

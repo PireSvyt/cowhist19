@@ -34,7 +34,8 @@ export default function Home() {
       <Box sx={{ height: 60 }} />
       {select.loaded === false ? (
         <Box sx={{ left: "10%", right: "10%" }}>
-          <LinearProgress />
+          <LinearProgress 
+          color="secondary"/>
         </Box>
       ) : select.signedin === false ? (
         <Landing />

@@ -40,12 +40,6 @@ export default function Table() {
     snackData: useSelector((state) => state.sliceSnack.snackData),
     openGameModal: useSelector((state) => state.gameModalSlice.open),
   };
-  /*
-  console.log("select.authLoaded", select.authLoaded)
-  console.log("select.signedin", select.signedin)
-  console.log("select.tableState", select.tableState)
-  console.log("select.name", select.name)
-  */
 
   // Changes
   let changes = {
@@ -69,7 +63,7 @@ export default function Table() {
   if (select.authLoaded === true && select.signedin === true && select.tableState.details === undefined) {
     serviceTableGetDetails();    
   }
-  if (select.authLoaded === true && select.signedin === true && select.tableState.stats === undefined) {
+  if (select.authLoaded === true && select.signedin === true && select.tableState.ranking === undefined) {
     serviceTableGetStats();  
   }
 
@@ -111,10 +105,11 @@ export default function Table() {
         title={select.name}
         edittable={changes.edittable}
       />
-      <Box sx={{ height: 48 }} />
+      <Box sx={{ height: 60 }} />
       {select.authLoaded !== true ? (
         <Box sx={{ left: "10%", right: "10%" }}>
-          <LinearProgress />
+          <LinearProgress 
+          color="secondary"/>
         </Box>
       ) : select.signedin === false ? null : select.tableDenied === true ? (
         <Box
@@ -192,7 +187,7 @@ export default function Table() {
           </TabPanel>
           <Fab
             variant="extended"
-            color="primary"
+            color="secondary"
             sx={{ position: "fixed", bottom: 20, right: 20 }}
             onClick={changes.newgame}
             data-testid="page-table-button-new game"

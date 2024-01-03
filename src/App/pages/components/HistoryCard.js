@@ -112,7 +112,7 @@ export default function HistoryCard(props) {
 
         <IconButton 
           id={props.game.gameid}
-          data-testid="component-table history-listitem-game-button-delete game"
+          data-testid={"component-table history-listitem-game-button-delete game"}
           index={props.index}
           onClick={() => setConfirmOpen(true)} disabled={deleting}
         >

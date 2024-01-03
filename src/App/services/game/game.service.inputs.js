@@ -339,3 +339,80 @@ export const gameCreateInputs = {
     return responses[response.type]();
   },
 };
+
+export const gameDeleteInputs = {
+  getinputsfunction: (log, directInputs) => {
+    log.push({
+      date: new Date(),
+      message: "serviceGameDelete.getinputsfunction",
+      tags: ["function"],
+    });
+    return {
+      inputs: {
+        gameid: directInputs.gameid,        
+        tableid: appStore.getState().tableSlice.tableid,
+      },
+    };
+  },
+  sercivechecks: [
+    {
+      // Check inputs root is available
+      field: "inputs",
+      error: "game.error.missinginputs",
+      subchecks: [
+        {
+          // Check tableid is available
+          field: "tableid",
+          error: "game.error.missingtableid",
+        },
+        {
+          // Check gameid is available
+          field: "gameid",
+          error: "game.error.missinggameid",
+        },
+      ],
+    },
+  ],
+  apicall: async (inputs, log) => {
+    log.push({
+      date: new Date(),
+      message: "serviceGameDelete.apicall",
+      inputs: inputs,
+      tags: ["function"],
+    });
+    try {
+      return await apiGameDelete(inputs, appStore.getState().authSlice.token);
+    } catch (err) {
+      return err;
+    } 
+  },
+  getmanageresponsefunction: (response, log) => {
+    log.push({
+      date: new Date(),
+      message: "serviceGameDelete.getmanageresponsefunction",
+      response: response,
+      tags: ["function"],
+    });
+    let responses = {
+     "game.delete.success": () => {
+          appStore.dispatch({
+            type: "sliceSnack/change",
+            payload: {
+              uid: random_id(),
+              id: "game.snack.deleted",
+            },
+          });
+        },
+      "game.delete.errorondelete": () => {
+        appStore.dispatch({
+          type: "sliceSnack/change",
+          payload: {
+            uid: random_id(),
+            id: "generic.snack.error.wip",
+          },
+        });
+      }
+    };
+    return responses[response]();
+  },
+};

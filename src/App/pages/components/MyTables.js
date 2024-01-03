@@ -59,6 +59,7 @@ export default function MyTables() {
           data-testid="component-my tables-button-new table"
           sx={{ p: 2 }}
           onClick={changes.new}
+          color="secondary"
         >
           <AddIcon />
         </IconButton>
@@ -66,7 +67,8 @@ export default function MyTables() {
 
       {select.loaded === false ? (
         <Box sx={{ left: "10%", right: "10%" }}>
-          <LinearProgress />
+          <LinearProgress 
+          color="secondary"/>
         </Box>
       ) : select.tables.length === 0 ? (
         <Box
@@ -103,16 +105,15 @@ export default function MyTables() {
       ) : (
         <List 
           dense={true}
-          data-testid="list-my tables"
+          data-testid="component-my tables-list-table"
         >
           {select.tables.map((table) => {
             c += 1
             return(
               <ListItem 
                 key={"table-" + table.tableid}
-                index={c}
               >
-                <TableCard table={table} />
+                <TableCard table={table} index={c} />
               </ListItem>
             )
           })}

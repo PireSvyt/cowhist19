@@ -10,8 +10,12 @@ const tableSlice = createSlice({
     players: [],
     contracts: [],
     games: [],
-    stats: {
-        ranking: [],
+    view: "ranking",
+    ranking: [],
+    graph: {
+      dates: [],
+      series: {},
+      focus: ""
     }
   },
   reducers: {
@@ -29,10 +33,13 @@ const tableSlice = createSlice({
       state.name = action.payload.name;
       state.players = action.payload.players;
       state.contracts = action.payload.contracts;
-      state.games = [],
-      state.stats = {
-          ranking: [],
-      }
+      state.games = []
+      state.ranking = []
+      state.graph = {
+        dates: [],
+        series: {},
+        focus: ""
+      }      
       state.state.details = "available";
     },
     setHistory: (state, action) => {
@@ -40,10 +47,55 @@ const tableSlice = createSlice({
       state.games = action.payload
       state.state.history = "available";
     },
-    setStats: (state, action) => {
-      console.log("tableSlice.setStats", action.payload)
-      state.stats = action.payload
-      state.state.stats = "available";
+    setView: (state, action) => {
+      state.view = action.payload.view;
+    },
+    setRanking: (state, action) => {
+      console.log("tableSlice.setRanking", action.payload)
+      state.ranking = action.payload
+      state.state.ranking = "available";
+    },
+    setGraph: (state, action) => {
+      console.log("tableSlice.setGraph", action.payload)
+      switch (action.payload.field) {
+        case "dates":
+          state.graph.dates = action.payload.value
+          break;
+        case "serie":
+          if (Object.keys(state.graph.series).length === 0) {
+            state.graph.series = {}
+          }
+          state.graph.series[action.payload.values.userid] = action.payload.values.serie
+          state.state.graph = "available";
+          break;
+        case "focus":
+          if (state.graph.focus === action.payload.value) {
+            // Unfocus
+            state.graph.focus = ""
+            state.graph.series[action.payload.value].lineStyle = {
+              color: '#9E9E9E',
+              width: 1
+            }
+          } else {
+            if (state.graph.focus !== "") {
+              // Remove previous focus
+              state.graph.series[state.graph.focus].lineStyle = {
+                color: '#9E9E9E',
+                width: 1
+              }
+            }
+            // Focus
+            state.graph.focus = action.payload.value;
+            state.graph.series[action.payload.value].lineStyle = {
+              //color: '#ef6c00', // Secondary
+              color: '#2d7683', // Primary
+              width: 3
+            }
+          }
+          break;
+        default: 
+          console.error("tableSlice.setGraph unmatched field", action.payload.field)
+      }
     },
     deny: (state) => {
       state.denied = true;

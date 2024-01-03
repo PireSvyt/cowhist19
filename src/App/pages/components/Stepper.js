@@ -106,7 +106,7 @@ export default function Stepper(props) {
           flexDirection: "row",
           alignItems: "center",
         }}
-        data-testid="component-stepper-list-page steps" 
+        data-testid="component-stepper-list-step" 
       >
         {displayedItems.map((item) => {
           if (item.type === "progress") {
@@ -122,7 +122,7 @@ export default function Stepper(props) {
               <Box sx={{ m: "0px" }}>
                 <IconButton
                   size="small"
-                  data-testid="component-stepper-listitem-page step" 
+                  data-testid="component-stepper-listitem-step" 
                   onClick={() =>
                     props.select(Math.floor(props.progress + item.onclick) % 3)
                   }

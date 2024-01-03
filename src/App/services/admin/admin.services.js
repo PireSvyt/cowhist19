@@ -76,7 +76,7 @@ export async function serviceAdminGetTablesByGames() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("serviceAdminGetTablesByGames");
   }
-  serviceProceed(adminGetTablesByGamesInputs);
+  await serviceProceed(adminGetTablesByGamesInputs);
 }
 
 export async function serviceAdminGetTablesByPlayers() {

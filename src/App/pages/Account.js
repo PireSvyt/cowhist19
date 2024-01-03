@@ -38,12 +38,13 @@ export default function Account() {
     <div>
       <Appbar route="account" title={t("generic.menu.account")} />
       <Box 
-        sx={{ height: 48 }}
+        sx={{ height: 60 }}
         data-testid="page-account"
        />
       {select.authLoaded === false || select.detailsLoaded === false ? (
         <Box sx={{ left: "10%", right: "10%" }}>
-          <LinearProgress />
+          <LinearProgress 
+          color="secondary"/>
         </Box>
       ) : !(
           select.signedin === true && select.detailsLoaded === true

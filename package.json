@@ -18,6 +18,8 @@
     "crypto-browserify": "^3.12.0",
     "crypto-js": "^4.2.0",
     "dotenv": "^16.3.1",
+    "echarts": "^5.4.2",
+    "echarts-for-react": "^3.0.2",
     "i18next": "^23.6.0",
     "jest": "^29.7.0",
     "js-cookie": "^3.0.5",

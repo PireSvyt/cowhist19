@@ -10,12 +10,12 @@ export async function serviceUserGetDetails() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("serviceUserGetDetails");
   }
-  serviceProceed(userGetDetailsInputs);
+  await serviceProceed(userGetDetailsInputs);
 }
 
 export async function serviceUserInvite() {
   if (process.env.REACT_APP_DEBUG === "TRUE") {
     console.log("serviceUserInvite");
   }
-  serviceProceed(userInviteInputs);
+  await serviceProceed(userInviteInputs);
 }

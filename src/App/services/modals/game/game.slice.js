@@ -18,6 +18,12 @@ let newContract = {
         defense: false,
         outcome: false,
     },
+    focuses: {
+      contract: true,
+      attack: false,
+      defense: false,
+      outcome: false,
+    },
     requirements: {
         attack: "",
         defense: "",
@@ -51,6 +57,32 @@ const gameModalSlice = createSlice({
             // Removes a new contract
             delete state.contracts[action.payload.contractposition]
         },
+        addplayer: (state, action) => {
+            state.contracts[action.payload.contractposition].inputs.players.push(action.payload.player)
+            // Errors
+            if (action.payload.errors !== undefined) {
+                if (action.payload.errors.attack !== undefined) {
+                    state.contracts[action.payload.contractposition].errors.attack = action.payload.errors.attack;
+                }
+                if (action.payload.errors.defense !== undefined) {
+                    state.contracts[action.payload.contractposition].errors.defense = action.payload.errors.defense;
+                }
+            }
+        },
+        removeplayer: (state, action) => {
+            state.contracts[action.payload.contractposition].inputs.players = 
+                state.contracts[action.payload.contractposition].inputs.players
+                .filter(player => player.userid !== action.payload.player)
+            // Errors
+            if (action.payload.errors !== undefined) {
+                if (action.payload.errors.attack !== undefined) {
+                    state.contracts[action.payload.contractposition].errors.attack = action.payload.errors.attack;
+                }
+                if (action.payload.errors.defense !== undefined) {
+                    state.contracts[action.payload.contractposition].errors.defense = action.payload.errors.defense;
+                }
+            }
+        },
         close: (state) => {
             // Close the modal and replace all stored values
             state.open = false;
@@ -63,7 +95,6 @@ const gameModalSlice = createSlice({
             if (action.payload.open !== undefined) {
                 state.open = action.payload.open;
             }
-            console.log("gameModalSlice.change", action.payload)
             // Contract related actions
             if (action.payload.contractposition !== undefined) {
                 // Inputs
@@ -142,6 +173,39 @@ const gameModalSlice = createSlice({
             // Locks the modal for longer actions
             state.disabled = true;
             state.loading = true;
+        },
+        openMenu: (state, action) => {
+          if (process.env.REACT_APP_DEBUG === "TRUE") {
+            console.log("gameModalSlice.openMenu");
+            //console.log(action.payload);
+          }
+          if (action.payload.menu === "contract") {
+            state.contracts[action.payload.contractposition].focuses.contract = true
+          } else {
+            state.contracts[action.payload.contractposition].focuses.contract = false
+          }
+          if (action.payload.menu === "attack") {
+            state.contracts[action.payload.contractposition].focuses.attack = true
+          } else {
+            state.contracts[action.payload.contractposition].focuses.attack = false
+          }
+          if (action.payload.menu === "defense") {
+            state.contracts[action.payload.contractposition].focuses.defense = true
+          } else {
+            state.contracts[action.payload.contractposition].focuses.defense = false
+          }
+          if (action.payload.menu === "outcome") {
+            state.contracts[action.payload.contractposition].focuses.outcome = true
+          } else {
+            state.contracts[action.payload.contractposition].focuses.outcome = false
+          }
+        },
+        closeMenu: (state, action) => {
+          if (process.env.REACT_APP_DEBUG === "TRUE") {
+            console.log("gameModalSlice.closeMenu");
+            //console.log(action.payload);
+          }
+          state.contracts[action.payload.contractposition].focuses[action.payload.menu] = false
         },
     },
 });

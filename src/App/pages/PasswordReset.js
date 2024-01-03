@@ -84,7 +84,7 @@ export default function PasswordReset() {
   return (
     <Box>
       <Appbar route="activation" title={t("generic.label.product")} />
-      <Box sx={{ height: 55 }} />
+      <Box sx={{ height: 60 }} />
 
       <Box
         sx={{

@@ -134,7 +134,7 @@ export default function InviteModal() {
               }
               label={t("invite.input.acknowledgement")}
               error={select.errors.acknowledgement}
-              data-testid="modal-invite-inputbox-acknowledgement"
+              data-testid="modal-invite-checkbox-acknowledgement"
             />
           </Box>
         </DialogContent>

@@ -35,17 +35,20 @@ export async function apiGameCreate(saveInputs, token) {
 };*/
 
 // TESTED
-export async function apiGameDelete(deleteId, token) {
+export async function apiGameDelete(deleteInputs, token) {
   try {
     const res = await axios({
       method: 'post',
-      url: apiURL + "game/v1/" + deleteId,
+      url: apiURL + "game/v1/delete",
+      data: deleteInputs,
       headers: {
         Authorization: "Bearer " + token,
       },
     })
+    console.log("apiGameDelete res", res)
     return res.data;
   } catch (err) {
+    console.log("apiGameDelete err", err)
     return err.response.data;
   }
 }

@@ -127,7 +127,7 @@ export default function Activation() {
       data-testid="page-activation"
     >
       <Appbar route="activation" title={t("generic.label.product")} />
-      <Box sx={{ height: 55 }} />
+      <Box sx={{ height: 60 }} />
 
       <Box
         sx={{

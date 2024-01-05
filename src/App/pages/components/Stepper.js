@@ -22,7 +22,7 @@ export default function Stepper(props) {
     },
     [`& .${linearProgressClasses.bar}`]: {
       borderRadius: radius,
-      backgroundColor: "primary",
+      backgroundColor: "secondary",
     },
   }));
 
@@ -126,7 +126,7 @@ export default function Stepper(props) {
                   onClick={() =>
                     props.select(Math.floor(props.progress + item.onclick) % 3)
                   }
-                  color="primary"
+                  color="secondary"
                 >
                   <CircleIcon fontSize="inherit" />
                 </IconButton>

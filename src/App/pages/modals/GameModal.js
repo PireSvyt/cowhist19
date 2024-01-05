@@ -76,7 +76,13 @@ export default function GameModal() {
                   key={random_id()} 
                   index={c} 
                   contract={contract}
-                  players={select.players} 
+                  players={select.players.map((player) => {
+                    let playerReworked = { ...player }
+                    if (playerReworked.status === "guest") {
+                      playerReworked.pseudo = t("game.label.guest")
+                    }
+                    return playerReworked
+                  })}
                   contracts={select.contracts}
                 />
               )}

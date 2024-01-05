@@ -52,6 +52,8 @@ export default function TableModal() {
       (state) => state.tableModalSlice.deleteConfirm,
     ),
   };
+  
+  console.log("TableModal.select", select)
 
   // Changes
   const changes = {

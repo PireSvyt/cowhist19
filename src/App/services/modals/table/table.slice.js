@@ -8,7 +8,6 @@ const tableModalSlice = createSlice({
     loading: false,
     tableid: "",
     inputs: {
-      //tableid: "",
       name: "",
       guests: 0,
       players: [],
@@ -25,7 +24,6 @@ const tableModalSlice = createSlice({
       state.open = true;
       state.tableid = "";
       state.inputs = {
-        //tableid: "",
         name: "",
         guests: 0,
         players: [action.payload],
@@ -39,19 +37,20 @@ const tableModalSlice = createSlice({
     open: (state, action) => {
       state.open = true;
       state.tableid = action.payload.tableid;
-      //state.inputs.tableid = action.payload.tableid;
-      state.inputs.name = action.payload.name;
-      state.inputs.guests = action.payload.guests;
-      state.inputs.players = action.payload.players;
+      state.inputs = {
+        name: action.payload.name,
+        guests: action.payload.guests,
+        players: action.payload.players,
+      };
       state.errors = {
         name: false,
+        guests: false,
         players: false,
       };
     },
     close: (state) => {
       state.open = false;
       state.errors = {
-        tableid: "",
         name: false,
         guests: false,
         players: false,

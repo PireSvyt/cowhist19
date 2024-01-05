@@ -289,7 +289,7 @@ export default function ContractCard(props) {
                         value={potentialPlayer.userid}
                         onClick={() => changes.addToAttack(potentialPlayer.userid)}
                     >
-                        {potentialPlayer.status === "guest" ? (t("game.label.guest")) :(potentialPlayer.pseudo)}
+                        {potentialPlayer.pseudo}
                     </MenuItem>
                     ))
                 }
@@ -335,7 +335,7 @@ export default function ContractCard(props) {
                       value={potentialPlayer.userid}
                       onClick={() => changes.addToDefense(potentialPlayer.userid)}
                     >
-                      {potentialPlayer.status === "guest" ? (t("game.label.guest")) :(potentialPlayer.pseudo)}
+                      {potentialPlayer.pseudo}
                     </MenuItem>
                   ))
                 }
@@ -343,7 +343,7 @@ export default function ContractCard(props) {
         </FormControl>
 
         <Typography variant="caption" gutterBottom>
-            {t("game.input.outcome") + " " + props.contract.requirements.outcome}
+            {t("game.input.outcome") + " (max. " + props.contract.requirements.outcome + ")"}
         </Typography>
         <Slider
             data-testid="modal-game-listitem-contract-slider-outcome"

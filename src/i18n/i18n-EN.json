@@ -3,7 +3,9 @@
     "label": {
       "product": "CoWhist19",
       "help": "Help",
-      "about": "About"
+      "about": "About",
+      "tocomeintro": "",
+      "tocomedetails": ""
     },
     "menu": {
       "home": "Home",

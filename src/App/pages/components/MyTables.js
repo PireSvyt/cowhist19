@@ -29,7 +29,7 @@ export default function MyTables() {
 
   // Selects
   const select = {
-    loaded: useSelector((state) => state.userSlice.loaded),
+    userState: useSelector((state) => state.userSlice.state),
     tables: useSelector((state) => state.userSlice.tables),
   };
 
@@ -65,7 +65,7 @@ export default function MyTables() {
         </IconButton>
       </Stack>
 
-      {select.loaded === false ? (
+      {select.userState.details !== "available" ? (
         <Box sx={{ left: "10%", right: "10%" }}>
           <LinearProgress 
           color="secondary"/>

@@ -100,14 +100,16 @@ export const gameCreateInputs = {
                                 )
                                 console.log("*** contractList", contractList)
                                 let fullContract = Object.values(serviceInputs.tableContracts).filter(
-                                  (contract) => { contract.key === serviceInputs.inputs.contract}
+                                  (contract) => {
+                                    return contract.key === serviceInputs.inputs.contract
+                                  }
                                 )[0];
                                 console.log("*** fullContract", fullContract)
-                                if (fullContract !== undefined) {
-                                    let field = "contract#"+c
-                                    let errors = {}
-                                    errors[field] = true
-                                    return { 
+                                if (fullContract === undefined) {
+                                  let field = "contract#"+c
+                                  let errors = {}
+                                  errors[field] = true
+                                  return { 
                                     errors: ["game.error.notfoundcontract"],
                                     stateChanges: {
                                       errors: errors
@@ -132,15 +134,20 @@ export const gameCreateInputs = {
                               error: "game.error.attackmissmatch",
                               fieldsinerror: ["attack#"+c],
                               checkfunction: (serviceInputs) => {
+                                console.log("*** Checking attack is well formed")
                                 let fullContract = Object.values(serviceInputs.tableContracts).filter(
-                                  (contract) => { contract.key === serviceInputs.inputs.contract}
+                                  (contract) => {
+                                    return contract.key === serviceInputs.inputs.contract
+                                  }
                                 )[0];
+                                console.log("*** fullContract", fullContract)
                                 if (fullContract !== undefined) {
-                                  if (
-                                    serviceInputs.inputs.contracts[c].inputs.players.filter(
-                                      (player) => player.role === "attack",
-                                    ).length !== fullContract.attack
-                                  ) {
+                                  console.log("*** fullContract defined")
+                                  let attPlayers = serviceInputs.inputs.players.filter(
+                                    (player) => { return player.role === "attack" }
+                                  )
+                                  console.log("*** attPlayers", attPlayers)
+                                  if ( attPlayers.length !== fullContract.attack ) {
                                     let field = "attack#"+c
                                     let errors = {}
                                     errors[field] = true
@@ -153,9 +160,10 @@ export const gameCreateInputs = {
                                     };
                                   } else {
                                     return { proceed: true };
-                                  }
+                                  }                               
                                 } else {
-                                  return { proceed: true };
+                                  console.log("*** fullContract = undefined")
+                                  return { proceed: true };   
                                 }
                               },
                             },
@@ -164,15 +172,17 @@ export const gameCreateInputs = {
                               error: "game.error.defensemissmatch",
                               fieldsinerror: ["defense#"+c],
                               checkfunction: (serviceInputs) => {
+                                console.log("*** Checking defense is well formed")
                                 let fullContract = Object.values(serviceInputs.tableContracts).filter(
-                                  (contract) => { contract.key === serviceInputs.inputs.contract}
+                                  (contract) => {
+                                    return contract.key === serviceInputs.inputs.contract
+                                  }
                                 )[0];
                                 if (fullContract !== undefined) {
-                                  if (
-                                    serviceInputs.inputs.contracts[c].inputs.players.filter(
-                                      (player) => player.role === "defense",
-                                    ).length !== fullContract.defense
-                                  ) {
+                                  let defPlayers = serviceInputs.inputs.players.filter(
+                                    (player) => { return player.role === "defense" }
+                                  )
+                                  if ( defPlayers.length !== fullContract.defense ) {
                                     let field = "defense#"+c
                                     let errors = {}
                                     errors[field] = true
@@ -199,11 +209,14 @@ export const gameCreateInputs = {
                           error: "game.error.outcomemissmatch",
                           fieldsinerror: ["outcome#"+c],
                           checkfunction: (serviceInputs) => {
+                            console.log("*** Checking outcome is well formed")
                             let fullContract = Object.values(serviceInputs.tableContracts).filter(
-                              (contract) => { contract.key === serviceInputs.inputs.contract}
+                              (contract) => {
+                                return contract.key === serviceInputs.inputs.contract
+                              }
                             )[0];
                             if (fullContract !== undefined) {
-                              if (serviceInputs.inputs.contracts[c].inputs.outcome + fullContract.folds > 13) {
+                              if (serviceInputs.inputs.outcome + fullContract.folds > 13) {
                                 let field = "outcome#"+c
                                 let errors = {}
                                 errors[field] = true
@@ -395,14 +408,15 @@ export const gameDeleteInputs = {
     });
     let responses = {
      "game.delete.success": () => {
-          appStore.dispatch({
-            type: "sliceSnack/change",
-            payload: {
-              uid: random_id(),
-              id: "game.snack.deleted",
-            },
-          });
-        },
+        console.log("gameDeleteInputs.getmanageresponsefunction game.delete.success")
+        appStore.dispatch({
+          type: "sliceSnack/change",
+          payload: {
+            uid: random_id(),
+            id: "game.snack.deleted",
+          },
+        });
+      },
       "game.delete.errorondelete": () => {
         appStore.dispatch({
           type: "sliceSnack/change",

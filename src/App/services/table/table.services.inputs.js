@@ -9,7 +9,7 @@ import {
 } from "./table.api.js";
 // Services
 import { random_string, random_id } from "../_miscelaneous/toolkit.js";
-import { serviceTableProcessCurves } from "./table.services.js"
+import { serviceTableProcessCurves, serviceTableGetDetails } from "./table.services.js"
 // Reducers
 import appStore from "../../store/appStore.js";
 
@@ -241,8 +241,10 @@ export const tableSaveInputs = {
       message: "serviceTableSave.getinputsfunction",
       tags: ["function"],
     });
+    let table = { ...appStore.getState().tableModalSlice.inputs }
+    table.tableid = appStore.getState().tableModalSlice.tableid
     return {
-      inputs: { ...appStore.getState().tableModalSlice.inputs },
+      inputs: table,
     };
   },
   sercivechecks: [
@@ -296,25 +298,12 @@ export const tableSaveInputs = {
       tags: ["function"],
     });
     let responses = {
-      "table.save.success.created": () => {
-        appStore.dispatch({
-          type: "sliceSnack/change",
-          payload: {
-            uid: random_id(),
-            id: "table.snack.saved",
-          },
-        });
-        window.location = "/table/" + data.data.tableid;
-      },
       "table.save.success.modified": () => {
+        console.log("tableSaveInputs table.save.success.modified")
         appStore.dispatch({
-          type: "tableModalSlice/change",
-          payload: {
-            open: false,
-            disabled: false,
-            loading: false,
-          },
+          type: "tableModalSlice/close",
         });
+        console.log("tableSaveInputs dispatched tableModalSlice/close")
         appStore.dispatch({
           type: "sliceSnack/change",
           payload: {
@@ -322,11 +311,14 @@ export const tableSaveInputs = {
             id: "table.snack.saved",
           },
         });
+        console.log("tableSaveInputs dispatched sliceSnack/change")
         // Update table
-        serviceGetTableDetails().then(() => {
+        serviceTableGetDetails().then(() => {
+          console.log("tableSaveInputs serviceTableGetDetails")
           appStore.dispatch({
             type: "tableSlice/unload",
           });
+          console.log("tableSaveInputs dispatched tableSlice/unload")
         });
       },
       "table.save.error.oncreate": () => {
@@ -346,7 +338,7 @@ export const tableSaveInputs = {
         });
       },
     };
-    return responses[response]();
+    return responses[response.type]();
   },
   manageconfirmation: (confirmation, log) => {
     log.push({

@@ -21,7 +21,7 @@ import { serviceAuthAccessDeny } from "../../services/auth/auth.services.js";
 // Components
 import LanguageSwitcher from "./LanguageSwitcher.js";
 import Snack from "./Snack/Snack2.js";
-//import FeedbackModal from "../../../components";
+import FeedbackModal from "../modals/FeedbackModal.js";
 import TableModal from "../modals/TableModal.js";
 import SignInModal from "../modals/SignInModal.js";
 import SignUpModal from "../modals/SignUpModal.js";
@@ -44,7 +44,7 @@ export default function Appbar(props) {
     signedin: useSelector((state) => state.authSlice.signedin),
     tableDenied: useSelector((state) => state.tableSlice.denied),
     priviledges: useSelector((state) => state.userSlice.priviledges),
-    //feedbackOpen: useSelector((state) => state.sliceFeedbackModal.open),
+    feedbackOpen: useSelector((state) => state.feedbackModalSlice.open),
     snackOpen: useSelector((state) => state.sliceSnack.open),
     snackData: useSelector((state) => state.sliceSnack.snackData),
     tableOpen: useSelector((state) => state.tableModalSlice.open),
@@ -89,7 +89,7 @@ export default function Appbar(props) {
     toContact: () => {
       setMenuOpen(false);
       appStore.dispatch({
-        type: "sliceFeedbackModal/change",
+        type: "feedbackModalSlice/change",
         payload: {
           title: "feedback.label.contact",
           contents: [
@@ -104,7 +104,7 @@ export default function Appbar(props) {
           ],
           inputs: {
             source: "open",
-            tag: "",
+            tag: "contact",
             text: "",
           },
         },
@@ -333,7 +333,7 @@ export default function Appbar(props) {
       {select.signUpModal === true ? <SignUpModal /> : null}
       {select.signInModal === true ? <SignInModal /> : null}
       {select.snackOpen ? <Snack data={select.snackData} /> : null}
-      {/*select.feedbackOpen ? (<FeedbackModal/>) : (null)*/}
+      {select.feedbackOpen ? (<FeedbackModal/>) : (null)}
       {select.tableOpen ? <TableModal /> : null}
     </Box>
   );

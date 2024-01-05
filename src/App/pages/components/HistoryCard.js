@@ -54,14 +54,18 @@ export default function HistoryCard(props) {
     }
     // 
     Object.values(contract.players).forEach((gamePlayer) => {
-      let pseudoPlayer = props.players.filter((tablePlayer) => {
-        return tablePlayer.userid === gamePlayer.userid;
-      });
       let readyGamePlayer = { ...gamePlayer };
-      if (pseudoPlayer.length > 0) {
-        readyGamePlayer.pseudo = pseudoPlayer[0].pseudo;
+      if (gamePlayer.status === "guest") {
+        readyGamePlayer.pseudo = t("game.label.guest")
       } else {
-        readyGamePlayer.pseudo = "a removed user";
+        let pseudoPlayer = props.players.filter((tablePlayer) => {
+          return tablePlayer.userid === gamePlayer.userid;
+        });
+        if (pseudoPlayer.length > 0) {
+          readyGamePlayer.pseudo = pseudoPlayer[0].pseudo;
+        } else {
+          readyGamePlayer.pseudo = t("game.label.removeduser")
+        }
       }
       contractPlayers[gamePlayer.role + "Players"].push(readyGamePlayer);
     })

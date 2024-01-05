@@ -19,7 +19,7 @@ export default function Help() {
   return (
     <Box data-testid="page-help">
       <Appbar route="help" title={t("generic.label.help")} />
-      <Box sx={{ height: 60 }} />
+      <Box sx={{ height: 80 }} />
 
       <Typography variant="h6" sx={{ mt: 2, mb: 1 }}>
         Frequently asked questions (FAQ)

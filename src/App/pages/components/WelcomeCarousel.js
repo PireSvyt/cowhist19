@@ -5,7 +5,7 @@ import { Box, Typography } from "@mui/material";
 // Carousel
 // https://github.com/maxmarinich/react-alice-carousel
 import AliceCarousel from "react-alice-carousel";
-//import "react-alice-carousel/lib/alice-carousel.css";
+import "react-alice-carousel/lib/alice-carousel.css";
 import "../styles/AliceCarousel.css";
 
 import EasyImage from "../../resources/easybro.gif";
@@ -20,7 +20,7 @@ export default function WelcomeCarousel() {
   const { t } = useTranslation();
 
   // Constants
-  const componentHeight = window.innerHeight - 310;
+  const componentHeight = window.innerHeight - 330;
 
   const items = [
     <Box

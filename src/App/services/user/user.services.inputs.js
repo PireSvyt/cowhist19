@@ -10,17 +10,30 @@ import {
   import appStore from "../../store/appStore.js";
   
   export const userGetDetailsInputs = {
+    lockuifunction: (log) => {
+      log.push({
+        date: new Date(),
+        message: "userGetStatsInputs.lockuifunction",
+        tags: ["function"],
+      });
+      appStore.dispatch({ 
+        type: "userSlice/change",
+        payload: {
+          state: {
+            details: "loading"
+          }
+        }
+      });
+    },
     getinputsfunction: (log) => {
       log.push({
         date: new Date(),
         message: "userGetDetailsInputs.getinputsfunction",
         tags: ["function"],
       });
-      let token = appStore.getState().authSlice.token
-      //console.log("userGetDetailsInputs getinputsfunction token", token)
       let inputs = {
         inputs: { 
-            token : token
+            token : appStore.getState().authSlice.token
         }
       }
       //console.log("getinputsfunction inputs", inputs)
@@ -320,3 +333,99 @@ import {
       return
     },
   };
+
+  export const userGetStatsInputs = {
+    lockuifunction: (log) => {
+      log.push({
+        date: new Date(),
+        message: "userGetStatsInputs.lockuifunction",
+        tags: ["function"],
+      });
+      appStore.dispatch({ 
+        type: "userSlice/change",
+        payload: {
+          state: {
+            stats: "loading"
+          }
+        }
+      });
+    },
+    getinputsfunction: (log) => {
+      log.push({
+        date: new Date(),
+        message: "userGetStatsInputs.getinputsfunction",
+        tags: ["function"],
+      });
+      return {
+        inputs: { 
+            token : appStore.getState().authSlice.token
+        }
+      };
+    },
+    sercivechecks: [
+      {
+        // Check inputs root is available
+        field: "inputs",
+        error: "generic.error.missinginputs",
+        subchecks: [
+          {
+            // Check token is available
+            field: "token",
+            error: "generic.error.missingtoken",
+            fieldsinerror: ["token"],
+          }
+        ],
+      },
+    ],
+    getcheckoutcomedispatchfunction: (log) => {
+      log.push({
+        date: new Date(),
+        message: "userGetStatsInputs.getcheckoutcomedispatchfunction",
+        tags: ["function"],
+      });
+      return "userSlice/change";
+    },
+    apicall: async (inputs, log) => {
+      log.push({
+        date: new Date(),
+        message: "userGetStatsInputs.apicall",
+        inputs: inputs,
+        tags: ["function"],
+      });
+      try {
+        return await apiUserGetStats(appStore.getState().authSlice.token);
+      } catch (err) {
+        return err;
+      }    
+    },
+    getmanageresponsefunction: (response, log) => {
+      log.push({
+        date: new Date(),
+        message: "userGetStatsInputs.getmanageresponsefunction",
+        response: response,
+        tags: ["function"],
+      });
+      console.log("response",response)
+      let responses = {
+        "user.getstats.success":() => {
+          // Outcome
+          appStore.dispatch({
+            type: "userSlice/setStats",
+            payload: { stats: response.data.stats },
+          })
+        },
+        "user.getstats.error":() => {
+          appStore.dispatch({
+            type: "sliceSnack/change",
+            payload: {
+              uid: random_id(),
+              id: "generic.snack.error.wip",
+            },
+          })
+        },
+      };
+      responses[response.type]()
+      return
+    },
+  };
+  

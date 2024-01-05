@@ -18,7 +18,7 @@ export default function About() {
         data-testid="page-about"
     >
       <Appbar route="about" title={t("generic.label.about")} />
-      <Box sx={{ height: 60 }} />
+      <Box sx={{ height: 80 }} />
 
       <Accordion sx={{ mt: 2}}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>

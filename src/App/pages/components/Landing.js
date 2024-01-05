@@ -47,6 +47,7 @@ export default function Landing() {
           </Typography>
         </Box>
 
+        <WelcomeCarousel />
 
         <ButtonGroup variant="contained" size="large">
           <Button 
@@ -68,4 +69,3 @@ export default function Landing() {
     </Box>
   );
 }
-//<WelcomeCarousel />

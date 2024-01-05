@@ -39,6 +39,7 @@ export default function Table() {
     name: useSelector((state) => state.tableSlice.name),
     snackData: useSelector((state) => state.sliceSnack.snackData),
     openGameModal: useSelector((state) => state.gameModalSlice.open),
+    view: useSelector((state) => state.tableSlice.view),
   };
 
   // Changes
@@ -50,7 +51,10 @@ export default function Table() {
         payload: {
           tableid: appStore.getState().tableSlice.tableid,
           name: appStore.getState().tableSlice.name,
-          players: appStore.getState().tableSlice.players,
+          guests: appStore.getState().tableSlice.guests,
+          players: appStore.getState().tableSlice.players.filter((player) => {
+            return (player.status !== "guest" && player.status !== "removeduser")
+          }),
         },
       });
     },
@@ -60,11 +64,13 @@ export default function Table() {
   }
 
   // Load at opening
-  if (select.authLoaded === true && select.signedin === true && select.tableState.details === undefined) {
+  if (select.authLoaded === true && select.signedin === true 
+    && select.tableState.details === undefined) {
     serviceTableGetDetails();    
   }
-  if (select.authLoaded === true && select.signedin === true && select.tableState.ranking === undefined) {
-    serviceTableGetStats();  
+  if (select.authLoaded === true && select.signedin === true 
+    && select.tableState.ranking === undefined) {
+    serviceTableGetStats(select.view);  
   }
 
   function TabPanel(props) {
@@ -84,7 +90,7 @@ export default function Table() {
   function changeTab(event, newTabIndex) {
     switch (newTabIndex) {
       case 0:
-        serviceTableGetStats();
+        serviceTableGetStats(select.view);
         setTab(newTabIndex);
         break;
       case 1:
@@ -105,7 +111,7 @@ export default function Table() {
         title={select.name}
         edittable={changes.edittable}
       />
-      <Box sx={{ height: 60 }} />
+      <Box sx={{ height: 80 }} />
       {select.authLoaded !== true ? (
         <Box sx={{ left: "10%", right: "10%" }}>
           <LinearProgress 

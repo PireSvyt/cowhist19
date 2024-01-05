@@ -31,7 +31,7 @@ export default function Home() {
   return (
     <Box>
       <Appbar route="home" title={t("generic.label.product")} />
-      <Box sx={{ height: 60 }} />
+      <Box sx={{ height: 80 }} />
       {select.loaded === false ? (
         <Box sx={{ left: "10%", right: "10%" }}>
           <LinearProgress 
@@ -40,7 +40,7 @@ export default function Home() {
       ) : select.signedin === false ? (
         <Landing />
       ) : (
-        <Box  data-testid="page-home">
+        <Box data-testid="page-home">
           <MyStats />
           <MyTables />
         </Box>

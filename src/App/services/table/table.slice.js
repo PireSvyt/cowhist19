@@ -7,6 +7,7 @@ const tableSlice = createSlice({
     denied: false,
     tableid: "",
     name: "",
+    guests: 0,
     players: [],
     contracts: [],
     games: [],
@@ -31,6 +32,7 @@ const tableSlice = createSlice({
       console.log("tableSlice.setDetails", action.payload)
       state.tableid = action.payload.tableid;
       state.name = action.payload.name;
+      state.guests = action.payload.guests;
       state.players = action.payload.players;
       state.contracts = action.payload.contracts;
       state.games = []
@@ -41,6 +43,9 @@ const tableSlice = createSlice({
         focus: ""
       }      
       state.state.details = "available";
+      delete state.state.history;
+      delete state.state.ranking;
+      delete state.state.graph;
     },
     setHistory: (state, action) => {
       console.log("tableSlice.setHistory", action.payload)

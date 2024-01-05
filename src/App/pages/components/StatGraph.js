@@ -35,7 +35,7 @@ export default function StatGraph() {
 
   // Size
   const chartStyle = {
-    height: window.innerHeight -350,
+    height: window.innerHeight -380,
     width: window.innerWidth * 0.95,
   };
   // Options
@@ -68,7 +68,7 @@ export default function StatGraph() {
         alignItems: "center"
       }}
     >
-      <Box sx={{mt: 2, mb: 2}}>
+      <Box sx={{mt: 1, mb: 2}}>
         <ReactECharts 
           style={chartStyle} 
           option={chartOption} 
@@ -86,6 +86,9 @@ export default function StatGraph() {
           });
           if (pseudoPlayer.length > 0) {
             rankingPlayer.pseudo = pseudoPlayer[0].pseudo;
+            if (pseudoPlayer[0].status === "guest") {
+              rankingPlayer.pseudo = "A GUEST";
+            }
             return (
               <Chip 
                 key={rankingPlayer.userid}

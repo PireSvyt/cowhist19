@@ -1,3 +1,5 @@
+import bcrypt from "bcryptjs-react";
+import { AES } from "crypto-js";
 import Cookies from "js-cookie";
 // APIs
 import {
@@ -139,8 +141,10 @@ export const authSignupInputs = {
       inputs: inputs,
       tags: ["function"],
     });
-    let repackagedInputs = inputs;
-    //delete repackagedInputs.inputs.passwordrepeat 
+    console.log("authSignupInputs.repackagingfunction", inputs)
+    let repackagedInputs = {...inputs};
+    repackagedInputs.inputs.password = bcrypt.hashSync(inputs.inputs.password);
+    delete repackagedInputs.inputs.passwordrepeat;
     return repackagedInputs;
   },
   apicall: async (inputs, log) => {
@@ -178,14 +182,7 @@ export const authSignupInputs = {
         },
         "auth.signup.success.alreadysignedup": () => {
           appStore.dispatch({
-            type: "signupModalSlice/change",
-            payload: {
-              disabled: false,
-              loading: false,
-              errors: {
-                alreadysignedup: true
-              }
-            },
+            type: "signupModalSlice/close",
           });
           appStore.dispatch({
             type: "sliceSnack/change",
@@ -197,11 +194,7 @@ export const authSignupInputs = {
         },
         "auth.signup.error.savingoncreate": () => {
           appStore.dispatch({
-            type: "signupModalSlice/change",
-            payload: {
-              disabled: false,
-              loading: false,
-            },
+            type: "signupModalSlice/unlock",
           });
           appStore.dispatch({
             type: "sliceSnack/change",
@@ -213,11 +206,7 @@ export const authSignupInputs = {
         },
         "auth.signup.error.savingfrominvited": () => {
           appStore.dispatch({
-            type: "signupModalSlice/change",
-            payload: {
-              disabled: false,
-              loading: false,
-            },
+            type: "signupModalSlice/unlock",
           });
           appStore.dispatch({
             type: "sliceSnack/change",
@@ -229,11 +218,7 @@ export const authSignupInputs = {
         },
         "auth.signup.error.notfound": () => {
           appStore.dispatch({
-            type: "signupModalSlice/change",
-            payload: {
-              disabled: false,
-              loading: false,
-            },
+            type: "signupModalSlice/unlock",
           });
           appStore.dispatch({
             type: "sliceSnack/change",
@@ -242,9 +227,21 @@ export const authSignupInputs = {
               id: "generic.snack.error.wip",
             },
           });
-        },      
+        },
+        "auth.signup.error.sendingemail": () => {
+          appStore.dispatch({
+            type: "signupModalSlice/close",
+          });
+          appStore.dispatch({
+            type: "sliceSnack/change",
+            payload: {
+              uid: random_id(),
+              id: "signup.snack.pendingemail",
+            },
+          });
+        }   
     };
-    return responses[response]();
+    return responses[response.type]();
   },
 };
 
@@ -332,6 +329,40 @@ export const authSigninInputs = {
     });
     return "signinModalSlice/change";
   },
+  repackagingfunction: async (inputs, log) => {
+    log.push({
+      date: new Date(),
+      message: "serviceProceed.repackagingfunction",
+      inputs: inputs,
+      tags: ["function"],
+    });
+    console.log("authSigninInputs.repackagingfunction", inputs)
+    let repackagedInputs = {...inputs};    
+    //if (process.env.NODE_ENV === "_production" ) {
+      console.log("AES.encrypt", inputs.inputs.password,
+      process.env.REACT_APP_ENCRYPTION_KEY)
+      let hash = await AES.encrypt(
+        inputs.inputs.password,
+        process.env.REACT_APP_ENCRYPTION_KEY
+      ).toString();
+      console.log("repackagedInputs hash", hash)
+      repackagedInputs.inputs.password = AES.encrypt(
+        inputs.inputs.password,
+        process.env.REACT_APP_ENCRYPTION_KEY
+      ).toString();
+      console.log("repackagedInputs.inputs.password", repackagedInputs)
+      repackagedInputs.inputs.login = AES.encrypt(
+        inputs.inputs.login,
+        process.env.REACT_APP_ENCRYPTION_KEY
+      ).toString();
+      console.log("repackagedInputs.inputs.login", repackagedInputs)
+      repackagedInputs.inputs.encryption = true;
+    /*} else {
+      repackagedInputs.inputs.encryption = false;
+    }*/
+    console.log("authSigninInputs", repackagedInputs)
+    return repackagedInputs;
+  },
   apicall: async (inputs, log) => {
     log.push({
       date: new Date(),
@@ -340,6 +371,7 @@ export const authSigninInputs = {
       tags: ["function"],
     });
     try {
+      console.log("apicall", inputs)
       return await apiAuthSignIn(inputs);
     } catch (err) {
       return err;

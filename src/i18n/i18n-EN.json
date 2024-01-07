@@ -75,7 +75,8 @@
       "resetpassword": "Reset my password (unavailable)"
     },
     "snack": {
-      "signedup": "Signed up!\nCheck your emails to activate your account (including the spams)"
+      "signedup": "Signed up!\nCheck your emails to activate your account (including the spams)",
+      "pendingemail": "Signed up!\nWe are currently facing difficulties to send your activation email :/\nCheck your emails to activate your account (including the spams)\nIf our email doesn't reach you within the next 24h, please sign up again"
     }
   },
   "signin": {

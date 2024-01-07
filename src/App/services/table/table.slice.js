@@ -78,22 +78,21 @@ const tableSlice = createSlice({
             // Unfocus
             state.graph.focus = ""
             state.graph.series[action.payload.value].lineStyle = {
-              color: '#9E9E9E',
+              color: '#9E9E9E', // Grey
               width: 1
             }
           } else {
             if (state.graph.focus !== "") {
               // Remove previous focus
               state.graph.series[state.graph.focus].lineStyle = {
-                color: '#9E9E9E',
+                color: '#9E9E9E', // Grey
                 width: 1
               }
             }
             // Focus
             state.graph.focus = action.payload.value;
             state.graph.series[action.payload.value].lineStyle = {
-              //color: '#ef6c00', // Secondary
-              color: '#2d7683', // Primary
+              color: '#00838F', // Primary, see config/themeOptions.js
               width: 3
             }
           }

@@ -10,6 +10,7 @@
   "generic.snack.feedback.wip": { "severity": "warning" },
 
   "signup.snack.signedup": { "severity": "success" },
+  "signup.snack.pendingemail": { "severity": "warning", "duration": 10000 },
 
   "signin.snack.signedin": { "severity": "success" },
   "signin.snack.notfound": { "severity": "error" },

@@ -104,18 +104,18 @@ export async function serviceTableProcessCurves(graph) {
       }
       // Style
       let style = {
-        color: '#BDBDBD',
+        color: '#9E9E9E', // Grey
         width: 1
       }
       if (playerid === userid) {
         style = {
-          color: '#ef6c00', // Secondary
+          color: '#D45C28', // Secondary, see config/themeOptions.js
           width: 3
         }
       }
       if (playerid === focus) {
         style = {
-          color: '#2d7683', // Primary
+          color: '#00838F', // Primary, see config/themeOptions.js
           width: 3
         }
       }

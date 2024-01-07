@@ -151,6 +151,7 @@ function CircularProgressWithLabel(props) {
         {...props} 
         size={70} 
         thickness={5} 
+        color="secondary"
       />
       <Typography 
         variant="body1" 

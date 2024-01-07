@@ -96,6 +96,10 @@ const signupModalSlice = createSlice({
       state.disabled = true;
       state.loading = true;
     },
+    unlock: (state) => {
+      state.disabled = false;
+      state.loading = false;
+    },
   },
 });
 

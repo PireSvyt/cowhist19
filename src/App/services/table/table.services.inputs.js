@@ -707,10 +707,24 @@ export const tableDeleteInputs = {
     });
     return {
       inputs: {
-        tableid: appStore.getState().tableModalSlice.inputs.tableid,
+        tableid: appStore.getState().tableModalSlice.tableid,
       },
     };
   },
+  sercivechecks: [
+    {
+      // Check inputs root is available
+      field: "inputs",
+      error: "table.error.missinginputs",
+      subchecks: [
+        {
+          // Check tableid is available
+          field: "tableid",
+          error: "table.error.missingtableid",
+        },
+      ],
+    },
+  ],
   apicall: async (inputs, log) => {
     log.push({
       date: new Date(),

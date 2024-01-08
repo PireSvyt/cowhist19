@@ -337,31 +337,37 @@ export const authSigninInputs = {
       tags: ["function"],
     });
     console.log("authSigninInputs.repackagingfunction", inputs)
-    let repackagedInputs = {...inputs};    
-    //if (process.env.NODE_ENV === "_production" ) {
-      console.log("AES.encrypt", inputs.inputs.password,
-      process.env.REACT_APP_ENCRYPTION_KEY)
-      let hash = await AES.encrypt(
-        inputs.inputs.password,
-        process.env.REACT_APP_ENCRYPTION_KEY
-      ).toString();
-      console.log("repackagedInputs hash", hash)
-      repackagedInputs.inputs.password = AES.encrypt(
-        inputs.inputs.password,
-        process.env.REACT_APP_ENCRYPTION_KEY
-      ).toString();
-      console.log("repackagedInputs.inputs.password", repackagedInputs)
-      repackagedInputs.inputs.login = AES.encrypt(
-        inputs.inputs.login,
-        process.env.REACT_APP_ENCRYPTION_KEY
-      ).toString();
-      console.log("repackagedInputs.inputs.login", repackagedInputs)
-      repackagedInputs.inputs.encryption = true;
-    /*} else {
-      repackagedInputs.inputs.encryption = false;
-    }*/
-    console.log("authSigninInputs", repackagedInputs)
-    return repackagedInputs;
+    return new Promise((resolve, reject) => {
+      try {
+        let repackagedInputs = {...inputs};    
+        //if (process.env.NODE_ENV === "_production" ) {
+          console.log("AES.encrypt", inputs.inputs.password,
+          process.env.REACT_APP_ENCRYPTION_KEY)
+          let hash = AES.encrypt(
+            inputs.inputs.password,
+            process.env.REACT_APP_ENCRYPTION_KEY
+          ).toString();
+          console.log("repackagedInputs hash", hash)
+          repackagedInputs.inputs.password = AES.encrypt(
+            inputs.inputs.password,
+            process.env.REACT_APP_ENCRYPTION_KEY
+          ).toString();
+          console.log("repackagedInputs.inputs.password", repackagedInputs)
+          repackagedInputs.inputs.login = AES.encrypt(
+            inputs.inputs.login,
+            process.env.REACT_APP_ENCRYPTION_KEY
+          ).toString();
+          console.log("repackagedInputs.inputs.login", repackagedInputs)
+          repackagedInputs.inputs.encryption = true;
+        /*} else { 
+          repackagedInputs.inputs.encryption = false;
+        }*/
+        console.log("authSigninInputs", repackagedInputs)
+        return resolve(repackagedInputs);
+      } catch (err) {
+        resolve()
+      }   
+    })
   },
   apicall: async (inputs, log) => {
     log.push({

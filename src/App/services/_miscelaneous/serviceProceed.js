@@ -81,7 +81,7 @@ async function serviceProceed(serviceProceedInputs, directInputs = undefined, lo
       // Repackaging
       if (serviceProceedInputs.repackagingfunction !== undefined) {
         if (serviceProceedInputs.repackagingfunction !== undefined) {
-          serviceInputs = serviceProceedInputs.repackagingfunction(
+          serviceInputs = await serviceProceedInputs.repackagingfunction(
             serviceInputs,
             log,
           );

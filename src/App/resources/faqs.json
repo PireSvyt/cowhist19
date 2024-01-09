@@ -1,0 +1,173 @@
+[
+  {
+    "title": "About the cookies",
+    "type": "section",
+    "ref": "help.cookies",
+    "details": [
+      {
+        "type": "section",
+        "title": "What is our cookie policy?",
+        "ref": "help.cookies.policy",
+        "details": [
+          {
+            "type": "statement",
+            "text": "Cookies are to be used only for functional aspects and because they bring value to users! They are user's property!"
+          },
+          {
+            "type": "paragraph",
+            "text": "In other words, cookies are used the least possible and only in the user's interest."
+          },
+          {
+            "type": "emphasis",
+            "text": "Your data will never be commercialized, exhanged, given or leveraged. They stay on your device to provide you a better experience."
+          }
+        ]
+      },
+      {
+        "type": "section",
+        "ref": "help.cookies.usage",
+        "title": "What cookies does the app use?",
+        "details": [
+          {
+            "type": "paragraph",
+            "text": "Here is the exhaustive list of cookies which are stored only your device and leveraged by the app to provide you a better experience:"
+          },
+          {
+            "type": "section",
+            "title": "Json web (authentication) token",
+            "ref": "help.cookies.usage.token",
+            "details": [
+              {
+                "type": "paragraph",
+                "text": "As soon as you sign in, this is stored in your cookies and allows you to not have to sign in at every clicks.\nYou can see this token as the key assessing that you are authorized for subsequent actions.\n\nWhen you close the app, so that you don't have to sign in each time, the validity of the token from your cookies is assessed. If valid, you're automatically signed in and can enjoy the app!\n\nThis is precisely with this token that we make sure no one else than you has access to your data."
+              }
+            ]
+          },
+
+          {
+            "type": "section",
+            "title": "Selected language",
+            "ref": "help.cookies.usage.token",
+            "details": [
+              {
+                "type": "paragraph",
+                "text": "When you select a language preference, the selected language is stored in your cookies.\n\nEach time you come back, this is leveraged as your language preference.\n\nIt remains on your device and is here only to display the app as you prefer it to be."
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "About the security",
+    "type": "section",
+    "ref": "help.security",
+    "details": [
+      {
+        "type": "section",
+        "ref": "help.security.password",
+        "title": "How is managed my password?",
+        "details": [
+          {
+            "type": "statement",
+            "text": "Your password is never transiting \"in clear\"!"
+          },
+          {
+            "type": "paragraph",
+            "text": "Concretely, your password is encrypted with a key in you device and then decrypted on our server to authenticate your credentials.\nTo do so, the key is hidden in the application both on exposed side (the website) and service side. This enables your password to not transit in clear on the web."
+          },
+          {
+            "type": "paragraph",
+            "text": "Follow this link for more details about the algorithm used:"
+          },
+          {
+            "type": "link",
+            "text": "Advanced Encryption Standard (Wikipedia)",
+            "url": "https://fr.wikipedia.org/wiki/Advanced_Encryption_Standard"
+          }
+        ]
+      },
+      {
+        "type": "section",
+        "ref": "help.security.storage",
+        "title": "How is my data stored?",
+        "details": [
+          {
+            "type": "statement",
+            "text": "Your password is never saved \"in clear\"!"
+          },
+          {
+            "type": "paragraph",
+            "text": "Concretely, your password is encrypted in a way it cannot be depcrypted. The encrypted form is stored in the database at sign up. At sign in, your password is assessed as with respect to the encrypted form to grant or deny access to your account."
+          },
+          {
+            "type": "paragraph",
+            "text": "Follow this link for more details about the algorithm used:"
+          },
+          {
+            "type": "link",
+            "text": "Bcrypt (Wikipedia)",
+            "url": "https://en.wikipedia.org/wiki/Bcrypt"
+          }
+        ]
+      },
+      {
+        "type": "section",
+        "ref": "help.security.access",
+        "title": "Who has access to my data?",
+        "details": []
+      }
+    ]
+  },
+  {
+    "title": "About the tables",
+    "type": "section",
+    "ref": "help.tables",
+    "details": [
+      {
+        "type": "section",
+        "ref": "help.tables.invite",
+        "title": "What does it man to invite a player?",
+        "details": []
+      },
+      {
+        "type": "section",
+        "ref": "help.tables.access",
+        "title": "Who can access my tables?",
+        "details": []
+      },
+      {
+        "type": "section",
+        "ref": "help.tables.deletion",
+        "title": "What happens when deleting a table?",
+        "details": []
+      }
+    ]
+  },
+  {
+    "title": "About the games",
+    "type": "section",
+    "ref": "help.games",
+    "details": [
+      {
+        "type": "section",
+        "ref": "help.games.points",
+        "title": "What are the existing contracts?",
+        "details": []
+      },
+      {
+        "type": "section",
+        "ref": "help.games.points",
+        "title": "Why can't I save a game?",
+        "details": []
+      },
+      {
+        "type": "section",
+        "ref": "help.games.points",
+        "title": "How are points computed?",
+        "details": []
+      }
+    ]
+  }
+]

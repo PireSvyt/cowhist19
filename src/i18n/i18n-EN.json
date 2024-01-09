@@ -2,13 +2,15 @@
   "generic": {
     "label": {
       "product": "CoWhist19",
-      "documentation": "Documentation",
-      "about": "About"
+      "help": "Help",
+      "about": "About",
+      "tocomeintro": "",
+      "tocomedetails": ""
     },
     "menu": {
       "home": "Home",
       "account": "My account",
-      "documentation": "Documentation",
+      "help": "Help",
       "about": "About",
       "contact": "Contact",
       "signout": "Sign out"
@@ -57,9 +59,10 @@
   },
   "signup": {
     "label": {
-      "title": "Sign up"
+      "title": "Sign up",
+      "existinglogin": "Don't you already created an account with this login?"
     },
-    "input": { "repeatpassword": "Repeat password" },
+    "input": { "passwordrepeat": "Repeat password" },
     "button": {
       "signup": "Sign up"
     },
@@ -67,19 +70,23 @@
       "missingpseudo": "missing pseudo",
       "existingpseudo": "Already existing pseudo",
       "existinglogin": "An account already exists with this login",
-      "missingrepeatpassword": "missing repeated password",
+      "missingpasswordrepeat": "missing repeated password",
       "passwordmissmatch": "password missmatch",
       "resetpassword": "Reset my password (unavailable)"
     },
     "snack": {
-      "signedup": "Signed up!\nCheck your emails to activate your account (including the spams)"
+      "signedup": "Signed up!\nCheck your emails to activate your account (including the spams)",
+      "pendingemail": "Signed up!\nWe are currently facing difficulties to send your activation email :/\nCheck your emails to activate your account (including the spams)\nIf our email doesn't reach you within the next 24h, please sign up again"
     }
   },
   "signin": {
     "label": {
       "title": "Sign in",
       "notfoundaccount": "Account not found :/\nWilling to create an account?",
-      "inactiveaccount": "Haven't you activated your account yet?"
+      "inactiveaccount": "Haven't you activated your account yet?",
+      "successresendingactivation": "Activation email sent, check your emails (including the spams)",
+      "successsendingpassword": "Password reset email sent, check your emails (including the spams)",
+      "errorresendingactivation": "Could not send account activation email"
     },
     "input": {},
     "button": {
@@ -90,8 +97,7 @@
     "snack": {
       "signedin": "Signed in!",
       "unauthorized": "Wrong password",
-      "successresendingactivation": "Activation email sent, check your emails (including the spams)",
-      "errorresendingactivation": "Could not resend account activation email"
+      "errorsendingpassword": "Could not send password reset email"
     }
   },
   "activation": {
@@ -163,7 +169,7 @@
       "players": "Players",
       "stats": "Stats",
       "history": "History",
-      "averagepoints" : "av. points",
+      "averagepoints": "av. points",
       "data": "Data",
       "games": "games",
       "victory": "victory",
@@ -187,7 +193,7 @@
     },
     "error": {
       "missingname": "missing name",
-      "existingname" : "Already existing name",
+      "existingname": "Already existing name",
       "missingguests": "missing guests",
       "creationwithoutplayers": "missing players to create a table",
       "creationwithoutuser": "table creation impossible without you among the players"
@@ -229,8 +235,8 @@
       "won": "won in",
       "lost": "lost in",
       "against": "against",
-      "guest" : "a guest", 
-      "removeduser" : "a removed user",
+      "guest": "a guest",
+      "removeduser": "a removed user",
       "contract": {
         "8plis": "Coop. 8 folds",
         "9plis": "Coop. 9 folds",
@@ -243,6 +249,7 @@
         "solo8": "Solo 8 folds",
         "petitemisere": "Small misery",
         "grandemisere": "Large misery",
+        "grandemisereetalee": "Open large misery",
         "grandemisereetalee": "Open large misery",
         "trou8": "Hole in 8 folds",
         "trou9": "Hole in 9 folds",
@@ -273,7 +280,7 @@
       "deleted": "Game deleted"
     }
   },
-  "feedback":{
+  "feedback": {
     "label": {
       "tocome": "To come...",
       "tocomeintro": "This functionality is not available yet.",
@@ -282,27 +289,27 @@
       "contact": "Contact",
       "leavemessage": "Leave us a message!"
     },
-    "input":{
+    "input": {
       "message": "Message",
       "consent": "I accept the use of this feedback to improve the product"
     },
     "button": {
       "send": "Send"
     },
-    "error":{
+    "error": {
       "missingmessage": "missing message",
       "missingconsent": "missing consent"
     },
-    "snack":{      
-      "created" : "Feedback sent!"
+    "snack": {
+      "created": "Feedback sent!"
     }
   },
   "changepassword": {
     "label": {
       "modaltitle": "Change password"
     },
-    "input":{
-      "current" : "Current password",
+    "input": {
+      "current": "Current password",
       "new": "New password",
       "repeat": "Repeat new password"
     },
@@ -313,7 +320,7 @@
       "missmatch": "password missmatch"
     },
     "snack": {
-      "saved" : "Password saved"
+      "saved": "Password saved"
     }
   }
 }

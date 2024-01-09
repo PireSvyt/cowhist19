@@ -1,0 +1,31 @@
+{
+  "generic.snack.api.unmanagedtype": { "severity": "error" },
+  "generic.snack.api.errornetwork": { "severity": "error" },
+
+  "generic.snack.error.unknown": { "severity": "error" },
+  "generic.snack.error.withdetails": { "severity": "error" },
+  "generic.snack.error.invalidchange": { "severity": "error" },
+  "generic.snack.error.wip": { "severity": "error" },
+
+  "generic.snack.feedback.wip": { "severity": "warning" },
+
+  "signup.snack.signedup": { "severity": "success" },
+  "signup.snack.pendingemail": { "severity": "warning", "duration": 10000 },
+
+  "signin.snack.signedin": { "severity": "success" },
+  "signin.snack.notfound": { "severity": "error" },
+  "signin.snack.unauthorized": { "severity": "error" },
+  "signin.snack.successsendingpassword": { "severity": "success" },
+  "signin.snack.errorsendingpassword": { "severity": "error" },
+
+  "invite.snack.invited": { "severity": "success" },
+
+  "table.snack.saved": { "severity": "success" },
+  "table.snack.deleted": { "severity": "warning" },
+
+  "game.snack.saved": { "severity": "success" },
+  "game.snack.deleted": { "severity": "warning" },
+
+  
+  "feedback.snack.created": { "severity": "success" }
+}

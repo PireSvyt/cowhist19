@@ -721,6 +721,16 @@ export const tableDeleteInputs = {
           // Check tableid is available
           field: "tableid",
           error: "table.error.missingtableid",
+          checkfunction: (serviceInputs) => {
+            if (serviceInputs.inputs.tableid === undefined) {
+              return { 
+                errors: ["table.error.missingtableid"],
+                proceed: false 
+              };
+            } else {
+              return { proceed: true };
+            }
+          },
         },
       ],
     },
@@ -759,6 +769,6 @@ export const tableDeleteInputs = {
         });
       },
     };
-    return responses[response]();
+    return responses[response.type]();
   },
 };

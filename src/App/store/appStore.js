@@ -13,18 +13,19 @@ import gameModalSlice from "../services/modals/game/game.slice.js";
 import tocomeModalSlice from "../services/modals/tocome/tocome.slice.js";
 import feedbackModalSlice from "../services/modals/feedback/feedback.slice.js";
 // UI components
-import sliceSnack from "../services/components/snack/sliceSnack.js";
+import sliceSnack from "../services/snack/sliceSnack.js";
 // Test
 import sliceTests from "../services/sliceTests.js";
 
 // Slices
 const slices = {
-  
+  // Authentication
   authSlice: authSlice,
+  // Collections
   userSlice: userSlice,
   tableSlice: tableSlice,
   adminSlice: adminSlice,
-
+  // Modals
   signupModalSlice: signupModalSlice,
   signinModalSlice: signinModalSlice,
   inviteModalSlice: inviteModalSlice,
@@ -32,11 +33,10 @@ const slices = {
   gameModalSlice: gameModalSlice,
   tocomeModalSlice: tocomeModalSlice,
   feedbackModalSlice: feedbackModalSlice,
-  
+  // Snack bar
   sliceSnack: sliceSnack,
-
+  // Tests
   sliceTests: sliceTests,
-
 }
 
 export default configureStore({

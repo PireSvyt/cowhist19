@@ -13,32 +13,30 @@ import gameModalSlice from "../services/modals/game/game.slice.js";
 import tocomeModalSlice from "../services/modals/tocome/tocome.slice.js";
 import feedbackModalSlice from "../services/modals/feedback/feedback.slice.js";
 // UI components
-import sliceSnack from "../services/components/snack/sliceSnack.js";
-// Test
-import sliceTests from "../services/sliceTests.js";
-
-// Slices
-const slices = {
-  
-  authSlice: authSlice,
-  userSlice: userSlice,
-  tableSlice: tableSlice,
-  adminSlice: adminSlice,
-
-  signupModalSlice: signupModalSlice,
-  signinModalSlice: signinModalSlice,
-  inviteModalSlice: inviteModalSlice,
-  tableModalSlice: tableModalSlice,
-  gameModalSlice: gameModalSlice,
-  tocomeModalSlice: tocomeModalSlice,
-  feedbackModalSlice: feedbackModalSlice,
-  
-  sliceSnack: sliceSnack,
-
-  sliceTests: sliceTests,
-
-}
+import sliceSignUpModal from "./sliceSignUpModal.js";
+import sliceSignInModal from "./sliceSignInModal.js";
+import sliceTableModal from "./sliceTableModal.js";
+import sliceInviteModal from "./sliceInviteModal.js";
+import sliceGameModal from "./sliceGameModal.js";
+import sliceSnack from "./sliceSnack.js";
+import sliceToComeModal from "./sliceToComeModal.js";
+// Admin
+import sliceAdminStats from "./sliceAdminStats.js";
 
 export default configureStore({
-  reducer: slices,
+  reducer: {
+    sliceUserAuth: sliceUserAuth,
+    sliceUserDetails: sliceUserDetails,
+    sliceTableDetails: sliceTableDetails,
+    sliceTableHistory: sliceTableHistory,
+    sliceTableStats: sliceTableStats,
+    sliceSignUpModal: sliceSignUpModal,
+    sliceSignInModal: sliceSignInModal,
+    sliceTableModal: sliceTableModal,
+    sliceInviteModal: sliceInviteModal,
+    sliceGameModal: sliceGameModal,
+    sliceSnack: sliceSnack,
+    sliceToComeModal: sliceToComeModal,
+    sliceAdminStats: sliceAdminStats,
+  },
 });

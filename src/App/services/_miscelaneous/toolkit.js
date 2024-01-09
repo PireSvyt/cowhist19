@@ -49,3 +49,18 @@ export function appendObject (obj, append) {
   })
   return obj
 }
+
+export function debounce(func, timeout = 150){
+  /*
+
+  Allows to to debounce a function
+
+  Source : https://www.freecodecamp.org/news/javascript-debounce-example/
+
+  */
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => { func.apply(this, args); }, timeout);
+  };
+}

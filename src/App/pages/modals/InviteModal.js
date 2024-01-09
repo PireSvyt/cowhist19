@@ -12,7 +12,7 @@ import {
   FormControlLabel,
   Checkbox,
 } from "@mui/material";
-import LoadingButton from "@mui/lab/LoadingButton";
+import LoadingButton from '@mui/lab/LoadingButton';
 
 // Services
 import { serviceUserInvite } from "../../services/user/user.services.js";

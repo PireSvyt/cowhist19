@@ -9,7 +9,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
-import LoadingButton from "@mui/lab/LoadingButton";
+import LoadingButton from '@mui/lab/LoadingButton';
 
 // Components
 import ContractCard from "../components/ContractCard.js";

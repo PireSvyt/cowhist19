@@ -5,7 +5,9 @@ yarn.lock
 package-lock.json
 .vscode
 .env
+env.json
 test-results
 playwright-report
 blob-report
 playwright/.cache
+src/scripts/cucumber/features/**/*.js

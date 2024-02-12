@@ -1,326 +1,331 @@
 {
-  "generic": {
-    "label": {
-      "product": "CoWhist19",
-      "help": "Help",
-      "about": "About",
-      "tocomeintro": "",
-      "tocomedetails": ""
+    "generic": {
+        "label": {
+            "product": "CoWhist19",
+            "help": "Help",
+            "about": "About",
+            "tocomeintro": "",
+            "tocomedetails": ""
+        },
+        "menu": {
+            "home": "Home",
+            "account": "My account",
+            "help": "Help",
+            "about": "About",
+            "contact": "Contact",
+            "signout": "Sign out"
+        },
+        "input": {
+            "name": "Name",
+            "pseudo": "Pseudo",
+            "email": "Email",
+            "password": "Password"
+        },
+        "button": {
+            "signin": "Sign in",
+            "save": "Save",
+            "cancel": "Cancel",
+            "close": "Close",
+            "proceed": "Proceed",
+            "tohome": "To home"
+        },
+        "error": {
+            "missinglogin": "missing email",
+            "invalidlogin": "invalid email",
+            "missingpassword": "missing password"
+        },
+        "snack": {
+            "api": {
+                "unmanagedtype": "Unmanaged API response",
+                "errornetwork": "Network issue"
+            },
+            "error": {
+                "unknown": "Unknown error :/",
+                "withdetails": "Error :",
+                "wip": "We are working on it..."
+            }
+        },
+        "language": {
+            "enGB": {
+                "long": "English"
+            },
+            "frFR": {
+                "long": "French"
+            },
+            "nlNL": {
+                "long": "Dutch"
+            }
+        }
     },
-    "menu": {
-      "home": "Home",
-      "account": "My account",
-      "help": "Help",
-      "about": "About",
-      "contact": "Contact",
-      "signout": "Sign out"
+    "signup": {
+        "label": {
+            "title": "Sign up",
+            "existinglogin": "Don't you already created an account with this login?"
+        },
+        "input": { "passwordrepeat": "Repeat password" },
+        "button": {
+            "signup": "Sign up"
+        },
+        "error": {
+            "missingpseudo": "missing pseudo",
+            "existingpseudo": "Already existing pseudo",
+            "existinglogin": "An account already exists with this login",
+            "missingpasswordrepeat": "missing repeated password",
+            "passwordmissmatch": "password missmatch",
+            "resetpassword": "Reset my password (unavailable)"
+        },
+        "snack": {
+            "signedup": "Signed up!\nCheck your emails to activate your account (including the spams)",
+            "pendingemail": "Signed up!\nWe are currently facing difficulties to send your activation email :/\nCheck your emails to activate your account (including the spams)\nIf our email doesn't reach you within the next 24h, please sign up again"
+        }
     },
-    "input": {
-      "name": "Name",
-      "pseudo": "Pseudo",
-      "email": "Email",
-      "password": "Password"
+    "signin": {
+        "label": {
+            "title": "Sign in",
+            "notfoundaccount": "Account not found :/\nWilling to create an account?",
+            "inactiveaccount": "Haven't you activated your account yet?",
+            "successresendingactivation": "Activation email sent, check your emails (including the spams)",
+            "successsendingpassword": "Password reset email sent, check your emails (including the spams)",
+            "errorresendingactivation": "Could not send account activation email"
+        },
+        "input": {},
+        "button": {
+            "resetpassword": "Reset password",
+            "gotosignup": "Sign up now!",
+            "resendactivationemail": "Resend activation email"
+        },
+        "snack": {
+            "signedin": "Signed in!",
+            "unauthorized": "Wrong password",
+            "errorsendingpassword": "Could not send password reset email"
+        }
     },
-    "button": {
-      "signin": "Sign in",
-      "save": "Save",
-      "cancel": "Cancel",
-      "close": "Close",
-      "proceed": "Proceed",
-      "tohome": "To home"
+    "activation": {
+        "label": {
+            "laststep": "One last step...\nand then you're all set!",
+            "inprogress": "Activation in progress...",
+            "error": "Error during activation",
+            "errorexplanation": "Sincere apologies for the inconvenience.\nPlease try again later.",
+            "activatedtitle": "Account activated!"
+        },
+        "input": {},
+        "button": {
+            "activate": "Activate",
+            "resend": "Send a new activation email"
+        },
+        "error": {},
+        "snack": {}
     },
-    "error": {
-      "missinglogin": "missing email",
-      "invalidlogin": "invalid email",
-      "missingpassword": "missing password"
+    "account": {
+        "label": {
+            "mydata": "My data",
+            "mypseudo": "My pseudo",
+            "myemail": "My email",
+            "mypassword": "My password",
+            "myaccount": "My account",
+            "merge": "Merge",
+            "mergedetails": "Enables to merge two accounts together, which is relevant if you've been invited with two different emails.",
+            "anonymize": "Anonymize",
+            "anonymizedetails": "Enables to remove personal information from the app, without affecting the tables you're part of.",
+            "close": "Close",
+            "closedetails": "To permanently delete your account, removing you from any table you've been part of."
+        },
+        "input": {},
+        "button": {
+            "changepseudo": "Change pseudo",
+            "changeemail": "Change email",
+            "changepassword": "Change password",
+            "merge": "Merge accounts",
+            "anonymize": "Anonymize account",
+            "close": "Close account"
+        },
+        "error": {},
+        "snack": {}
     },
-    "snack": {
-      "api": {
-        "unmanagedtype": "Unmanaged API response",
-        "errornetwork": "Network issue"
-      },
-      "error": {
-        "unknown": "Unknown error :/",
-        "withdetails": "Error :",
-        "wip": "We are working on it..."
-      }
+    "home": {
+        "label": {
+            "valueprop": "Play cards, store games...\nGet history and analytics!",
+            "carousel1": "Record your Whist games,\naccess history and analytics",
+            "carousel2": "Create as many table you want\nand invite your friends",
+            "carousel3": "Sign up!\nIt's free and easy",
+            "mystats": "My stats",
+            "mytables": "My tables",
+            "notables": "No tables so far...",
+            "notablesexplanation": "You are not playing at any table so far...\n\nCreate a new table with using the \"+\" icon and invite your friends to play!",
+            "attack": "Attack",
+            "victory": "Victory",
+            "games": "games",
+            "nogames": "No games so far...",
+            "nogamesstatsexplanation": "You haven't played any game so far?\n\nPlay and save games to access to your stats here!"
+        },
+        "input": {},
+        "button": {},
+        "error": {},
+        "snack": {}
     },
-    "language": {
-      "enGB": {
-        "long": "English"
-      },
-      "frFR": {
-        "long": "French"
-      },
-      "nlNL": {
-        "long": "Dutch"
-      }
+    "table": {
+        "label": {
+            "title": "Table",
+            "players": "Players",
+            "stats": "Stats",
+            "history": "History",
+            "averagepoints": "av. points",
+            "data": "Data",
+            "games": "games",
+            "victory": "victory",
+            "attack": "attack",
+            "deniedaccess": "Denied access",
+            "deniedaccessexplanation": "You're not a member of this table.\n\nYou can't access a table you're not a memebr of.",
+            "nogames": "No games so far...",
+            "nogameshistoryexplanation": "You haven't played any game so far?\n\nPlay and click the new game button to save your games and access the table history here!",
+            "nogamesstatsexplanation": "You haven't played any game so far?\n\nPlay and click the new game button to save your games and access the player stats here!",
+            "nouserscreate": "No players, really?",
+            "nouserscreateexplanation": "You have removed all players from the table.\nIt is not possible to ceate a table without any player, especially you no?\n\nYou can invite players to this table pressing the \"+\" icon.",
+            "nousersdelete": "No players, really?",
+            "nousersdeleteexplanation": "You have removed all players from the table.\n\nSaving a table without any player will delete the table."
+        },
+        "input": {
+            "guests": "Guests"
+        },
+        "button": {
+            "newgame": "New game",
+            "loadmore": "Load more"
+        },
+        "error": {
+            "missingname": "missing name",
+            "existingname": "Already existing name",
+            "missingguests": "missing guests",
+            "creationwithoutplayers": "missing players to create a table",
+            "creationwithoutuser": "table creation impossible without you among the players"
+        },
+        "confirm": {
+            "deletenoeusers": {
+                "title": "No more player here!",
+                "content": "All players have been deleted from this table.\nA table can't exist without any player...\n\nProceeding will delete the table and all associated games."
+            }
+        },
+        "snack": {
+            "saved": "Table saved!",
+            "deleted": "Table deleted"
+        }
+    },
+    "invite": {
+        "label": {
+            "title": "Invite a player"
+        },
+        "input": {
+            "acknowledgement": "I know this person"
+        },
+        "button": {
+            "invite": "Invite"
+        },
+        "error": {
+            "missinglogin": "missing email",
+            "invalidlogin": "invalid email",
+            "missingpseudo": "missing pseudo",
+            "missingacknowledgement": "missing acknowledgement"
+        },
+        "snack": {
+            "invited": "User invited!"
+        }
+    },
+    "game": {
+        "label": {
+            "title": "Game",
+            "won": "won in",
+            "lost": "lost in",
+            "against": "against",
+            "guest": "a guest",
+            "removeduser": "a removed user",
+            "contract": {
+                "8plis": "Coop. 8 folds",
+                "9plis": "Coop. 9 folds",
+                "10plis": "Coop. 10 folds",
+                "11plis": "Coop. 11 folds",
+                "12plis": "Coop. 12 folds",
+                "13plis": "Coop. 13 folds",
+                "solo6": "Solo 6 folds",
+                "solo7": "Solo 7 folds",
+                "solo8": "Solo 8 folds",
+                "petitemisere": "Small misery",
+                "grandemisere": "Large misery",
+                "grandemisereetalee": "Open large misery",
+                "grandemisereetalee": "Open large misery",
+                "trou8": "Hole in 8 folds",
+                "trou9": "Hole in 9 folds",
+                "petitchelem": "Small Slam",
+                "grandchelem": "Grand Slam"
+            }
+        },
+        "input": {
+            "contract": "Contract",
+            "attack": "Attack",
+            "defense": "Defense",
+            "outcome": "Outcome"
+        },
+        "error": {
+            "missingcontract": "missing contract",
+            "attackmissmatch": "inconsistent attack",
+            "defensemissmatch": "inconsistent defense",
+            "outcomemissmatch": "inconsistent outcome"
+        },
+        "confirm": {
+            "delete": {
+                "title": "Sure to delete game?",
+                "content": "You're about to delete the game.\n\nThis will delete the game and update the table accordingly."
+            }
+        },
+        "snack": {
+            "saved": "Game saved!",
+            "deleted": "Game deleted"
+        }
+    },
+    "feedback": {
+        "label": {
+            "tocome": "To come...",
+            "tocomeintro": "This functionality is not available yet.",
+            "tocomedetails": "We are delighted by your interest and propose to record it for the team to prioritize for this! \n This is anonymous ;)",
+            "addmessage": "You can add message to make your point",
+            "contact": "Contact",
+            "leavemessage": "Leave us a message!"
+        },
+        "input": {
+            "message": "Message",
+            "consent": "I accept the use of this feedback to improve the product"
+        },
+        "button": {
+            "send": "Send"
+        },
+        "error": {
+            "missingmessage": "missing message",
+            "missingconsent": "missing consent"
+        },
+        "snack": {
+            "created": "Feedback sent!"
+        }
+    },
+    "changepassword": {
+        "label": {
+            "modaltitle": "Change password"
+        },
+        "input": {
+            "current": "Current password",
+            "new": "New password",
+            "repeat": "Repeat new password"
+        },
+        "error": {
+            "missingcurrent": "missing current password",
+            "missingnew": "missing new password",
+            "missingrepeat": "missing repeated password",
+            "missmatch": "password missmatch"
+        },
+        "snack": {
+            "saved": "Password saved"
+        }
+    },
+    "help": {
+        "label": {
+            "faq": "Frequently asked questions (FAQ)"
+        }
     }
-  },
-  "signup": {
-    "label": {
-      "title": "Sign up",
-      "existinglogin": "Don't you already created an account with this login?"
-    },
-    "input": { "passwordrepeat": "Repeat password" },
-    "button": {
-      "signup": "Sign up"
-    },
-    "error": {
-      "missingpseudo": "missing pseudo",
-      "existingpseudo": "Already existing pseudo",
-      "existinglogin": "An account already exists with this login",
-      "missingpasswordrepeat": "missing repeated password",
-      "passwordmissmatch": "password missmatch",
-      "resetpassword": "Reset my password (unavailable)"
-    },
-    "snack": {
-      "signedup": "Signed up!\nCheck your emails to activate your account (including the spams)",
-      "pendingemail": "Signed up!\nWe are currently facing difficulties to send your activation email :/\nCheck your emails to activate your account (including the spams)\nIf our email doesn't reach you within the next 24h, please sign up again"
-    }
-  },
-  "signin": {
-    "label": {
-      "title": "Sign in",
-      "notfoundaccount": "Account not found :/\nWilling to create an account?",
-      "inactiveaccount": "Haven't you activated your account yet?",
-      "successresendingactivation": "Activation email sent, check your emails (including the spams)",
-      "successsendingpassword": "Password reset email sent, check your emails (including the spams)",
-      "errorresendingactivation": "Could not send account activation email"
-    },
-    "input": {},
-    "button": {
-      "resetpassword": "Reset password",
-      "gotosignup": "Sign up now!",
-      "resendactivationemail": "Resend activation email"
-    },
-    "snack": {
-      "signedin": "Signed in!",
-      "unauthorized": "Wrong password",
-      "errorsendingpassword": "Could not send password reset email"
-    }
-  },
-  "activation": {
-    "label": {
-      "laststep": "One last step...\nand then you're all set!",
-      "inprogress": "Activation in progress...",
-      "error": "Error during activation",
-      "errorexplanation": "Sincere apologies for the inconvenience.\nPlease try again later.",
-      "activatedtitle": "Account activated!"
-    },
-    "input": {},
-    "button": {
-      "activate": "Activate",
-      "resend": "Send a new activation email"
-    },
-    "error": {},
-    "snack": {}
-  },
-  "account": {
-    "label": {
-      "mydata": "My data",
-      "mypseudo": "My pseudo",
-      "myemail": "My email",
-      "mypassword": "My password",
-      "myaccount": "My account",
-      "merge": "Merge",
-      "mergedetails": "Enables to merge two accounts together, which is relevant if you've been invited with two different emails.",
-      "anonymize": "Anonymize",
-      "anonymizedetails": "Enables to remove personal information from the app, without affecting the tables you're part of.",
-      "close": "Close",
-      "closedetails": "To permanently delete your account, removing you from any table you've been part of."
-    },
-    "input": {},
-    "button": {
-      "changepseudo": "Change pseudo",
-      "changeemail": "Change email",
-      "changepassword": "Change password",
-      "merge": "Merge accounts",
-      "anonymize": "Anonymize account",
-      "close": "Close account"
-    },
-    "error": {},
-    "snack": {}
-  },
-  "home": {
-    "label": {
-      "valueprop": "Play cards, store games...\nGet history and analytics!",
-      "carousel1": "Record your Whist games,\naccess history and analytics",
-      "carousel2": "Create as many table you want\nand invite your friends",
-      "carousel3": "Sign up!\nIt's free and easy",
-      "mystats": "My stats",
-      "mytables": "My tables",
-      "notables": "No tables so far...",
-      "notablesexplanation": "You are not playing at any table so far...\n\nCreate a new table with using the \"+\" icon and invite your friends to play!",
-      "attack": "Attack",
-      "victory": "Victory",
-      "games": "games",
-      "nogames": "No games so far...",
-      "nogamesstatsexplanation": "You haven't played any game so far?\n\nPlay and save games to access to your stats here!"
-    },
-    "input": {},
-    "button": {},
-    "error": {},
-    "snack": {}
-  },
-  "table": {
-    "label": {
-      "title": "Table",
-      "players": "Players",
-      "stats": "Stats",
-      "history": "History",
-      "averagepoints": "av. points",
-      "data": "Data",
-      "games": "games",
-      "victory": "victory",
-      "attack": "attack",
-      "deniedaccess": "Denied access",
-      "deniedaccessexplanation": "You're not a member of this table.\n\nYou can't access a table you're not a memebr of.",
-      "nogames": "No games so far...",
-      "nogameshistoryexplanation": "You haven't played any game so far?\n\nPlay and click the new game button to save your games and access the table history here!",
-      "nogamesstatsexplanation": "You haven't played any game so far?\n\nPlay and click the new game button to save your games and access the player stats here!",
-      "nouserscreate": "No players, really?",
-      "nouserscreateexplanation": "You have removed all players from the table.\nIt is not possible to ceate a table without any player, especially you no?\n\nYou can invite players to this table pressing the \"+\" icon.",
-      "nousersdelete": "No players, really?",
-      "nousersdeleteexplanation": "You have removed all players from the table.\n\nSaving a table without any player will delete the table."
-    },
-    "input": {
-      "guests": "Guests"
-    },
-    "button": {
-      "newgame": "New game",
-      "loadmore": "Load more"
-    },
-    "error": {
-      "missingname": "missing name",
-      "existingname": "Already existing name",
-      "missingguests": "missing guests",
-      "creationwithoutplayers": "missing players to create a table",
-      "creationwithoutuser": "table creation impossible without you among the players"
-    },
-    "confirm": {
-      "deletenoeusers": {
-        "title": "No more player here!",
-        "content": "All players have been deleted from this table.\nA table can't exist without any player...\n\nProceeding will delete the table and all associated games."
-      }
-    },
-    "snack": {
-      "saved": "Table saved!",
-      "deleted": "Table deleted"
-    }
-  },
-  "invite": {
-    "label": {
-      "title": "Invite a player"
-    },
-    "input": {
-      "acknowledgement": "I know this person"
-    },
-    "button": {
-      "invite": "Invite"
-    },
-    "error": {
-      "missinglogin": "missing email",
-      "invalidlogin": "invalid email",
-      "missingpseudo": "missing pseudo",
-      "missingacknowledgement": "missing acknowledgement"
-    },
-    "snack": {
-      "invited": "User invited!"
-    }
-  },
-  "game": {
-    "label": {
-      "title": "Game",
-      "won": "won in",
-      "lost": "lost in",
-      "against": "against",
-      "guest": "a guest",
-      "removeduser": "a removed user",
-      "contract": {
-        "8plis": "Coop. 8 folds",
-        "9plis": "Coop. 9 folds",
-        "10plis": "Coop. 10 folds",
-        "11plis": "Coop. 11 folds",
-        "12plis": "Coop. 12 folds",
-        "13plis": "Coop. 13 folds",
-        "solo6": "Solo 6 folds",
-        "solo7": "Solo 7 folds",
-        "solo8": "Solo 8 folds",
-        "petitemisere": "Small misery",
-        "grandemisere": "Large misery",
-        "grandemisereetalee": "Open large misery",
-        "grandemisereetalee": "Open large misery",
-        "trou8": "Hole in 8 folds",
-        "trou9": "Hole in 9 folds",
-        "petitchelem": "Small Slam",
-        "grandchelem": "Grand Slam"
-      }
-    },
-    "input": {
-      "contract": "Contract",
-      "attack": "Attack",
-      "defense": "Defense",
-      "outcome": "Outcome"
-    },
-    "error": {
-      "missingcontract": "missing contract",
-      "attackmissmatch": "inconsistent attack",
-      "defensemissmatch": "inconsistent defense",
-      "outcomemissmatch": "inconsistent outcome"
-    },
-    "confirm": {
-      "delete": {
-        "title": "Sure to delete game?",
-        "content": "You're about to delete the game.\n\nThis will delete the game and update the table accordingly."
-      }
-    },
-    "snack": {
-      "saved": "Game saved!",
-      "deleted": "Game deleted"
-    }
-  },
-  "feedback": {
-    "label": {
-      "tocome": "To come...",
-      "tocomeintro": "This functionality is not available yet.",
-      "tocomedetails": "We are delighted by your interest and propose to record it for the team to prioritize for this! \n This is anonymous ;)",
-      "addmessage": "You can add message to make your point",
-      "contact": "Contact",
-      "leavemessage": "Leave us a message!"
-    },
-    "input": {
-      "message": "Message",
-      "consent": "I accept the use of this feedback to improve the product"
-    },
-    "button": {
-      "send": "Send"
-    },
-    "error": {
-      "missingmessage": "missing message",
-      "missingconsent": "missing consent"
-    },
-    "snack": {
-      "created": "Feedback sent!"
-    }
-  },
-  "changepassword": {
-    "label": {
-      "modaltitle": "Change password"
-    },
-    "input": {
-      "current": "Current password",
-      "new": "New password",
-      "repeat": "Repeat new password"
-    },
-    "error": {
-      "missingcurrent": "missing current password",
-      "missingnew": "missing new password",
-      "missingrepeat": "missing repeated password",
-      "missmatch": "password missmatch"
-    },
-    "snack": {
-      "saved": "Password saved"
-    }
-  }
 }

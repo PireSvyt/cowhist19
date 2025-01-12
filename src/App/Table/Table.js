@@ -75,13 +75,6 @@ export default function Table() {
     ) {
         serviceTableGetDetails()
     }
-    if (
-        select.authLoaded === true &&
-        select.signedin === true &&
-        select.tableState.ranking === undefined
-    ) {
-        serviceTableGetStats(select.view)
-    }
 
     function TabPanel(props) {
         const { children, value, index, ...other } = props

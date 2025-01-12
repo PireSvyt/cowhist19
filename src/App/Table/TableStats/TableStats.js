@@ -45,7 +45,7 @@ export default function TableStats() {
     // Load
     if (
         select.tableState.details === 'available' &&
-        select.tableState.ranking !== 'available'
+        select.tableState.ranking === undefined
     ) {
         serviceTableGetStats()
     }

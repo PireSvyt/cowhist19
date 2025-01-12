@@ -52,3 +52,20 @@ export async function apiGameDelete(deleteInputs, token) {
         return err.response.data
     }
 }
+
+export async function apiGameGetOldest(token) {
+  try {
+      const res = await axios({
+          method: 'get',
+          url: apiURL + 'game/v1/oldest',
+          headers: {
+              Authorization: 'Bearer ' + token,
+          },
+      })
+      console.log('apiGameGetOldest res', res)
+      return res.data
+  } catch (err) {
+      console.log('apiGameGetOldest err', err)
+      return err.response.data
+  }
+}

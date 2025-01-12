@@ -3,7 +3,9 @@ import { createSlice } from '@reduxjs/toolkit'
 const tableSlice = createSlice({
     name: 'tableSlice',
     initialState: {
-        state: {},
+        state: {
+            stats: 'ok',
+        },
         denied: false,
         tableid: '',
         name: '',
@@ -13,6 +15,7 @@ const tableSlice = createSlice({
         games: [],
         view: 'ranking',
         ranking: [],
+        oldest: null,
         graph: {
             dates: [],
             series: {},
@@ -54,6 +57,10 @@ const tableSlice = createSlice({
         },
         setView: (state, action) => {
             state.view = action.payload.view
+        },
+        setOldest: (state, action) => {
+            state.oldest = action.payload.year
+            state.state.oldest = 'available'
         },
         setRanking: (state, action) => {
             console.log('tableSlice.setRanking', action.payload)

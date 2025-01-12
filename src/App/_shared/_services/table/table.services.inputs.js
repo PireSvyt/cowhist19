@@ -619,7 +619,7 @@ export const tableGetStatsInputs = {
         })
         appStore.dispatch({
             type: 'tableSlice/lock',
-            payload: { scope: 'stats' },
+            payload: { scope: 'ranking' },
         })
     },
     getinputsfunction: (log, directInputs) => {

@@ -1,5 +1,5 @@
 // APIs
-import { apiGameCreate, apiGameDelete } from './game.api.js'
+import { apiGameCreate, apiGameDelete, apiGameGetOldest } from './game.api.js'
 // Services
 import serviceProceedCheck from '../serviceProceedCheck.js'
 import { random_id, random_string } from '../toolkit.js'
@@ -653,6 +653,72 @@ export const gameDeleteInputs = {
                 })
             },
             'game.delete.errorondelete': () => {
+                appStore.dispatch({
+                    type: 'sliceSnack/change',
+                    payload: {
+                        uid: random_id(),
+                        id: 'generic.snack.error.wip',
+                    },
+                })
+            },
+        }
+        return responses[response]()
+    },
+}
+
+export const gameGetOldestInputs = {
+    lockuifunction: (log) => {
+        log.push({
+            date: new Date(),
+            message: 'serviceProceed.lockuifunction',
+            tags: ['function'],
+        })
+        appStore.dispatch({
+            type: 'tableSlice/lock',
+            payload: { scope: 'oldest' }, 
+        })
+    },
+    apicall: async (inputs, log) => {
+        log.push({
+            date: new Date(),
+            message: 'gameGetOldestInputs.apicall',
+            inputs: inputs,
+            tags: ['function'],
+        })
+        try {
+            return await apiGameGetOldest(
+                appStore.getState().authSlice.token
+            )
+        } catch (err) {
+            return err
+        }
+    },
+    getmanageresponsefunction: (response, log) => {
+        log.push({
+            date: new Date(),
+            message: 'gameGetOldestInputs.getmanageresponsefunction',
+            response: response,
+            tags: ['function'],
+        })
+        let responses = {
+            'game.getoldest.success': () => {
+                appStore.dispatch({
+                    type: 'sliceTable/setOldest',
+                    payload: {
+                        year: response.data.year
+                    },
+                })
+            },
+            'game.getoldest.erroronfind': () => {
+                appStore.dispatch({
+                    type: 'sliceSnack/change',
+                    payload: {
+                        uid: random_id(),
+                        id: 'generic.snack.error.wip',
+                    },
+                })
+            },
+            'game.getoldest.errornotfound': () => {
                 appStore.dispatch({
                     type: 'sliceSnack/change',
                     payload: {

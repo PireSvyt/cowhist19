@@ -42,7 +42,7 @@ export default function TableStats() {
         ranking: useSelector((state) => state.tableSlice.ranking),
     }
 
-    // Load
+    // Load stats atr opening
     if (
         select.tableState.details === 'available' &&
         select.tableState.ranking === undefined

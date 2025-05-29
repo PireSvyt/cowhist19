@@ -90,7 +90,7 @@ export async function serviceTableProcessCurves(graph) {
             // Create curve
             let stats = graph.map((game) => {
                 if (game.players[playerid] !== undefined) {
-                    return game.players[playerid]
+                    return game.players[playerid].averagepoints
                 } else {
                     return null
                 }

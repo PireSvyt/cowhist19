@@ -190,7 +190,8 @@
             "nousersdeleteexplanation": "You have removed all players from the table.\n\nSaving a table without any player will delete the table."
         },
         "input": {
-            "guests": "Guests"
+            "guests": "Guests",
+            "statsGameNumber": "Statics (# games)"
         },
         "button": {
             "newgame": "New game",

@@ -178,7 +178,9 @@
             "period": "Période",
             "sliding": "Glissante"
         },
-        "input": {},
+        "input": {
+            "statsGameNumber": "Statistiques (# parties)"
+        },
         "button": {
             "newgame": "Nouvelle partie"
         },

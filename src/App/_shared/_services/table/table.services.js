@@ -108,13 +108,13 @@ export async function serviceTableProcessCurves(graph) {
             }
             if (playerid === userid) {
                 style = {
-                    color: '#D45C28', // Secondary, see config/themeOptions.js
+                    color: '#ef6c00', // Secondary, see config/themeOptions.js
                     width: 3,
                 }
             }
             if (playerid === focus) {
                 style = {
-                    color: '#00838F', // Primary, see config/themeOptions.js
+                    color: '#2d7683', // Primary, see config/themeOptions.js
                     width: 3,
                 }
             }

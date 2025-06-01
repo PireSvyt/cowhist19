@@ -1,7 +1,7 @@
 export const themeOptions = {
     palette: {
         mode: 'light',
-        primary: {
+        /*primary: {
             main: '#00838F',
             // History 2d7683 > 00838F
             // See services/table/table.slice.js
@@ -13,7 +13,7 @@ export const themeOptions = {
             // See services/table/table.slice.js
             // See services/table/table.services.js
             // See styles/AliceCarousel.css
-        },
+        },*/
     },
     components: {
         MuiBox: {

@@ -10,11 +10,13 @@ const tableModalSlice = createSlice({
         inputs: {
             name: '',
             guests: 0,
+            statsGameNumber: 20,
             players: [],
         },
         errors: {
             name: false,
             guests: false,
+            statsGameNumber: false,
             players: false,
         },
         deleteConfirm: false,
@@ -26,11 +28,13 @@ const tableModalSlice = createSlice({
             state.inputs = {
                 name: '',
                 guests: 0,
+                statsGameNumber: 20,
                 players: [action.payload],
             }
             state.errors = {
                 name: false,
                 guests: false,
+                statsGameNumber: false,
                 players: false,
             }
         },
@@ -40,11 +44,13 @@ const tableModalSlice = createSlice({
             state.inputs = {
                 name: action.payload.name,
                 guests: action.payload.guests,
+                statsGameNumber: action.payload.statsGameNumber,
                 players: action.payload.players,
             }
             state.errors = {
                 name: false,
                 guests: false,
+                statsGameNumber: false,
                 players: false,
             }
         },
@@ -53,6 +59,7 @@ const tableModalSlice = createSlice({
             state.errors = {
                 name: false,
                 guests: false,
+                statsGameNumber: false,
                 players: false,
             }
             state.disabled = false
@@ -70,6 +77,10 @@ const tableModalSlice = createSlice({
                 if (action.payload.inputs.guests !== undefined) {
                     state.inputs.guests = action.payload.inputs.guests
                 }
+                if (action.payload.inputs.statsGameNumber !== undefined) {
+                    state.inputs.statsGameNumber =
+                        action.payload.inputs.statsGameNumber
+                }
                 if (action.payload.inputs.players !== undefined) {
                     state.inputs.players = action.payload.inputs.players
                 }
@@ -81,6 +92,10 @@ const tableModalSlice = createSlice({
                 }
                 if (action.payload.errors.guests !== undefined) {
                     state.errors.guests = action.payload.errors.guests
+                }
+                if (action.payload.errors.statsGameNumber !== undefined) {
+                    state.errors.statsGameNumber =
+                        action.payload.errors.statsGameNumber
                 }
                 if (action.payload.errors.players !== undefined) {
                     state.errors.players = action.payload.errors.players

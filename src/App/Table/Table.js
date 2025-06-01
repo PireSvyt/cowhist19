@@ -51,6 +51,8 @@ export default function Table() {
                     tableid: appStore.getState().tableSlice.tableid,
                     name: appStore.getState().tableSlice.name,
                     guests: appStore.getState().tableSlice.guests,
+                    statsGameNumber:
+                        appStore.getState().tableSlice.statsGameNumber,
                     players: appStore
                         .getState()
                         .tableSlice.players.filter((player) => {

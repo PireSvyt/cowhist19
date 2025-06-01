@@ -10,6 +10,7 @@ const tableSlice = createSlice({
         tableid: '',
         name: '',
         guests: 0,
+        statsGameNumber: 0,
         players: [],
         contracts: [],
         games: [],
@@ -39,6 +40,7 @@ const tableSlice = createSlice({
             state.tableid = action.payload.tableid
             state.name = action.payload.name
             state.guests = action.payload.guests
+            state.statsGameNumber = action.payload.statsGameNumber
             state.players = action.payload.players
             state.contracts = action.payload.contracts
             state.games = []

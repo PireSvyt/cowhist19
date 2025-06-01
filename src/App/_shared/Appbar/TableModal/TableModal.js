@@ -74,6 +74,15 @@ export default function TableModal() {
                 },
             })
         },
+        statsGameNumber: (e) => {
+            appStore.dispatch({
+                type: 'tableModalSlice/change',
+                payload: {
+                    inputs: { statsGameNumber: e.target.value },
+                    errors: { statsGameNumber: false },
+                },
+            })
+        },
         guests: (e) => {
             appStore.dispatch({
                 type: 'tableModalSlice/change',
@@ -188,6 +197,20 @@ export default function TableModal() {
                                 <MenuItem value={2}>2</MenuItem>
                             </Select>
                         </FormControl>
+
+                        <TextField
+                            name="statsGameNumber"
+                            type="number"
+                            label={t('table.input.statsGameNumber')}
+                            variant="standard"
+                            defaultValue={20}
+                            value={select.inputs.statsGameNumber}
+                            onChange={changes.statsGameNumber}
+                            autoComplete="off"
+                            sx={{ mb: 1 }}
+                            error={select.errors.statsGameNumber}
+                            data-testid="modal-table#input-statsGameNumber"
+                        />
 
                         <Stack direction="row" justifyContent="space-between">
                             <Typography

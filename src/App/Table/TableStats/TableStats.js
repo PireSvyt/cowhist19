@@ -168,26 +168,31 @@ export default function TableStats() {
                             </Select>
                         </FormControl>
 
-                        <FormControl variant="standard" sx={{ ml: 1, mr: 2 }}>
-                            <InputLabel>{t('table.label.data')}</InputLabel>
-                            <Select
-                                name="dimension"
-                                value={select.datafocus}
-                                onChange={changes.datafocus}
-                                data-testid="component-table stats#select-graph dimension"
+                        {select.view != 'graph' ? null : (
+                            <FormControl
+                                variant="standard"
+                                sx={{ ml: 1, mr: 2 }}
                             >
-                                {dimensions.map((dimension) => {
-                                    return (
-                                        <MenuItem
-                                            key={dimension}
-                                            value={dimension}
-                                        >
-                                            {t('table.label.' + dimension)}
-                                        </MenuItem>
-                                    )
-                                })}
-                            </Select>
-                        </FormControl>
+                                <InputLabel>{t('table.label.data')}</InputLabel>
+                                <Select
+                                    name="dimension"
+                                    value={select.datafocus}
+                                    onChange={changes.datafocus}
+                                    data-testid="component-table stats#select-graph dimension"
+                                >
+                                    {dimensions.map((dimension) => {
+                                        return (
+                                            <MenuItem
+                                                key={dimension}
+                                                value={dimension}
+                                            >
+                                                {t('table.label.' + dimension)}
+                                            </MenuItem>
+                                        )
+                                    })}
+                                </Select>
+                            </FormControl>
+                        )}
 
                         <ToggleButtonGroup value={select.view}>
                             <ToggleButton

@@ -113,7 +113,7 @@ const tableSlice = createSlice({
                     )
             }
         },
-        setdata: (state, action) => {
+        datafocus: (state, action) => {
             state.datafocus = action.payload.datafocus
         },
         deny: (state) => {

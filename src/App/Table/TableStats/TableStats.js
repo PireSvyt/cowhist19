@@ -64,6 +64,14 @@ export default function TableStats() {
                 },
             })
         },
+        datafocus: (e) => {
+            appStore.dispatch({
+                type: 'tableSlice/datafocus',
+                payload: {
+                    datafocus: e.target.value,
+                },
+            })
+        },
     }
 
     let dimensions = ['averagepoints', 'ratevictory', 'rateattack', 'games']
@@ -128,7 +136,7 @@ export default function TableStats() {
                             <Select
                                 name="dimension"
                                 value={select.datafocus}
-                                disabled
+                                onChange={changes.datafocus}
                                 data-testid="component-table stats#select-graph dimension"
                             >
                                 {dimensions.map((dimension) => {

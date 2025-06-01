@@ -103,10 +103,10 @@ export default function StatGraph() {
                                 size="small"
                                 color={
                                     rankingPlayer.userid === select.userid
-                                        ? 'secondary'
+                                        ? 'primary'
                                         : rankingPlayer.userid ===
                                           select.graph.focus
-                                        ? 'primary'
+                                        ? 'secondary'
                                         : 'default'
                                 }
                                 margin={5}

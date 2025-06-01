@@ -96,11 +96,11 @@ export async function serviceTableProcessCurves(graph) {
                 }
             })
             // Adjust in case of null
-            for (let p = 1; p < stats.length; p++) {
+            /*for (let p = 1; p < stats.length; p++) {
                 if (stats[p] === null) {
                     stats[p] = stats[p - 1]
                 }
-            }
+            }*/
             // Style
             let style = {
                 color: '#9E9E9E', // Grey

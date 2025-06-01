@@ -40,6 +40,7 @@ export default function TableStats() {
         view: useSelector((state) => state.tableSlice.view),
         userid: useSelector((state) => state.userSlice.userid),
         ranking: useSelector((state) => state.tableSlice.ranking),
+        datafocus: useSelector((state) => state.tableSlice.datafocus),
     }
 
     // Load stats atr opening
@@ -64,6 +65,8 @@ export default function TableStats() {
             })
         },
     }
+
+    let dimensions = ['averagepoints', 'ratevictory', 'rateattack', 'games']
 
     let c = -1
 
@@ -124,16 +127,20 @@ export default function TableStats() {
                             <InputLabel>{t('table.label.data')}</InputLabel>
                             <Select
                                 name="dimension"
-                                value={'averagepoints'}
+                                value={select.datafocus}
                                 disabled
                                 data-testid="component-table stats#select-graph dimension"
                             >
-                                <MenuItem
-                                    key={'contract.key'}
-                                    value={'averagepoints'}
-                                >
-                                    {t('table.label.averagepoints')}
-                                </MenuItem>
+                                {dimensions.map((dimension) => {
+                                    return (
+                                        <MenuItem
+                                            key={dimension}
+                                            value={dimension}
+                                        >
+                                            {t('table.label.' + dimension)}
+                                        </MenuItem>
+                                    )
+                                })}
                             </Select>
                         </FormControl>
 

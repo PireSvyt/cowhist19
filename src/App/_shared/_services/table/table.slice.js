@@ -21,6 +21,7 @@ const tableSlice = createSlice({
             series: {},
             focus: '',
         },
+        datafocus: 'averagepoints',
     },
     reducers: {
         lock: (state, action) => {
@@ -100,7 +101,7 @@ const tableSlice = createSlice({
                         // Focus
                         state.graph.focus = action.payload.value
                         state.graph.series[action.payload.value].lineStyle = {
-                            color: '#00838F', // Primary, see config/themeOptions.js
+                            color: '#7b1fa2',
                             width: 3,
                         }
                     }
@@ -111,6 +112,9 @@ const tableSlice = createSlice({
                         action.payload.field
                     )
             }
+        },
+        setdata: (state, action) => {
+            state.datafocus = action.payload.datafocus
         },
         deny: (state) => {
             state.denied = true

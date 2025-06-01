@@ -103,7 +103,8 @@ export default function TableStats() {
                 <Box sx={{ left: '10%', right: '10%' }}>
                     <LinearProgress />
                 </Box>
-            ) : select.ranking.length === 0 ? (
+            ) : select.ranking.length === 0 &&
+              select.dataperiod == 'sliding' ? (
                 <Box
                     data-testid="component-table stats#box-no ranking"
                     sx={{

@@ -10,8 +10,8 @@ import {
 // Services
 import { random_string, random_id } from '../toolkit.js'
 import {
-    serviceTableProcessCurves,
     serviceTableGetDetails,
+    serviceTableProcessCurves,
 } from './table.services.js'
 // Reducers
 import appStore from '../../../_store/appStore.js'
@@ -701,14 +701,11 @@ export const tableGetStatsInputs = {
                 stats.ranking = stats.ranking.filter((rank) =>
                     playerids.includes(rank.userid)
                 )
-                // Outcome
-                if (stats.graph !== undefined) {
-                    serviceTableProcessCurves(stats.graph)
-                }
                 appStore.dispatch({
                     type: 'tableSlice/setRanking',
                     payload: stats.ranking,
                 })
+                serviceTableProcessCurves(stats.graph)
             },
             'table.getstats.error': () => {
                 appStore.dispatch({

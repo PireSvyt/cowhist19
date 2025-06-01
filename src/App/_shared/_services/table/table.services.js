@@ -68,6 +68,16 @@ export async function serviceTableProcessCurves(graph) {
         let userid = appStore.getState().userSlice.userid
         let players = appStore.getState().tableSlice.players
         let focus = appStore.getState().tableSlice.graph.focus
+        let datafocus = appStore.getState().tableSlice.graph.datafocus
+
+        // Store graph
+        appStore.dispatch({
+            type: 'tableSlice/setGraph',
+            payload: {
+                field: 'raw',
+                value: graph,
+            },
+        })
 
         // Dates
         let dates = graph.map((game) => {
@@ -90,7 +100,7 @@ export async function serviceTableProcessCurves(graph) {
             // Create curve
             let stats = graph.map((game) => {
                 if (game.players[playerid] !== undefined) {
-                    return game.players[playerid].averagepoints
+                    return game.players[playerid][datafocus]
                 } else {
                     return null
                 }

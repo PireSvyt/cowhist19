@@ -17,12 +17,13 @@ const tableSlice = createSlice({
         ranking: [],
         oldest: null,
         graph: {
+            raw: [],
             dates: [],
             series: {},
             focus: '',
         },
         datafocus: 'averagepoints',
-        dataperiod: 'sliding'
+        dataperiod: 'sliding',
     },
     reducers: {
         lock: (state, action) => {
@@ -72,6 +73,9 @@ const tableSlice = createSlice({
         setGraph: (state, action) => {
             console.log('tableSlice.setGraph', action.payload)
             switch (action.payload.field) {
+                case 'raw':
+                    state.graph.raw = action.payload.value
+                    break
                 case 'dates':
                     state.graph.dates = action.payload.value
                     break

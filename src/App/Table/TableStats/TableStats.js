@@ -74,7 +74,7 @@ export default function TableStats() {
                 select.tableState.ranking === 'available'
             ) ? (
                 <Box sx={{ left: '10%', right: '10%' }}>
-                    <LinearProgress color="secondary" />
+                    <LinearProgress />
                 </Box>
             ) : select.ranking.length === 0 ? (
                 <Box
@@ -137,10 +137,7 @@ export default function TableStats() {
                             </Select>
                         </FormControl>
 
-                        <ToggleButtonGroup
-                            value={select.view}
-                            color="secondary"
-                        >
+                        <ToggleButtonGroup value={select.view}>
                             <ToggleButton
                                 value="ranking"
                                 data-testid="component-table stats#button-see ranking"

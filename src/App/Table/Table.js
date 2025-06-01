@@ -117,7 +117,7 @@ export default function Table() {
             <Box sx={{ height: 80 }} />
             {select.authLoaded !== true ? (
                 <Box sx={{ left: '10%', right: '10%' }}>
-                    <LinearProgress color="secondary" />
+                    <LinearProgress />
                 </Box>
             ) : select.signedin === false ? null : select.tableDenied ===
               true ? (
@@ -206,7 +206,6 @@ export default function Table() {
                     </TabPanel>
                     <Fab
                         variant="extended"
-                        color="secondary"
                         sx={{ position: 'fixed', bottom: 20, right: 20 }}
                         onClick={changes.newgame}
                         data-testid="page-table#button-new game"

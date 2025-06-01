@@ -28,7 +28,7 @@ export default function Admin() {
             <Box sx={{ height: 80 }} />
             {select.authLoaded === false ? (
                 <Box sx={{ left: '10%', right: '10%' }}>
-                    <LinearProgress color="secondary" />
+                    <LinearProgress />
                 </Box>
             ) : select.signedin === false ? null : (
                 <Box>

@@ -117,7 +117,7 @@ export default function Account() {
             {select.authLoaded === false ||
             select.userState.details !== 'available' ? (
                 <Box sx={{ left: '10%', right: '10%' }}>
-                    <LinearProgress color="secondary" />
+                    <LinearProgress />
                 </Box>
             ) : !(
                   select.signedin === true &&

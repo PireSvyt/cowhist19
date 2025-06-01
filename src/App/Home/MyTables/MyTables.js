@@ -57,7 +57,6 @@ export default function MyTables() {
                     data-testid="component-my tables#button-new table"
                     sx={{ p: 2 }}
                     onClick={changes.new}
-                    color="secondary"
                 >
                     <AddIcon />
                 </IconButton>
@@ -65,7 +64,7 @@ export default function MyTables() {
 
             {select.userState.details !== 'available' ? (
                 <Box sx={{ left: '10%', right: '10%' }}>
-                    <LinearProgress color="secondary" />
+                    <LinearProgress />
                 </Box>
             ) : select.tables.length === 0 ? (
                 <Box

@@ -152,7 +152,6 @@ function CircularProgressWithLabel(props) {
                 {...props}
                 size={70}
                 thickness={5}
-                color="secondary"
             />
             <Typography variant="body1" position="absolute">
                 {`${Math.round(props.value)}%`}

@@ -41,6 +41,7 @@ export default function TableStats() {
         userid: useSelector((state) => state.userSlice.userid),
         ranking: useSelector((state) => state.tableSlice.ranking),
         datafocus: useSelector((state) => state.tableSlice.datafocus),
+        dataperiod: useSelector((state) => state.tableSlice.dataperiod),
     }
 
     // Load stats atr opening
@@ -87,6 +88,7 @@ export default function TableStats() {
                     dataperiod: e.target.value,
                 },
             })
+            serviceTableGetStats()
         },
     }
 

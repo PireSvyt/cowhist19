@@ -205,6 +205,7 @@ export default function Table() {
                         <TableHistory />
                     </TabPanel>
                     <Fab
+                        color="primary"
                         variant="extended"
                         sx={{ position: 'fixed', bottom: 20, right: 20 }}
                         onClick={changes.newgame}
@@ -212,7 +213,7 @@ export default function Table() {
                     >
                         {t('table.button.newgame')}
                     </Fab>
-                    <Box sx={{ height: 60 }} />
+                    <Box sx={{ height: 70 }} />
 
                     {select.openGameModal === true ? <GameModal /> : null}
                 </Box>

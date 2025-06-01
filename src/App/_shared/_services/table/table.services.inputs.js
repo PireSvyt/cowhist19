@@ -632,7 +632,7 @@ export const tableGetStatsInputs = {
             inputs: {
                 tableid: window.location.href.split('/table/')[1],
                 parameters: {
-                    need: directInputs.need,
+                    need: appStore.getState().tableSlice.view,
                 },
             },
         }
@@ -705,7 +705,9 @@ export const tableGetStatsInputs = {
                     type: 'tableSlice/setRanking',
                     payload: stats.ranking,
                 })
-                serviceTableProcessCurves(stats.graph)
+                if (stats.graph !== undefined) {
+                    serviceTableProcessCurves(stats.graph)
+                }
             },
             'table.getstats.error': () => {
                 appStore.dispatch({

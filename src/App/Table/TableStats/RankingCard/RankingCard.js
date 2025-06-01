@@ -4,7 +4,7 @@ import { Box, Card, Typography } from '@mui/material'
 
 export default function RankingCard(props) {
     if (process.env.REACT_APP_DEBUG === 'TRUE') {
-        console.log('RankingCard ' + props.player.userid)
+        //console.log('RankingCard ' + props.player.userid)
     }
     // i18n
     const { t } = useTranslation()

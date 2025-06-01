@@ -66,12 +66,12 @@ const tableSlice = createSlice({
             state.state.oldest = 'available'
         },
         setRanking: (state, action) => {
-            console.log('tableSlice.setRanking', action.payload)
+            //console.log('tableSlice.setRanking', action.payload)
             state.ranking = action.payload
             state.state.ranking = 'available'
         },
         setGraph: (state, action) => {
-            console.log('tableSlice.setGraph', action.payload)
+            //console.log('tableSlice.setGraph', action.payload)
             switch (action.payload.field) {
                 case 'raw':
                     state.graph.raw = action.payload.value

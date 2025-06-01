@@ -63,8 +63,6 @@ export default function TableStats() {
     // Changes
     const changes = {
         view: (newView) => {
-            // Fire loading
-            serviceTableGetStats(newView)
             // Change view
             appStore.dispatch({
                 type: 'tableSlice/setView',
@@ -72,6 +70,8 @@ export default function TableStats() {
                     view: newView,
                 },
             })
+            // Fire loading
+            serviceTableGetStats()
         },
         datafocus: (e) => {
             appStore.dispatch({

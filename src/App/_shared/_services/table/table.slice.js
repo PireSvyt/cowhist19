@@ -22,6 +22,7 @@ const tableSlice = createSlice({
             focus: '',
         },
         datafocus: 'averagepoints',
+        dataperiod: 'sliding'
     },
     reducers: {
         lock: (state, action) => {
@@ -115,6 +116,9 @@ const tableSlice = createSlice({
         },
         datafocus: (state, action) => {
             state.datafocus = action.payload.datafocus
+        },
+        dataperiod: (state, action) => {
+            state.dataperiod = action.payload.dataperiod
         },
         deny: (state) => {
             state.denied = true

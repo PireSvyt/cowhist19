@@ -628,7 +628,7 @@ export const tableGetStatsInputs = {
             message: 'serviceTableGetStats.getinputsfunction',
             tags: ['function'],
         })
-        return {
+        let inputs = {
             inputs: {
                 tableid: window.location.href.split('/table/')[1],
                 parameters: {
@@ -636,6 +636,11 @@ export const tableGetStatsInputs = {
                 },
             },
         }
+        let dataperiod = appStore.getState().tableSlice.dataperiod
+        if (dataperiod != 'sliding') {
+            inputs.inputs.parameters.year = parseInt(dataperiod)
+        }
+        return inputs
     },
     sercivechecks: [
         {

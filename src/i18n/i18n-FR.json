@@ -170,7 +170,13 @@
             "score": "score",
             "games": "parties",
             "victory": "de victore",
-            "attack": "d'attaque"
+            "attack": "d'attaque",
+            "averagepoints": "Moyenne de points",
+            "ratevictory": "Taux de victoire",
+            "rateattack": "Taux d'attaque",
+            "gamenumber": "Nombre de parties",
+            "period": "Période",
+            "sliding": "Glissante"
         },
         "input": {},
         "button": {

@@ -51,6 +51,14 @@ export default function TableStats() {
         serviceTableGetStats()
     }
 
+    let dimensions = [
+        'averagepoints',
+        'ratevictory',
+        'rateattack',
+        'gamenumber',
+    ]
+    let periods = ['sliding', '2025', '2024', '2023', '2022', '2021', '2020']
+
     // Changes
     const changes = {
         view: (newView) => {
@@ -72,9 +80,15 @@ export default function TableStats() {
                 },
             })
         },
+        dataperiod: (e) => {
+            appStore.dispatch({
+                type: 'tableSlice/dataperiod',
+                payload: {
+                    dataperiod: e.target.value,
+                },
+            })
+        },
     }
-
-    let dimensions = ['averagepoints', 'ratevictory', 'rateattack', 'games']
 
     let c = -1
 
@@ -125,13 +139,33 @@ export default function TableStats() {
                         sx={{
                             display: 'flex',
                             flexDirection: 'row',
-                            justifyContent: 'flex-end',
+                            justifyContent: 'space-between',
                             alignItems: 'center',
                             mt: 2,
                             mb: 2,
                         }}
                     >
-                        <FormControl variant="standard" sx={{ mr: 2 }}>
+                        <FormControl variant="standard" sx={{ ml: 1 }}>
+                            <InputLabel>{t('table.label.period')}</InputLabel>
+                            <Select
+                                name="period"
+                                value={select.dataperiod}
+                                onChange={changes.dataperiod}
+                                data-testid="component-table stats#select-graph period"
+                            >
+                                {periods.map((period) => {
+                                    return (
+                                        <MenuItem key={period} value={period}>
+                                            {period == 'sliding'
+                                                ? t('table.label.sliding')
+                                                : period}
+                                        </MenuItem>
+                                    )
+                                })}
+                            </Select>
+                        </FormControl>
+
+                        <FormControl variant="standard" sx={{ ml: 1, mr: 2 }}>
                             <InputLabel>{t('table.label.data')}</InputLabel>
                             <Select
                                 name="dimension"

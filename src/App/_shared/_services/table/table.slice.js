@@ -120,6 +120,26 @@ const tableSlice = createSlice({
         },
         datafocus: (state, action) => {
             state.datafocus = action.payload.datafocus
+            let datafocus = action.payload.datafocus
+            if (datafocus == 'gamenumber') {
+                datafocus = 'games'
+            }
+            // map
+            let currentSeries = { ...state.graph.series }
+            Object.keys(currentSeries).forEach((userid) => {
+                currentSeries[userid].data = state.graph.raw.map((game) => {
+                    if (game.players[userid] !== undefined) {
+                        if (game.players[userid][datafocus] !== undefined) {
+                            return game.players[userid][datafocus]
+                        } else {
+                            return null
+                        }
+                    } else {
+                        return null
+                    }
+                })
+            })
+            state.graph.series = currentSeries
         },
         dataperiod: (state, action) => {
             state.dataperiod = action.payload.dataperiod

@@ -144,6 +144,7 @@ export async function serviceTableProcessCurves(graph) {
                         userid: playerid,
                         serie: {
                             type: 'line',
+                            userid: playerid,
                             //step: 'end',
                             data: stats,
                             lineStyle: style,
